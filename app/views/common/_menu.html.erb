@@ -1,0 +1,11 @@
+<ul id="menu" class="nav">
+  <li id="welcome"><%= link_to 'Home', root_path %></li>
+  <li id="products" class="dropdown" data-dropdown="dropdown">
+  <a href="#" class="dropdown-toggle">Products</a>
+  <ul class="dropdown-menu">
+    <li><%= link_to 'Products List', root_path, class: 'dropdown' %></li>
+    <li class="divider"></li>
+    <li><%= link_to 'New Product', root_path, class: 'dropdown' %></li>
+  </ul>
+  <li>
+</ul>

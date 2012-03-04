@@ -1,0 +1,16 @@
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Bookmarks</li>
+    <% @bookmarks.each do |bm| %>
+      <li><%= link_to bm, target_path(:id => bm) %></li>
+    <% end %>
+    <!--
+    <li class="active"><a href="#">Link</a></li>
+    <li><a href="#">Link</a></li>
+    -->
+    <li class="nav-header">Custom</li>
+    <% @targets.each do |target| %>
+      <li <%= "class='active'" if params[:id] == target %>><%= link_to target, target_path(:id => target) %></li>
+    <% end %>
+  </ul>
+</div><!--/.well -->
