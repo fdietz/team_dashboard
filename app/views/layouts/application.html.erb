@@ -68,16 +68,11 @@
         $('#search-target').typeahead({source: items, items:5});
 
         $("#search-form").submit(function(event) {
-          event.preventDefault();
           var id = $('#search-target').val()
-          console.log(id);
           window.location.href = "/targets/"+id+"?time="+ "<%= params[:time] %>";
           return false;
         });
       });
-
-      
-
     </script>
   </body>
 

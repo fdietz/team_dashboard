@@ -24,14 +24,14 @@
 <div id="graph"></div>
 
 <script>
-// Morris.Line({
-//   element: 'graph',
-//   data: <%= raw @data_points.to_json %>,
-//   xkey: 'ts',
-//   ykeys: ['value'],
-//   labels: ['Time'],
-//   lineWidth: 3
-// });
+Morris.Line({
+  element: 'graph',
+  data: <%= raw @data_points.to_json %>,
+  xkey: 'ts',
+  ykeys: ['value'],
+  labels: ['Time'],
+  lineWidth: 3
+});
 </script>
 
 <% if params[:debug] %>
