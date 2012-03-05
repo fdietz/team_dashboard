@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :load_targets, :load_bookmarks
 
+  layout :set_layout
+
   protected
 
   def load_targets
@@ -12,4 +14,13 @@ class ApplicationController < ActionController::Base
   def load_bookmarks
   	@bookmarks = []
   end
+
+   def set_layout
+     if request.headers['X-PJAX']
+       false
+     else
+       "application"
+     end
+   end
+   
 end

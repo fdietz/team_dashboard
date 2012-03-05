@@ -15,4 +15,5 @@
 //= require twitter/bootstrap
 //= require raphael.min
 //= require morris.min
+//= require jquery.pjax
 //= require_tree .

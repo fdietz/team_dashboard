@@ -2,26 +2,29 @@
 
 <div class="btn-toolbar">
 	<div id="time" class="btn-group" data-toggle="buttons-radio">
-	  <button class="btn <%= "active" if params[:time] == 'minute' %>" alt="minute">Minute</button>
-	  <button class="btn <%= "active" if params[:time] == 'hour' %>" alt="hour">Hour</button>
-	  <button class="btn <%= "active" if params[:time] == 'day' %>" alt="day">Day</button>
-	  <button class="btn <%= "active" if params[:time] == 'week' %>" alt="week">Week</button>
+	  <a href="/targets/<%= params[:id] %>?time=minute" data-pjax='#graph' class="btn <%= "active" if params[:time] == 'minute' %>" alt="minute">Minute</a>
+	  <a href="/targets/<%= params[:id] %>?time=hour" data-pjax='#graph' class="btn <%= "active" if params[:time] == 'hour' %>" alt="hour">Hour</a>
+	  <a href="/targets/<%= params[:id] %>?time=day" data-pjax='#graph' class="btn <%= "active" if params[:time] == 'day' %>" alt="day">Day</a>
+	  <a href="/targets/<%= params[:id] %>?time=week" data-pjax='#graph' class="btn <%= "active" if params[:time] == 'week' %>" alt="week">Week</a>
 	</div>
 	<div class="btn-group">
-		<button class="btn">
+		<a class="btn">
 			<i class="icon-bookmark"></i>Bookmark
-		</button>
+		</a>
 	</div>
 </div>
 
+<div id="graph"></div>
+
 <script>
-	$("#time>.btn").bind("click", function(event) {
-		var active = $(this).attr("alt");
-	  window.location.href = "/targets/<%= params[:id] %>?time="+active;
-	});
+/*
+	$("#time").on('click', 'a', function(event) {
+   var container = $("#graph")
+   return $.pjax.click(event, container)
+ })
+*/
 </script>
 
-<div id="graph"></div>
 
 <script>
 Morris.Line({
