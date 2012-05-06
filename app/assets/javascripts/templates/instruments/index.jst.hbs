@@ -1,0 +1,26 @@
+<ul class="breadcrumb">
+  <li>
+    <a href="/instruments">Instruments</a> <span class="divider">/</span>
+  </li>
+</ul>
+
+<a href="/instruments/new" class="btn">Add Metric</a>
+
+<table class="table table-striped" style="font-size: 13px">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Modified</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each instruments}}
+      <tr>
+        <td><a href="/instruments/{{id}}">{{name}}</a></td>
+        <td>{{dateFormat updated_at}}</td>
+        <td>{{dateFormat created_at}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

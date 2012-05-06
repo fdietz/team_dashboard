@@ -10,10 +10,23 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
 //= require jquery
-//= require jquery_ujs
+//= require underscore
+//= require backbone
+//= require handlebars
+
 //= require twitter/bootstrap
-//= require raphael.min
-//= require morris.min
-//= require jquery.pjax
-//= require_tree .
+
+//= require d3.v2.min
+//= require rickshaw.min
+//= require moment.min
+
+//= require app
+//= require router
+//= require helpers
+
+//= require_tree ./models
+//= require_tree ./collections
+//= require_tree ./views
+//= require_tree ./templates

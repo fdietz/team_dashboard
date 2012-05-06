@@ -1,0 +1,39 @@
+{{#with instrument}}
+  <ul class="breadcrumb">
+    <li>
+      <a href="/instruments">Instruments</a> <span class="divider">/</span>
+    </li>
+    <li class="active">{{name}}</li>
+  </ul>
+
+  <div class="row-fluid">
+    <div class="span3">
+      <div id="instrument-sidebar-container" class="well"></div>
+    </div>
+    <div class="span9">
+      <div id="instrument-detail-header"></div>
+
+      <button class="btn add-metric">Add Metric</button>
+
+      <div id="instrument-graph-container"></div>
+      <div id="instrument-table-container"></div>
+    </div>
+  </div>
+{{/with}}
+
+<div class="modal" id="instrument-details-modal" style="display:none">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <form id="modal-search-form" class="form-inline">
+      <label class="control-label" for="input01">Metric:</label>
+      <input id="instrument-details-search-target" type="text" class="input-xlarge focused" data-provide="typeahead" autocomplete="off">
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary">Add Metric</a>
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  </div>
+</div>

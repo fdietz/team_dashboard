@@ -8,30 +8,11 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ 
  *= require twitter/bootstrap
- *= require_self
+
+ *= require rickshaw.min
+
  *= require_tree .
+ *= require_self
 */
-
-body {
- padding-top: 60px;
- padding-bottom: 40px;
-}
-
-.sidebar-nav {
- padding: 9px 0;
-}
-
-#graph {
-	width: 640;
-	height: 480;
-}
-
-h1, h2  {
-	margin-bottom: 10px;
-}
-
-h3, h4, h5 {
-	margin-top: 1em;
-	margin-bottom: 1em;
-}

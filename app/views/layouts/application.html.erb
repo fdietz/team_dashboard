@@ -5,75 +5,50 @@
 
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "application" %>
+    
     <%= csrf_meta_tag %>
 
     <%= yield(:head) %>
+
+    <style type="text/css">
+       body {
+          padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+
   </head>
 
-   <body>
+  <body>
 
-   	<div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">SimpleMetrics</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-            </ul>
-            <form id="search-form" action="/targets/" method="get" class="navbar-search pull-left">
-              <input id="search-target" name="id" type="text" class="search-query" autocomplete="off">
-            </form>
-            <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+    <div class="navbar navbar-fixed-top">
+     <div class="navbar-inner">
+       <div class="container">
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </a>
+         <a class="brand" href="/">SimpleMetrics</a>
+         <div class="nav-collapse">
+           <ul class="nav">
+             <li class="active"><a href="/metrics">Metrics</a></li>
+             <li><a href="/instruments">Instruments</a></li>
+             <li><a href="/dashboards">Dashboards</a></li>
+             <li><a href="/about">About</a></li>
+           </ul>
+         </div><!--/.nav-collapse -->
+       </div>
+     </div>
     </div>
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-          <%= render :partial => 'common/sidebar' %>
-        </div><!--/span-->
-
-        <div class="span9">
-        	
-          <div class="row-fluid">
-            <div class="span12">
-            	<%= render :partial => 'common/flashes' %>
-            	<%= yield %>
-              
-            </div><!--/span-->
-          </div><!--/row-->
-
-        </div><!--/span-->
-      </div><!--/row-->
-
-      <hr>
-
-      <footer>
-        <%= render :partial => 'common/footer' %>
-      </footer>
-
-    </div><!--/.fluid-container-->
+        <div id="main" class="span12">
+        	<%= yield %>
+        </div>
+      </div>
+    </div>
     
-    <script>
-     $(function() {
-        var items = <%= raw @targets.to_json %>;
-        $('#search-target').typeahead({source: items, items:5});
-
-        $("#search-form").submit(function(event) {
-          var id = $('#search-target').val()
-          window.location.href = "/targets/"+id+"?time="+ "<%= params[:time] %>";
-          return false;
-        });
-      });
-    </script>
   </body>
 
 </html>

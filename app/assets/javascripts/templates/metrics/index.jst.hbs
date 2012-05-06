@@ -1,0 +1,27 @@
+<ul class="breadcrumb">
+  <li>
+    <a href="#metrics">Metrics</a> <span class="divider">/</span>
+  </li>
+  <li class="active">{{name}}</li>
+</ul>
+
+<table class="table table-striped" style="font-size: 13px">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Total</th>
+      <th>Last Modified</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each metrics}}
+      <tr>
+        <td><a href="/metrics/{{name}}">{{name}}</a></td>
+        <td>{{total}}</td>
+        <td>{{dateFormat updated_at}}</td>
+        <td>{{dateFormat created_at}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

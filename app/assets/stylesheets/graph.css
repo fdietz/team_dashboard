@@ -1,0 +1,45 @@
+.graph {
+  display: inline-block;
+}
+
+.y-axis {
+  float: left;
+  width: 40px;
+}
+
+
+/* plot width */
+.graph svg path {
+  stroke-width: 2;
+}
+
+
+/* hide y-axis matrix */
+.rickshaw_graph .x_tick {
+  stroke: 0;
+  border: 0;
+}
+
+/* hide y-axis big line */
+.rickshaw_graph .y_ticks path {
+  fill: none;
+  stroke: none;
+}
+
+/* hide y-axis tick */
+.rickshaw_graph .y_ticks .tick {
+  stroke: none;
+}
+
+/* show x-axis matrix */
+.rickshaw_graph .y_grid .tick {
+  stroke: rgba(0,0,0,0.1);
+  stroke-width: 1px;
+  stroke-dasharray: 0;
+}
+
+/* move x-axis title below graph */
+.rickshaw_graph .x_tick .title {
+  margin-left: 3px;
+  bottom: -20px;
+}

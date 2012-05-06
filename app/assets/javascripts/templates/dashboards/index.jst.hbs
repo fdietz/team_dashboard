@@ -1,0 +1,25 @@
+<ul class="breadcrumb">
+  <li>
+    <a href="/dashboards">Dashboards</a> <span class="divider">/</span>
+  </li>
+  <li class="active">{{name}}</li>
+</ul>
+
+<table class="table table-striped" style="font-size: 13px">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Modified</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each dashboards}}
+      <tr>
+        <td><a href="/dashboards/{{id}}">{{name}}</a></td>
+        <td>{{dateFormat updated_at}}</td>
+        <td>{{dateFormat created_at}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
