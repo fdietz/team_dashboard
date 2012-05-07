@@ -17,6 +17,7 @@ SimpleMetricsWebapp::Application.routes.draw do
   match "instruments/:id" => "home#index"
   match "dashboards" => "home#index"
   match "dashboards/:id" => "home#index"
+  match "about" => "home#index"
 
   root :to => 'home#index'
 end

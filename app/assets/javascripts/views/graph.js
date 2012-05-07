@@ -75,6 +75,8 @@
       graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: 'line',
+        // width: this.$('.graph').width(),
+        // height: this.$('.graph').height(),
         series: addColorToSeries(this.series, spectrum14Palette)
       });
 
