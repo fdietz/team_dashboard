@@ -8,7 +8,7 @@ SimpleMetricsWebapp::Application.routes.draw do
     resources :dashboards
   end
 
-  
+  match "api/graph" => "api/graph#show"
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
