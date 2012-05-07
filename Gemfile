@@ -11,6 +11,10 @@ gem 'jbuilder'
 
 gem 'simple_metrics', :path => "/Users/frederik.dietz/git/simple_metrics"
 
+group :development do
+  gem 'thin'
+end
+
 group :assets do
   gem 'sass-rails'
 
