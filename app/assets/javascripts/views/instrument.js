@@ -16,22 +16,6 @@
     }
   });
 
-  var InstrumentSidebar = Backbone.View.extend({
-    // template: Handlebars.compile($("#instrument-details-sidebar").html()),
-
-    events: {},
-
-    initialize: function(options) {
-      this.model.bind('reset', this.render, this);
-      this.model.bind('change:metrics', this.render, this);
-    },
-
-    render: function() {
-      $(this.el).html(JST['templates/instruments/sidebar']({ instrument: this.model.toJSON() }));
-      return this;
-    }
-  });
-
   var InstrumentHeader = Backbone.View.extend({
     // template: Handlebars.compile($("#instrument-details-header").html()),
     events: {
@@ -112,10 +96,6 @@
       table = new InstrumentTable({ model: this.model });
       table.render();
       this.$("#instrument-table-container").append(table.el);
-
-      sidebar = new InstrumentSidebar( { model: this.model });
-      sidebar.render();
-      this.$("#instrument-sidebar-container").append(sidebar.el);
 
       header = new InstrumentHeader({ model: this.model });
       header.render();

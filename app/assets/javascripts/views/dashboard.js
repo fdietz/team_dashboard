@@ -40,7 +40,7 @@
 
   var DashboardWidget = Backbone.View.extend({
     tagName: "div",
-    className: "widget span4",
+    className: "widget span6",
 
     initialize: function() {
       _.bindAll(this, "render");

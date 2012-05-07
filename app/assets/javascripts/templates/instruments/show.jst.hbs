@@ -1,20 +1,14 @@
 {{#with instrument}}
-  <ul class="breadcrumb">
-    <li>
-      <a href="/instruments">Instruments</a> <span class="divider">/</span>
-    </li>
-    <li class="active">{{name}}</li>
-  </ul>
-
   <div class="row-fluid">
-    <div class="span3">
-      <div id="instrument-sidebar-container" class="well"></div>
-    </div>
-    <div class="span9">
+    <div class="span12">
       <div id="instrument-detail-header"></div>
 
-      <button class="btn add-metric">Add Metric</button>
+      <div class="btn-toolbar">
+        <button class="btn add-metric">Add Metric</button>
+      </div>
 
+      </br>
+      
       <div id="instrument-graph-container"></div>
       <div id="instrument-table-container"></div>
     </div>
