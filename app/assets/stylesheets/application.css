@@ -16,3 +16,34 @@
  *= require_tree .
  *= require_self
 */
+
+
+.scrollable {
+  width: 530px;
+  height: 200px;
+  /*overflow: scroll;*/
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  
+  /*overflow: scroll-y;*/
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #FFF;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: #CCC;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #AAA;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #888;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+}

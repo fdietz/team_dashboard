@@ -1,0 +1,16 @@
+<table class="table table-striped" style="font-size: 13px">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Modified</th>
+    </tr>
+  </thead>
+  <tbody
+    {{#each instruments}}
+      <tr>
+        <td><input type="checkbox" name="{{name}}" value="false"> <a href="#">{{name}}</a></input></td>
+        <td>{{dateFormat updated_at}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

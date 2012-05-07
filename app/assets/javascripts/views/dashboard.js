@@ -47,12 +47,8 @@
     },
 
     renderGraph: function(graphElement) {
-      console.log("renderGraph", this.model);
-
       var time = "hour";
-
       var targets = _.map(this.model.get('metrics'), function(metric) {
-        console.log("renderGraph", metric);
         return metric.name;
       });
 
@@ -62,7 +58,7 @@
       });
 
       hourGraphCollection.fetch({ success: function(collection, response) {
-        console.log("raw", hourGraphCollection, hourGraphCollection.models);
+        // console.log("raw", hourGraphCollection, hourGraphCollection.models);
 
         graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
         graph.render();
@@ -100,7 +96,7 @@
             return i.get('name') === name;
           });
 
-          console.log("renderWidgets.each", instrument);
+          // console.log("renderWidgets.each", instrument);
           var widget = new DashboardWidget({ model: instrument })
           widget.render();
           this.$("#dashboard-widget-container").append(widget.el);
@@ -127,10 +123,13 @@
       myModal.on("shown", function() { input.focus(); });
 
       collections.instruments.fetch({ success: function(instruments, response) {
-        var items = _.map(instruments.toJSON(), function(instrument) {
-          return instrument.name;
-        });
-        input.typeahead({ source: items, items: 5 });
+        // var items = _.map(instruments.toJSON(), function(instrument) {
+        //   return instrument.name;
+        // });
+        // input.typeahead({ source: items, items: 5 });
+        var instrumentsSmall = new views.InstrumentsSmall({ collection: instruments });
+        instrumentsSmall.render()
+        this.$(".instruments-index-small-container").html(instrumentsSmall.el);
         myModal.modal({ keyboard: true });
       }});
     },
