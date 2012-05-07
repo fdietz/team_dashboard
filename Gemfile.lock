@@ -1,5 +1,5 @@
 PATH
-  remote: /Users/frederik.dietz/git/simple_metrics
+  remote: /Users/fdietz/git/simple_metrics
   specs:
     simple_metrics (0.3.6)
       activesupport

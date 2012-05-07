@@ -88,16 +88,20 @@
       this.model.bind('reset', this.render);
     },
 
+    instrumentNames: function() {
+      return _.map(this.model.get("instruments"), function(instrument) {
+        return instrument.name;
+      });
+    },
+
     renderWidgets: function() {
       var targets = _.each(this.model.get('instruments'), function(instr) {
-        var name = instr.name
+        var name = instr.name;
         app.collections.instruments.fetch({ success: function(model, request) {
           var instrument = collections.instruments.find(function(i) {
             return i.get('name') === name;
           });
-
-          // console.log("renderWidgets.each", instrument);
-          var widget = new DashboardWidget({ model: instrument })
+          var widget = new DashboardWidget({ model: instrument });
           widget.render();
           this.$("#dashboard-widget-container").append(widget.el);
         }});
@@ -119,16 +123,16 @@
     addInstrumentDialog: function() {
       var input = this.$('#dashboard-details-search-target');
       var myModal = this.$('#dashboard-details-modal');
+      var instrumentNames = this.instrumentNames();
 
       myModal.on("shown", function() { input.focus(); });
 
       collections.instruments.fetch({ success: function(instruments, response) {
-        // var items = _.map(instruments.toJSON(), function(instrument) {
-        //   return instrument.name;
-        // });
-        // input.typeahead({ source: items, items: 5 });
-        var instrumentsSmall = new views.InstrumentsSmall({ collection: instruments });
-        instrumentsSmall.render()
+        var filtered = instruments.filter(function(instrument) {
+            return !_.include(instrumentNames, instrument.get('name'));
+        });
+        var instrumentsSmall = new views.InstrumentsSmall({ collection: new collections.Instrument(filtered) });
+        instrumentsSmall.render();
         this.$(".instruments-index-small-container").html(instrumentsSmall.el);
         myModal.modal({ keyboard: true });
       }});
@@ -138,25 +142,22 @@
       var myModal = this.$('#dashboard-details-modal');
       var input = this.$('#dashboard-details-search-target');
 
+      var tmp = this.model.get("instruments");
       collections.instruments.each(function(instrument) {
         var checkbox = this.$("input[data-id=" + instrument.id +"]");
         var checked = checkbox.attr("checked");
-        console.log("checked", checked);
+        if (checked) {
+          tmp.push(instrument);
+        }
       });
 
-      var instrumentName = input.val();
       myModal.modal("hide");
-      console.log("instrumentName", instrumentName);
-
-      var tmp = this.model.get("instruments");
-      tmp.push({ name: instrumentName });
-      this.model.set({ instruments: tmp});
+      this.model.set({ instruments: tmp });
       this.model.save();
       // TODO: remove explicit rendering
       this.render();
-      console.log(this.model);
       return false;
-    },
+    }
   });
 
 })(app.views, app.collections);
