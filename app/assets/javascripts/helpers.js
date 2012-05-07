@@ -6,6 +6,18 @@
     return block(context[0]);
   });
 
+  Handlebars.registerHelper("debug", function(optionalValue) {
+    console.log("Current Context");
+    console.log("====================");
+    console.log(this);
+   
+    if (optionalValue) {
+      console.log("Value");
+      console.log("====================");
+      console.log(optionalValue);
+    }
+  });
+  
   //  format an ISO date using Moment.js
   //  http://momentjs.com/
   //  moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")

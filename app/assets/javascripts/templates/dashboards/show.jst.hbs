@@ -6,13 +6,33 @@
     <li class="active">{{name}}</li>
   </ul>
 
-  <button class="btn">Add Metric</button>
-  <button class="btn">Fullscreen</button>
+  <div id="dashboard-detail-header"></div>
+
+  <button class="btn add-instrument">Add Instrument</button>
 
   <div class="row-fluid">
-    <div id="widget-container" class="span12">
+    <div id="dashboard-widget-container" class="span12">
 
     </div>
   </div>
 
 {{/with}}
+
+
+<div class="modal" id="dashboard-details-modal" style="display:none">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <form id="modal-search-form" class="form-inline">
+      <label class="control-label" for="input01">Metric:</label>
+      <input id="dashboard-details-search-target" type="text" class="input-xlarge focused" data-provide="typeahead" autocomplete="off">
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary">Add Instrument</a>
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  </div>
+</div>
+

@@ -50,6 +50,7 @@
       dashboard.fetch({
         success: function(model, resp) {
           console.log(model);
+          //app.collections.instruments.fetch();
           new app.views.Dashboard({ el: "#main", model: model }).render();
         },
         error: function() {
