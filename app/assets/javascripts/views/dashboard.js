@@ -138,6 +138,12 @@
       var myModal = this.$('#dashboard-details-modal');
       var input = this.$('#dashboard-details-search-target');
 
+      collections.instruments.each(function(instrument) {
+        var checkbox = this.$("input[data-id=" + instrument.id +"]");
+        var checked = checkbox.attr("checked");
+        console.log("checked", checked);
+      });
+
       var instrumentName = input.val();
       myModal.modal("hide");
       console.log("instrumentName", instrumentName);

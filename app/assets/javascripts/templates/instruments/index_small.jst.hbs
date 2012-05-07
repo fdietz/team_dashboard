@@ -8,7 +8,7 @@
   <tbody
     {{#each instruments}}
       <tr>
-        <td><input type="checkbox" name="{{name}}" value="false"> <a href="#">{{name}}</a></input></td>
+        <td><input type="checkbox" name="{{name}}" data-id="{{id}}"> <a href="#">{{name}}</a></input></td>
         <td>{{dateFormat updated_at}}</td>
       </tr>
     {{/each}}
