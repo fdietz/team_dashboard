@@ -1,13 +1,15 @@
 PATH
-  remote: /Users/fdietz/git/simple_metrics
+  remote: /Users/frederik.dietz/git/simple_metrics
   specs:
     simple_metrics (0.3.6)
       activesupport
       bson (~> 1.6)
       bson_ext (~> 1.6)
       daemons
+      erubis
       eventmachine
       mongo (~> 1.6)
+      sinatra
 
 GEM
   remote: https://rubygems.org/
@@ -92,6 +94,8 @@ GEM
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-protection (1.2.0)
+      rack
     rack-ssl (1.3.2)
       rack
     rack-test (0.6.1)
@@ -123,6 +127,10 @@ GEM
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    sinatra (1.3.2)
+      rack (~> 1.3, >= 1.3.6)
+      rack-protection (~> 1.2)
+      tilt (~> 1.3, >= 1.3.3)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)

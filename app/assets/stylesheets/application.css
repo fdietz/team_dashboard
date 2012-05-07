@@ -10,7 +10,7 @@
  *
  
  *= require twitter/bootstrap
-
+ *= require bootstrap-responsive.min
  *= require rickshaw.min
 
  *= require_tree .
