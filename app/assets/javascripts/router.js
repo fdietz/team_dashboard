@@ -7,6 +7,7 @@
       "metrics":          "metricsIndex",
       "metrics/:name":    "metricsShow",
       "dashboards":       "dashboardsIndex",
+      "dashboards/new":   "dashboardsNew",
       "dashboards/:id":   "dashboardsShow",
       "instruments":      "instrumentsIndex",
       "instruments/new":  "instrumentsNew",
@@ -95,6 +96,13 @@
           that.handleErrors(response);
         }
       });
+    },
+
+    dashboardsNew: function() {
+      console.log("ROUTER: dashboards new");
+
+      var dashboardView = new app.views.Dashboard({ model: new app.models.Dashboard() });
+      this.showView(dashboardView);
     },
 
     instrumentsIndex: function() {
