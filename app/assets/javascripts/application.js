@@ -26,6 +26,7 @@
 //= require app
 //= require router
 //= require helpers
+//= require behaviours
 
 //= require_tree ./models
 //= require_tree ./collections
