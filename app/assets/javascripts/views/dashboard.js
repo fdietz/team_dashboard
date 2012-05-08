@@ -169,6 +169,7 @@
     initialize: function(options) {
       _.bindAll(this, "render");
       this.model.bind('reset', this.render);
+      this.model.bind('change', this.render);
     },
 
     renderWidgets: function() {
