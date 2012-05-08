@@ -23,6 +23,7 @@
 //= require rickshaw.min
 //= require moment.min
 
+//= require backbone_extensions
 //= require app
 //= require router
 //= require helpers

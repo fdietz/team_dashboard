@@ -1,93 +1,145 @@
 (function (app) {
 
   app.Router = Backbone.Router.extend({
+
     routes: {
-      "":                "home",
-      "metrics":         "metrics",
-      "metrics/:name":   "metric_details",
-      "dashboards":      "dashboards",
-      "dashboards/:id":  "dashboard_details",
-      "instruments":      "instruments",
-      "instruments/new":  "instruments_new",
-      "instruments/:id":  "instrument_details",
-      "about":          "about"
+      "":                 "metricsIndex",
+      "metrics":          "metricsIndex",
+      "metrics/:name":    "metricsShow",
+      "dashboards":       "dashboardsIndex",
+      "dashboards/:id":   "dashboardsShow",
+      "instruments":      "instrumentsIndex",
+      "instruments/new":  "instrumentsNew",
+      "instruments/:id":  "instrumentsShow",
+      "about":            "aboutShow"
     },
 
-    home: function() {
-      console.log("ROUTER: home");
-      new app.views.App({ el: "#main", collection: app.collections.metrics }).render();
+    initialize: function(options) {
+      // _.bindAll(this, "showView");
     },
 
-    metrics: function() {
+    showView: function(view) {
+      if (this.currentView) {
+        this.currentView.close();
+      }
+
+      this.currentView = view;
+      this.currentView.render();
+
+      $("#main").html(this.currentView.el);
+    },
+
+    handleErrors: function(response) {
+      var errorsView = new app.views.Errors({ response: response });
+      this.showView(errorsView);
+    },
+
+    metricsIndex: function() {
       console.log("ROUTER: metrics");
-      app.collections.metrics.fetch();
-      new app.views.App({ el: "#main", collection: app.collections.metrics }).render();
+      
+      var that = this;
+      app.collections.metrics.fetch({ 
+        success: function(model, response) {
+          var metricsView = new app.views.Metrics({ collection: app.collections.metrics })
+          that.showView(metricsView);  
+        }, 
+        error: function(model, response) {
+          that.handleErrors(response);
+        }
+      });
     },
 
-    metric_details: function(name) {
+    metricsShow: function(name) {
       console.log("ROUTER: metric details:", name);
-
+      
       metric = new app.models.Metric({ name: name});
+      var that = this;
       metric.fetch({
-        success: function(model, resp) {
-          new app.views.Metric({ el: "#main", model: model }).render();
+        success: function(model, response) {
+          var metricView = new app.views.Metric({ model: model });
+          that.showView(metricView);
         },
-        error: function() {
-          alert("Document not found:"+id);
+        error: function(model, response) {
+          that.handleErrors(response);
         }
       });
     },
 
-    dashboards: function() {
+    dashboardsIndex: function() {
       console.log("ROUTER: dashboards");
-      app.collections.dashboards.fetch();
-      new app.views.Dashboards({ el: "#main", collection: app.collections.dashboards }).render();
+      
+      var that = this;
+      app.collections.dashboards.fetch({ 
+        success: function(model, response) {
+          var dashboardsView = new app.views.Dashboards({ collection: app.collections.dashboards });
+          that.showView(dashboardsView);  
+        }, 
+        error: function(model, response) {
+          that.handleErrors(response);
+        }
+      });
+      
     },
 
-    dashboard_details: function(id) {
+    dashboardsShow: function(id) {
       console.log("ROUTER: dashboard_detail");
+
       dashboard = new app.models.Dashboard({ id: id });
+      var that = this;
       dashboard.fetch({
-        success: function(model, resp) {
-          console.log(model);
-          //app.collections.instruments.fetch();
-          new app.views.Dashboard({ el: "#main", model: model }).render();
+        success: function(model, response) {
+          var dashboardView = new app.views.Dashboard({ model: model });
+          that.showView(dashboardView);  
         },
-        error: function() {
-          alert("Document not found:"+id);
+        error: function(model, response) {
+          that.handleErrors(response);
         }
       });
     },
 
-    instruments: function() {
+    instrumentsIndex: function() {
       console.log("ROUTER: instruments");
-      app.collections.instruments.fetch();
-      new app.views.Instruments({ el: "#main", collection: app.collections.instruments }).render();
+      
+      var that = this;
+      app.collections.instruments.fetch({ 
+        success: function(model, response) {
+          var instrumentsView = new app.views.Instruments({ collection: app.collections.instruments });
+          that.showView(instrumentsView);  
+        }, 
+        error: function(model, response) {
+          that.handleErrors(response);
+        }
+      });
     },
 
-    instrument_details: function(id) {
-      console.log("ROUTER: instrument_detail");
+    instrumentsShow: function(id) {
+      console.log("ROUTER: instrument_detail", id);
 
       instrument = new app.models.Instrument({ id: id });
+      var that = this;
       instrument.fetch({
-        success: function(model, resp) {
-          console.log(model);
+        success: function(model, response) {
           app.collections.metrics.fetch(); // autocomplete in add metric dialog
-          new app.views.Instrument({ el: "#main", model: model }).render();
+          var instrumentView = new app.views.Instrument({ model: model });
+          that.showView(instrumentView);
         },
-        error: function() {
-          alert("Document not found:"+id);
+        error: function(model, response) {
+          that.handleErrors(response);
         }
       });
     },
 
-    instruments_new: function() {
+    instrumentsNew: function() {
       console.log("ROUTER: instruments_new");
-      new app.views.Instrument({ el: "#main", model: new app.models.Instrument() }).render();
+
+      var instrumentView = new app.views.Instrument({ model: new app.models.Instrument() });
+      this.showView(instrumentView);
     },
 
-    about: function() {
+    aboutShow: function() {
       console.log("ROUTER: about");
+      var aboutView = new app.views.About();
+      this.showView(aboutView);
     }
   });
 

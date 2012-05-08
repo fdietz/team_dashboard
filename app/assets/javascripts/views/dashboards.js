@@ -5,7 +5,7 @@
 
     initialize: function(options) {
       _.bindAll(this, "render");
-      this.collection.bind('reset', this.render);  
+      // this.collection.bind('reset', this.render);  
     },
 
     render: function() {
