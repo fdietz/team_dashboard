@@ -2,9 +2,9 @@
 
   var DashboardHeader = Backbone.View.extend({
     events: {
-      "click #dashboard-name"                      : "editName",
-      "submit #dashboard-name-form"                : "saveName",
-      "keyup #dashboard-name-input"                : "cancelEdit"
+      "click h1[data-inline-edit]"         : "editName",
+      "submit form[data-inline-edit]"      : "saveName",
+      "keyup form[data-inline-edit]>input" : "cancelEdit"
     },
 
     initialize: function(options) {
@@ -13,33 +13,33 @@
 
     render: function() {
       $(this.el).html(JST['templates/dashboards/header']({ dashboard: this.model.toJSON() }));
+      this.h1 = this.$("h1[data-inline-edit]");
+      this.form = this.$("form[data-inline-edit]");
+      this.input = this.$("form[data-inline-edit]>input");
       return this;
     },
 
     editName: function() {
-      this.$("#dashboard-name").toggle();
-      this.$("#dashboard-name-form").toggle();
-
-      var input = this.$("#dashboard-name-input");
-      input.focus();
+      this.h1.toggle();
+      this.form.toggle();
+      this.input.focus();
       return false;
     },
 
     saveName: function() {
-      this.$("#dashboard-name").toggle();
-      this.$("#dashboard-name-form").toggle();
+      this.h1.toggle();
+      this.form.toggle();
 
-      var input = this.$("#dashboard-name-input");
-      this.$("#dashboard-name").html(input.val());
-      this.model.set({name: input.val() });
+      this.h1.html(this.input.val());
+      this.model.set({name: this.input.val() });
       this.model.save();
       return false;
     },
 
     cancelEdit: function(event) {
       if (event.keyCode == 27) {
-        this.$("#dashboard-name").toggle();
-        this.$("#dashboard-name-form").toggle();      
+        this.h1.toggle();
+        this.form.toggle();      
       }
     }
 

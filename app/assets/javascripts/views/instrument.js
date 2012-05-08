@@ -16,9 +16,9 @@
 
   var InstrumentHeader = Backbone.View.extend({
     events: {
-      "click #instrument-name"                      : "editName",
-      "submit #instrument-name-form"                : "saveName",
-      "keyup #instrument-name-input"                : "cancelEdit"
+      "click h1[data-inline-edit]"         : "editName",
+      "submit form[data-inline-edit]"      : "saveName",
+      "keyup form[data-inline-edit]>input" : "cancelEdit"
     },
 
     initialize: function(options) {
@@ -28,33 +28,34 @@
 
     render: function() {
       $(this.el).html(JST['templates/instruments/header']({ instrument: this.model.toJSON() }));
+      this.h1 = this.$("h1[data-inline-edit]");
+      this.form = this.$("form[data-inline-edit]");
+      this.input = this.$("form[data-inline-edit]>input");
+      
       return this;
     },
 
     editName: function() {
-      this.$("#instrument-name").toggle();
-      this.$("#instrument-name-form").toggle();
-
-      var input = this.$("#instrument-name-input");
-      input.focus();
+      this.h1.toggle();
+      this.form.toggle();
+      this.input.focus();
       return false;
     },
 
     saveName: function() {
-      this.$("#instrument-name").toggle();
-      this.$("#instrument-name-form").toggle();
+      this.h1.toggle();
+      this.form.toggle();
 
-      var input = this.$("#instrument-name-input");
-      this.$("#instrument-name").html(input.val());
-      this.model.set({name: input.val() });
+      this.h1.html(this.input.val());
+      this.model.set({name: this.input.val() });
       this.model.save();
       return false;
     },
 
     cancelEdit: function(event) {
       if (event.keyCode == 27) {
-        this.$("#instrument-name").toggle();
-        this.$("#instrument-name-form").toggle();      
+        this.h1.toggle();
+        this.form.toggle();      
       }
     }
 
