@@ -1,8 +1,6 @@
 (function (views, collections){
 
   var InstrumentTable = Backbone.View.extend({
-    // template: Handlebars.compile($("#instrument-details-table").html()),
-
     events: {},
 
     initialize: function(options) {
@@ -17,10 +15,10 @@
   });
 
   var InstrumentHeader = Backbone.View.extend({
-    // template: Handlebars.compile($("#instrument-details-header").html()),
     events: {
       "click #instrument-name"                      : "editName",
-      "submit #instrument-name-form"                : "saveName"
+      "submit #instrument-name-form"                : "saveName",
+      "keyup #instrument-name-input"                : "cancelEdit"
     },
 
     initialize: function(options) {
@@ -51,12 +49,18 @@
       this.model.set({name: input.val() });
       this.model.save();
       return false;
+    },
+
+    cancelEdit: function(event) {
+      if (event.keyCode == 27) {
+        this.$("#instrument-name").toggle();
+        this.$("#instrument-name-form").toggle();      
+      }
     }
 
   });
 
   views.Instrument = Backbone.View.extend({
-    // template: Handlebars.compile($("#instrument-details").html()),
 
     events: {
       "click .btn.add-metric"                       : "addMetricDialog",
@@ -82,12 +86,14 @@
         time: time
       });
 
-      hourGraphCollection.fetch({ success: function(collection, resopnse) {
-        console.log("raw", hourGraphCollection, hourGraphCollection.models);
+      hourGraphCollection.fetch({ 
+        success: function(collection, resopnse) {
+          console.log("raw", hourGraphCollection, hourGraphCollection.models);
 
-        graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
-        graph.render();
-      }});
+          graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
+          graph.render();
+        }
+      });
     },
 
     render: function() {
@@ -109,13 +115,21 @@
     addMetricDialog: function() {
       var input = this.$('#instrument-details-search-target');
       var myModal = this.$('#instrument-details-modal');
+      var existingNames = this.model.get("metrics").map(function(metric) {
+        return metric.name;
+      });
 
       myModal.on("shown", function() { input.focus(); });
 
       collections.metrics.fetch({ success: function(metrics, response) {
-        var items = _.map(metrics.toJSON(), function(metric) {
+        var filteredItems = _.filter(metrics.toJSON(), function(metric) {
+          return !_.include(existingNames, metric.name);
+        });
+
+        var items = _.map(filteredItems, function(metric) {
           return metric.name;
         });
+        
         input.typeahead({ source: items, items: 5 });
         myModal.modal({ keyboard: true });
       }});

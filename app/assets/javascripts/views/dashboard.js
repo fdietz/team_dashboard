@@ -3,7 +3,8 @@
   var DashboardHeader = Backbone.View.extend({
     events: {
       "click #dashboard-name"                      : "editName",
-      "submit #dashboard-name-form"                : "saveName"
+      "submit #dashboard-name-form"                : "saveName",
+      "keyup #dashboard-name-input"                : "cancelEdit"
     },
 
     initialize: function(options) {
@@ -33,6 +34,13 @@
       this.model.set({name: input.val() });
       this.model.save();
       return false;
+    },
+
+    cancelEdit: function(event) {
+      if (event.keyCode == 27) {
+        this.$("#dashboard-name").toggle();
+        this.$("#dashboard-name-form").toggle();      
+      }
     }
 
   });
@@ -77,17 +85,8 @@
     },
 
     removeWidget: function(event) {
-      console.log(this.$(event.target));
-
-      var selectedWidget = this.model;
-      console.log(this.model);
-
       var tmp = this.dashboard.get("instruments");
-      console.log(tmp);
-      var index = _.indexOf(tmp, this.model.id);
-      console.log(index);
-      tmp.splice(index, 1);
-      console.log(tmp);
+      tmp.splice(_.indexOf(tmp, this.model.id), 1);
 
       this.dashboard.set({ instruments: tmp });
       var result = this.dashboard.save({ 
@@ -170,7 +169,6 @@
     initialize: function(options) {
       _.bindAll(this, "render");
       this.model.bind('reset', this.render);
-      this.model.bind('change', this.render);
     },
 
     renderWidgets: function() {
