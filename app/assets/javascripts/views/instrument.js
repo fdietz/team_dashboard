@@ -23,7 +23,7 @@
 
     initialize: function(options) {
       this.model.bind('reset', this.render, this);
-      this.model.bind('change:metrics', this.render, this);
+      this.model.bind('change:name', this.render, this);
     },
 
     render: function() {
@@ -31,7 +31,7 @@
       this.h1 = this.$("h1[data-inline-edit]");
       this.form = this.$("form[data-inline-edit]");
       this.input = this.$("form[data-inline-edit]>input");
-      
+
       return this;
     },
 
@@ -61,18 +61,79 @@
 
   });
 
-  views.Instrument = Backbone.View.extend({
-
+  var MetricsChooserDialog = Backbone.View.extend({
     events: {
-      "click .btn.add-metric"                        : "addMetricDialog",
       "submit #modal-search-form"                    : "addMetric",
       "click #instrument-details-modal .btn-primary" : "addMetric",
-      "click button.instrument-delete"               : "removeInstrument"
     },
 
     initialize: function(options) {
-      this.model.bind('reset', this.render, this);
-      this.model.bind('change:metrics', this.render, this);
+      _.bindAll(this, "render");
+    },
+    
+    render: function() {
+      $(this.el).html(JST['templates/instruments/metrics_chooser']({ dashboard: this.model.toJSON() }));
+
+      var input = this.$('#instrument-details-search-target');
+      var myModal = this.$('#instrument-details-modal');
+      var existingNames = this.model.get("metrics").map(function(metric) {
+        return metric.name;
+      });
+
+      myModal.on("shown", function() { input.focus(); });
+
+      collections.metrics.fetch({ success: function(metrics, response) {
+        var filteredItems = _.filter(metrics.toJSON(), function(metric) {
+          return !_.include(existingNames, metric.name);
+        });
+
+        var items = _.map(filteredItems, function(metric) {
+          return metric.name;
+        });
+        console.log("items", items);
+        input.typeahead({ source: items, items: 5 });
+        myModal.modal({ keyboard: true });
+      }});
+
+      return this;
+    },
+
+    addMetric: function() {
+      var myModal = this.$('#instrument-details-modal');
+      var input = this.$('#instrument-details-search-target');
+
+      var metricName = input.val();
+      myModal.modal("hide");
+      console.log("metricName", metricName);
+
+      var tmp = this.model.get("metrics");
+      tmp.push({ name: metricName });
+      this.model.set({ metrics: tmp }, {
+        success: function(model, response) {
+          console.log("model saved", model);
+        },
+        error: function(model, response) {
+          console.log("model save failed", response);
+          alert("save failed "+response);
+        }
+      });
+      
+      return false;
+    }
+
+  });
+
+  views.Instrument = Backbone.View.extend({
+
+    events: {
+      "click .btn.add-metric"          : "showMetricsChooser",
+      "click button.instrument-delete" : "removeInstrument"
+    },
+
+    initialize: function(options) {
+      _.bindAll(this, "render");
+      this.model.bind('reset', this.render);
+      this.model.bind('change', this.render);
     },
 
     renderGraph: function(graphElement) {
@@ -98,6 +159,7 @@
     },
 
     render: function() {
+      console.log("instrument render");
       $(this.el).html(JST['templates/instruments/show']({ instrument: this.model.toJSON() }));
 
       table = new InstrumentTable({ model: this.model });
@@ -113,46 +175,32 @@
       return this;
     },
 
-    addMetricDialog: function() {
-      var input = this.$('#instrument-details-search-target');
-      var myModal = this.$('#instrument-details-modal');
-      var existingNames = this.model.get("metrics").map(function(metric) {
-        return metric.name;
-      });
+    showMetricsChooser: function() {
+      console.log("showMetricsChooser");
+      var dialog = new MetricsChooserDialog({ model: this.model });
+      dialog.render();
 
-      myModal.on("shown", function() { input.focus(); });
-
-      collections.metrics.fetch({ success: function(metrics, response) {
-        var filteredItems = _.filter(metrics.toJSON(), function(metric) {
-          return !_.include(existingNames, metric.name);
-        });
-
-        var items = _.map(filteredItems, function(metric) {
-          return metric.name;
-        });
-        
-        input.typeahead({ source: items, items: 5 });
-        myModal.modal({ keyboard: true });
-      }});
-    },
-
-    addMetric: function() {
-      var myModal = this.$('#instrument-details-modal');
-      var input = this.$('#instrument-details-search-target');
-
-      var metricName = input.val();
-      myModal.modal("hide");
-      console.log("metricName", metricName);
-
-      var tmp = this.model.get("metrics");
-      tmp.push({ name: metricName });
-      this.model.set({ metrics: tmp});
-      this.model.save();
-      // TODO: remove explicit rendering
-      this.render();
-      console.log(this.model);
+      this.$("#metrics-chooser").html(dialog.el);
       return false;
     },
+
+    // addMetric: function() {
+    //   var myModal = this.$('#instrument-details-modal');
+    //   var input = this.$('#instrument-details-search-target');
+
+    //   var metricName = input.val();
+    //   myModal.modal("hide");
+    //   console.log("metricName", metricName);
+
+    //   var tmp = this.model.get("metrics");
+    //   tmp.push({ name: metricName });
+    //   this.model.set({ metrics: tmp});
+    //   this.model.save();
+    //   // TODO: remove explicit rendering
+    //   this.render();
+    //   console.log(this.model);
+    //   return false;
+    // },
 
     removeInstrument: function() {
       console.log("removeInstrument", router);
