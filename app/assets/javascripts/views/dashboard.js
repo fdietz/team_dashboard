@@ -1,4 +1,4 @@
-( function (views, models, collections){
+(function (views, models, collections, router) {
 
   var DashboardHeader = Backbone.View.extend({
     events: {
@@ -164,6 +164,7 @@
   views.Dashboard = Backbone.View.extend({
     events: {
       "click .btn.add-instrument" : "showInstrumentsChooser",
+      "click button.dashboard-delete" : "removeDashboard"
     },
 
     initialize: function(options) {
@@ -211,8 +212,23 @@
 
       this.$("#instruments-chooser").html(dialog.el);
       return false;
+    },
+
+    removeDashboard: function() {
+      console.log("removeDashboard", router);
+
+      var result = this.model.destroy({ 
+        success: function(model, request) {
+          console.log("destroyed model: ", model);
+          window.app.router.navigate("/dashboards", { trigger: true })
+        },
+        error: function(model, request) {
+          alert("failed destroying model "+request);
+        }
+      });
+      
     }
 
   });
 
-})(app.views, app.models, app.collections);
+})(app.views, app.models, app.collections, app.router);

@@ -29,5 +29,10 @@ module Api
       head :status => 204
     end
 
+    def destroy
+      SimpleMetrics::DashboardRepository.remove(params[:id])
+      head :status => 204
+    end
+
   end
 end
