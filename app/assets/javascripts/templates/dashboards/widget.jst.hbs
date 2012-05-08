@@ -1,5 +1,10 @@
 {{#with instrument}}
-  <h3>{{name}}</h3></br></br>
-  <div class="graph-container"></div>
+  <h3>{{name}} 
+    <button class="btn widget-delete" data-widget-id="{{id}}">
+      <i class="icon-trash"></i>
+    </button> 
+  </h3>
 
+  </br></br>
+  <div class="graph-container"></div>
 {{/with}}
