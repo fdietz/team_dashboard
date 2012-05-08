@@ -69,8 +69,7 @@
 
     render: function() {
       $(this.el).html(JST['templates/graphs/show']({ time: this.time }));
-
-      console.log("series", this.series);
+      // console.log("series", this.series);
 
       graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),

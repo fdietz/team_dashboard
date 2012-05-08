@@ -1,7 +1,6 @@
-( function (views, collections){
+( function (views, models, collections){
 
   var DashboardHeader = Backbone.View.extend({
-    // template: Handlebars.compile($("#instrument-details-header").html()),
     events: {
       "click #dashboard-name"                      : "editName",
       "submit #dashboard-name-form"                : "saveName"
@@ -73,17 +72,38 @@
 
   });
 
-  views.Dashboard = Backbone.View.extend({
+  var InstrumentsChooserDialog = Backbone.View.extend({
     events: {
-      "click .btn.add-instrument"                   : "addInstrumentDialog",
-      "submit #modal-search-form"                   : "addInstrument",
-      "click #dashboard-details-modal .btn-primary" : "addInstrument"
+      "click .btn-primary" : "addInstrument"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render");
-      this.model.bind('reset', this.render);
-      this.model.bind('change', this.render);
+    },
+  
+    render: function() {
+      $(this.el).html(JST['templates/dashboards/instruments_chooser']({ dashboard: this.model.toJSON() }));
+
+      var myModal = this.$('#dashboard-details-modal');
+      var instrumentNames = this.instrumentNames();
+
+      collections.instruments.fetch({ 
+        success: function(instruments, response) {
+          var filtered = instruments.filter(function(instrument) {
+              return !_.include(instrumentNames, instrument.get('name'));
+          });
+
+          var instrumentsSmall = new views.InstrumentsSmall({ collection: new collections.Instrument(filtered) });
+          instrumentsSmall.render();
+          this.$(".instruments-index-small-container").html(instrumentsSmall.el);
+
+          myModal.modal({ keyboard: true });
+        },
+        error: function(model, response) {
+          alert("Error request: "+response);
+        }
+      });
+
+      return this;
     },
 
     instrumentNames: function() {
@@ -92,13 +112,56 @@
       });
     },
 
+    addInstrument: function() {
+      var myModal = this.$('#dashboard-details-modal');
+      var tmp = this.model.get("instruments");
+
+      collections.instruments.each(function(instrument) {
+        var checkbox = this.$("input[data-id=" + instrument.id +"]");
+        var checked = checkbox.attr("checked");
+        if (checked) {
+          tmp.push({ name: instrument.get("name") });
+        }
+      });
+
+      myModal.modal("hide");
+      this.model.set({ instruments: tmp });
+      var result = this.model.save({ 
+        success: function(model, request) {
+          console.log("saved model: ", model);
+        },
+        error: function(model, request) {
+          alert("failed saving model "+request);
+        }
+      });
+      
+      // TODO: remove explicit rendering
+      //this.render();
+      return false;
+    }
+
+  });
+
+  views.Dashboard = Backbone.View.extend({
+    events: {
+      "click .btn.add-instrument" : "showInstrumentsChooser",
+    },
+
+    initialize: function(options) {
+      _.bindAll(this, "render");
+      this.model.bind('reset', this.render);
+      this.model.bind('change', this.render);
+    },
+
     renderWidgets: function() {
+      console.log("renderWidgets", this.model.get('instruments'));
       var targets = _.each(this.model.get('instruments'), function(instr) {
         var name = instr.name;
         app.collections.instruments.fetch({ success: function(model, request) {
           var instrument = collections.instruments.find(function(i) {
             return i.get('name') === name;
           });
+          console.log("appending instrument widget", instrument.get("name"), instrument)
           var widget = new DashboardWidget({ model: instrument });
           widget.render();
           this.$("#dashboard-widget-container").append(widget.el);
@@ -107,6 +170,7 @@
     },
 
     render: function() {
+      console.log("dashboard render");
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
       header = new DashboardHeader({ model: this.model });
@@ -118,44 +182,13 @@
       return this;
     },
 
-    addInstrumentDialog: function() {
-      var input = this.$('#dashboard-details-search-target');
-      var myModal = this.$('#dashboard-details-modal');
-      var instrumentNames = this.instrumentNames();
-
-      myModal.on("shown", function() { input.focus(); });
-
-      collections.instruments.fetch({ success: function(instruments, response) {
-        var filtered = instruments.filter(function(instrument) {
-            return !_.include(instrumentNames, instrument.get('name'));
-        });
-        var instrumentsSmall = new views.InstrumentsSmall({ collection: new collections.Instrument(filtered) });
-        instrumentsSmall.render();
-        this.$(".instruments-index-small-container").html(instrumentsSmall.el);
-        myModal.modal({ keyboard: true });
-      }});
-    },
-
-    addInstrument: function() {
-      var myModal = this.$('#dashboard-details-modal');
-      var input = this.$('#dashboard-details-search-target');
-
-      var tmp = this.model.get("instruments");
-      collections.instruments.each(function(instrument) {
-        var checkbox = this.$("input[data-id=" + instrument.id +"]");
-        var checked = checkbox.attr("checked");
-        if (checked) {
-          tmp.push(instrument);
-        }
-      });
-
-      myModal.modal("hide");
-      this.model.set({ instruments: tmp });
-      this.model.save();
-      // TODO: remove explicit rendering
-      this.render();
-      return false;
+    showInstrumentsChooser: function() {
+      console.log("showInstrumentsChooser");
+      var dialog = new InstrumentsChooserDialog({ model: this.model });
+      dialog.render();
+      this.$("#instruments-chooser").html(dialog.el);
     }
+
   });
 
-})(app.views, app.collections);
+})(app.views, app.models, app.collections);
