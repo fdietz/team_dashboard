@@ -26,8 +26,15 @@
 
       this.currentView = view;
       this.currentView.render();
-
       $("#main").html(this.currentView.el);
+
+      this.updateNavigationSelection(Backbone.history.fragment);      
+    },
+
+    updateNavigationSelection: function(fragment) {
+      var url = fragment.slice(0, fragment.indexOf("/"))
+      $("div.navbar a[data-navigation-url]").parent().removeClass("active");
+      $("div.navbar a[data-navigation-url='/"+ url +"']").parent().addClass("active");
     },
 
     handleErrors: function(response) {
