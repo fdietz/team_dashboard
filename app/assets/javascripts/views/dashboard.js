@@ -58,8 +58,6 @@
       });
 
       hourGraphCollection.fetch({ success: function(collection, response) {
-        // console.log("raw", hourGraphCollection, hourGraphCollection.models);
-
         graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
         graph.render();
       }});
@@ -76,7 +74,6 @@
   });
 
   views.Dashboard = Backbone.View.extend({
-    // template: Handlebars.compile($("#dashboard-details").html()),
     events: {
       "click .btn.add-instrument"                   : "addInstrumentDialog",
       "submit #modal-search-form"                   : "addInstrument",
@@ -86,6 +83,7 @@
     initialize: function(options) {
       _.bindAll(this, "render");
       this.model.bind('reset', this.render);
+      this.model.bind('change', this.render);
     },
 
     instrumentNames: function() {
@@ -113,7 +111,7 @@
 
       header = new DashboardHeader({ model: this.model });
       header.render();
-      this.$("#dashboard-detail-header").append(header.el);
+      this.$("#dashboard-detail-header").html(header.el);
 
       this.renderWidgets();
 
