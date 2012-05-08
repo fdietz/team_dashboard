@@ -28,5 +28,10 @@ module Api
       SimpleMetrics::InstrumentRepository.update(instrument)
       head :status => 204
     end
+
+    def destroy
+      SimpleMetrics::InstrumentRepository.remove(params[:id])
+      head :status => 204
+    end
   end
 end

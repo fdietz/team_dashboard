@@ -1,4 +1,4 @@
-(function (views, collections){
+(function (views, collections, router){
 
   var InstrumentTable = Backbone.View.extend({
     events: {},
@@ -63,10 +63,10 @@
   views.Instrument = Backbone.View.extend({
 
     events: {
-      "click .btn.add-metric"                       : "addMetricDialog",
-      "click .btn.save"                             : "save",
-      "submit #modal-search-form"                   : "addMetric",
-      "click #instrument-details-modal .btn-primary": "addMetric"
+      "click .btn.add-metric"                        : "addMetricDialog",
+      "submit #modal-search-form"                    : "addMetric",
+      "click #instrument-details-modal .btn-primary" : "addMetric",
+      "click button.instrument-delete"               : "removeInstrument"
     },
 
     initialize: function(options) {
@@ -153,10 +153,19 @@
       return false;
     },
 
-    save: function() {
-      console.log("save");
-      this.model.save();
+    removeInstrument: function() {
+      console.log("removeInstrument", router);
+
+      var result = this.model.destroy({ 
+        success: function(model, request) {
+          console.log("destroyed model: ", model);
+          window.app.router.navigate("/instruments", { trigger: true })
+        },
+        error: function(model, request) {
+          alert("failed destroying model "+request);
+        }
+      });
     }
   });
 
-})(app.views, app.collections);
+})(app.views, app.collections, app.router);
