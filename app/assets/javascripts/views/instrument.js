@@ -1,16 +1,35 @@
 (function (views, collections, router){
 
   var InstrumentTable = Backbone.View.extend({
-    events: {},
+    events: {
+      "click button.remove-metric" : "removeMetric"
+    },
 
     initialize: function(options) {
-      this.model.bind('reset', this.render, this);
+      _.bindAll(this, "render", "removeMetric");
       this.model.bind('change:metrics', this.render, this);
     },
 
     render: function() {
       $(this.el).html(JST['templates/instruments/table']({ instrument: this.model.toJSON() }));
       return this;
+    },
+
+    removeMetric: function(event) {
+      var selectedName = this.$(event.currentTarget).attr("data-metric-name");
+      var tmp = this.model.get("metrics");
+      var filtered = _.filter(tmp, function(metric) {
+        return selectedName !== metric.name
+      });
+      this.model.save({ metrics: filtered }, {
+        success: function(model, response) {
+          console.log("model saved", model);
+        },
+        error: function(model, response) {
+          console.log("model save failed", response);
+          alert("save failed "+response);
+        }
+      });      
     }
   });
 
@@ -22,7 +41,6 @@
     },
 
     initialize: function(options) {
-      this.model.bind('reset', this.render, this);
       this.model.bind('change:name', this.render, this);
     },
 
@@ -108,7 +126,8 @@
 
       var tmp = this.model.get("metrics");
       tmp.push({ name: metricName });
-      this.model.set({ metrics: tmp }, {
+      console.log("tmp", tmp);
+      this.model.save({ metrics: tmp }, {
         success: function(model, response) {
           console.log("model saved", model);
         },
@@ -132,7 +151,7 @@
 
     initialize: function(options) {
       _.bindAll(this, "render");
-      this.model.bind('reset', this.render);
+      // this.model.bind('reset', this.render);
       this.model.bind('change', this.render);
     },
 
@@ -190,24 +209,6 @@
       this.$("#metrics-chooser").html(dialog.el);
       return false;
     },
-
-    // addMetric: function() {
-    //   var myModal = this.$('#instrument-details-modal');
-    //   var input = this.$('#instrument-details-search-target');
-
-    //   var metricName = input.val();
-    //   myModal.modal("hide");
-    //   console.log("metricName", metricName);
-
-    //   var tmp = this.model.get("metrics");
-    //   tmp.push({ name: metricName });
-    //   this.model.set({ metrics: tmp});
-    //   this.model.save();
-    //   // TODO: remove explicit rendering
-    //   this.render();
-    //   console.log(this.model);
-    //   return false;
-    // },
 
     removeInstrument: function() {
       console.log("removeInstrument", router);

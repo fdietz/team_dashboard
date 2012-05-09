@@ -5,16 +5,18 @@
         <th>Name</th>
         <th>Grouping</th>
         <th>Color</th>
-        <th>Remove</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       {{#each metrics}}
         <tr>
           <td>{{name}}</td>
+          <td>Average</td>
           <td></td>
-          <td></td>
-          <td></td>
+          <td>
+            <button class="btn btn-mini remove-metric" data-metric-name="{{name}}"><i class="icon-minus"></i></button>
+          </td>
         </tr>
       {{/each}}
     </tbody>
