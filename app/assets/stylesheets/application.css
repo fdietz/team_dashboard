@@ -9,11 +9,14 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  
- *= require twitter/bootstrap
- *= require bootstrap-responsive.min
+ * require twitter/bootstrap
+ * require bootstrap-responsive.min
  *= require rickshaw.min
 
- *= require_tree .
+ *= require bootstrap
+ *= require variables
+ *= require bootswatch
+
  *= require_self
 */
 
@@ -21,12 +24,8 @@
 .scrollable {
   width: 530px;
   height: 200px;
-  /*overflow: scroll;*/
-
   overflow-y: scroll;
   overflow-x: hidden;
-  
-  /*overflow: scroll-y;*/
 }
 
 ::-webkit-scrollbar {
