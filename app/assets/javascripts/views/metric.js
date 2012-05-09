@@ -16,7 +16,6 @@
 
       var button = this.$("button[data-time='"+this.time+ "']");
       button.addClass("active");
-      console.log(button);
 
       var targets = [this.model.get('name')];
       var graphCollection = new collections.Graph({
@@ -48,10 +47,7 @@
     switchTime: function(event) {
       var button = this.$(event.target);
       this.time = button.attr("data-time");
-      //time.time.trigger("change");
       this.render();
-
-      console.log(this.time);
     }
 
   });

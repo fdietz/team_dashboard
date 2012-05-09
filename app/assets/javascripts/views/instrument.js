@@ -146,13 +146,14 @@
 
     events: {
       "click .btn.add-metric"          : "showMetricsChooser",
-      "click button.instrument-delete" : "removeInstrument"
+      "click button.instrument-delete" : "removeInstrument",
+      "click .time"                    : "switchTime"
     },
 
     initialize: function(options) {
       _.bindAll(this, "render");
-      // this.model.bind('reset', this.render);
       this.model.bind('change', this.render);
+      this.time = "hour";
     },
 
     renderGraph: function(graphElement) {
@@ -164,7 +165,7 @@
 
       var hourGraphCollection = new collections.Graph({
         targets: targets,
-        time: time
+        time: this.time
       });
 
       hourGraphCollection.fetch({ 
@@ -173,7 +174,7 @@
             return series.data.length > 0;
           });
           if (hasData) {
-            graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
+            graph = new views.Graph({ series: collection.toJSON(), time: this.time, el: graphElement });
             graph.render();  
           } else {
             console.log("no graph data available");
@@ -197,6 +198,9 @@
       this.$("#instrument-detail-header").append(header.el);
 
       this.renderGraph(this.$("#instrument-graph-container"));
+
+      var button = this.$("button[data-time='"+this.time+ "']");
+      button.addClass("active");
 
       return this;
     },
@@ -222,7 +226,14 @@
           alert("failed destroying model "+request);
         }
       });
+    },
+
+    switchTime: function(event) {
+      var button = this.$(event.target);
+      this.time = button.attr("data-time");
+      this.render();
     }
+
   });
 
 })(app.views, app.collections, app.router);

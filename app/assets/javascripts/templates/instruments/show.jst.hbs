@@ -4,10 +4,20 @@
       <div id="instrument-detail-header"></div>
 
       <div class="btn-toolbar">
-        <button class="btn add-metric">Add Metric</button>
-        <button class="btn instrument-delete" data-instrument-id="{{id}}">
-          <i class="icon-trash"></i>
-        </button>
+        <div class="btn-group data-time">
+          <button class="btn time" data-time="minute">Minute</button>
+          <button class="btn time" data-time="hour">Hour</button>
+          <button class="btn time" data-time="day">Day</button>
+          <button class="btn time" data-time="week">Week</button>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn add-metric">Add Metric</button>
+        </div> 
+
+        <div class="btn-group">
+          <button class="btn instrument-delete" data-instrument-id="{{id}}"><i class="icon-trash"></i></button>
+        </div> 
       </div>
 
       </br>
