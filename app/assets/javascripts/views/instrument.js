@@ -33,52 +33,6 @@
     }
   });
 
-  var InstrumentHeader = Backbone.View.extend({
-    events: {
-      "click h1[data-inline-edit]"         : "editName",
-      "submit form[data-inline-edit]"      : "saveName",
-      "keyup form[data-inline-edit]>input" : "cancelEdit"
-    },
-
-    initialize: function(options) {
-      this.model.bind('change:name', this.render, this);
-    },
-
-    render: function() {
-      $(this.el).html(JST['templates/instruments/header']({ instrument: this.model.toJSON() }));
-      this.h1 = this.$("h1[data-inline-edit]");
-      this.form = this.$("form[data-inline-edit]");
-      this.input = this.$("form[data-inline-edit]>input");
-
-      return this;
-    },
-
-    editName: function() {
-      this.h1.toggle();
-      this.form.toggle();
-      this.input.focus();
-      return false;
-    },
-
-    saveName: function() {
-      this.h1.toggle();
-      this.form.toggle();
-
-      this.h1.html(this.input.val());
-      this.model.set({name: this.input.val() });
-      this.model.save();
-      return false;
-    },
-
-    cancelEdit: function(event) {
-      if (event.keyCode == 27) {
-        this.h1.toggle();
-        this.form.toggle();      
-      }
-    }
-
-  });
-
   var MetricsChooserDialog = Backbone.View.extend({
     events: {
       "submit #modal-search-form"                    : "addMetric",
@@ -145,13 +99,16 @@
   views.Instrument = Backbone.View.extend({
 
     events: {
-      "click .btn.add-metric"          : "showMetricsChooser",
-      "click button.instrument-delete" : "removeInstrument",
-      "click .time"                    : "switchTime"
+      "click .btn.add-metric"              : "showMetricsChooser",
+      "click button.instrument-delete"     : "removeInstrument",
+      "click .time"                        : "switchTime",
+      "click span[data-inline-edit]"        : "editName",
+      "submit form[data-inline-edit]"      : "saveName",
+      "keyup form[data-inline-edit]>input" : "cancelEdit"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render");
+      _.bindAll(this, "render", "editName", "saveName", "cancelEdit");
       this.model.bind('change', this.render);
       this.time = "hour";
     },
@@ -189,13 +146,13 @@
       console.log("instrument render");
       $(this.el).html(JST['templates/instruments/show']({ instrument: this.model.toJSON() }));
 
+      this.heading = this.$("span[data-inline-edit]");
+      this.form = this.$("form[data-inline-edit]");
+      this.input = this.$("form[data-inline-edit]>input");
+
       table = new InstrumentTable({ model: this.model });
       table.render();
       this.$("#instrument-table-container").append(table.el);
-
-      header = new InstrumentHeader({ model: this.model });
-      header.render();
-      this.$("#instrument-detail-header").append(header.el);
 
       this.renderGraph(this.$("#instrument-graph-container"));
 
@@ -232,6 +189,31 @@
       var button = this.$(event.target);
       this.time = button.attr("data-time");
       this.render();
+    },
+
+    editName: function() {
+      console.log("editName");
+      this.heading.toggle();
+      this.form.css("display", "inline");
+      this.input.focus();
+      return false;
+    },
+
+    saveName: function() {
+      this.heading.toggle();
+      this.form.toggle();
+
+      this.heading.html(this.input.val());
+      this.model.set({name: this.input.val() });
+      this.model.save();
+      return false;
+    },
+
+    cancelEdit: function(event) {
+      if (event.keyCode == 27) {
+        this.heading.toggle();
+        this.form.toggle();      
+      }
     }
 
   });

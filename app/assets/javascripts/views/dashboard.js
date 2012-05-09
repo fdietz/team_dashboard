@@ -1,50 +1,5 @@
 (function (views, models, collections, router) {
 
-  var DashboardHeader = Backbone.View.extend({
-    events: {
-      "click h1[data-inline-edit]"         : "editName",
-      "submit form[data-inline-edit]"      : "saveName",
-      "keyup form[data-inline-edit]>input" : "cancelEdit"
-    },
-
-    initialize: function(options) {
-      this.model.bind('reset', this.render, this);
-    },
-
-    render: function() {
-      $(this.el).html(JST['templates/dashboards/header']({ dashboard: this.model.toJSON() }));
-      this.h1 = this.$("h1[data-inline-edit]");
-      this.form = this.$("form[data-inline-edit]");
-      this.input = this.$("form[data-inline-edit]>input");
-      return this;
-    },
-
-    editName: function() {
-      this.h1.toggle();
-      this.form.toggle();
-      this.input.focus();
-      return false;
-    },
-
-    saveName: function() {
-      this.h1.toggle();
-      this.form.toggle();
-
-      this.h1.html(this.input.val());
-      this.model.set({name: this.input.val() });
-      this.model.save();
-      return false;
-    },
-
-    cancelEdit: function(event) {
-      if (event.keyCode == 27) {
-        this.h1.toggle();
-        this.form.toggle();      
-      }
-    }
-
-  });
-
   var DashboardWidget = Backbone.View.extend({
     tagName: "div",
     className: "widget span6",
@@ -173,7 +128,10 @@
   views.Dashboard = Backbone.View.extend({
     events: {
       "click .btn.add-instrument" : "showInstrumentsChooser",
-      "click button.dashboard-delete" : "removeDashboard"
+      "click button.dashboard-delete" : "removeDashboard",
+      "click span[data-inline-edit]"         : "editName",
+      "submit form[data-inline-edit]"      : "saveName",
+      "keyup form[data-inline-edit]>input" : "cancelEdit"
     },
 
     initialize: function(options) {
@@ -205,9 +163,9 @@
       console.log("dashboard render");
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
-      header = new DashboardHeader({ model: this.model });
-      header.render();
-      this.$("#dashboard-detail-header").html(header.el);
+      this.heading = this.$("span[data-inline-edit]");
+      this.form = this.$("form[data-inline-edit]");
+      this.input = this.$("form[data-inline-edit]>input");
 
       this.renderWidgets();
 
@@ -236,6 +194,30 @@
         }
       });
       
+    },
+
+    editName: function() {
+      this.heading.toggle();
+      this.form.css("display", "inline");
+      this.input.focus();
+      return false;
+    },
+
+    saveName: function() {
+      this.heading.toggle();
+      this.form.toggle();
+
+      this.heading.html(this.input.val());
+      this.model.set({name: this.input.val() });
+      this.model.save();
+      return false;
+    },
+
+    cancelEdit: function(event) {
+      if (event.keyCode == 27) {
+        this.heading.toggle();
+        this.form.toggle();      
+      }
     }
 
   });
