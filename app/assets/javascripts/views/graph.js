@@ -59,7 +59,6 @@
   }
 
   views.Graph = Backbone.View.extend({
-    // template: Handlebars.compile($("#graph").html()),
 
     initialize: function(options) {
       _.bindAll(this, "render");
@@ -69,13 +68,12 @@
 
     render: function() {
       $(this.el).html(JST['templates/graphs/show']({ time: this.time }));
-      // console.log("series", this.series);
 
       graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: 'line',
-        // width: this.$('.graph').width(),
-        // height: this.$('.graph').height(),
+        width: this.$('.graph').parent().width()-100,
+        // height: this.$('.graph').parent().height(),
         series: addColorToSeries(this.series, spectrum14Palette)
       });
 

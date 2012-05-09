@@ -1,7 +1,7 @@
 {{#with metric}}
   <div class="row-fluid">
     <div class="span12">
-      <h3>{{time}}</h3>
+      <h1>{{name}}</h1>
       <div class="btn-toolbar">
         <div class="btn-group data-time">
           <button class="btn time" data-time="minute">Minute</button>
@@ -11,8 +11,11 @@
         </div>
       </div>
       </br>
-      <div id="graph-container"></div>
     </div>
   </div>
-
+  <div class="row-fluid">
+    <div id="graph-container" class="span12"></div>
+  </div>
 {{/with}}
+
+
