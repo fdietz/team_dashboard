@@ -7,16 +7,13 @@
       "metrics":          "metricsIndex",
       "metrics/:name":    "metricsShow",
       "dashboards":       "dashboardsIndex",
-      "dashboards/new":   "dashboardsNew",
       "dashboards/:id":   "dashboardsShow",
       "instruments":      "instrumentsIndex",
-      "instruments/new":  "instrumentsNew",
       "instruments/:id":  "instrumentsShow",
       "about":            "aboutShow"
     },
 
     initialize: function(options) {
-      // _.bindAll(this, "showView");
     },
 
     showView: function(view) {
@@ -105,13 +102,6 @@
       });
     },
 
-    dashboardsNew: function() {
-      console.log("ROUTER: dashboards new");
-
-      var dashboardView = new app.views.Dashboard({ model: new app.models.Dashboard() });
-      this.showView(dashboardView);
-    },
-
     instrumentsIndex: function() {
       console.log("ROUTER: instruments");
       
@@ -142,13 +132,6 @@
           that.handleErrors(response);
         }
       });
-    },
-
-    instrumentsNew: function() {
-      console.log("ROUTER: instruments_new");
-
-      var instrumentView = new app.views.Instrument({ model: new app.models.Instrument() });
-      this.showView(instrumentView);
     },
 
     aboutShow: function() {

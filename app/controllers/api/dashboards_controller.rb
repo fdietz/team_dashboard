@@ -5,7 +5,6 @@ module Api
     
     def show
       dashboard = SimpleMetrics::DashboardRepository.find_one(params[:id])
-      puts "== #{dashboard.inspect}"
       respond_with dashboard.attributes.to_json
     end
 
@@ -16,8 +15,9 @@ module Api
 
     def create
       attributes = JSON.parse(request.body.read.to_s).symbolize_keys
-      SimpleMetrics::DashboardRepository.save(SimpleMetrics::Dashboard.new(attributes))
-      head :status => 201
+      bson_id = SimpleMetrics::DashboardRepository.save(SimpleMetrics::Dashboard.new(attributes))
+      new_dashboard = SimpleMetrics::DashboardRepository.find_one(bson_id.to_s)
+      render :json => new_dashboard.attributes.to_json, :status => 201
     end
 
     def update

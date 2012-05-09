@@ -5,7 +5,6 @@ module Api
     
     def show
       instrument = SimpleMetrics::InstrumentRepository.find_one(params[:id])
-      puts "== instrument#show #{instrument.inspect}"
       respond_with instrument.attributes.to_json
     end
 
@@ -16,8 +15,9 @@ module Api
 
     def create
       attributes = JSON.parse(request.body.read.to_s).symbolize_keys
-      SimpleMetrics::InstrumentRepository.save(SimpleMetrics::Instrument.new(attributes))
-      head :status => 201
+      bson_id = SimpleMetrics::InstrumentRepository.save(SimpleMetrics::Instrument.new(attributes))
+      new_instrument = SimpleMetrics::InstrumentRepository.find_one(bson_id.to_s)
+      render :json => new_instrument.attributes.to_json, :status => 201
     end
 
     def update
