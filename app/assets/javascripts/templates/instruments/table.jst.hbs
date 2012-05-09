@@ -13,7 +13,12 @@
         <tr>
           <td>{{name}}</td>
           <td>Average</td>
-          <td></td>
+          <td>
+            <div class="input-append colorpicker" data-color="rgb(255, 146, 180)" data-color-format="rgb" style="display:inline;">
+              <input type="text" class="span2" value="" style="display:inline;" readonly>
+              <span class="add-on"><i style="background-color: rgb(255, 146, 180)"></i></span>
+            </div>
+          </td>
           <td>
             <button class="btn btn-warning remove-metric" data-metric-name="{{name}}"><i class="icon-trash"></i></button>
           </td>

@@ -9,14 +9,14 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  
- * require twitter/bootstrap
- * require bootstrap-responsive.min
  *= require rickshaw.min
 
  *= require bootstrap
  *= require variables
  *= require bootswatch
 
+ *= require colorpicker
+ 
  *= require_self
 */
 

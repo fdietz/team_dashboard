@@ -23,6 +23,8 @@
 //= require rickshaw.min
 //= require moment.min
 
+//= require colorpicker
+
 //= require backbone_extensions
 //= require app
 //= require router
