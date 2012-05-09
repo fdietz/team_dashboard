@@ -69,7 +69,7 @@
     render: function() {
       $(this.el).html(JST['templates/graphs/show']({ time: this.time }));
 
-      graph = new Rickshaw.Graph({
+      var graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: 'line',
         width: this.$('.graph').parent().width()-100,
@@ -93,6 +93,13 @@
 
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: graph
+      });
+
+      $(window).resize(function() {
+        console.log("resize");
+        var width = this.$('.graph').parent().width()-100;
+        graph.width = width;
+        graph.update();
       });
 
       return this;
