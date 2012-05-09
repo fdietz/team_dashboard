@@ -149,11 +149,18 @@
       });
 
       hourGraphCollection.fetch({ 
-        success: function(collection, resopnse) {
-          console.log("raw", hourGraphCollection, hourGraphCollection.models);
-
-          graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
-          graph.render();
+        success: function(collection, response) {
+          var hasData = _.any(collection.toJSON(), function(series) {
+            return series.data.length > 0;
+          });
+          if (hasData) {
+            graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
+            graph.render();  
+          } else {
+            console.log("no graph data available");
+            graphElement.html("<p>No Graph data available in this time frame</p>");
+          }
+          
         }
       });
     },

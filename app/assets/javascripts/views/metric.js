@@ -2,81 +2,58 @@
 
   views.Metric = Backbone.View.extend({
 
+    events: {
+      "click .time": "switchTime"
+    },
+
     initialize: function() {
       _.bindAll(this, "render");
+      this.time = "hour";
     },
 
     render: function() {
       $(this.el).html(JST['templates/metrics/show']({ metric: this.model.toJSON() }));
 
+      var button = this.$("button[data-time='"+this.time+ "']");
+      button.addClass("active");
+      console.log(button);
+
       var targets = [this.model.get('name')];
-      // TODO: make code more DRY
-      var minuteGraphCollection = new collections.Graph({
+      var graphCollection = new collections.Graph({
         targets: targets,
-        time: 'minute'
+        time: this.time
       });
 
-      minuteGraphCollection.fetch({
-        success: function() {
-          var minuteView = new views.Graph({
-            series: minuteGraphCollection.toJSON(),
-            time: "minute",
-            el: this.$("#graph-container-minute")
+      graphCollection.fetch({
+        success: function(collection, request) {
+          var hasData = _.any(collection.toJSON(), function(series) {
+            return series.data.length > 0;
           });
-          minuteView.render();
-        }
-      });
 
-      var hourGraphCollection = new collections.Graph({
-        targets: targets,
-        time: 'hour'
-      });
-
-      hourGraphCollection.fetch({
-        success: function() {
-          var hourView = new views.Graph({
-            series: hourGraphCollection.toJSON(),
-            time: "hour",
-            el: this.$("#graph-container-hour")
-          });
-          hourView.render();
-        }
-      });
-
-      var dayGraphCollection = new collections.Graph({
-        targets: targets,
-        time: 'day'
-      });
-
-      dayGraphCollection.fetch({
-        success: function() {
-          var dayView = new views.Graph({
-            series: dayGraphCollection.toJSON(),
-            time: "day",
-            el: this.$("#graph-container-day")
-          });
-          dayView.render();
-        }
-      });
-
-      var weekGraphCollection = new collections.Graph({
-        targets: targets,
-        time: 'week'
-      });
-
-      weekGraphCollection.fetch({
-        success: function() {
-          var weekView = new views.Graph({
-            series: weekGraphCollection.toJSON(),
-            time: "week",
-            el: this.$("#graph-container-week")
-          });
-          weekView.render();
+          if (hasData) {
+            var graphView = new views.Graph({
+              series: collection.toJSON(), time: this.time, el: this.$("#graph-container")
+            });
+            graphView.render();
+          } else {
+            console.log("no graph data available");
+            this.$("#graph-container").html("<p>No Graph data available in this time frame</p>");
+          }
         }
       });
 
       return this;
+    },
+
+    switchTime: function(event) {
+      var button = this.$(event.target);
+      this.time = button.attr("data-time");
+      //time.time.trigger("change");
+      this.render();
+
+      console.log(this.time);
     }
+
   });
 
 })(app.views, app.collections);
