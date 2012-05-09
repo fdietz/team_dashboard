@@ -72,7 +72,7 @@
       var graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: 'line',
-        width: this.$('.graph').parent().width()-100,
+        width: this.$('.graph').parent().width()-200,
         // height: this.$('.graph').parent().height(),
         series: addColorToSeries(this.series, spectrum14Palette)
       });
@@ -82,12 +82,12 @@
         timeUnit: timeUnit(this.time)
       });
 
-      var y_axis = new Rickshaw.Graph.Axis.Y({
-        graph: graph,
-        orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        element: this.$('.y-axis').get(0)
-      });
+      // var y_axis = new Rickshaw.Graph.Axis.Y({
+      //   graph: graph,
+      //   orientation: 'left',
+      //   tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+      //   element: this.$('.y-axis').get(0)
+      // });
 
       graph.render();
 

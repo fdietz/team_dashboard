@@ -1,10 +1,13 @@
 {{#with instrument}}
   <h3>{{name}} 
-    <button class="btn widget-delete" data-widget-id="{{id}}">
-      <i class="icon-trash"></i>
-    </button> 
+    <div class="btn-toolbar" style="display:inline">
+      <button class="btn btn-warning btn-mini widget-delete" data-widget-id="{{id}}" style="margin-top:-2px">
+        <i class="icon-trash"></i>
+      </button> 
+    </div>
+    
   </h3>
-
-  </br></br>
+  </br>
   <div class="graph-container"></div>
+  </br></br>
 {{/with}}
