@@ -1,91 +1,216 @@
-@import "bootstrap"
+/*!
+* Colorpicker for Bootstrap
+*
+* Copyright 2012 Stefan Petre
+* Licensed under the Apache License v2.0
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+*/
 
-.colorpicker-saturation {
+.colorpicker-component input:focus {
+  position: relative;
+  z-index: 2;
+}
+.colorpicker-component .add-on {
+  float: left;
+  display: block;
+  width: auto;
+  min-width: 16px;
+  height: 18px;
+  margin-right: -1px;
+  padding: 4px 5px;
+  font-weight: normal;
+  line-height: 18px;
+  color: #999;
+  text-align: center;
+  text-shadow: 0 1px 0 #FFF;
+  background-color: #f5f5f5;
+  border: 1px solid #CCC;
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+
+  margin-right: 0;
+  margin-left: -1px;
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+}
+.colorpicker-component .add-on i {
+  display: block;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+.colorpicker-component input {
+  float: left;
+  margin-left: 0;
+  width: 130px;
+  margin-bottom: 5px;
+  *zoom: 1;
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.colorpicker-component input:first-child {
+  *margin-left: -160px;
+}
+.colorpicker-component input:first-child + .add-on {
+  *margin-left: -21px;
+}
+.ui-colorpicker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  float: left;
+  display: none;
+  min-width: 160px;
+  max-width: 220px;
+  _width: 160px;
+  padding: 4px 0;
+  margin: 0;
+  list-style: none;
+  background-color: #FFF;
+  border-color: #CCC;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+}
+
+.ui-colorpicker .saturation {
   width: 100px;
   height: 100px;
   background-image: asset-url("saturation.png");
   cursor: crosshair;
   float: left;
-  i {
-    display: block;
-    height: 5px;
-    width: 5px;
-    border: 1px solid #000;
-    .border-radius();
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: -4px 0 0 -4px;
-    b{
-      display: block;
-      height: 5px;
-      width: 5px;
-      border: 1px solid #fff;
-      .border-radius();
-    }
-  }
 }
-.colorpicker-hue,
-.colorpicker-alpha {
+.ui-colorpicker .saturation i {
+  display: block;
+  height: 5px;
+  width: 5px;
+  border: 1px solid #000;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: -4px 0 0 -4px;
+}
+.ui-colorpicker .saturation i b {
+  display: block;
+  height: 5px;
+  width: 5px;
+  border: 1px solid #FFF;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.ui-colorpicker .hue,
+.ui-colorpicker .alpha {
   width: 15px;
   height: 100px;
   float: left;
   cursor: row-resize;
   margin-left: 4px;
   margin-bottom: 4px;
-  i {
-    display: block;
-    height: 1px;
-    background: #000;
-    border-top: 1px solid #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin-top: -1px;
-  }
 }
-.colorpicker-hue {
+.ui-colorpicker .hue i,
+.ui-colorpicker .alpha i {
+  display: block;
+  height: 1px;
+  background: #000;
+  border-top: 1px solid #FFF;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-top: -1px;
+}
+.ui-colorpicker .hue {
   background-image: asset-url("hue.png");
 }
-.colorpicker-alpha {
+.ui-colorpicker .alpha {
   background-image: asset-url("alpha.png");
-  display:none;
+  display: none;
 }
-.colorpicker {
-  .clearfix();
+.ui-colorpicker {
   top: 0;
   left: 0;
   padding: 4px;
   min-width: 120px;
-  div {
-    position: relative;
-  }
-  &.alpha {
-    min-width: 140px;
-    .colorpicker-alpha {
-      display: block;
-    }
-  }
+  margin-top: 1px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
 }
-.colorpicker-color {
+
+.colorpicker-component,
+.ui-colorpicker {
+  *zoom:1;
+}
+
+.colorpicker-component:before,
+.colorpicker-component:after,
+.ui-colorpicker:before,
+.ui-colorpicker:after {
+  display: table;
+  content: "";
+}
+.colorpicker-component:after,
+.ui-colorpicker:after {
+  clear: both;
+}
+.ui-colorpicker:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -7px;
+  left: 6px;
+}
+.ui-colorpicker:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #FFF;
+  position: absolute;
+  top: -6px;
+  left: 7px;
+}
+.ui-colorpicker div {
+  position: relative;
+}
+.ui-colorpicker.alpha {
+  min-width: 140px;
+}
+.ui-colorpicker.alpha-mode .alpha {
+  display: block;
+}
+.ui-colorpicker .color {
   height: 10px;
   margin-top: 5px;
   clear: both;
   background-image: asset-url("alpha.png");
   background-position: 0 100%;
-  div {
-    height: 10px;
-  }
 }
-.input-append,
-.input-prepend {
-  &.color {
-    .add-on i {
-      display: block;
-      cursor: pointer;
-      width: 16px;
-      height: 16px;
-    }
-  }
+.ui-colorpicker .color div {
+  height: 10px;
 }

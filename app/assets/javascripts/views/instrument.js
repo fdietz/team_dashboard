@@ -13,7 +13,7 @@
     render: function() {
       $(this.el).html(JST['templates/instruments/table']({ instrument: this.model.toJSON() }));
 
-      this.$('.colorpicker').colorpicker().on('changeColor', function(event){
+      this.$('.color').colorpicker().on('changeColor', function(event){
         var color = event.color.toHex();
         console.log("color", color);
       });
