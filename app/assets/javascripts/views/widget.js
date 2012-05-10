@@ -9,43 +9,59 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render");
-      this.dashboard = options.dashboard;
-      console.log("init dash", this.dashboard);
-    },
+      _.bindAll(this, "render", "updateWidget", "renderGraph");
 
-    renderGraph: function(graphElement) {
-      var time = "hour";
-      var targets = _.map(this.model.get('metrics'), function(metric) {
+      this.dashboard = options.dashboard;
+      this.time = "hour";
+      this.targets = _.map(this.model.get('metrics'), function(metric) {
         return metric.name;
       });
+      this.collection = new collections.Graph({
+        targets: this.targets,
+        time: this.time
+      });
+      this.collection.bind('change', this.render);
 
-      var hourGraphCollection = new collections.Graph({
-        targets: targets,
-        time: time
+      this.updateWidget();
+    },
+
+    updateWidget: function() {
+      this.collection.fetch({
+        success: _.bind(function(model, response) {
+          this.renderGraph();
+          this.graph.update();
+
+          setTimeout(this.updateWidget, 5000);
+        }, this), 
+        error: _.bind(function(model, response) {
+          console.log("error updating widget", response);
+        }, this)
+      });
+    },
+
+    renderGraph: function() {
+      var hasData = _.any(this.collection.toJSON(), function(series) {
+        return series.data.length > 0;
       });
 
-      var metrics = this.model.get('metrics');
-      hourGraphCollection.fetch({ 
-        success: function(collection, response) {
-          var hasData = _.any(collection.toJSON(), function(series) {
-            return series.data.length > 0;
-          });
-
-          if (hasData) {
-            graph = new views.Graph({ metrics: metrics, series: collection.toJSON(), time: time, el: graphElement });
-            graph.render();
-          } else {
-            console.log("no graph data available");
-            graphElement.html("<p>No Graph data available in this time frame</p>");
-          }
-        }
-      });
+      if (hasData) {
+        var metrics = this.model.get('metrics');
+        this.graph = new views.Graph({ metrics: metrics, series: this.collection.toJSON(), time: this.time, el: this.$(".graph-container") });
+        this.graph.render();
+        this.graph.update();
+      } else {
+        console.log("no graph data available");
+        graphElement.html("<p>No Graph data available in this time frame</p>");
+      }  
     },
 
     render: function() {
+      console.log("render widget", this.collection, this.collection.toJSON());
       $(this.el).html(JST['templates/widgets/show']({ instrument: this.model.toJSON() }));
-      this.renderGraph(this.$(".graph-container"));
+
+      var metrics = this.model.get('metrics');
+      this.graph = new views.Graph({ metrics: metrics, series: this.collection.toJSON(), time: this.time, el: this.$(".graph-container") });
+
       return this;
     },
 

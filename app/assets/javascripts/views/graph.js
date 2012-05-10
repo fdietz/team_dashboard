@@ -15,21 +15,6 @@
     '#00A388'
   ].reverse();
 
-  /*
-  var customPalette = new Rickshaw.Color.Palette( { scheme: pastel } );
-  var spectrum14Palette = new Rickshaw.Color.Palette( { scheme: "spectrum14" } );
-  */
-
-  /*
-  function addColorToSeries(data, palette) {
-    var result = [];
-    $.each(data, function(k, v){
-      v.color = palette.color();
-      result.push(v);
-    });
-    return result;
-  }
-  */
 
   function timeUnit(time) {
     var timeFixture = new Rickshaw.Fixtures.Time();
@@ -65,7 +50,7 @@
   views.Graph = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render");
+      _.bindAll(this, "render", "update");
       this.time = this.options.time;
       this.series = this.options.series;
       this.metrics = this.options.metrics;
@@ -73,8 +58,6 @@
 
     render: function() {
       $(this.el).html(JST['templates/graphs/show']({ time: this.time }));
-
-      console.log(this.series, this.metrics);
 
       var that = this;
       _.each(this.series, function(serie, index) {
@@ -89,7 +72,7 @@
         }
       });
 
-      var graph = new Rickshaw.Graph({
+      this.graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: 'line',
         width: this.$('.graph').parent().width()-200,
@@ -99,7 +82,7 @@
       });
 
       var x_axis = new Rickshaw.Graph.Axis.Time({
-        graph: graph,
+        graph: this.graph,
         timeUnit: timeUnit(this.time)
       });
 
@@ -110,20 +93,27 @@
       //   element: this.$('.y-axis').get(0)
       // });
 
-      graph.render();
+      this.graph.render();
 
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
-        graph: graph
+        graph: this.graph
       });
 
+      /*
       $(window).resize(function() {
         console.log("resize");
         var width = this.$('.graph').parent().width()-100;
-        graph.width = width;
-        graph.update();
+        this.graph.width = width;
+        this.graph.update();
       });
+      */
 
       return this;
+    },
+
+    update: function(series) {
+      this.series = series;
+      this.graph.update();
     }
   });
 

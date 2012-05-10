@@ -8,7 +8,6 @@ module Api
       time    = params[:time]   || 'minute'
       targets = params[:targets]
       data_points = prepare_data_points(from, time, *targets)
-      puts data_points.inspect
       respond_with data_points.to_json
     end
 

@@ -7,6 +7,7 @@
   app.mixins = {};
   
   $(function(){
+
     app.router = new app.Router();
 
     app.collections.metrics = new app.collections.Metric();
