@@ -29,9 +29,33 @@
     },
 
     updateNavigationSelection: function(fragment) {
-      var url = fragment.slice(0, fragment.indexOf("/"))
       $("div.navbar a[data-navigation-url]").parent().removeClass("active");
-      $("div.navbar a[data-navigation-url='/"+ url +"']").parent().addClass("active");
+
+      var url = fragment;
+      if ( fragment.indexOf("/") > 0) {
+        url = url.slice(0, url.indexOf("/"));
+      }
+
+      var selectedMenu = null;
+      switch(url) {
+        case "metric":
+        case "metrics":
+          selectedMenu = "metrics";
+          break;
+        case "instruments":
+        case "instrument":
+          selectedMenu = "instruments";
+          break;
+        case "dashboards":
+        case "dashboard":
+          selectedMenu = "dashboards";
+          break;
+        case "about":
+          selectedMenu = "about";
+          break;
+      };
+
+      $("div.navbar a[data-navigation-url='/"+ selectedMenu +"']").parent().addClass("active");
     },
 
     handleErrors: function(response) {
