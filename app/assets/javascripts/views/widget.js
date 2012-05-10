@@ -42,7 +42,7 @@
       _.bindAll(this, "render", "updateWidget", "renderGraph");
 
       this.dashboard = options.dashboard;
-      this.time = "minute";
+      this.time = "hour";
       this.targets = _.map(this.model.get('metrics'), function(metric) {
         return metric.name;
       });
