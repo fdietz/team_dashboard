@@ -156,7 +156,7 @@
 
     initialize: function(options) {
       _.bindAll(this, "render", "renderGraph", "editName", "saveName", "cancelEdit", "toggleRenderer");
-      //this.model.bind('change', this.render, this);
+      this.model.bind('change', this.render, this);
 
       this.time = "hour";
       this.targets = _.map(this.model.get('metrics'), function(metric) {
@@ -224,7 +224,7 @@
       this.graph.changeRenderer(currentRenderer);
 
       this.model.save({ renderer: currentRenderer }, { 
-        // silent: true,
+        silent: true,
         success: function(model, response) {
           console.log("model saved", model);
         },
