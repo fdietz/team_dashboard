@@ -1,6 +1,5 @@
 ( function (views){
 
-  /*
   var pastel = [
     '#239928',
     '#6CCC70',
@@ -15,9 +14,9 @@
     '#79BD8F',
     '#00A388'
   ].reverse();
-  
-  var customPalette = new Rickshaw.Color.Palette( { scheme: pastel } );
 
+  /*
+  var customPalette = new Rickshaw.Color.Palette( { scheme: pastel } );
   var spectrum14Palette = new Rickshaw.Color.Palette( { scheme: "spectrum14" } );
   */
 
@@ -86,7 +85,7 @@
 
       _.each(this.series, function(data) {
         if (data.color === undefined) {
-          data.color = '#00A388';
+          data.color = pastel[Math.floor(Math.random() * pastel.length)];
         }
       });
 
