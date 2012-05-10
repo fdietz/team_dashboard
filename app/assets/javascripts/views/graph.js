@@ -50,10 +50,11 @@
   views.Graph = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "update");
+      _.bindAll(this, "render", "update", "changeRenderer");
       this.time = this.options.time;
       this.series = this.options.series;
       this.metrics = this.options.metrics;
+      this.renderer = this.options.renderer || 'line';
     },
 
     render: function() {
@@ -74,26 +75,28 @@
 
       this.graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
-        renderer: 'line',
+        renderer: this.renderer,
         width: this.$('.graph').parent().width()-200,
-        // height: this.$('.graph').parent().height(),
+        height: this.$('.graph').parent().height(),
         //series: addColorToSeries(this.series, spectrum14Palette)
         series: this.series
       });
 
-      var x_axis = new Rickshaw.Graph.Axis.Time({
+      var xAxis = new Rickshaw.Graph.Axis.Time({
         graph: this.graph,
         timeUnit: timeUnit(this.time)
       });
 
-      // var y_axis = new Rickshaw.Graph.Axis.Y({
-      //   graph: graph,
+
+      // var yAxis = new Rickshaw.Graph.Axis.Y({
+      //   graph: this.graph,
       //   orientation: 'left',
       //   tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
       //   element: this.$('.y-axis').get(0)
       // });
 
       this.graph.render();
+      //xAxis.render();
 
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph
@@ -113,6 +116,13 @@
 
     update: function(series) {
       this.series = series;
+      this.graph.update();
+    },
+
+    changeRenderer: function(renderer) {
+      this.graph.configure({
+        renderer: renderer
+      });
       this.graph.update();
     }
   });

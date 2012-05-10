@@ -26,6 +26,7 @@ module Api
       instrument = SimpleMetrics::InstrumentRepository.find_one(params[:id])
       instrument.metrics = attributes[:metrics]
       instrument.name = attributes[:name]
+      instrument.renderer = attributes[:renderer]
       SimpleMetrics::InstrumentRepository.update(instrument)
       head :status => 204
     end

@@ -148,65 +148,48 @@
       "click .btn.add-metric"              : "showMetricsChooser",
       "click button.instrument-delete"     : "removeInstrument",
       "click .time"                        : "switchTime",
-      "click span[data-inline-edit]"        : "editName",
+      "click span[data-inline-edit]"       : "editName",
       "submit form[data-inline-edit]"      : "saveName",
-      "keyup form[data-inline-edit]>input" : "cancelEdit"
+      "keyup form[data-inline-edit]>input" : "cancelEdit",
+      "click .btn.toggle-renderer"         : "toggleRenderer"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "editName", "saveName", "cancelEdit");
-      this.model.bind('change', this.render, this);
+      _.bindAll(this, "render", "renderGraph", "editName", "saveName", "cancelEdit", "toggleRenderer");
+      //this.model.bind('change', this.render, this);
+
       this.time = "hour";
-    },
-
-    renderGraph: function(graphElement) {
-      var time = "hour";
-
-      var targets = _.map(this.model.get('metrics'), function(metric) {
+      this.targets = _.map(this.model.get('metrics'), function(metric) {
         return metric.name;
       });
 
-      var hourGraphCollection = new collections.Graph({
-        targets: targets,
+      this.graphCollection = new collections.Graph({
+        targets: this.targets,
         time: this.time
       });
+    },
 
-      // var that = this;
-      var metrics = this.model.get("metrics");
-      hourGraphCollection.fetch({ 
-        success: function(collection, response) {
-          var hasData = _.any(collection.toJSON(), function(item) {
-            return item.data.length > 0;
-          });
-          if (hasData) {
-            var series = collection.toJSON();
-
-            // _.each(metrics, function(metric, index) {
-            //   if (metric.name == series[index].name) {
-            //     series[index].color = metric.color
-            //   }
-            // });
-
-            // _.each(series, function(data) {
-            //   if (data.color === undefined) {
-            //     data.color = '#00A388';
-            //   }
-            // });
-
-            graph = new views.Graph({ series: series, metrics: metrics, time: this.time, el: graphElement });
-            graph.render();  
-          } else {
-            console.log("no graph data available");
-            graphElement.html("<p>No Graph data available in this time frame</p>");
-          }
-          
-        }
+    renderGraph: function() {
+      var hasData = _.any(this.graphCollection.toJSON(), function(item) {
+        return item.data.length > 0;
       });
+
+      if (hasData) {
+        this.graph = new views.Graph({ series: this.graphCollection.toJSON(), metrics: this.model.get("metrics"), time: this.time, renderer: this.model.get("renderer"), el: this.$("#instrument-graph-container") });
+        this.graph.render();  
+      } else {
+        console.log("no graph data available");
+        this.$("#instrument-graph-container").html("<p>No Graph data available in this time frame</p>");
+      }
     },
 
     render: function() {
       console.log("instrument render");
       $(this.el).html(JST['templates/instruments/show']({ instrument: this.model.toJSON() }));
+
+      if (this.model.get("renderer") === 'stack') {
+        this.$("button.toggle-renderer").button("toggle");  
+      }
 
       this.heading = this.$("span[data-inline-edit]");
       this.form = this.$("form[data-inline-edit]");
@@ -216,12 +199,42 @@
       table.render();
       this.$("#instrument-table-container").append(table.el);
 
-      this.renderGraph(this.$("#instrument-graph-container"));
+      this.graphCollection.fetch({ 
+        success: this.renderGraph
+      });
 
       var button = this.$("button[data-time='"+this.time+ "']");
       button.addClass("active");
 
       return this;
+    },
+
+    toggleRenderer: function() {
+      console.log("toggleRenderer");
+      var button = this.$(event.target);
+      button.button("toggle");
+
+      var currentRenderer = this.model.get("renderer");
+      if (currentRenderer === 'line') {
+        currentRenderer = 'stack';
+      } else {
+        currentRenderer = 'line';
+      }
+      // this.renderer = currentRenderer;
+      this.graph.changeRenderer(currentRenderer);
+
+      this.model.save({ renderer: currentRenderer }, { 
+        // silent: true,
+        success: function(model, response) {
+          console.log("model saved", model);
+        },
+        error: function(model, response) {
+          console.log("model save failed", response);
+          alert("save failed "+response);
+        }
+      });
+
+      return false;
     },
 
     showMetricsChooser: function() {
@@ -250,7 +263,16 @@
     switchTime: function(event) {
       var button = this.$(event.target);
       this.time = button.attr("data-time");
-      this.render();
+      button.button("toggle");
+
+      this.graphCollection = new collections.Graph({
+        targets: this.targets,
+        time: this.time
+      });
+
+      this.graphCollection.fetch({ 
+        success: this.renderGraph
+      });
     },
 
     editName: function() {

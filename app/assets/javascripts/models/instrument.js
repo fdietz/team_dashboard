@@ -5,7 +5,8 @@
 
     defaults: {
       "name"    : "Undefined name",
-      "metrics" : []
+      "metrics" : [],
+      "renderer": "line"
     }
   });
 

@@ -46,7 +46,7 @@
 
       if (hasData) {
         var metrics = this.model.get('metrics');
-        this.graph = new views.Graph({ metrics: metrics, series: this.collection.toJSON(), time: this.time, el: this.$(".graph-container") });
+        this.graph = new views.Graph({ metrics: metrics, series: this.collection.toJSON(), time: this.time, renderer: this.model.get("renderer"), el: this.$(".graph-container") });
         this.graph.render();
         this.graph.update();
       } else {
