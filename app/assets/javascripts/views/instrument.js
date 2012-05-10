@@ -46,7 +46,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render");
+      _.bindAll(this, "render", "addMetric");
     },
     
     render: function() {
@@ -87,9 +87,11 @@
       var tmp = this.model.get("metrics");
       tmp.push({ name: metricName });
       console.log("tmp", tmp);
-      this.model.save({ metrics: tmp }, {
+      this.model.set({ metrics: tmp });
+      this.model.save({
         success: function(model, response) {
           console.log("model saved", model);
+          model.change();
         },
         error: function(model, response) {
           console.log("model save failed", response);
@@ -115,7 +117,7 @@
 
     initialize: function(options) {
       _.bindAll(this, "render", "editName", "saveName", "cancelEdit");
-      this.model.bind('change', this.render);
+      this.model.bind('change', this.render, this);
       this.time = "hour";
     },
 
