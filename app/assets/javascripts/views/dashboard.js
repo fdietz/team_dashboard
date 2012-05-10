@@ -25,6 +25,7 @@
         time: time
       });
 
+      var metrics = this.model.get('metrics');
       hourGraphCollection.fetch({ 
         success: function(collection, response) {
           var hasData = _.any(collection.toJSON(), function(series) {
@@ -32,7 +33,7 @@
           });
 
           if (hasData) {
-            graph = new views.Graph({ series: collection.toJSON(), time: time, el: graphElement });
+            graph = new views.Graph({ metrics: metrics, series: collection.toJSON(), time: time, el: graphElement });
             graph.render();
           } else {
             console.log("no graph data available");

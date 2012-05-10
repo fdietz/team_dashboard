@@ -1,5 +1,6 @@
 ( function (views){
 
+  /*
   var pastel = [
     '#239928',
     '#6CCC70',
@@ -14,10 +15,13 @@
     '#79BD8F',
     '#00A388'
   ].reverse();
-
+  
   var customPalette = new Rickshaw.Color.Palette( { scheme: pastel } );
-  var spectrum14Palette = new Rickshaw.Color.Palette( { scheme: "spectrum14" } );
 
+  var spectrum14Palette = new Rickshaw.Color.Palette( { scheme: "spectrum14" } );
+  */
+
+  /*
   function addColorToSeries(data, palette) {
     var result = [];
     $.each(data, function(k, v){
@@ -26,6 +30,7 @@
     });
     return result;
   }
+  */
 
   function timeUnit(time) {
     var timeFixture = new Rickshaw.Fixtures.Time();
@@ -64,17 +69,34 @@
       _.bindAll(this, "render");
       this.time = this.options.time;
       this.series = this.options.series;
+      this.metrics = this.options.metrics;
     },
 
     render: function() {
       $(this.el).html(JST['templates/graphs/show']({ time: this.time }));
+
+      console.log(this.series, this.metrics);
+
+      var that = this;
+      _.each(this.series, function(serie, index) {
+        if (serie.name === that.metrics[index].name) {
+          serie.color = that.metrics[index].color
+        }
+      });
+
+      _.each(this.series, function(data) {
+        if (data.color === undefined) {
+          data.color = '#00A388';
+        }
+      });
 
       var graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: 'line',
         width: this.$('.graph').parent().width()-200,
         // height: this.$('.graph').parent().height(),
-        series: addColorToSeries(this.series, spectrum14Palette)
+        //series: addColorToSeries(this.series, spectrum14Palette)
+        series: this.series
       });
 
       var x_axis = new Rickshaw.Graph.Axis.Time({

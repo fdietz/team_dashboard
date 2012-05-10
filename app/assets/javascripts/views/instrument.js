@@ -174,13 +174,29 @@
         time: this.time
       });
 
+      // var that = this;
+      var metrics = this.model.get("metrics");
       hourGraphCollection.fetch({ 
         success: function(collection, response) {
-          var hasData = _.any(collection.toJSON(), function(series) {
-            return series.data.length > 0;
+          var hasData = _.any(collection.toJSON(), function(item) {
+            return item.data.length > 0;
           });
           if (hasData) {
-            graph = new views.Graph({ series: collection.toJSON(), time: this.time, el: graphElement });
+            var series = collection.toJSON();
+
+            // _.each(metrics, function(metric, index) {
+            //   if (metric.name == series[index].name) {
+            //     series[index].color = metric.color
+            //   }
+            // });
+
+            // _.each(series, function(data) {
+            //   if (data.color === undefined) {
+            //     data.color = '#00A388';
+            //   }
+            // });
+
+            graph = new views.Graph({ series: series, metrics: metrics, time: this.time, el: graphElement });
             graph.render();  
           } else {
             console.log("no graph data available");

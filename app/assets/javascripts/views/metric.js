@@ -17,12 +17,14 @@
       var button = this.$("button[data-time='"+this.time+ "']");
       button.addClass("active");
 
-      var targets = [this.model.get('name')];
+      var metricName = this.model.get('name');
+      var targets = [metricName];
       var graphCollection = new collections.Graph({
         targets: targets,
         time: this.time
       });
 
+      
       graphCollection.fetch({
         success: function(collection, request) {
           var hasData = _.any(collection.toJSON(), function(series) {
@@ -31,7 +33,7 @@
 
           if (hasData) {
             var graphView = new views.Graph({
-              series: collection.toJSON(), time: this.time, el: this.$("#graph-container")
+              metrics: targets, series: collection.toJSON(), time: this.time, el: this.$("#graph-container")
             });
             graphView.render();
           } else {
