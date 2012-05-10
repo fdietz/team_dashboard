@@ -1,5 +1,34 @@
 (function (views, models, collections) {
 
+  var EditWidgetDialog = Backbone.View.extend({
+
+    events: {
+      "click #widget-details-modal .btn-primary" : "saveChanges",
+    },
+
+    initialize: function(options) {
+      _.bindAll(this, "render");
+    },
+    
+    render: function() {
+      $(this.el).html(JST['templates/widgets/edit']({ dashboard: this.model.toJSON() }));
+
+      var myModal = this.$('#widget-details-modal');
+      console.log(myModal);
+      //myModal.on("shown", function() { input.focus(); });
+      myModal.modal({ keyboard: true });
+
+      return this;
+    },
+
+    saveChanges: function() {
+      var myModal = this.$('#widget-details-modal');
+      
+      return false;
+    }
+
+  });
+
   views.Widget = Backbone.View.extend({
     tagName: "div",
     className: "widget span6",
@@ -30,7 +59,7 @@
       this.collection.fetch({
         success: _.bind(function(model, response) {
           this.renderGraph();
-          this.graph.update();
+          this.graph.update();  
 
           setTimeout(this.updateWidget, 5000);
         }, this), 
@@ -42,6 +71,13 @@
 
     editWidget: function() {
       console.log("editWidget", this.model.id);
+
+      var dialog = new EditWidgetDialog({ model: this.model });
+      dialog.render();
+
+      this.$("#widget-edit-dialog").html(dialog.el);
+      return false;
+
     },
 
     renderGraph: function() {

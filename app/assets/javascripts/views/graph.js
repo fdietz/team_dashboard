@@ -116,7 +116,9 @@
 
     update: function(series) {
       this.series = series;
-      this.graph.update();
+      if (this.graph) {
+        this.graph.update();
+      }
     },
 
     changeRenderer: function(renderer) {
