@@ -127,9 +127,9 @@
 
   views.Dashboard = Backbone.View.extend({
     events: {
-      "click .btn.add-instrument" : "showInstrumentsChooser",
-      "click button.dashboard-delete" : "removeDashboard",
-      "click span[data-inline-edit]"         : "editName",
+      "click .btn.add-instrument"          : "showInstrumentsChooser",
+      "click button.dashboard-delete"      : "removeDashboard",
+      "click span[data-inline-edit]"       : "editName",
       "submit form[data-inline-edit]"      : "saveName",
       "keyup form[data-inline-edit]>input" : "cancelEdit"
     },
@@ -142,15 +142,25 @@
 
     renderWidgets: function() {
       var that = this;
-      console.log("renderWidgets", this.model, this.model.get('instruments'));
-      var targets = _.each(this.model.get('instruments'), function(id) {
+      var columnCount = 2;
+      var container = this.$("#dashboard-widget-container");
+      var targets = _.each(this.model.get('instruments'), function(id, index) {
+        var createNewRow = (index % columnCount) == 0;
         var instrument = new app.models.Instrument({ id: id});
 
         instrument.fetch({ 
           success: function(model, request) {
             var widget = new DashboardWidget({ model: model, dashboard: that.model });
             widget.render();
-            this.$("#dashboard-widget-container").append(widget.el);
+
+            if (createNewRow) {
+              container = this.$("#dashboard-widget-container");
+              var newElement = $("<div class='row-fluid'></div>");
+              container.append(newElement);
+              container = newElement;              
+            }
+            
+            container.append(widget.el);
           },
           error: function(model, request) {
             alert("Error request "+request);
@@ -166,6 +176,11 @@
       this.heading = this.$("span[data-inline-edit]");
       this.form = this.$("form[data-inline-edit]");
       this.input = this.$("form[data-inline-edit]>input");
+
+      // this.$("#dashboard-widget-container").masonry({
+      //   itemSelector : '.widget',
+      //   columnWidth : 500
+      // });
 
       this.renderWidgets();
 

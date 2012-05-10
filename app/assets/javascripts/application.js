@@ -24,6 +24,7 @@
 //= require moment.min
 
 //= require colorpicker
+//= require jquery-masonry
 
 //= require backbone_extensions
 //= require app
