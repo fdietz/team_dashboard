@@ -5,14 +5,15 @@
     className: "widget span6",
 
     events: {
-      "click button.widget-delete" : "removeWidget"
+      "click button.widget-delete" : "removeWidget",
+      "click button.widget-edit" : "editWidget"
     },
 
     initialize: function(options) {
       _.bindAll(this, "render", "updateWidget", "renderGraph");
 
       this.dashboard = options.dashboard;
-      this.time = "hour";
+      this.time = "minute";
       this.targets = _.map(this.model.get('metrics'), function(metric) {
         return metric.name;
       });
@@ -39,6 +40,10 @@
       });
     },
 
+    editWidget: function() {
+      console.log("editWidget", this.model.id);
+    },
+
     renderGraph: function() {
       var hasData = _.any(this.collection.toJSON(), function(series) {
         return series.data.length > 0;
@@ -51,7 +56,7 @@
         this.graph.update();
       } else {
         console.log("no graph data available");
-        graphElement.html("<p>No Graph data available in this time frame</p>");
+        this.$(".graph-container").html("<p>No Graph data available in this time frame</p>");
       }  
     },
 
