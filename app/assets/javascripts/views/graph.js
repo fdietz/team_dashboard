@@ -77,7 +77,7 @@
         element: this.$('.graph').get(0),
         renderer: this.renderer,
         width: this.$('.graph').parent().width()-200,
-        height: this.$('.graph').parent().height(),
+        //height: this.$('.graph').parent().height(),
         //series: addColorToSeries(this.series, spectrum14Palette)
         series: this.series
       });
