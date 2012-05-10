@@ -16,24 +16,21 @@
 
       var that = this;
       this.$('.color').colorpicker().on('changeColor', function(event) {
+        var metricName = $(event.currentTarget).attr("data-metric-name");
         var color = event.color.toHex();
-        console.log("color", color);
+        $(event.currentTarget).css("background-color", color);
       });
-
       
       this.$('.color').colorpicker().on("show", function(event) {
         console.log("show");
       });
 
       this.$('.color').colorpicker().on("hide", function(event) {
-        console.log("hide", event.color.toHex(), $(event.currentTarget));
-
         var metricName = $(event.currentTarget).attr("data-metric-name");
         var color = event.color.toHex();
         $(event.currentTarget).css("background-color", color);
         that.colorChanged(metricName, color);
       });
-    
 
       return this;
     },
