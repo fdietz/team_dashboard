@@ -2,7 +2,8 @@
 
   var InstrumentTable = Backbone.View.extend({
     events: {
-      "click button.remove-metric" : "removeMetric"
+      "click button.remove-metric" : "removeMetric",
+      "change select.color"        : "colorChanged"
     },
 
     initialize: function(options) {
@@ -13,10 +14,26 @@
     render: function() {
       $(this.el).html(JST['templates/instruments/table']({ instrument: this.model.toJSON() }));
 
-      this.$('.color').colorpicker().on('changeColor', function(event){
+      var that = this;
+      this.$('.color').colorpicker().on('changeColor', function(event) {
         var color = event.color.toHex();
         console.log("color", color);
       });
+
+      
+      this.$('.color').colorpicker().on("show", function(event) {
+        console.log("show");
+      });
+
+      this.$('.color').colorpicker().on("hide", function(event) {
+        console.log("hide", event.color.toHex(), $(event.currentTarget));
+
+        var metricName = $(event.currentTarget).attr("data-metric-name");
+        var color = event.color.toHex();
+        $(event.currentTarget).css("background-color", color);
+        that.colorChanged(metricName, color);
+      });
+    
 
       return this;
     },
@@ -36,6 +53,31 @@
           alert("save failed "+response);
         }
       });      
+    },
+
+    colorChanged: function(metricName, color) {
+      console.log(metricName, color);
+
+      var tmp = this.model.get("metrics");
+      _.each(tmp, function(metric) {
+        console.log(metricName, metric.name);
+        if (metricName === metric.name) {
+          metric.color = color;
+        }
+      });
+
+      console.log(tmp);
+      this.model.set({ metrics: tmp });
+      this.model.save({
+        success: function(model, response) {
+          console.log("model saved", model);
+        },
+        error: function(model, response) {
+          console.log("model save failed", response);
+          alert("save failed "+response);
+        }
+      });
+
     }
   });
 
@@ -91,7 +133,6 @@
       this.model.save({
         success: function(model, response) {
           console.log("model saved", model);
-          model.change();
         },
         error: function(model, response) {
           console.log("model save failed", response);

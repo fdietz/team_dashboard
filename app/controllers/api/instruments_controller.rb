@@ -5,6 +5,7 @@ module Api
     
     def show
       instrument = SimpleMetrics::InstrumentRepository.find_one(params[:id])
+      p instrument.attributes.to_json
       respond_with instrument.attributes.to_json
     end
 

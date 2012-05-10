@@ -14,13 +14,10 @@
           <td>{{name}}</td>
           <td>Average</td>
           <td>
-            <div class="input-append color" data-color="rgb(255, 146, 180)" data-color-format="rgb" style="display:inline;">
-              <input type="text" class="span2" value="" style="display:inline;" readonly>
-              <span class="add-on"><i style="background-color: rgb(255, 146, 180)"></i></span>
-            </div>
+            <span class="color" data-metric-name="{{name}}" data-color-format="hex" data-color="{{color}}" style="background-color: {{color}};"></span>
           </td>
           <td>
-            <button class="btn btn-warning remove-metric" data-metric-name="{{name}}"><i class="icon-trash"></i></button>
+            <button class="btn btn-warning btn-mini remove-metric" data-metric-name="{{name}}"><i class="icon-trash"></i></button>
           </td>
         </tr>
       {{/each}}
