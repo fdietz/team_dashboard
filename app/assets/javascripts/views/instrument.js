@@ -8,7 +8,7 @@
 
     initialize: function(options) {
       _.bindAll(this, "render", "removeMetric");
-      this.model.bind('change:metrics', this.render, this);
+      this.model.bind('change', this.render, this);
     },
 
     render: function() {
@@ -156,7 +156,8 @@
 
     initialize: function(options) {
       _.bindAll(this, "render", "renderGraph", "editName", "saveName", "cancelEdit", "toggleRenderer");
-      this.model.bind('change', this.render, this);
+      this.model.bind('change', this.graphChanged, this);
+      // this.model.bind('change:metrics', this.graphChanged, this);
 
       this.time = "hour";
       this.targets = _.map(this.model.get('metrics'), function(metric) {
@@ -169,7 +170,26 @@
       });
     },
 
+    graphChanged: function() {
+      console.log("graphChanged");
+
+      this.targets = _.map(this.model.get('metrics'), function(metric) {
+        return metric.name;
+      });
+
+      this.graphCollection = new collections.Graph({
+        targets: this.targets,
+        time: this.time
+      });
+
+      this.graphCollection.fetch({ 
+        success: this.renderGraph
+      });
+    },
+
     renderGraph: function() {
+      console.log("renderGraph");
+
       var hasData = _.any(this.graphCollection.toJSON(), function(item) {
         return item.data.length > 0;
       });
@@ -220,7 +240,7 @@
       } else {
         currentRenderer = 'line';
       }
-      // this.renderer = currentRenderer;
+
       this.graph.changeRenderer(currentRenderer);
 
       this.model.save({ renderer: currentRenderer }, { 
