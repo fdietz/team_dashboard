@@ -95,7 +95,6 @@
 
         instrument.fetch({ 
           success: function(model, request) {
-            console.log("that.time");
             var widget = new views.Widget({ model: model, dashboard: that.model, time: that.time });
             that.widgets.push(widget);
 
@@ -125,10 +124,9 @@
       this.form = this.$("form[data-inline-edit]");
       this.input = this.$("form[data-inline-edit]>input");
 
-      // this.$("#dashboard-widget-container").masonry({
-      //   itemSelector : '.widget',
-      //   columnWidth : 500
-      // });
+      var button = this.$("button[data-time='"+this.time+ "']");
+      console.log(button);
+      button.addClass("active");
 
       this.renderWidgets();
 
