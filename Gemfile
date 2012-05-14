@@ -9,7 +9,7 @@ gem "handlebars_assets"
 
 gem 'jbuilder'
 
-gem 'simple_metrics', "~> 0.4.3"
+gem 'simple_metrics', "~> 0.4.4"
 
 group :development do
   gem 'thin'
