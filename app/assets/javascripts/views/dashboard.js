@@ -63,26 +63,42 @@
       "click button.dashboard-delete"      : "removeDashboard",
       "click span[data-inline-edit]"       : "editName",
       "submit form[data-inline-edit]"      : "saveName",
-      "keyup form[data-inline-edit]>input" : "cancelEdit"
+      "keyup form[data-inline-edit]>input" : "cancelEdit",
+      "click .time"                        : "switchTime",
     },
 
     initialize: function(options) {
       _.bindAll(this, "render");
       this.model.bind('reset', this.render);
       this.model.bind('change', this.render);
+      this.time = "minute";
+      this.widgets = [];
     },
 
     renderWidgets: function() {
       var that = this;
       var columnCount = 2;
       var container = this.$("#dashboard-widget-container");
+      container.html("");
+      var widgets = this.widgets;
+
+      _.each(this.widgets, function(widget) {
+        widget.close();
+        delete widget;
+      });
+
+      this.widgets = [];
+
       var targets = _.each(this.model.get('instruments'), function(id, index) {
         var createNewRow = (index % columnCount) == 0;
         var instrument = new app.models.Instrument({ id: id});
 
         instrument.fetch({ 
           success: function(model, request) {
-            var widget = new views.Widget({ model: model, dashboard: that.model });
+            console.log("that.time");
+            var widget = new views.Widget({ model: model, dashboard: that.model, time: that.time });
+            that.widgets.push(widget);
+
             widget.render();
 
             if (createNewRow) {
@@ -165,7 +181,15 @@
         this.heading.toggle();
         this.form.toggle();      
       }
-    }
+    },
+
+    switchTime: function(event) {
+      var button = this.$(event.target);
+      this.time = button.attr("data-time");
+      button.button("toggle");
+      this.renderWidgets();
+      return false;
+    },
 
   });
 

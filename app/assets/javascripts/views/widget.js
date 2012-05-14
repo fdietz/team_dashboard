@@ -42,7 +42,9 @@
       _.bindAll(this, "render", "updateWidget", "renderGraph");
 
       this.dashboard = options.dashboard;
-      this.time = "hour";
+      this.time = options.time || "hour";
+      this.timeouts = [];
+
       this.targets = _.map(this.model.get('metrics'), function(metric) {
         return metric.name;
       });
@@ -56,12 +58,14 @@
     },
 
     updateWidget: function() {
+      var that = this;
       this.collection.fetch({
         success: _.bind(function(model, response) {
           this.renderGraph();
           this.graph.update();  
 
-          setTimeout(this.updateWidget, 5000);
+          var id = setTimeout(this.updateWidget, 5000);
+          that.timeouts.push(id);
         }, this), 
         error: _.bind(function(model, response) {
           console.log("error updating widget", response);
@@ -122,6 +126,12 @@
 
       this.remove();
       this.unbind();
+    },
+
+    onClose: function() {
+      for(var i=0; i<this.timeouts.length; i++) {
+        clearTimeout(this.timeouts[i]);
+      }
     }
 
   });
