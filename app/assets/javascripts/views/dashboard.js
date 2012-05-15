@@ -63,6 +63,7 @@
       "click button.dashboard-delete"      : "removeDashboard",
       "click span[data-inline-edit]"       : "editName",
       "submit form[data-inline-edit]"      : "saveName",
+      "blur form[data-inline-edit]>input"  : "saveName",
       "keyup form[data-inline-edit]>input" : "cancelEdit",
       "click .time"                        : "switchTime",
     },

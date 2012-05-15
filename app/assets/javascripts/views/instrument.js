@@ -150,6 +150,7 @@
       "click .time"                        : "switchTime",
       "click span[data-inline-edit]"       : "editName",
       "submit form[data-inline-edit]"      : "saveName",
+      "blur form[data-inline-edit]>input"  : "saveName",
       "keyup form[data-inline-edit]>input" : "cancelEdit",
       "click .btn.toggle-renderer"         : "toggleRenderer"
     },
