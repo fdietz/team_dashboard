@@ -15,6 +15,10 @@ group :development do
   gem 'thin'
 end
 
+group :test, :development do
+  gem 'jasmine'
+end
+
 group :assets do
   gem 'sass-rails'
 
