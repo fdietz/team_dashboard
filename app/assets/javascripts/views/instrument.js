@@ -298,15 +298,16 @@
 
     editName: function() {
       console.log("editName");
-      this.heading.toggle();
+      this.heading.hide();
+      //this.heading.toggle();
       this.form.css("display", "inline");
       this.input.focus();
       return false;
     },
 
     saveName: function() {
-      this.heading.toggle();
-      this.form.toggle();
+      this.heading.show();
+      this.form.hide();
 
       this.heading.html(this.input.val());
       this.model.set({name: this.input.val() });
@@ -316,8 +317,8 @@
 
     cancelEdit: function(event) {
       if (event.keyCode == 27) {
-        this.heading.toggle();
-        this.form.toggle();      
+        this.heading.show();
+        this.form.hide();      
       }
     }
 
