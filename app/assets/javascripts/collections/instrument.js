@@ -1,6 +1,6 @@
 (function (collections, model) {
 
-    collections.Instrument = Backbone.Collection.extend({
+  collections.Instrument = Backbone.Collection.extend({
     model: model,
     url: '/api/instruments'
   });

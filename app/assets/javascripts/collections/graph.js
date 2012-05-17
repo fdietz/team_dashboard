@@ -5,14 +5,13 @@
 
       initialize: function(options) {
         this.targets = options.targets;
-        this.time = options.time;
+        this.time = options.time || 'minute';
       },
 
       buildTargetsParams: function() {
-        var result = _.map(this.targets, function(target) {
+        return _.map(this.targets, function(target) {
           return "targets[]="+target;
-        });
-        return result.join("&");
+        }).join('&');
       },
 
       buildTimeParams: function() {
@@ -21,7 +20,7 @@
 
       url: function() {
         var params = [this.buildTargetsParams(), this.buildTimeParams()];
-        return "/api/graph?"+params.join('&');
+        return "/api/graph?" + params.join('&');
       }
 
     });

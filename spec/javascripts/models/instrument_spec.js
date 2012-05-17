@@ -10,7 +10,7 @@ describe('Instrument Model', function() {
   });
 
   it("has default urlRoot", function() {
-    expect(instrument.urlRoot).toBe("/api/instruments")
+    expect(instrument.urlRoot).toBe("/api/instruments");
   });
 
   it("will set passed attributes", function() {

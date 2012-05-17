@@ -6,14 +6,8 @@
     defaults: {
       "name"        : "Undefined name",
       "instruments" : []
-    },
-
-    instrumentNames: function() {
-      _.map(this.get("instruments"), function(instrument) {
-        return instrument.name;
-      });
     }
-    
+        
   });
 
 })(app.models);

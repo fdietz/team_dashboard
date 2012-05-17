@@ -39,7 +39,7 @@
       var selectedName = this.$(event.currentTarget).attr("data-metric-name");
       var tmp = this.model.get("metrics");
       var filtered = _.filter(tmp, function(metric) {
-        return selectedName !== metric.name
+        return selectedName !== metric.name;
       });
       this.model.save({ metrics: filtered }, {
         success: function(model, response) {
@@ -49,7 +49,7 @@
           console.log("model save failed", response);
           alert("save failed "+response);
         }
-      });      
+      });
     },
 
     colorChanged: function(metricName, color) {
@@ -63,7 +63,6 @@
         }
       });
 
-      console.log(tmp);
       this.model.set({ metrics: tmp });
       this.model.save({
         success: function(model, response) {
@@ -81,7 +80,7 @@
   var MetricsChooserDialog = Backbone.View.extend({
     events: {
       "submit #modal-search-form"                    : "addMetric",
-      "click #instrument-details-modal .btn-primary" : "addMetric",
+      "click #instrument-details-modal .btn-primary" : "addMetric"
     },
 
     initialize: function(options) {
@@ -291,7 +290,7 @@
         time: this.time
       });
 
-      this.graphCollection.fetch({ 
+      this.graphCollection.fetch({
         success: this.renderGraph
       });
     },
@@ -299,7 +298,6 @@
     editName: function() {
       console.log("editName");
       this.heading.hide();
-      //this.heading.toggle();
       this.form.css("display", "inline");
       this.input.focus();
       return false;
@@ -316,9 +314,10 @@
     },
 
     cancelEdit: function(event) {
+      console.log(event.keyCode);
       if (event.keyCode == 27) {
         this.heading.show();
-        this.form.hide();      
+        this.form.hide();
       }
     }
 

@@ -32,7 +32,6 @@
 //= require helpers
 //= require behaviours
 
-//= require_tree ./jasmine_examples
 //= require_tree ./models
 //= require_tree ./collections
 //= require_tree ./views
