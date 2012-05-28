@@ -182,7 +182,7 @@
         time: this.time
       });
 
-      this.graphCollection.fetch({ 
+      this.graphCollection.fetch({
         success: this.renderGraph
       });
     },
@@ -196,7 +196,7 @@
 
       if (hasData) {
         this.graph = new views.Graph({ series: this.graphCollection.toJSON(), metrics: this.model.get("metrics"), time: this.time, renderer: this.model.get("renderer"), el: this.$("#instrument-graph-container") });
-        this.graph.render();  
+        this.graph.render();
       } else {
         console.log("no graph data available");
         this.$("#instrument-graph-container").html("<p>No Graph data available in this time frame</p>");
@@ -208,7 +208,7 @@
       $(this.el).html(JST['templates/instruments/show']({ instrument: this.model.toJSON() }));
 
       if (this.model.get("renderer") === 'stack') {
-        this.$("button.toggle-renderer").button("toggle");  
+        this.$("button.toggle-renderer").button("toggle");
       }
 
       this.heading = this.$("span[data-inline-edit]");

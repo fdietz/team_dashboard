@@ -16,7 +16,9 @@
  *= require bootswatch
 
  *= require colorpicker
- 
+
+ *= require graph
+  
  *= require_self
 */
 

@@ -2,17 +2,57 @@
   display: inline-block;
 }
 
+.graph2 {
+  width: auto;
+  height: 480px;  
+}
+
+/*
+.flotr-grid-label {
+  color: #fff;
+}
+
+.flotr-grid-label-y {
+  margin-left: -5px;
+}
+
+.flotr-grid-label-x {
+  margin-top: 5px;
+}
+*/
+
+/************************* rickshaw graph */
+
 .y-axis {
   float: left;
   width: 40px;
+  /*width: 40px;*/
 }
-
 
 /* plot width */
 .graph svg path {
   stroke-width: 2;
 }
 
+/* move x-axis title below graph */
+.rickshaw_graph .x_tick {
+  margin-bottom: -25px;
+}
+
+/* text color of x-axis label */
+.rickshaw_graph .x_tick .title {
+  color: #FFF;
+}
+
+/* hover details */
+.rickshaw_graph .detail .x_label { display: none }
+.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+.detail_swatch { float: right; width: 10px; height: 10px; margin: 0 4px 0 0; }
+.rickshaw_graph .detail .date { color: #a0a0a0 }
+
+.rickshaw_graph text {
+  fill: #FFF;
+}
 
 /* hide y-axis matrix */
 .rickshaw_graph .x_tick {
@@ -26,20 +66,6 @@
   stroke: none;
 }
 
-/* hide y-axis tick */
-.rickshaw_graph .y_ticks .tick {
-  stroke: none;
-}
-
-/* show x-axis matrix */
-.rickshaw_graph .y_grid .tick {
-  stroke: rgba(0,0,0,0.1);
-  stroke-width: 1px;
-  stroke-dasharray: 0;
-}
-
-/* move x-axis title below graph */
-.rickshaw_graph .x_tick .title {
-  margin-left: 3px;
-  bottom: -20px;
+.rickshaw_graph .y_grid {
+  display:none;
 }

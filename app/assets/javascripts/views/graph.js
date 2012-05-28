@@ -63,7 +63,7 @@
       var that = this;
       _.each(this.series, function(serie, index) {
         if (serie.name === that.metrics[index].name) {
-          serie.color = that.metrics[index].color
+          serie.color = that.metrics[index].color;
         }
       });
 
@@ -77,39 +77,36 @@
         element: this.$('.graph').get(0),
         renderer: this.renderer,
         width: this.$('.graph').parent().width()-200,
-        //height: this.$('.graph').parent().height(),
-        //series: addColorToSeries(this.series, spectrum14Palette)
         series: this.series
       });
+
+      
+      this.graph.render();
 
       var xAxis = new Rickshaw.Graph.Axis.Time({
         graph: this.graph,
         timeUnit: timeUnit(this.time)
       });
+      xAxis.render();
 
-
-      // var yAxis = new Rickshaw.Graph.Axis.Y({
-      //   graph: this.graph,
-      //   orientation: 'left',
-      //   tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-      //   element: this.$('.y-axis').get(0)
-      // });
-
-      this.graph.render();
-      //xAxis.render();
-
+      var yAxis = new Rickshaw.Graph.Axis.Y({
+        graph: this.graph,
+        orientation: 'left',
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        element: this.$('.y-axis').get(0)
+      });
+      yAxis.render();
+  
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
-        graph: this.graph
+        graph: this.graph,
+        formatter: function(series, x, y) {
+          var dateStr = window.moment.utc(new Date(x*1000)).local().format("YYYY-MM-DD h:mm a");
+          var date = '<span class="date">' + dateStr + '</span>';
+          var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+          var content = swatch + series.name + ": " + parseInt(y) + '<br>' + date;
+          return content;
+        }
       });
-
-      /*
-      $(window).resize(function() {
-        console.log("resize");
-        var width = this.$('.graph').parent().width()-100;
-        this.graph.width = width;
-        this.graph.update();
-      });
-      */
 
       return this;
     },
