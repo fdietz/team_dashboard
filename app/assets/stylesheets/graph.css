@@ -2,24 +2,6 @@
   display: inline-block;
 }
 
-.graph2 {
-  width: auto;
-  height: 480px;  
-}
-
-/*
-.flotr-grid-label {
-  color: #fff;
-}
-
-.flotr-grid-label-y {
-  margin-left: -5px;
-}
-
-.flotr-grid-label-x {
-  margin-top: 5px;
-}
-*/
 
 /************************* rickshaw graph */
 
@@ -47,8 +29,8 @@
 /* hover details */
 .rickshaw_graph .detail .x_label { display: none }
 .rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
-.detail_swatch { float: right; width: 10px; height: 10px; margin: 0 4px 0 0; }
-.rickshaw_graph .detail .date { color: #a0a0a0 }
+.detail_swatch { float: right; width: 10px; height: 10px; margin: 2px 4px 0 4px}
+.rickshaw_graph .detail .date { color: #a0a0a0; }
 
 .rickshaw_graph text {
   fill: #FFF;

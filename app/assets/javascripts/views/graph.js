@@ -18,25 +18,26 @@
 
   function timeUnit(time) {
     var timeFixture = new Rickshaw.Fixtures.Time();
+
     var minuteCustom = {
       name: 'minute',
       seconds: 60,
-      formatter: function(d) { return d.getUTCHours()+':'+d.getUTCMinutes()+'h';}
+      formatter: function(d) { return moment.utc(d).local().format("hh:mm a"); }
     };
     var hourCustom = {
       name: 'hour',
       seconds: 60*15,
-      formatter: function(d) { return d.getUTCHours()+':'+d.getUTCMinutes()+'h';}
+      formatter: function(d) { return moment.utc(d).local().format("hh:mm a"); }
     };
     var dayCustom = {
       name: 'day',
       seconds: 60*60*2,
-      formatter: function(d) { return d.getUTCHours()+'h';}
+      formatter: function(d) { return moment.utc(d).local().format("hh a"); }
     };
     var weekCustom = {
       name: 'week',
       seconds: 60*60*2*7*2,
-      formatter: function(d) { return d.getUTCDate()+'. '+d.getUTCMonth()+'.';}
+      formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }
     };
 
     switch(time){
