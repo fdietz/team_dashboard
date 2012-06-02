@@ -22,17 +22,17 @@
     var minuteCustom = {
       name: 'minute',
       seconds: 60,
-      formatter: function(d) { return moment.utc(d).local().format("hh:mm a"); }
+      formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
     };
     var hourCustom = {
       name: 'hour',
       seconds: 60*15,
-      formatter: function(d) { return moment.utc(d).local().format("hh:mm a"); }
+      formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
     };
     var dayCustom = {
       name: 'day',
-      seconds: 60*60*2,
-      formatter: function(d) { return moment.utc(d).local().format("hh a"); }
+      seconds: 60*60*4,
+      formatter: function(d) { return moment.utc(d).local().format("HH"); }
     };
     var weekCustom = {
       name: 'week',
