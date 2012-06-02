@@ -15,3 +15,5 @@
 /tmp
 
 /public/assets
+
+/**/.DS_Store
