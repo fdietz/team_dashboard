@@ -65,7 +65,7 @@
       "submit form[data-inline-edit]"      : "saveName",
       "blur form[data-inline-edit]>input"  : "saveName",
       "keyup form[data-inline-edit]>input" : "cancelEdit",
-      "click .time"                        : "switchTime",
+      "click .time"                        : "switchTime"
     },
 
     initialize: function(options) {
@@ -73,6 +73,8 @@
       this.model.bind('reset', this.render);
       this.model.bind('change', this.render);
       this.time = "minute";
+      this.size = 1;
+      console.log("size", this.size);
       this.widgets = [];
     },
 
@@ -85,28 +87,28 @@
 
       _.each(this.widgets, function(widget) {
         widget.close();
-        delete widget;
+        // delete widget;
       });
 
       this.widgets = [];
 
       var targets = _.each(this.model.get('instruments'), function(id, index) {
-        var createNewRow = (index % columnCount) == 0;
+        // var createNewRow = (index % columnCount) == 0;
         var instrument = new app.models.Instrument({ id: id});
 
-        instrument.fetch({ 
+        instrument.fetch({
           success: function(model, request) {
-            var widget = new views.Widget({ model: model, dashboard: that.model, time: that.time });
+            var widget = new views.Widget({ model: model, dashboard: that.model, time: that.time, size: that.size });
             that.widgets.push(widget);
 
             widget.render();
 
-            if (createNewRow) {
-              container = this.$("#dashboard-widget-container");
-              var newElement = $("<div class='row-fluid'></div>");
-              container.append(newElement);
-              container = newElement;              
-            }
+            // if (createNewRow) {
+            //   container = this.$("#dashboard-widget-container");
+            //   var newElement = $("<div class='row-fluid'></div>");
+            //   container.append(newElement);
+            //   container = newElement;
+            // }
             
             container.append(widget.el);
           },
@@ -126,8 +128,40 @@
       this.input = this.$("form[data-inline-edit]>input");
 
       var button = this.$("button[data-time='"+this.time+ "']");
-      console.log(button);
       button.addClass("active");
+
+      this.$("#dashboard-widget-container").sortable({
+        forcePlaceholderSize: true,
+        revert: 300,
+        delay: 100,
+        opacity: 0.8,
+        start: function (e,ui) {
+          console.log("start drag");
+        },
+        stop: function (e,ui) {
+          console.log("stop drag");
+          // TODO: save dashboard changes
+        }
+      });
+
+      this.$("#dashboard-widget-container").disableSelection();
+
+      // this.$(".portlet")
+      //   .addClass("ui-widget ui-widget-content ui-corner-all")
+      //   .find(".portlet-header")
+      //   .addClass("ui-widget-header ui-corner-all")
+      //   .prepend("<span class='ui-icon ui-icon-minusthick'><i class='icon-minus'></i></span>")
+      //   .prepend("<span class='ui-icon ui-icon-minusthick'><i class='icon-cog'></i></span>")
+      //   .prepend("<span class='ui-icon ui-icon-minusthick'><i class='icon-remove'></i></span>")
+      //   .end()
+      //   .find(".portlet-content");
+
+      this.$(".portlet-header .ui-icon").click(function() {
+        $(this).toggleClass("ui-icon-minusthick").toggleClass("ui-icon-plusthick");
+        $(this).parents(".portlet:first").toggleClass("portlet-minimized");
+      });
+
+      // this.$(".column").disableSelection();
 
       this.renderWidgets();
 
@@ -140,6 +174,8 @@
       dialog.render();
 
       this.$("#instruments-chooser").html(dialog.el);
+
+
       return false;
     },
 

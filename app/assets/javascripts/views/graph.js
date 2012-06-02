@@ -77,7 +77,7 @@
       this.graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: this.renderer,
-        width: this.$('.graph').parent().width()-200,
+        width: this.$('.graph').parent().width()-80,
         series: this.series
       });
 

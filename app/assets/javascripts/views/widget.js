@@ -31,11 +31,12 @@
 
   views.Widget = Backbone.View.extend({
     tagName: "div",
-    className: "widget span6",
+    className: "widget",
 
     events: {
-      "click button.widget-delete" : "removeWidget",
-      "click button.widget-edit" : "editWidget"
+      "click .widget-delete" : "removeWidget",
+      "click .widget-edit" : "editWidget",
+      "click .widget-collapse" : "collapseWidget"
     },
 
     initialize: function(options) {
@@ -43,6 +44,7 @@
 
       this.dashboard = options.dashboard;
       this.time = options.time || "hour";
+      this.size = options.size || 1;
       this.timeouts = [];
 
       this.targets = _.map(this.model.get('metrics'), function(metric) {
@@ -102,10 +104,15 @@
 
     render: function() {
       console.log("render widget", this.collection, this.collection.toJSON());
-      $(this.el).html(JST['templates/widgets/show']({ instrument: this.model.toJSON() }));
+      $(this.el).html(JST['templates/widgets/show']({ instrument: this.model.toJSON(), size: this.size }));
 
       var metrics = this.model.get('metrics');
       this.graph = new views.Graph({ metrics: metrics, series: this.collection.toJSON(), time: this.time, el: this.$(".graph-container") });
+
+      $(this.el)
+        .addClass("portlet well well-small ui-widget ui-widget-content ui-corner-all")
+        .attr("id", "widget-span-" + this.size)
+        .attr("data-widget-id", this.model.get("id"));
 
       return this;
     },
@@ -115,7 +122,7 @@
       tmp.splice(_.indexOf(tmp, this.model.id), 1);
 
       this.dashboard.set({ instruments: tmp });
-      var result = this.dashboard.save({ 
+      var result = this.dashboard.save({
         success: function(model, request) {
           console.log("saved model: ", model);
         },
@@ -126,6 +133,13 @@
 
       this.remove();
       this.unbind();
+    },
+
+    collapseWidget: function(event) {
+      console.log("collapseWidget", this.model.id);
+
+      $(this.el).toggleClass("portlet-minimized");
+      return false;
     },
 
     onClose: function() {

@@ -10,6 +10,7 @@
  *
  
  *= require rickshaw.min
+ *= jquery-ui-1.8.20.custom
 
  *= require bootstrap
  *= require variables
@@ -60,3 +61,55 @@
   width: 20px;
   height: 20px;
 }
+
+
+/* dashboard */
+
+#dashboard-widget-container {
+  width: 100%;
+  height: 100%;
+}
+
+div.portlet {
+  margin: 10px;
+  float: left;
+  /*height: 100px;*/
+}
+
+/* TODO: check why jquery sortable depends on id instead of class here */
+#widget-span-1 { width: 30%; }
+#widget-span-2 { width: 63%; }
+#widget-span-3 { width: 96%; }
+
+.portlet { 
+}
+
+.portlet-minimized { height: auto !important; }
+
+.portlet-header { 
+  border-bottom: 1px solid #33B5E5;
+
+  margin: 0.3em; 
+  padding-bottom: 4px; 
+  padding-left: 0.2em; 
+
+  cursor: move;
+}
+
+.portlet-header .ui-icon { 
+  float: right; 
+  cursor: pointer;
+}
+.portlet-content { padding: 0.4em; }
+.portlet-minimized .portlet-content { display: none !important; }
+
+.ui-sortable-placeholder { 
+  border: 2px dashed #FFF; 
+  visibility: visible !important; 
+  height: 300px !important; 
+}
+
+.ui-sortable-placeholder * { 
+  visibility: hidden; 
+}
+

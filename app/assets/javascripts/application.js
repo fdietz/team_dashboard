@@ -13,6 +13,7 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui-1.8.20.custom.min.js
 //= require underscore
 //= require backbone
 //= require handlebars
