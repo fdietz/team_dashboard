@@ -89,9 +89,10 @@ div.portlet {
 .portlet-header { 
   border-bottom: 1px solid #33B5E5;
 
-  margin: 0.3em; 
-  padding-bottom: 4px; 
-  padding-left: 0.2em; 
+  /*margin: 0.3em; */
+  margin-bottom: 0.2em;
+  padding-bottom: 0.4em; 
+  /*padding-left: 0.2em; */
 
   cursor: move;
 }
@@ -99,6 +100,7 @@ div.portlet {
 .portlet-header .ui-icon { 
   float: right; 
   cursor: pointer;
+  opacity: 0.5;
 }
 .portlet-content { padding: 0.4em; }
 .portlet-minimized .portlet-content { display: none !important; }
