@@ -28,7 +28,7 @@
       });
 
       var result2 = _.reduce(result, function(result, data) {
-        return result + data.y;
+        return result + data[0];
       }, 0);
 
       console.log("result", result2);
