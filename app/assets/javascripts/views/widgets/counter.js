@@ -31,8 +31,6 @@
         return result + data[0];
       }, 0);
 
-      console.log("result", result2);
-
       return result2;
     },
 

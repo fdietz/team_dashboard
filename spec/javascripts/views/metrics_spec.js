@@ -26,9 +26,7 @@ describe("Metrics View", function() {
       this.view.render();
 
       expect(this.view.$("a:first")).toHaveText("name1");
-      expect(this.view.$("a:first")).toHaveAttr("data-navigation-url", "/metrics/name1");
       expect(this.view.$("a:last")).toHaveText("name2");
-      expect(this.view.$("a:last")).toHaveAttr("data-navigation-url", "/metrics/name2");
     });
 
   });

@@ -29,7 +29,7 @@
     },
 
     updateNavigationSelection: function(fragment) {
-      $("div.navbar a[data-navigation-url]").parent().removeClass("active");
+      $("div.navbar a[href]").parent().removeClass("active");
 
       var url = fragment;
       if ( fragment.indexOf("/") > 0) {
@@ -55,7 +55,7 @@
           break;
       }
 
-      $("div.navbar a[data-navigation-url='/"+ selectedMenu +"']").parent().addClass("active");
+      $("div.navbar a[href='/"+ selectedMenu +"']").parent().addClass("active");
     },
 
     metricsIndex: function() {
