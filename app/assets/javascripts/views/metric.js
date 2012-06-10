@@ -19,7 +19,7 @@
   var Graph = Backbone.View.extend({
     
     initialize: function(options) {
-      _.bindAll(this, "render", "datapoints");
+      _.bindAll(this, "render", "renderGraph", "transformDatapoints");
 
       this.time = options.time || 'minute';
       this.targets = options.targets;
@@ -38,8 +38,9 @@
       this.collection.fetch();
     },
 
-    datapoints: function() {
+    transformDatapoints: function() {
       var series = this.collection.toJSON();
+      series.hasData = true;
       _.each(series, function(model, index) {
         if (model.color === undefined) {
           model.color = pastel[Math.floor(Math.random() * pastel.length)];
@@ -48,14 +49,16 @@
         model.data = _.map(model.datapoints, function(dp) {
           return { x: dp[1], y: dp[0] };
         });
-        model.datapoints = null;
+        if (model.data.length === 0) {
+          series.hasData = false;
+        }
+        delete model.datapoints;
+        delete model.target;
       });
       return series;
     },
 
     render: function() {
-      console.log("metric graph render");
-
       $(this.el).html(JST['templates/widgets/line_graph/show']({ time: this.time }));
 
       if (!this.collection.isFetched) {
@@ -63,11 +66,26 @@
         return this;
       }
 
+      var datapoints = this.transformDatapoints();
+      if (datapoints.hasData === true) {
+        this.renderGraph(datapoints);
+      } else {
+        this.showEmptyDatasetNotice();
+      }
+
+      return this;
+    },
+
+    showEmptyDatasetNotice: function() {
+      $(this.el).html("<p>No data available.</p>");
+    },
+
+    renderGraph: function(datapoints) {
       this.graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: this.renderer,
         width: this.$('.graph').parent().width()-80,
-        series: this.datapoints()
+        series: datapoints
       });
       
       this.graph.render();
@@ -85,7 +103,7 @@
         element: this.$('.y-axis').get(0)
       });
       yAxis.render();
-  
+      
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph,
         formatter: function(series, x, y) {
@@ -96,8 +114,6 @@
           return content;
         }
       });
-
-      return this;
     },
 
     onClose: function() {
