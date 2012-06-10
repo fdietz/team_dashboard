@@ -39,7 +39,7 @@
 
       var myModal = this.$('#dashboard-details-modal');
       var nameInput = this.$('input.name');
-      myModal.on("shown", function() { nameInput.focus(); });
+      myModal.on("shown", function() { nameInput.blur().focus(); });
       myModal.modal({ keyboard: true });
       return this;
     },
