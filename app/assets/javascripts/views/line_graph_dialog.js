@@ -50,12 +50,13 @@
       myModal.modal("hide");
 
       var targets = this.targetInput.select2('val');
-      this.model.set("targets", targets.join(','));
-
-      var result = this.model.save({
+      this.model.set("targets", targets.join(',') );
+      this.model.set("kind", "line_graph");
+      
+      var result = this.model.save({}, {
         success: function(model, request) {
-          console.log("saved model: ", model);
-          that.model.trigger("widgets:changed");
+          that.dashboard.get('layout').push(model.id);
+          that.dashboard.trigger("widgets:changed");
         }
       });
 

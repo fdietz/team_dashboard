@@ -15,7 +15,6 @@
       this.model.on("widgets:changed", this.render);
 
       this.widgets = [];
-      this.currentColorIndex = 0;
     },
 
     closeAllWidgets: function() {
@@ -30,9 +29,7 @@
     appendWidget: function(model) {
       var widget = new views.WidgetContainer({ model: model, dashboard: this.model});
       this.widgets.push(widget);
-
-      widget.render();
-      this.container.append(widget.el);
+      this.container.append(widget.render().el);
     },
 
     renderWidgets: function() {
@@ -54,6 +51,7 @@
     },
 
     render: function() {
+      console.log("render graph");
       var that = this;
       
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
@@ -111,7 +109,7 @@
     },
 
     showCounterDialog: function(event) {
-      var widget = new models.Widget({  dashboard_id: this.model.id, type: 'counter' });
+      var widget = new models.Widget({ dashboard_id: this.model.id, type: 'counter' });
       var dialog = new views.CounterDialog({ model: widget, dashboard: this.model });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
