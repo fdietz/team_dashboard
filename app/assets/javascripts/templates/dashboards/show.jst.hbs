@@ -1,14 +1,21 @@
 {{#with dashboard}}
-  <span>
-    <h2 id='dashboard-name' style="display:inline">{{name}}</h2>
-    <form id='dashboard-editable' class="form-inline" data-inline-edit="true" style="display: none">
-      <input value="{{name}}" type="text" class="input-xlarge focused" autocomplete="off">
-    </form>
-  </span>
-
-  <div class="btn-toolbar pull-right" style="display:inline">
+  
+  <div class="btn-toolbar" style="margin-top: 0; margin-bottom: 0;">
     <div class="btn-group">
-      <button class="btn btn-success dropdown-toggle add-instrument" data-toggle="dropdown">
+      <h2 id='dashboard-name' style="display:inline">{{name}}</h2>
+      <form id='dashboard-editable' class="form-inline" data-inline-edit="true" style="display: none">
+        <input value="{{name}}" type="text" class="input-xlarge focused" autocomplete="off">
+      </form>
+    </div>
+
+    <div class="btn-group pull-right">
+      <button class="btn btn-warning dashboard-delete" data-dashboard-id="{{id}}">
+        <i class="icon-trash"></i>
+      </button> 
+    </div>
+
+    <div class="btn-group pull-right">
+      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Add Widget
         <span class="caret"></span>
         <ul class="dropdown-menu">
@@ -17,15 +24,8 @@
         </ul>
       </button>
     </div>
-    <div class="btn-group">
-      <button class="btn btn-warning dashboard-delete" data-dashboard-id="{{id}}">
-        <i class="icon-trash"></i>
-      </button> 
-    </div>
   </div>
   
-  </br>
-
   <div id="dashboard-widget-container">
   
   </div>
