@@ -1,0 +1,65 @@
+<div class="modal" id="dashboard-details-modal" style="display:none; width=1024px;">
+  <div class="modal-header">
+    <h3>Counter Widget</h3>
+  </div>
+  <div class="modal-body">
+      <form id="counter-form" class="form-horizontal">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">Title</label>
+            <div class="controls">
+              <input name="name" class="name" type="text" placeholder="Enter widget name">
+            </div>
+          </div>
+          
+          <!-- <div class="control-group">
+            <label class="control-label">Size</label>
+            <div class="controls">
+              <select name="size" class="size">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div> -->
+
+          <div class="control-group">
+            <label class="control-label">Time</label>
+            <div class="controls">
+              <select name="time" class="time">
+                <option>minute</option>
+                <option>hour</option>
+                <option>day</option>
+                <option>week</option>
+              </select>
+            </div>
+          </div>
+
+          <!--
+          <div class="control-group">
+            <label class="control-label">Data Source</label>
+            <div class="controls">
+              <select>
+                <option>Simple Metrics</option>
+                <option>Graphite</option>
+              </select>
+            </div>
+          </div>
+          -->
+
+          <div class="control-group">
+            <label class="control-label">Targets</label>
+            <div class="controls">
+              <input name="targets" class="targets" size="16" type="text" style="width:300px">
+              <p class="help-block">Comma separated metric names. Including wildcard support (example: test.system1, test.graph.*)</p>
+            </div>
+              
+          </div>
+        </fieldset>
+      </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    <a href="#" class="btn btn-primary">Save</a>
+  </div>
+</div>

@@ -32,7 +32,7 @@
          <div class="nav-collapse">
            <ul class="nav">
              <li><a href="#" data-navigation-url="/metrics">Metrics</a></li>
-             <li><a href="#" data-navigation-url="/instruments">Instruments</a></li>
+             <!--<li><a href="#" data-navigation-url="/instruments">Instruments</a></li>-->
              <li><a href="#" data-navigation-url="/dashboards">Dashboards</a></li>
              <li><a href="#" data-navigation-url="/about">About</a></li>
            </ul>
@@ -42,6 +42,11 @@
     </div>
 
     <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div id="flash"></div>
+        </div>
+      </div>
       <div class="row-fluid">
         <div id="main" class="span12">
         	<%= yield %>

@@ -1,9 +1,8 @@
 module Api
-  class GraphController < ApplicationController
+  class DatapointsController < BaseController
 
-    respond_to :json
-    
     def show
+      head :status => 500 and return
       from    = (params[:from]  || Time.now).to_i
       time    = params[:time]   || 'minute'
       targets = params[:targets]
@@ -16,7 +15,15 @@ module Api
     def prepare_data_points(from, time, *targets)
       bucket = SimpleMetrics::Bucket.for_time(time)
       to = from - SimpleMetrics::Graph.time_range(time)
-      SimpleMetrics::Graph.query_all(bucket, to, from, *targets)
+      results = SimpleMetrics::Graph.query_all(bucket, to, from, *targets)
+      results.each do |result|
+        result[:target] = result[:name]
+        result[:datapoints] = result[:data].map do |data|
+          [data[:y], data[:x]]
+        end
+        result[:data] = nil
+        result[:name] = nil
+      end
     end
 
   end

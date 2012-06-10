@@ -1,14 +1,27 @@
 (function (views){
 
   views.Errors = Backbone.View.extend({
+    events: {
+      'click .reload': "reload"
+    },
+
     initialize: function(options) {
       _.bindAll(this, "render");
-      this.response = options.response;
+      this.message = options.message;
+    },
+
+    reload: function() {
+      window.location.reload();
     },
 
     render: function() {
-      console.log(this.response);
-      $(this.el).html(JST['templates/errors/show']({ response: this.response}));
+      $(this.el).html(JST['templates/errors/show']({ message: this.message }));
+
+      var that = this;
+      this.$('#alert').bind('closed', function () {
+        that.reload();
+      });
+
       return this;
     }
   });

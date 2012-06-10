@@ -16,6 +16,7 @@
 //= require jquery-ui-1.8.20.custom.min.js
 //= require underscore
 //= require backbone
+//= require backbone.modelbinder-0.1.4
 //= require handlebars
 
 //= require twitter/bootstrap
@@ -25,6 +26,7 @@
 //= require moment.min
 
 //= require colorpicker
+//= require select2.min
 
 //= require backbone_extensions
 //= require app

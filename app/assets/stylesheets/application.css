@@ -17,7 +17,7 @@
  *= require bootswatch
 
  *= require colorpicker
-
+ *= require select2
  *= require graph
   
  *= require_self
@@ -82,6 +82,7 @@ div.portlet {
 #widget-span-3 { width: 96%; }
 
 .portlet { 
+  height: 325px;
 }
 
 .portlet-minimized { height: auto !important; }
@@ -102,7 +103,11 @@ div.portlet {
   cursor: pointer;
   opacity: 0.5;
 }
-.portlet-content { padding: 0.4em; }
+.portlet-content { 
+  padding: 0.4em; 
+  margin-top: 1em;
+}
+
 .portlet-minimized .portlet-content { display: none !important; }
 
 .ui-sortable-placeholder { 
@@ -115,3 +120,50 @@ div.portlet {
   visibility: hidden; 
 }
 
+.counter {
+  width: 300px;
+  height: 250px;
+  float: left;
+  line-height: 50px;
+}
+
+.counter .value {
+  margin-top: 40px;
+  font-size: 120px;
+  font-weight: bold;
+  color: #eee;
+  /*text-shadow: 2px 2px 3px #255;*/
+  -webkit-text-stroke: 2px #330; 
+}
+
+.rate {
+  margin-left: 10px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #b94a48;
+  /*text-shadow: 0px 2px 3px #255;*/
+  -webkit-text-stroke: 2px #b95a48; 
+}
+
+.counter .rate-container {
+  margin-top: 20px;
+}
+
+.arrow-up, .arrow-down {
+  display: inline-block;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid #669900;
+}
+
+.arrow-down {
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 20px solid #b94a48;
+}

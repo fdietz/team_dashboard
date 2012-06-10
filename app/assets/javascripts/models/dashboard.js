@@ -4,8 +4,7 @@
     urlRoot: '/api/dashboards',
 
     defaults: {
-      "name"        : "Undefined name",
-      "instruments" : []
+      "name"        : "Undefined name"
     }
         
   });

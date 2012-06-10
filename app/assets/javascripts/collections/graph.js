@@ -6,16 +6,24 @@
       initialize: function(options) {
         this.targets = options.targets;
         this.time = options.time || 'minute';
+        this.targetsArray = (this.targets || "").split(',');
+
+        this.isFetched = false;
+        this.bind('reset', this.onReset, this);
+      },
+
+      onReset: function() {
+        this.isFetched = true;
       },
 
       buildTargetsParams: function() {
-        return _.map(this.targets, function(target) {
+        return _.map(this.targetsArray, function(target) {
           return "targets[]="+target;
         }).join('&');
       },
 
       buildTimeParams: function() {
-        return "time="+ this.time;
+        return "time=" + this.time;
       },
 
       url: function() {

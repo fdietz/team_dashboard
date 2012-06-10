@@ -1,5 +1,10 @@
-<div class="alert alert-error alert-block">
+<div id="alert" class="alert alert-error alert-block">
   <a class="close" data-dismiss="alert" href="#">×</a>
-  <h4 class="alert-heading">An error occured</h4>
-  {{response.statusText}} (HTTP Status Code: {{response.status}})
+  <h4 class="alert-heading"><strong>{{message}}</strong></h4>
+  </br>
+  <p>An error occured while processing the page. Try reloading the page.</p>
+  </br>
+  <p>
+    <a class="btn btn-warn reload" href="#">Reload</a>
+  </p>
 </div>

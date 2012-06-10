@@ -1,37 +1,37 @@
 module Api
-  class DashboardsController < ApplicationController
+  class DashboardsController < BaseController
 
-    respond_to :json
-    
     def show
-      dashboard = SimpleMetrics::DashboardRepository.find_one(params[:id])
-      respond_with dashboard.attributes.to_json
+      dashboard = Dashboard.find(params[:id])
+      respond_with dashboard
     end
 
     def index
-      dashboards = SimpleMetrics::DashboardRepository.find_all
-      respond_with dashboards.inject([]) { |result, m| result << m.attributes }.to_json
+      dashboards = Dashboard.all
+      respond_with dashboards
     end
 
     def create
-      attributes = JSON.parse(request.body.read.to_s).symbolize_keys
-      bson_id = SimpleMetrics::DashboardRepository.save(SimpleMetrics::Dashboard.new(attributes))
-      new_dashboard = SimpleMetrics::DashboardRepository.find_one(bson_id.to_s)
-      render :json => new_dashboard.attributes.to_json, :status => 201
+      dashboard = Dashboard.new(JSON.parse(request.body.read.to_s))
+      if dashboard.save
+        render :json => dashboard, :status => :created, :location => dashboards_url(dashboard)
+      else
+        render :json => dashboard.errors, :status => :unprocessable_entity
+      end
     end
 
     def update
-      attributes = JSON.parse(request.body.read.to_s).symbolize_keys
-      dashboard = SimpleMetrics::DashboardRepository.find_one(params[:id])
-      dashboard.instruments = attributes[:instruments]
-      dashboard.name = attributes[:name]
-      SimpleMetrics::DashboardRepository.update(dashboard)
-      head :status => 204
+      dashboard = Dashboard.find(params[:id])
+      if dashboard.update_attributes(JSON.parse(request.body.read.to_s))
+        head :no_content
+      else
+        render :json => dashboard.errors, :status => :unprocessable_entity
+      end
     end
 
     def destroy
-      SimpleMetrics::DashboardRepository.remove(params[:id])
-      head :status => 204
+      Dashboard.destroy(params[:id])
+      head :no_content
     end
 
   end

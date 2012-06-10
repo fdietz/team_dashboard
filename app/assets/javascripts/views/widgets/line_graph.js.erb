@@ -1,0 +1,175 @@
+( function (views, collections){
+
+  var pastel = [
+    '#239928',
+    '#6CCC70',
+    '#DEFFA1',
+    '#DEFFA1',
+    '#DEFFA1',
+    '#362F2B',
+    '#BFD657',
+    '#FF6131',
+    '#FFFF9D',
+    '#BEEB9F',
+    '#79BD8F',
+    '#00A388'
+  ].reverse();
+
+
+  views.widgets.LineGraph = Backbone.View.extend({
+
+    initialize: function() {
+      _.bindAll(this, "render", "update", "datapoints");
+
+      this.collection = new collections.Graph({
+        time: this.model.get('time'),
+        targets: this.model.get('targets')
+      });
+
+      this.collection.on('change', this.render);
+      this.collection.on('reset', this.render);
+      this.model.on('change', this.widgetChanged);
+
+      this.renderer = 'line';
+    },
+
+    widgetChanged: function() {
+      this.collection = new collections.Graph({
+        time: this.model.get('time'),
+        targets: this.model.get('targets')
+      });
+      render();
+    },
+
+    datapoints: function() {
+      var series = this.collection.toJSON();
+      _.each(series, function(model, index) {
+        if (model.color === undefined) {
+          model.color = pastel[Math.floor(Math.random() * pastel.length)];
+        }
+        model.name = model.target;
+        model.data = _.map(model.datapoints, function(dp) {
+          return { x: dp[1], y: dp[0] };
+        });
+        model.datapoints = null;
+      });
+      return series;
+    },
+
+    render: function() {
+      if (!this.collection.isFetched) {
+        this.update();
+        return this;
+      }
+
+      $(this.el).html(JST['templates/widgets/line_graph/show']({ time: this.model.get('time') }));
+
+      this.graph = new Rickshaw.Graph({
+        element: this.$('.graph').get(0),
+        renderer: this.renderer,
+        width: this.$('.graph').parent().width()-80,
+        series: this.datapoints()
+      });
+      
+      this.graph.render();
+
+      var xAxis = new Rickshaw.Graph.Axis.Time({
+        graph: this.graph,
+        timeUnit: this.timeUnit(this.model.get('time'))
+      });
+      xAxis.render();
+
+      var yAxis = new Rickshaw.Graph.Axis.Y({
+        graph: this.graph,
+        orientation: 'left',
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        element: this.$('.y-axis').get(0)
+      });
+      yAxis.render();
+  
+      var hoverDetail = new Rickshaw.Graph.HoverDetail({
+        graph: this.graph,
+        formatter: function(series, x, y) {
+          var dateStr = window.moment.utc(new Date(x*1000)).local().format("YYYY-MM-DD h:mm a");
+          var date = '<span class="date">' + dateStr + '</span>';
+          var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+          var content = swatch + series.name + ": " + parseInt(y) + '<br>' + date;
+          return content;
+        }
+      });
+
+      return this;
+    },
+
+    update: function(callback) {
+      var that = this;
+
+      this.collection.fetch({
+        success: function(model, response) {
+          console.log("update success", model);
+        },
+        error: function(model, response) {
+          console.log("error updating widget", response);
+          that.showLoadingError();
+        },
+        complete: function(model, response) {
+          that.hideAjaxSpinner();
+          if (callback) { callback(); }
+        },
+        suppressErrors: true
+      });
+    },
+
+    hideAjaxSpinner: function() {
+      $(this.el).parent().parent().find(".ajax-spinner").hide();
+    },
+
+    showLoadingError: function() {
+      $(this.el).html("<div><p>Error loading datapoints...</p></div>");
+    },
+
+    changeRenderer: function(renderer) {
+      this.graph.configure({ renderer: renderer });
+      this.graph.update();
+    },
+
+    onClose: function() {
+      this.collection.off('change', this.render);
+      this.collection.off('reset', this.render);
+      this.model.off('change', this.render);
+    },
+
+    timeUnit: function(time) {
+      var timeFixture = new Rickshaw.Fixtures.Time();
+
+      var minuteCustom = {
+        name: 'minute',
+        seconds: 60,
+        formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
+      };
+      var hourCustom = {
+        name: 'hour',
+        seconds: 60*15,
+        formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
+      };
+      var dayCustom = {
+        name: 'day',
+        seconds: 60*60*4,
+        formatter: function(d) { return moment.utc(d).local().format("HH"); }
+      };
+      var weekCustom = {
+        name: 'week',
+        seconds: 60*60*2*7*2,
+        formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }
+      };
+
+      switch(time){
+        case 'minute': return minuteCustom;
+        case 'hour': return hourCustom;
+        case 'day': return dayCustom;
+        case 'week': return weekCustom;
+      }
+    }
+  });
+
+})(app.views, app.collections);
