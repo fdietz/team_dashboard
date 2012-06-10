@@ -2,7 +2,6 @@ module Api
   class DatapointsController < BaseController
 
     def show
-      head :status => 500 and return
       from    = (params[:from]  || Time.now).to_i
       time    = params[:time]   || 'minute'
       targets = params[:targets]
