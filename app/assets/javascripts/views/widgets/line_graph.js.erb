@@ -15,7 +15,6 @@
     '#00A388'
   ].reverse();
 
-
   views.widgets.LineGraph = Backbone.View.extend({
 
     initialize: function() {
@@ -31,6 +30,7 @@
       this.model.on('change', this.widgetChanged);
 
       this.renderer = 'line';
+      this.currentColors = [];
     },
 
     widgetChanged: function() {
@@ -42,12 +42,20 @@
     },
 
     transformDatapoints: function() {
+      var that = this;
       var series = this.collection.toJSON();
       console.log("series", series);
       series.hasData = true;
       _.each(series, function(model, index) {
         if (model.color === undefined) {
-          model.color = pastel[Math.floor(Math.random() * pastel.length)];
+          var color = null;
+          if (that.currentColors[index] === undefined) {
+            color = ColorFactory.get();
+            that.currentColors.push(color);  
+          } else {
+            color = that.currentColors[index]
+          }
+          model.color = color;
         }
         model.name = model.target;
         model.data = _.map(model.datapoints, function(dp) {

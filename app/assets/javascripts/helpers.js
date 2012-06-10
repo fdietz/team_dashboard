@@ -80,4 +80,27 @@
     });
   };
 
+  var colorPalette = [
+    '#DEFFA1',
+    '#D26771',
+    '#6CCC70',
+    '#FF8900',
+    '#A141C5',
+    '#4A556C',
+    '#239928',
+  ];
+
+  ColorFactory = {
+    currentColorIndex: 0
+  };
+
+  ColorFactory.get = function() {
+    if (this.currentColorIndex >= colorPalette.length-1) {
+      this.currentColorIndex = 0;
+    }
+    var color = colorPalette[this.currentColorIndex];
+    this.currentColorIndex++;
+    return color;
+  };
+
 })();

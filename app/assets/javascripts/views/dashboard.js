@@ -1,6 +1,5 @@
 (function (views, models, collections, router) {
 
-
   views.Dashboard = Backbone.View.extend({
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
@@ -16,6 +15,7 @@
       this.model.on("widgets:changed", this.render);
 
       this.widgets = [];
+      this.currentColorIndex = 0;
     },
 
     closeAllWidgets: function() {
