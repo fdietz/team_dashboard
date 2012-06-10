@@ -4,12 +4,6 @@
   views.Dashboard = Backbone.View.extend({
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
-
-      "click span[data-inline-edit]"       : "editName",
-      "submit form[data-inline-edit]"      : "saveName",
-      "blur form[data-inline-edit]>input"  : "saveName",
-      "keyup form[data-inline-edit]>input" : "cancelEdit",
-
       "click .add-line-graph"              : "showLineGraphDialog",
       "click .add-counter"                 : "showCounterDialog"
     },
@@ -66,10 +60,12 @@
 
       this.container = this.$("#dashboard-widget-container");
 
-      // TODO: refactor into its own class
-      this.heading = this.$("span[data-inline-edit]");
-      this.form = this.$("form[data-inline-edit]");
-      this.input = this.$("form[data-inline-edit]>input");
+      this.$("h2#dashboard-name").editable(
+        this.$('#dashboard-editable'), {
+          success: function(value) {
+            that.model.save({ name: value});
+          }
+      });
 
       this.container.sortable({
         forcePlaceholderSize: true, revert: 300, delay: 100, opacity: 0.8,
@@ -127,31 +123,6 @@
       this.model.off("widgets:changed", this.render);
 
       this.closeAllWidgets();
-    },
-
-    // TODO: refactor editable title
-    editName: function() {
-      this.heading.toggle();
-      this.form.css("display", "inline");
-      this.input.focus();
-      return false;
-    },
-
-    saveName: function() {
-      this.heading.toggle();
-      this.form.toggle();
-
-      this.heading.html(this.input.val());
-      this.model.set({name: this.input.val() });
-      this.model.save();
-      return false;
-    },
-
-    cancelEdit: function(event) {
-      if (event.keyCode == 27) {
-        this.heading.toggle();
-        this.form.toggle();
-      }
     }
 
   });

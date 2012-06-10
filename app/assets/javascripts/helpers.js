@@ -31,20 +31,53 @@
     }
   });
 
-  $.fn.serializeObject = function()
-  {
-      var o = {};
-      var a = this.serializeArray();
-      $.each(a, function() {
-          if (o[this.name] !== undefined) {
-              if (!o[this.name].push) {
-                  o[this.name] = [o[this.name]];
-              }
-              o[this.name].push(this.value || '');
-          } else {
-              o[this.name] = this.value || '';
-          }
+  $.fn.editable = function(target, options) {
+    var label = $(this);
+    var form = target;
+    var input = form.find('> input');
+    var currentValue = input.val();
+    var that = this;
+
+    return this.each(function() {
+
+      var startEditing = function() {
+        label.toggle();
+        form.css("display", "inline");
+        input.focus();
+      };
+
+      var stopEditing = function() {
+        label.toggle();
+        form.toggle();
+      };
+
+      label.on('click', function(event) {
+        event.preventDefault();
+        startEditing();
       });
-      return o;
+
+      input.on('blur', function(event) {
+        event.preventDefault();
+        stopEditing();
+        label.html(input.val());
+        options.success(input.val());
+      });
+
+      form.on('submit', function(event) {
+        event.preventDefault();
+        stopEditing();
+        label.html(input.val());
+        if (options.success) { options.success(input.val()); }
+      });
+
+      input.on('keyup', function(event) {
+        if (event.keyCode == 27) {
+          event.preventDefault();
+          stopEditing();
+          input.val(currentValue);
+        }
+      });
+    });
   };
+
 })();
