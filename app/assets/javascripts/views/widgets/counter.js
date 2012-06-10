@@ -41,7 +41,6 @@
     },
 
     render: function() {
-      console.log("render counter", this.model.toJSON());
       var that = this;
       if (!this.collection.isFetched) {
         this.update();
@@ -56,13 +55,8 @@
       var that = this;
 
       this.collection.fetch({
-        success: function(model, response) {
-          console.log("update success", model);
-        },
-        error: function(model, response) {
-          console.log("error updating widget", response);
-          that.showLoadingError();
-        },
+        success: function(model, response) {},
+        error: function(model, response) { that.showLoadingError(); },
         complete: function(model, response) {
           that.hideAjaxSpinner();
           if (callback) { callback(); }
