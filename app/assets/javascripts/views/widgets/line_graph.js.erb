@@ -19,7 +19,7 @@
   views.widgets.LineGraph = Backbone.View.extend({
 
     initialize: function() {
-      _.bindAll(this, "render", "update", "datapoints");
+      _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice");
 
       this.collection = new collections.Graph({
         time: this.model.get('time'),
@@ -41,8 +41,10 @@
       render();
     },
 
-    datapoints: function() {
+    transformDatapoints: function() {
       var series = this.collection.toJSON();
+      console.log("series", series);
+      series.hasData = true;
       _.each(series, function(model, index) {
         if (model.color === undefined) {
           model.color = pastel[Math.floor(Math.random() * pastel.length)];
@@ -51,24 +53,40 @@
         model.data = _.map(model.datapoints, function(dp) {
           return { x: dp[1], y: dp[0] };
         });
-        model.datapoints = null;
+        if (model.data.length === 0) {
+          series.hasData = false;
+        }
+        delete model.datapoints;
+        delete model.target;
       });
+
       return series;
     },
 
     render: function() {
+      $(this.el).html(JST['templates/widgets/line_graph/show']({ time: this.model.get('time') }));
+
       if (!this.collection.isFetched) {
         this.update();
         return this;
       }
 
-      $(this.el).html(JST['templates/widgets/line_graph/show']({ time: this.model.get('time') }));
+      var datapoints = this.transformDatapoints();
+      if (datapoints.hasData === true) {
+        this.renderGraph(datapoints);
+      } else {
+        this.showEmptyDatasetNotice();
+      }
 
+      return this;
+    },
+
+    renderGraph: function(datapoints) {
       this.graph = new Rickshaw.Graph({
         element: this.$('.graph').get(0),
         renderer: this.renderer,
         width: this.$('.graph').parent().width()-80,
-        series: this.datapoints()
+        series: datapoints
       });
       
       this.graph.render();
@@ -86,7 +104,7 @@
         element: this.$('.y-axis').get(0)
       });
       yAxis.render();
-  
+      
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph,
         formatter: function(series, x, y) {
@@ -97,17 +115,15 @@
           return content;
         }
       });
-
-      return this;
     },
 
     update: function(callback) {
       var that = this;
 
       this.collection.fetch({
-        success: function(model, response) {},
-        error: function(model, response) { that.showLoadingError(); },
-        complete: function(model, response) {
+        success: function(collection, response) {},
+        error: function(collection, response) { that.showLoadingError(); },
+        complete: function(collection, response) {
           that.hideAjaxSpinner();
           if (callback) { callback(); }
         },
@@ -120,7 +136,11 @@
     },
 
     showLoadingError: function() {
-      $(this.el).html("<div><p>Error loading datapoints...</p></div>");
+      $(this.el).html("<p>Error loading datapoints...</p>");
+    },
+
+    showEmptyDatasetNotice: function() {
+      $(this.el).html("<p>No data available.</p>");
     },
 
     changeRenderer: function(renderer) {
