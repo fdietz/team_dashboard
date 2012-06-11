@@ -56,7 +56,7 @@
 
       var result = this.model.save({}, {
         success: function(model, request) {
-          that.dashboard.get('layout').push(model.id);
+          that.dashboard.updateLayout(model.id);
           that.dashboard.trigger("widgets:changed");
         }
       });
