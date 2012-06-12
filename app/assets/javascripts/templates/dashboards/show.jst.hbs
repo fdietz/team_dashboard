@@ -1,6 +1,6 @@
 {{#with dashboard}}
   
-  <div class="btn-toolbar" style="margin-top: 0; margin-bottom: 0;">
+  <div class="btn-toolbar" >
     <div class="btn-group">
       <h2 id='dashboard-name' style="display:inline">{{name}}</h2>
       <form id='dashboard-editable' class="form-inline" data-inline-edit="true" style="display: none">
@@ -15,14 +15,18 @@
     </div>
 
     <div class="btn-group pull-right">
-      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        Add Widget
-        <span class="caret"></span>
+
+      <div class="btn-group">
+        <a class="btn btn-success add-line-graph" href="#">Line Graph</a>
+        <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+          <span class="caret"></span>
+        </a>
         <ul class="dropdown-menu">
           <li><a href="#" class="add-line-graph">Line Graph</a></li>
           <li><a href="#" class="add-counter">Counter</a></li>
         </ul>
-      </button>
+      </div>
+
     </div>
   </div>
   

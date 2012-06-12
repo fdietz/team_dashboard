@@ -162,16 +162,14 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render");
-
-      this.time = "hour";
+      _.bindAll(this, "render", "switchTime");
+      this.time = 'hour';
     },
 
     render: function() {
       $(this.el).html(JST['templates/metrics/show']({ metric: this.model.toJSON() }));
 
-      var button = this.$("button[data-time='"+this.time+ "']");
-      button.addClass("active");
+      // this.$("button.data-time").button();
 
       this.graph = new Graph({ targets: this.model.get('name'), time: this.time });
       this.graph.render();
@@ -181,9 +179,10 @@
     },
 
     switchTime: function(event) {
-      console.log("switchTime");
       var button = this.$(event.target);
       this.time = button.attr("data-time");
+      // button.button("toggle");
+      console.log("switchTime", this.time );
       this.graph.update(this.time);
     }
 
