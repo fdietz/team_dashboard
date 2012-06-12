@@ -3,8 +3,8 @@ module Api
     respond_to :json
     
     def index
-      metrics = SimpleMetrics::MetricRepository.find_all
-      respond_with metrics.inject([]) { |result, m| result << m.attributes }.to_json
+      metrics = Sources.handler(Rails.configuration.source).metrics
+      respond_with metrics.inject([]) { |result, m| result << { :name => m } }.to_json
     end
 
   end

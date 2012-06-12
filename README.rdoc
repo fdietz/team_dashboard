@@ -1,3 +1,0 @@
-== SimpleMetrics Web App
-
-Web App to visualize data collected via simple_metrics gem.
