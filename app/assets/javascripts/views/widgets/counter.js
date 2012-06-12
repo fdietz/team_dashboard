@@ -3,7 +3,7 @@
   views.widgets.Counter = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render");
+      _.bindAll(this, "render", "value", "rate");
 
       this.collection = new collections.Graph({
         time: this.model.get('time'),
@@ -35,7 +35,7 @@
     },
 
     rate: function() {
-      return "0.37 %";
+      return "30.37 %";
     },
 
     render: function() {
@@ -46,6 +46,16 @@
       }
 
       $(this.el).html(JST['templates/widgets/counter/show']({ value: this.value(), rate: this.rate() }));
+
+      var str = this.value().toString().length;
+      console.log("this.value().length", str, str.length);
+      if (str <= 5) {
+        this.$(".value").addClass("value-size-large");
+      } else if (str > 5 && str < 8) {
+        this.$(".value").addClass("value-size-medium");
+      } else {
+        this.$(".value").addClass("value-size-small");
+      }
       return this;
     },
 

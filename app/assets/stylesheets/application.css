@@ -36,12 +36,12 @@
 
 ::-webkit-scrollbar-track {
     background: #FFF;
-    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 ::-webkit-scrollbar-thumb {
     background: #CCC;
-    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -50,7 +50,7 @@
 
 ::-webkit-scrollbar-thumb:active {
     background: #888;
-    -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .color {
@@ -69,7 +69,7 @@
   height: 100%;
 }
 
-div.portlet {
+.portlet {
   margin: 10px;
   float: left;
   /*height: 100px;*/
@@ -95,13 +95,16 @@ div.portlet {
   /*padding-left: 0.2em; */
 
   cursor: move;
+
+  text-transform:uppercase;
 }
 
 .portlet-header .ui-icon { 
   float: right; 
   cursor: pointer;
-  opacity: 0.5;
+  /*opacity: 0.5;*/
 }
+
 .portlet-content { 
   padding: 0.4em; 
   margin-top: 1em;
@@ -122,30 +125,37 @@ div.portlet {
 .counter {
   width: 300px;
   height: 250px;
+
   float: left;
-  line-height: 50px;
 }
 
-.counter .value {
-  margin-top: 40px;
-  font-size: 120px;
+.value {
+  margin-top: 80px;
+  
   font-weight: bold;
   color: #eee;
-  /*text-shadow: 2px 2px 3px #255;*/
-  -webkit-text-stroke: 2px #330; 
+  -webkit-text-stroke: 1px #330; 
+}
+
+.value-size-large {
+  font-size: 100px;
+}
+.value-size-medium {
+  font-size: 80px;
+}
+.value-size-small {
+  font-size: 60px;
 }
 
 .rate {
   margin-left: 10px;
   font-size: 40px;
   font-weight: bold;
-  color: #b94a48;
-  /*text-shadow: 0px 2px 3px #255;*/
-  -webkit-text-stroke: 2px #b95a48; 
+  color: #D26771;
 }
 
-.counter .rate-container {
-  margin-top: 20px;
+.rate-container {
+  margin-top: 50px;
 }
 
 .arrow-up, .arrow-down {
@@ -164,5 +174,5 @@ div.portlet {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 20px solid #b94a48;
+  border-top: 20px solid #D26771;
 }
