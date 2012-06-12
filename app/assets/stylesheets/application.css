@@ -9,15 +9,14 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  
+ *= require twitter/bootstrap
+ *= require theme/index
+ 
+ *= require colorpicker
+ *= require select2
  *= require rickshaw.min
  *= jquery-ui-1.8.20.custom
 
- *= require bootstrap
- *= require variables
- *= require bootswatch
-
- *= require colorpicker
- *= require select2
  *= require graph
   
  *= require_self
