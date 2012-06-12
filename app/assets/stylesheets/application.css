@@ -103,6 +103,8 @@
   float: right; 
   cursor: pointer;
   /*opacity: 0.5;*/
+
+  margin-left: 8px;
 }
 
 .portlet-content { 
