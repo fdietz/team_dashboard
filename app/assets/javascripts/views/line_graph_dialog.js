@@ -13,7 +13,7 @@
       this._modelBinder = new Backbone.ModelBinder();
       this.dashboard = options.dashboard;
     },
-  
+
     prefillAutocomplete: function() {
       var that = this;
       if (!collections.metrics.isFetched) {
@@ -22,14 +22,15 @@
       }
       this.targetInput.select2({ tags: collections.metrics.autocomplete_names() });
     },
-  
+
     render: function() {
       $(this.el).html(JST['templates/widgets/line_graph/edit']({ model: this.model.toJSON() }));
 
       var bindings = {
           name: '[name=name]',
           size: { selector: '[name=size]' },
-          time: { selector: '[name=time]' }
+          time: { selector: '[name=time]' },
+          update_interval: { selector: '[name=update-interval]' }
       };
       this._modelBinder.bind(this.model, this.el, bindings);
 
@@ -52,7 +53,7 @@
       var targets = this.targetInput.select2('val');
       this.model.set("targets", targets.join(',') );
       this.model.set("kind", "line_graph");
-      
+
       var result = this.model.save({}, {
         success: function(model, request) {
           that.dashboard.updateLayout(model.id);

@@ -32,6 +32,7 @@ class Widget < ActiveRecord::Base
     self.size = 1 unless self.size
     self.time = 'hour' unless self.time
     self.kind = 'line_graph' unless self.kind
+    self.update_interval = 10 unless self.update_interval
   end
 
 end

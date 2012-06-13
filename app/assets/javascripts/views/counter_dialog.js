@@ -13,7 +13,7 @@
       this._modelBinder = new Backbone.ModelBinder();
       this.dashboard = options.dashboard;
     },
-  
+
     prefillAutocomplete: function() {
       var that = this;
       if (!collections.metrics.isFetched) {
@@ -25,12 +25,13 @@
 
     render: function() {
       $(this.el).html(JST['templates/widgets/counter/edit']({ model: this.model.toJSON() }));
-      
+
       var bindings = {
           name: '[name=name]',
           // size: { selector: '[name=size]' },
           time: { selector: '[name=time]' },
-          targets: '[name=targets]'
+          targets: '[name=targets]',
+          update_interval: { selector: '[name=update-interval]' }
       };
       this._modelBinder.bind(this.model, this.el, bindings);
 

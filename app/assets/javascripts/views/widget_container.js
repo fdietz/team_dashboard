@@ -30,8 +30,8 @@
       if (this.startPolling === false) { return; }
 
       this.widget.update(function() {
-        console.log("update widget", that.model.get('name'));
-        that.timeoutId = setTimeout(that.updateWidget, 5000);
+        console.log("update widget", that.model.get('name'), that.model.get('update_interval') * 1000);
+        that.timeoutId = setTimeout(that.updateWidget, that.model.get('update_interval') * 1000);
       });
 
     },
@@ -80,7 +80,7 @@
 
       this.renderWidget();
       this.updateWidget();
-      
+
       return this;
     },
 
