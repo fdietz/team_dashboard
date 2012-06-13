@@ -47,7 +47,7 @@
         }
         model.name = model.target;
         model.data = _.map(model.datapoints, function(dp) {
-          return { x: dp[1], y: dp[0] };
+          return { x: dp[1], y: dp[0] || 0 }; // rickshaw.js doesn't handle null value
         });
         if (model.data.length === 0) {
           series.hasData = false;
@@ -68,6 +68,7 @@
 
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
+        console.log("datapoints", datapoints);
         this.renderGraph(datapoints);
       } else {
         this.showEmptyDatasetNotice();
