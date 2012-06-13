@@ -68,7 +68,6 @@
 
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
-        console.log("datapoints", datapoints);
         this.renderGraph(datapoints);
       } else {
         this.showEmptyDatasetNotice();
