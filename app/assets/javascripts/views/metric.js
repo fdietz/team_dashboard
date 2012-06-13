@@ -17,7 +17,7 @@
 
 
   var Graph = Backbone.View.extend({
-    
+
     initialize: function(options) {
       _.bindAll(this, "render", "renderGraph", "transformDatapoints");
 
@@ -28,7 +28,7 @@
         time: this.time
       });
       this.collection.on('reset', this.render);
-      
+
       this.renderer = 'line';
     },
 
@@ -87,7 +87,7 @@
         width: this.$('.graph').parent().width()-80,
         series: datapoints
       });
-      
+
       this.graph.render();
 
       var xAxis = new Rickshaw.Graph.Axis.Time({
@@ -99,11 +99,10 @@
       var yAxis = new Rickshaw.Graph.Axis.Y({
         graph: this.graph,
         orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
         element: this.$('.y-axis').get(0)
       });
       yAxis.render();
-      
+
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph,
         formatter: function(series, x, y) {

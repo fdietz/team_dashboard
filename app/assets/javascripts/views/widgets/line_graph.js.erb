@@ -51,7 +51,7 @@
           var color = null;
           if (that.currentColors[index] === undefined) {
             color = ColorFactory.get();
-            that.currentColors.push(color);  
+            that.currentColors.push(color);
           } else {
             color = that.currentColors[index]
           }
@@ -96,7 +96,7 @@
         width: this.$('.graph').parent().width()-80,
         series: datapoints
       });
-      
+
       this.graph.render();
 
       var xAxis = new Rickshaw.Graph.Axis.Time({
@@ -108,11 +108,10 @@
       var yAxis = new Rickshaw.Graph.Axis.Y({
         graph: this.graph,
         orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
         element: this.$('.y-axis').get(0)
       });
       yAxis.render();
-      
+
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph,
         formatter: function(series, x, y) {
