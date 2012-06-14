@@ -7,7 +7,11 @@ module Sources
       raise "implement me"
     end
 
-    def datapoints(time = 'minute')
+    # def datapoints(time = 'minute')
+    #   raise "implement me"
+    # end
+
+    def datapoints(from, to = nil)
       raise "implement me"
     end
   end

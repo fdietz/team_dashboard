@@ -11,6 +11,7 @@ module Api
       get :show, :targets => ['test'], :format => :json
       assert_response :success
       result = JSON.parse(@response.body)
+      p result
       assert_equal 'test', result.first['name']
       assert result.first['data']
     end

@@ -7,18 +7,40 @@ module Sources
     end
     
     def metrics
+      JSON.parse(request_metrics)
+    end
+
+    # def datapoints(targets, time = 'minute')
+    #   JSON.parse(request_datapoints(time))
+    # end
+
+    def datapoints(targets, from, to = nil)
+      to ||= Time.now 
+      JSON.parse(request_datapoints(from, to))
+    end
+
+    def request_metrics
       uri = URI.parse("#{@graphite_url}/metrics/index.json")
       Rails.logger.debug("Requesting metrics from #{uri} ...")
-      JSON.parse(uri.read)
+      uri.read
     end
 
-    def datapoints(targets, time = 'minute')
-      target_params = Array(targets).map { |t| "target=#{t}" }.join('&')
-      uri = URI.parse("#{@graphite_url}/render?#{target_params}&format=json&from=#{from(time)}")
+    def request_datapoints(from, to)
+      uri = URI.parse("#{@graphite_url}/render?#{target_params}&format=json&from=#{format(from)}&until=#{format(to)}")
       Rails.logger.debug("Requesting datapoints from #{uri} ...")
-      JSON.parse(uri.read)
+      uri.read
     end
 
+    def format(timestamp)
+      time = Time.at(timestamp)
+      time.strftime("%H:%M_%Y%m%d")
+    end
+
+    def target_params
+      Array(targets).map { |t| "target=#{t}" }.join('&')
+    end
+
+    # TODO: move to client
     def from(time)
       case(time)
       when 'minute'
