@@ -40,7 +40,7 @@
       widgetCollection.fetch({
         success: function(collection, request) {
           var layoutIds = that.model.get('layout');
-          
+
           _.each(layoutIds, function(id, index) {
             var model = collection.get(id);
             that.appendWidget(model);
@@ -53,7 +53,7 @@
     render: function() {
       console.log("render graph");
       var that = this;
-      
+
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
       this.container = this.$("#dashboard-widget-container");
@@ -72,7 +72,7 @@
 
       this.container.html("");
       this.renderWidgets();
-      
+
       return this;
     },
 
@@ -102,14 +102,14 @@
     },
 
     showLineGraphDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, type: 'line_graph'});
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'line_graph'});
       var dialog = new views.LineGraphDialog({ model: widget, dashboard: this.model });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     showCounterDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, type: 'counter' });
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter' });
       var dialog = new views.CounterDialog({ model: widget, dashboard: this.model });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;

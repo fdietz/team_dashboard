@@ -2,15 +2,12 @@
 
   views.LineGraphDialog = Backbone.View.extend({
 
-    _modelBinder: undefined,
-
     events: {
       "click .btn-primary" : "save"
     },
 
     initialize: function(options) {
       _.bindAll(this, "render", "prefillAutocomplete");
-      this._modelBinder = new Backbone.ModelBinder();
       this.dashboard = options.dashboard;
     },
 
@@ -26,16 +23,8 @@
     render: function() {
       $(this.el).html(JST['templates/widgets/line_graph/edit']({ model: this.model.toJSON() }));
 
-      var bindings = {
-          name: '[name=name]',
-          size: { selector: '[name=size]' },
-          time: { selector: '[name=time]' },
-          update_interval: { selector: '[name=update-interval]' }
-      };
-      this._modelBinder.bind(this.model, this.el, bindings);
-
+      this.populate("line-graph");
       this.targetInput = this.$('.targets');
-      this.targetInput.val(this.model.get('targets'));
       this.prefillAutocomplete();
 
       var myModal = this.$('#dashboard-details-modal');
@@ -50,12 +39,12 @@
       var myModal = this.$('#dashboard-details-modal');
       myModal.modal("hide");
 
-      var targets = this.targetInput.select2('val');
-      this.model.set("targets", targets.join(',') );
-      this.model.set("kind", "line_graph");
+      var formResult = this.parse("line-graph");
+      formResult.targets = this.targetInput.select2('val').join(',');
 
-      var result = this.model.save({}, {
+      var result = this.model.save(formResult, {
         success: function(model, request) {
+          console.log("save mode", model);
           that.dashboard.updateLayout(model.id);
           that.dashboard.trigger("widgets:changed");
         }
@@ -65,7 +54,6 @@
     },
 
     onClose: function() {
-      this._modelBinder.unbind();
     }
 
   });

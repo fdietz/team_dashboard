@@ -3,30 +3,19 @@
     <h3>Counter Widget</h3>
   </div>
   <div class="modal-body">
-      <form id="counter-form" class="form-horizontal">
+      <form id="counter" class="form-horizontal">
         <fieldset>
           <div class="control-group">
             <label class="control-label">Title</label>
             <div class="controls">
-              <input name="name" class="name" type="text" placeholder="Enter widget name">
+              <input name="counter[name]" class="name" type="text" placeholder="Enter widget name">
             </div>
           </div>
-
-          <!-- <div class="control-group">
-            <label class="control-label">Size</label>
-            <div class="controls">
-              <select name="size" class="size">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
-            </div>
-          </div> -->
 
           <div class="control-group">
             <label class="control-label">Time</label>
             <div class="controls">
-              <select name="time" class="time">
+              <select name="counter[time]" class="time">
                 <option>minute</option>
                 <option>hour</option>
                 <option>day</option>
@@ -38,7 +27,7 @@
           <div class="control-group">
             <label class="control-label">Update Interval</label>
             <div class="controls">
-              <select name="update-interval" class="update-interval">
+              <select name="counter[update_interval]" class="update-interval">
                 <option value="10">10 sec</option>
                 <option value="600">1 min</option>
                 <option value="6000">10 min</option>
@@ -62,7 +51,7 @@
           <div class="control-group">
             <label class="control-label">Targets</label>
             <div class="controls">
-              <input name="targets" class="targets" size="16" type="text" style="width:300px">
+              <input name="counter[targets]" class="targets" size="16" type="text" style="width:300px">
               <p class="help-block">Comma separated metric names. Including wildcard support (example: test.system1, test.graph.*)</p>
             </div>
 

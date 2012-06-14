@@ -10,4 +10,39 @@
     this.unbind();
   };
 
+  // simple form helper, html follows Rails conventions
+  _.extend(Backbone.View.prototype, {
+    parse: function(objName) {
+      var self = this;
+      _recurse_form = function(object, objName) {
+        _.each(object, function(v,k) {
+          if (v instanceof Object) {
+            object[k] = _recurse_form(v, objName + '[' + k + '_attributes]');
+          } else {
+            var element = self.$('[name="'+ objName + '[' + k + ']"]');
+            if (element.length > 0) {
+              object[k] = element.val();
+            }
+          }
+        });
+        return object;
+      };
+      return _recurse_form(this.model.attributes, objName);
+    },
+
+    populate: function(objName) {
+      var self = this,
+        _recurse_obj = function(object, objName) {
+          _.each(object, function (v,k) {
+             if (v instanceof Object) {
+                _recurse_obj(v, objName + '[' + k + '_attributes]');
+             } else if (_.isString(v)) {
+                self.$('[name="' + objName + '[' + k + ']"]').val(v);
+             }
+          });
+        };
+      _recurse_obj(this.model.attributes, objName);
+    }
+  });
+
 })();
