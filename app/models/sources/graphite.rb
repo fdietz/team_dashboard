@@ -10,13 +10,8 @@ module Sources
       JSON.parse(request_metrics)
     end
 
-    # def datapoints(targets, time = 'minute')
-    #   JSON.parse(request_datapoints(time))
-    # end
-
     def datapoints(targets, from, to = nil)
-      to ||= Time.now 
-      JSON.parse(request_datapoints(from, to))
+      JSON.parse(request_datapoints(from, to ||= Time.now ))
     end
 
     def request_metrics
