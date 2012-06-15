@@ -8,7 +8,8 @@ module Sources
       metrics.inject([]) { |result, m| result << m.attributes[:name] }
     end
 
-    def datapoints(targets, time = 'minute')
+    # TODO: fix me
+    def datapoints(targets, from, to = nil)
       from = Time.now.to_i
       bucket = ::SimpleMetrics::Bucket.for_time(time)
       to = from - ::SimpleMetrics::Graph.time_range(time)

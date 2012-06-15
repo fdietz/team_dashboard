@@ -23,9 +23,12 @@
 
       this.time = options.time || 'minute';
       this.targets = options.targets;
+      this.from = options.from;
+      this.to = options.to;
       this.collection = new collections.Graph({
         targets: this.targets,
-        time: this.time
+        from: this.from,
+        to: this.to
       });
       this.collection.on('reset', this.render);
 

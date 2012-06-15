@@ -2,10 +2,17 @@ module Api
   class DatapointsController < BaseController
 
     def show
-      from    = (params[:from]  || Time.now).to_i
-      time    = params[:time]   || 'minute'
+      from    = params[:from]
+      to      = params[:to] || Time.now
+      at      = params[:at]
       targets = params[:targets]
-      datapoints = Sources.handler(Rails.configuration.source).datapoints(targets, time)
+
+      handler = Sources.handler(Rails.configuration.source)
+      datapoints = if at
+        handler.datapoint(targets, at)
+      else
+        handler.datapoints(targets, from, to)
+      end
       respond_with datapoints.to_json
     end
 

@@ -21,7 +21,7 @@ end
 group :test, :development do
   gem 'factory_girl_rails'
   gem 'jasmine'
-  gem 'mocha'
+  gem 'mocha', :require => false
 end
 
 group :assets do
