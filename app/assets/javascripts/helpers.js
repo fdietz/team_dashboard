@@ -104,4 +104,45 @@
     return color;
   };
 
+  $.TimeSelector = {
+    getFrom: function(rangeString) {
+      var range = null;
+      switch(rangeString) {
+        case "30-minutes":
+          range = 60*30;
+          break;
+        case "60-minutes":
+          range = 60*60;
+          break;
+        case "3-hours":
+          range = 60*60*3;
+          break;
+        case "12-hours":
+          range = 60*60*12;
+          break;
+        case "24-hours":
+          range = 60*60*24;
+          break;
+        case "3-days":
+          range = 60*60*24*3;
+          break;
+        case "7-days":
+          range = 60*60*24*7;
+          break;
+        case "4-weeks":
+          range = 60*60*24*7*4;
+          break;
+
+        default:
+          alert("unknown rangeString: " + rangeString);
+      }
+      range = range * 1000;
+      return Math.round(((new Date()).getTime() - range) / 1000);
+    },
+
+    getCurrent: function() {
+      return Math.round((new Date()).getTime() / 1000);
+    }
+  };
+
 })($, _, Backbone);

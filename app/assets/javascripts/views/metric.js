@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, collections){
+(function ($, _, Backbone, moment, views, collections){
   "use strict";
 
   var pastel = [
@@ -22,10 +22,10 @@
     initialize: function(options) {
       _.bindAll(this, "render", "renderGraph", "transformDatapoints");
 
-      this.time = 'hour'; //options.time || 'minute';
       this.targets = options.targets;
       this.from = options.from;
       this.to = options.to;
+      this.range = options.range;
       this.collection = new collections.Graph({
         targets: this.targets,
         from: this.from,
@@ -36,9 +36,14 @@
       this.renderer = 'line';
     },
 
-    update: function(time) {
-      this.time = time;
-      this.collection.time = this.time;
+    update: function(from, to, range) {
+      this.from = from;
+      this.to = to;
+      this.range = range;
+
+      console.log("update graph", new Date(this.from*1000), new Date(this.to*1000));
+      this.collection.from = from;
+      this.collection.to = to;
       this.collection.fetch();
     },
 
@@ -73,6 +78,7 @@
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
         console.log("datapoints total", datapoints.length);
+        console.log("datapoints", datapoints);
         this.renderGraph(datapoints);
       } else {
         this.showEmptyDatasetNotice();
@@ -97,7 +103,7 @@
 
       var xAxis = new Rickshaw.Graph.Axis.Time({
         graph: this.graph,
-        timeUnit: this.timeUnit(this.time)
+        timeUnit: this.timeUnit()
       });
       xAxis.render();
 
@@ -126,35 +132,27 @@
       // this.model.off('change', this.render);
     },
 
-    timeUnit: function(time) {
-      var timeFixture = new Rickshaw.Fixtures.Time();
+    timeUnit: function() {
+      switch(this.range) {
+      case "30-minutes":
+        return { name: 'minute', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "60-minutes":
+        return { name: 'minute', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "3-hours":
+        return { name: 'hour', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "12-hours":
+        return { name: 'hour', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "24-hours":
+        return { name: 'hour', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "3-days":
+        return { name: 'day', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH"); }};
+      case "7-days":
+        return { name: 'day', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH"); }};
+      case "4-weeks":
+        return { name: 'week', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
 
-      var minuteCustom = {
-        name: 'minute',
-        seconds: 60,
-        formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
-      };
-      var hourCustom = {
-        name: 'hour',
-        seconds: 60*15,
-        formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
-      };
-      var dayCustom = {
-        name: 'day',
-        seconds: 60*60*4,
-        formatter: function(d) { return moment.utc(d).local().format("HH"); }
-      };
-      var weekCustom = {
-        name: 'week',
-        seconds: 60*60*2*7*2,
-        formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }
-      };
-
-      switch(time){
-        case 'minute': return minuteCustom;
-        case 'hour': return hourCustom;
-        case 'day': return dayCustom;
-        case 'week': return weekCustom;
+      default:
+        alert("unknown rangeString: " + rangeString);
       }
     }
   });
@@ -162,15 +160,15 @@
   views.Metric = Backbone.View.extend({
 
     events: {
-      "click .time": "switchTime"
+      "click .date-range-picker": "switchDateRange"
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "switchTime");
+      _.bindAll(this, "render", "switchDateRange");
       this.time = 'hour';
-      var one_hour = 3600 * 1000;
-      this.from = Math.round(((new Date()).getTime() - one_hour) / 1000);
-      this.to = Math.round((new Date()).getTime() / 1000);
+      this.range = "30-minutes";
+      this.from = $.TimeSelector.getFrom(this.range);
+      this.to = $.TimeSelector.getCurrent();
     },
 
     render: function() {
@@ -178,21 +176,27 @@
 
       // this.$("button.data-time").button();
 
-      this.graph = new Graph({ targets: this.model.get('name'), from: this.from, to: this.to });
+      this.$('.dropdown-toggle').dropdown();
+
+      this.graph = new Graph({ targets: this.model.get('name'), from: this.from, to: this.to, range: this.range });
       this.graph.render();
       this.$("#graph-container").html(this.graph.el);
 
       return this;
     },
 
-    switchTime: function(event) {
+    switchDateRange: function(event) {
       var button = this.$(event.target);
-      this.time = button.attr("data-time");
+      this.range = button.attr("data-range");
       // button.button("toggle");
-      console.log("switchTime", this.time );
-      this.graph.update(this.time);
+      console.log("switchTime", this.range );
+
+      this.from = $.TimeSelector.getFrom(this.range);
+      this.to = $.TimeSelector.getCurrent();
+
+      this.graph.update(this.from, this.to, this.range);
     }
 
   });
 
-})($, _, Backbone, app.views, app.collections);
+})($, _, Backbone, moment, app.views, app.collections);

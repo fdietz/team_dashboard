@@ -10,7 +10,6 @@
         this.to = options.to;
         this.at = options.at;
 
-        console.log("from", this.from, "to", this.to, "at", this.at);
         this.targetsArray = (this.targets || "").split(',');
 
         this.isFetched = false;
