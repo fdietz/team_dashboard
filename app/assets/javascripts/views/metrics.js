@@ -1,7 +1,8 @@
-(function (views) {
+(function ($, _, Backbone, views) {
+  "use strict";
 
   views.Metrics = Backbone.View.extend({
-    
+
     initialize: function() {
       _.bindAll(this, "render");
 
@@ -20,4 +21,4 @@
     }
   });
 
-})(app.views);
+})($, _, Backbone, app.views);

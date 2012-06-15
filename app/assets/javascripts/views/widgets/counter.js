@@ -1,4 +1,5 @@
-(function (views, collections){
+(function ($, _, Backbone, views, collections){
+  "use strict";
 
   views.widgets.Counter = Backbone.View.extend({
 
@@ -88,4 +89,4 @@
     }
   });
 
-})(app.views, app.collections);
+})($, _, Backbone, app.views, app.collections);

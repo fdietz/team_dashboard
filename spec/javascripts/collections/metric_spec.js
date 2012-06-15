@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Metric Collection", function() {
 
   beforeEach(function() {

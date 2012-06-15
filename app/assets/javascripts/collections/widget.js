@@ -1,4 +1,5 @@
-(function (collections, model) {
+(function ($, _, Backbone, collections, model) {
+  "use strict";
 
     collections.Widget = Backbone.Collection.extend({
       model: model,
@@ -13,4 +14,4 @@
 
   });
 
-})(app.collections, app.models.Widget);
+})($, _, Backbone, app.collections, app.models.Widget);

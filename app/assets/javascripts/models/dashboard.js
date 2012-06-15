@@ -1,4 +1,5 @@
-(function (models) {
+(function ($, _, Backbone, models) {
+  "use strict";
 
   models.Dashboard = Backbone.Model.extend({
     urlRoot: '/api/dashboards',
@@ -13,7 +14,7 @@
         this.get('layout').push(widgetId);
       }
     }
-        
+
   });
 
-})(app.models);
+})($, _, Backbone, app.models);

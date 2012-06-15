@@ -1,4 +1,5 @@
-(function (views, models, collections, router) {
+(function ($, _, Backbone, views, models, collections, router) {
+  "use strict";
 
   views.Dashboard = Backbone.View.extend({
     events: {
@@ -125,4 +126,4 @@
 
   });
 
-})(app.views, app.models, app.collections, app.router);
+})($, _, Backbone, app.views, app.models, app.collections, app.router);

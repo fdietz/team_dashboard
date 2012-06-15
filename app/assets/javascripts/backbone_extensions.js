@@ -1,4 +1,5 @@
-(function() {
+(function($, _, Backbone) {
+  "use strict";
 
   // support cleanup of backbone views via a close method
   // and a onClose method for views to implement
@@ -14,7 +15,7 @@
   _.extend(Backbone.View.prototype, {
     parse: function(objName) {
       var self = this;
-      _recurse_form = function(object, objName) {
+      var _recurse_form = function(object, objName) {
         _.each(object, function(v,k) {
           if (v instanceof Object) {
             object[k] = _recurse_form(v, objName + '[' + k + '_attributes]');
@@ -45,4 +46,4 @@
     }
   });
 
-})();
+})($, _, Backbone);

@@ -1,4 +1,5 @@
-(function (views, router){
+(function ($, _, Backbone, views, router){
+  "use strict";
 
   views.Dashboards = Backbone.View.extend({
 
@@ -30,7 +31,7 @@
         }
       });
     }
-    
+
   });
 
-})(app.views, app.router);
+})($, _, Backbone, app.views, app.router);

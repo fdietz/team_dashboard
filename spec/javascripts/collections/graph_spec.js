@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Graph Collection", function() {
 
   describe("buildTargetsParams", function() {    

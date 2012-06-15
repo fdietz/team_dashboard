@@ -1,4 +1,5 @@
-(function (views){
+(function ($, _, Backbone, views){
+  "use strict";
 
   views.Errors = Backbone.View.extend({
     events: {
@@ -26,4 +27,4 @@
     }
   });
 
-})(app.views);
+})($, _, Backbone, app.views);

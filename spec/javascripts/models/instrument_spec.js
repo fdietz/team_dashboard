@@ -1,3 +1,5 @@
+"use strict";
+
 describe('Instrument Model', function() {
 
   beforeEach(function() {

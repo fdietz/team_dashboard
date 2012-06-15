@@ -1,4 +1,5 @@
-(function (app) {
+(function ($, _, Backbone, app) {
+  "use strict";
 
   app.Router = Backbone.Router.extend({
 
@@ -60,14 +61,14 @@
 
     metricsIndex: function() {
       console.log("ROUTER: metrics");
-      
+
       var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
       this.showView(metricsView);
     },
 
     metricsShow: function(name) {
       console.log("ROUTER: metric details:", name);
-      
+
       var that = this;
       app.collections.metrics.fetch({
         success: function(collection, response) {
@@ -80,7 +81,7 @@
 
     dashboardsIndex: function() {
       console.log("ROUTER: dashboards");
-      
+
       var dashboardsView = new app.views.Dashboards({ collection: app.collections.dashboards });
       this.showView(dashboardsView);
     },
@@ -88,7 +89,7 @@
     dashboardsShow: function(id) {
       console.log("ROUTER: dashboard_detail");
 
-      dashboard = new app.models.Dashboard({ id: id });
+      var dashboard = new app.models.Dashboard({ id: id });
       var that = this;
       dashboard.fetch({
         success: function(model, response) {
@@ -105,4 +106,4 @@
     }
   });
 
-})(app);
+})($, _, Backbone, app);

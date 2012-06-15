@@ -1,4 +1,5 @@
-(function (views, models, collections) {
+(function ($, _, Backbone, views, models, collections) {
+  "use strict";
 
   views.LineGraphDialog = Backbone.View.extend({
 
@@ -57,4 +58,4 @@
     }
 
   });
-})(app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections);

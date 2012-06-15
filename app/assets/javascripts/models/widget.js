@@ -1,4 +1,5 @@
-(function (models) {
+(function ($, _, Backbone, models) {
+  "use strict";
 
   models.Widget = Backbone.Model.extend({
     defaults: {
@@ -22,7 +23,7 @@
     // toJSON: function() {
     //   return { widget: _.clone(this.attributes) }
     // }
-        
+
   });
 
-})(app.models);
+})($, _, Backbone, app.models);

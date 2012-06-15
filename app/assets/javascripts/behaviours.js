@@ -1,3 +1,5 @@
+"use strict";
+
 $(function() {
 
   $("body").on("click", "a[href^='/']", function(event) {

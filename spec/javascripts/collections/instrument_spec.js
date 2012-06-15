@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Instrument Collection", function() {
 
   beforeEach(function() {

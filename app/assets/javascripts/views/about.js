@@ -1,4 +1,5 @@
-(function (views){
+(function ($, _, Backbone, views){
+  "use strict";
 
   views.About = Backbone.View.extend({
     initialize: function(options) {
@@ -11,4 +12,4 @@
     }
   });
 
-})(app.views);
+})($, _, Backbone, app.views);

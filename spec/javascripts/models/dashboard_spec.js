@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Dashboard Model", function() {
   
   beforeEach(function() {

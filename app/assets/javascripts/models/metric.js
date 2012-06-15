@@ -1,7 +1,8 @@
-(function ( models ) {
+(function ($, _, Backbone, models) {
+  "use strict";
 
   models.Metric = Backbone.Model.extend({
     urlRoot: '/api/metrics'
   });
 
-})( app.models );
+})($, _, Backbone, app.models);

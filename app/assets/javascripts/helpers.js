@@ -1,4 +1,5 @@
-(function() {
+(function($, _, Backbone) {
+  "use strict";
 
   //  return the first item of a list only
   // usage: {{#first items}}{{name}}{{/first}}
@@ -10,14 +11,14 @@
     console.log("Current Context");
     console.log("====================");
     console.log(this);
-   
+
     if (optionalValue) {
       console.log("Value");
       console.log("====================");
       console.log(optionalValue);
     }
   });
-  
+
   //  format an ISO date using Moment.js
   //  http://momentjs.com/
   //  moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
@@ -90,7 +91,7 @@
     '#239928',
   ];
 
-  ColorFactory = {
+  var ColorFactory = {
     currentColorIndex: 0
   };
 
@@ -103,4 +104,4 @@
     return color;
   };
 
-})();
+})($, _, Backbone);

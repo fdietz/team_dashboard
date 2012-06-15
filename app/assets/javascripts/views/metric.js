@@ -1,4 +1,5 @@
-(function (views, collections){
+(function ($, _, Backbone, views, collections){
+  "use strict";
 
   var pastel = [
     '#239928',
@@ -194,4 +195,4 @@
 
   });
 
-})(app.views, app.collections);
+})($, _, Backbone, app.views, app.collections);

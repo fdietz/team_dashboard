@@ -1,4 +1,5 @@
-(function (views, models, collections) {
+(function ($, _, Backbone, views, models, collections) {
+  "use strict";
 
   views.CounterDialog = Backbone.View.extend({
 
@@ -59,4 +60,4 @@
     }
 
   });
-})(app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections);

@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Instruments View", function() {
 
   beforeEach(function() {

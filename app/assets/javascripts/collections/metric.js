@@ -1,5 +1,6 @@
-(function (collections, model) {
-  
+(function ($, _, Backbone, collections, model) {
+  "use strict";
+
   collections.Metric = Backbone.Collection.extend({
     model: model,
     url: '/api/metrics',
@@ -20,4 +21,4 @@
     }
   });
 
-})( app.collections, app.models.Metric);
+})( $, _, Backbone, app.collections, app.models.Metric);

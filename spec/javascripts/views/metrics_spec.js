@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Metrics View", function() {
 
   beforeEach(function() {

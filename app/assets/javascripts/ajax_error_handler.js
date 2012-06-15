@@ -1,4 +1,5 @@
-(function() {
+(function($, _, Backbone) {
+  "use strict";
 
   $(document).ajaxError(function(error, xhr, settings, exception) {
     if (settings.suppressErrors) {
@@ -18,4 +19,4 @@
     $('#flash').html(errorsView.render().el);
   });
 
-})();
+})($, _, Backbone);

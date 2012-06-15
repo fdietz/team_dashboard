@@ -1,3 +1,5 @@
+"use strict";
+
 describe("Dashboard Collection", function() {
 
   beforeEach(function() {

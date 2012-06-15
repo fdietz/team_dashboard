@@ -1,6 +1,7 @@
-(function (models) {
+(function ($, _, Backbone, models) {
+  "use strict";
 
   models.Graph = Backbone.Model.extend({
   });
 
-})(app.models);
+})($, _, Backbone, app.models);
