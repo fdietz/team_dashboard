@@ -51,7 +51,7 @@
         if (model.color === undefined) {
           var color = null;
           if (that.currentColors[index] === undefined) {
-            color = ColorFactory.get();
+            color = $.ColorFactory.get();
             that.currentColors.push(color);
           } else {
             color = that.currentColors[index]

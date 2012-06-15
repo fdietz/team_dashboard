@@ -91,17 +91,16 @@
     '#239928',
   ];
 
-  var ColorFactory = {
-    currentColorIndex: 0
-  };
-
-  ColorFactory.get = function() {
-    if (this.currentColorIndex >= colorPalette.length-1) {
-      this.currentColorIndex = 0;
+  $.ColorFactory = {
+    currentColorIndex: 0,
+    get: function() {
+      if (this.currentColorIndex >= colorPalette.length-1) {
+        this.currentColorIndex = 0;
+      }
+      var color = colorPalette[this.currentColorIndex];
+      this.currentColorIndex++;
+      return color;
     }
-    var color = colorPalette[this.currentColorIndex];
-    this.currentColorIndex++;
-    return color;
   };
 
   $.TimeSelector = {

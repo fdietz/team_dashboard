@@ -1,4 +1,4 @@
-(function ($, _, Backbone, moment, views, collections){
+(function ($, _, Backbone, moment, Rickshaw, views, collections){
   "use strict";
 
   var pastel = [
@@ -199,4 +199,4 @@
 
   });
 
-})($, _, Backbone, moment, app.views, app.collections);
+})($, _, Backbone, moment, Rickshaw, app.views, app.collections);
