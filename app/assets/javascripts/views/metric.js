@@ -135,24 +135,24 @@
     timeUnit: function() {
       switch(this.range) {
       case "30-minutes":
-        return { name: 'minute', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'minute', seconds: 60*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
       case "60-minutes":
-        return { name: 'minute', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'minute', seconds: 60*4, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
       case "3-hours":
-        return { name: 'hour', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'hour', seconds: 60*4*3, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
       case "12-hours":
-        return { name: 'hour', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'hour', seconds: 60*4*12, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
       case "24-hours":
-        return { name: 'hour', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'hour', seconds: 60*4*24, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
       case "3-days":
-        return { name: 'day', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH"); }};
+        return { name: 'day', seconds: 60*4*24*3*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD HH:mm"); }};
       case "7-days":
-        return { name: 'day', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("HH"); }};
+        return { name: 'day', seconds: 60*4*24*7*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
       case "4-weeks":
-        return { name: 'week', seconds: 60, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
+        return { name: 'week', seconds: 60*4*24*7*4, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
 
       default:
-        alert("unknown rangeString: " + rangeString);
+        alert("unknown rangeString: " + this.range);
       }
     }
   });
