@@ -21,7 +21,7 @@
     initialize: function(options) {
       _.bindAll(this, "render", "renderGraph", "transformDatapoints");
 
-      this.time = options.time || 'minute';
+      this.time = 'hour'; //options.time || 'minute';
       this.targets = options.targets;
       this.from = options.from;
       this.to = options.to;
@@ -71,6 +71,7 @@
 
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
+        console.log("datapoints total", datapoints.length);
         this.renderGraph(datapoints);
       } else {
         this.showEmptyDatasetNotice();
@@ -166,6 +167,9 @@
     initialize: function() {
       _.bindAll(this, "render", "switchTime");
       this.time = 'hour';
+      var one_hour = 3600 * 1000;
+      this.from = Math.round(((new Date()).getTime() - one_hour) / 1000);
+      this.to = Math.round((new Date()).getTime() / 1000);
     },
 
     render: function() {
@@ -173,7 +177,7 @@
 
       // this.$("button.data-time").button();
 
-      this.graph = new Graph({ targets: this.model.get('name'), time: this.time });
+      this.graph = new Graph({ targets: this.model.get('name'), from: this.from, to: this.to });
       this.graph.render();
       this.$("#graph-container").html(this.graph.el);
 

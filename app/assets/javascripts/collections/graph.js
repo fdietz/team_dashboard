@@ -5,7 +5,11 @@
 
       initialize: function(options) {
         this.targets = options.targets;
-        this.time = options.time || 'minute';
+        this.from = options.from;
+        this.to = options.to;
+        this.at = options.at;
+
+        console.log("from", this.from, "to", this.to, "at", this.at);
         this.targetsArray = (this.targets || "").split(',');
 
         this.isFetched = false;
@@ -22,12 +26,19 @@
         }).join('&');
       },
 
-      buildTimeParams: function() {
-        return "time=" + this.time;
+      buildDateRangeParams: function() {
+        var result = null;
+        if (this.at) {
+          result = "at=" + this.at;
+        } else {
+          result = "from=" + this.from + "&to=" + this.to;
+        }
+        return result;
       },
 
       url: function() {
-        var params = [this.buildTargetsParams(), this.buildTimeParams()];
+        var params = [this.buildTargetsParams(), this.buildDateRangeParams()];
+        console.log("params", params);
         return "/api/graph?" + params.join('&');
       }
 
