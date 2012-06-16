@@ -10,6 +10,7 @@
     initialize: function(options) {
       _.bindAll(this, "render", "prefillAutocomplete");
       this.dashboard = options.dashboard;
+      collections.metrics.source = this.model.get('source');
     },
 
     prefillAutocomplete: function() {

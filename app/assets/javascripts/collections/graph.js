@@ -9,6 +9,8 @@
         this.from = options.from;
         this.to = options.to;
         this.at = options.at;
+        
+        this.source = options.source;
 
         this.targetsArray = (this.targets || "").split(',');
 
@@ -37,7 +39,7 @@
       },
 
       url: function() {
-        var params = [this.buildTargetsParams(), this.buildDateRangeParams()];
+        var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + this.source];
         console.log("params", params);
         return "/api/graph?" + params.join('&');
       }

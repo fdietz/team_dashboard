@@ -18,12 +18,20 @@
 
   views.widgets.Graph = Backbone.View.extend({
 
-    initialize: function() {
+    initialize: function(options) {
       _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice");
+      this.range = this.model.get("range");
+
+      this.from = $.TimeSelector.getFrom(this.range);
+      this.to = $.TimeSelector.getCurrent();
+      this.source = options.source;
 
       this.collection = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets')
+        targets: this.model.get('targets'),
+        source: this.model.get('source'),
+        from: this.from,
+        to: this.to
       });
 
       this.collection.on('change', this.render);
@@ -37,7 +45,10 @@
     widgetChanged: function() {
       this.collection = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets')
+        targets: this.model.get('targets'),
+        source: this.model.get('source'),
+        from: this.from,
+        to: this.to
       });
       render();
     },
@@ -54,7 +65,7 @@
             color = $.ColorFactory.get();
             that.currentColors.push(color);
           } else {
-            color = that.currentColors[index]
+            color = that.currentColors[index];
           }
           model.color = color;
         }
@@ -102,7 +113,7 @@
 
       var xAxis = new Rickshaw.Graph.Axis.Time({
         graph: this.graph,
-        timeUnit: this.timeUnit(this.model.get('time'))
+        timeUnit: this.timeUnit()
       });
       xAxis.render();
 
@@ -127,6 +138,11 @@
 
     update: function(callback) {
       var that = this;
+
+      this.from = $.TimeSelector.getFrom(this.range);
+      this.to = $.TimeSelector.getCurrent();
+      this.collection.from = this.from;
+      this.collection.to = this.to;
 
       this.collection.fetch({
         success: function(collection, response) {},
@@ -162,35 +178,27 @@
       this.model.off('change', this.render);
     },
 
-    timeUnit: function(time) {
-      var timeFixture = new Rickshaw.Fixtures.Time();
+    timeUnit: function() {
+      switch(this.range) {
+      case "30-minutes":
+        return { name: 'minute', seconds: 60*2*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "60-minutes":
+        return { name: 'minute', seconds: 60*4*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "3-hours":
+        return { name: 'hour', seconds: 60*4*3*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "12-hours":
+        return { name: 'hour', seconds: 60*4*12*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "24-hours":
+        return { name: 'hour', seconds: 60*4*24*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+      case "3-days":
+        return { name: 'day', seconds: 60*4*24*3*2*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD HH:mm"); }};
+      case "7-days":
+        return { name: 'day', seconds: 60*4*24*7*2*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
+      case "4-weeks":
+        return { name: 'week', seconds: 60*4*24*7*4*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
 
-      var minuteCustom = {
-        name: 'minute',
-        seconds: 60,
-        formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
-      };
-      var hourCustom = {
-        name: 'hour',
-        seconds: 60*15,
-        formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }
-      };
-      var dayCustom = {
-        name: 'day',
-        seconds: 60*60*4,
-        formatter: function(d) { return moment.utc(d).local().format("HH"); }
-      };
-      var weekCustom = {
-        name: 'week',
-        seconds: 60*60*2*7*2,
-        formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }
-      };
-
-      switch(time){
-        case 'minute': return minuteCustom;
-        case 'hour': return hourCustom;
-        case 'day': return dayCustom;
-        case 'week': return weekCustom;
+      default:
+        alert("unknown rangeString: " + this.range);
       }
     }
   });

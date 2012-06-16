@@ -6,8 +6,9 @@ module Api
       to      = params[:to] || Time.now.to_i
       at      = params[:at]
       targets = params[:targets]
+      source  = params[:source]
 
-      handler = Sources.handler(Rails.configuration.source)
+      handler = Sources.handler(source)
       datapoints = if at
         handler.datapoint(targets, at.to_i)
       else

@@ -5,8 +5,8 @@
 
     routes: {
       "":                 "metricsIndex",
-      "metrics":          "metricsIndex",
-      "metrics/:name":    "metricsShow",
+      "metrics/:source":          "metricsIndex",
+      "metrics/:source/:name":    "metricsShow",
       "dashboards":       "dashboardsIndex",
       "dashboards/:id":   "dashboardsShow",
       "instruments":      "instrumentsIndex",
@@ -59,21 +59,24 @@
       $("div.navbar a[href='/"+ selectedMenu +"']").parent().addClass("active");
     },
 
-    metricsIndex: function() {
-      console.log("ROUTER: metrics");
+    metricsIndex: function(source) {
+      console.log("ROUTER: metrics", source);
 
+      app.collections.metrics.source = source;
       var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
       this.showView(metricsView);
     },
 
-    metricsShow: function(name) {
-      console.log("ROUTER: metric details:", name);
+    metricsShow: function(source, name) {
+      console.log("ROUTER: metric details:", source, name);
 
       var that = this;
+      app.collections.metrics.source = source;
       app.collections.metrics.fetch({
         success: function(collection, response) {
           var model = collection.where({ name: name })[0];
-          var view = new app.views.Metric({ model: model });
+          console.log("collection", collection, model);
+          var view = new app.views.Metric({ model: model, source: source });
           that.showView(view);
         }
       });

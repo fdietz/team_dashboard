@@ -24,13 +24,17 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Time</label>
+            <label class="control-label">Date Time Range</label>
             <div class="controls">
-              <select name="graph[time]" class="size">
-                <option>minute</option>
-                <option>hour</option>
-                <option>day</option>
-                <option>week</option>
+              <select name="graph[range]" class="range">
+                <option value="30-minutes">Last 30 minutes</option>
+                <option value="60-minutes">Last 60 minutes</option>
+                <option value="3-hours">Last 3 hours</option>
+                <option value="12-hours">Last 12 hours</option>
+                <option value="24-hours">Last 24 hours</option>
+                <option value="3-days">Last 3 days</option>
+                <option value="7-days">Last 7 days</option>
+                <option value="4-weeks">Last 4 weeks</option>
               </select>
             </div>
           </div>
@@ -47,17 +51,15 @@
             </div>
           </div>
 
-          <!--
           <div class="control-group">
             <label class="control-label">Data Source</label>
             <div class="controls">
-              <select>
-                <option>Simple Metrics</option>
-                <option>Graphite</option>
+              <select name="graph[source]" class="source">
+                <option value="demo">Demo</option>
+                <option value="graphite">Graphite</option>
               </select>
             </div>
           </div>
-          -->
 
           <div class="control-group">
             <label class="control-label">Targets</label>

@@ -8,7 +8,8 @@
 
       this.collection = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets')
+        targets: this.model.get('targets'),
+        source: this.model.get('source')
       });
 
       this.collection.on('change', this.render);

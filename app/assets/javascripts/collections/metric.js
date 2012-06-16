@@ -3,10 +3,10 @@
 
   collections.Metric = Backbone.Collection.extend({
     model: model,
-    url: '/api/metrics',
 
-    initialize: function() {
+    initialize: function(options) {
       this.isFetched = false;
+      this.source = options.source || 'graphite';
       this.bind('reset', this.onReset, this);
     },
 
@@ -18,6 +18,11 @@
       return this.map(function(metric) {
         return metric.get('name');
       });
+    },
+
+    url: function() {
+      var params = ['source=' + this.source];
+      return "/api/metrics?" + params.join('&');
     }
   });
 

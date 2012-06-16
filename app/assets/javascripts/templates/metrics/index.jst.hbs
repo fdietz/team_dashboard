@@ -2,6 +2,19 @@
   <div class="btn-group">
     <h2>Metrics</h2>
   </div>
+
+  <div class="btn-group pull-right">
+    <div class="btn-group">
+      <a class="btn btn-success source-picker" data-source="graphite" href="#">Graphite</a>
+      <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="#" class="source-picker" data-source="graphite">Graphite</a></li>
+        <li><a href="#" class="source-picker" data-source="demo">Demo</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <table class="table table-striped">
@@ -9,17 +22,13 @@
     <tr>
       <th>Name</th>
       <th>Total</th>
-      <th>Last Modified</th>
-      <th>Created At</th>
     </tr>
   </thead>
   <tbody>
     {{#each metrics}}
       <tr>
-        <td><a href="/metrics/{{name}}">{{name}}</a></td>
-        <td>{{total}}</td>
-        <td>{{dateFormat updated_at}}</td>
-        <td>{{dateFormat created_at}}</td>
+        <td><a href="/metrics/{{../source}}/{{name}}">{{name}}</a></td>
+        <td></td>
       </tr>
     {{/each}}
   </tbody>

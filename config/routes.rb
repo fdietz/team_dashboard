@@ -14,8 +14,8 @@ SimpleMetricsWebapp::Application.routes.draw do
   match "api/datapoints" => "api/datapoints#show"
 
   # routes render the initial layout (client side rendering)
-  match "metrics" => "home#index"
-  match "metrics/:name" => "home#index", :constraints => { :name => /[^\/]+/ }
+  match "metrics/:source" => "home#index", :constraints => { :source => /[^\/]+/ }
+  match "metrics/:source/:name" => "home#index", :constraints => { :source => /[^\/]+/, :name => /[^\/]+/ }
   # match "instruments" => "home#index"
   # match "instruments/:id" => "home#index"
   match "dashboards" => "home#index"

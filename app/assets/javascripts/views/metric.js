@@ -26,10 +26,13 @@
       this.from = options.from;
       this.to = options.to;
       this.range = options.range;
+      this.source = options.source;
+      console.log("source", this.source);
       this.collection = new collections.Graph({
         targets: this.targets,
         from: this.from,
-        to: this.to
+        to: this.to,
+        source: this.source
       });
       this.collection.on('reset', this.render);
 
@@ -163,12 +166,14 @@
       "click .date-range-picker": "switchDateRange"
     },
 
-    initialize: function() {
+    initialize: function(options) {
       _.bindAll(this, "render", "switchDateRange");
       this.time = 'hour';
       this.range = "30-minutes";
       this.from = $.TimeSelector.getFrom(this.range);
       this.to = $.TimeSelector.getCurrent();
+      this.source = options.source;
+      console.log("metric source", this.source);
     },
 
     render: function() {
@@ -178,7 +183,7 @@
 
       this.$('.dropdown-toggle').dropdown();
 
-      this.graph = new Graph({ targets: this.model.get('name'), from: this.from, to: this.to, range: this.range });
+      this.graph = new Graph({ targets: this.model.get('name'), from: this.from, to: this.to, range: this.range, source: this.source });
       this.graph.render();
       this.$("#graph-container").html(this.graph.el);
 
