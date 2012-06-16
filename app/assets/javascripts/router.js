@@ -5,6 +5,7 @@
 
     routes: {
       "":                 "metricsIndex",
+      "metrics":          "metricsIndex",
       "metrics/:source":          "metricsIndex",
       "metrics/:source/:name":    "metricsShow",
       "dashboards":       "dashboardsIndex",
@@ -62,7 +63,7 @@
     metricsIndex: function(source) {
       console.log("ROUTER: metrics", source);
 
-      app.collections.metrics.source = source;
+      app.collections.metrics.source = source || $.Sources.first();
       var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
       this.showView(metricsView);
     },

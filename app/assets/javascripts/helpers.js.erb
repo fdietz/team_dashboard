@@ -144,4 +144,14 @@
     }
   };
 
+  $.Sources = {
+    available: function() {
+      return JSON.parse('<%= Rails.configuration.available_sources.to_json %>');
+    },
+
+    first: function() {
+      return this.available()[0];
+    }
+  }
+
 })($, _, Backbone);

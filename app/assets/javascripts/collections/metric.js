@@ -6,7 +6,7 @@
 
     initialize: function(options) {
       this.isFetched = false;
-      this.source = options.source || 'graphite';
+      this.source = options.source;
       this.bind('reset', this.onReset, this);
     },
 
@@ -26,4 +26,4 @@
     }
   });
 
-})( $, _, Backbone, app.collections, app.models.Metric);
+})($, _, Backbone, app.collections, app.models.Metric);
