@@ -29,7 +29,6 @@ module Sources
 
     def generate_datapoints(from, to)
       range = to - from
-      puts "== #{range.inspect} #{ 60*30}"
       interval = case range
       when 60*30 then 10
       when  60*60 then 10
@@ -42,13 +41,11 @@ module Sources
       when  3600*24*7*4 then 10*12*7*4
       end
 
-      puts "======= #{interval.inspect}"
-
       result = []
       timestamp = from
       while (timestamp < to) 
         result << [1+rand(100), timestamp]    
-        timestamp = timestamp + interval
+        timestamp = timestamp + interval * (1+rand(5))
       end
       result
     end
