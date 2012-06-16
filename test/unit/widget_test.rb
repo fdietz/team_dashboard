@@ -25,8 +25,8 @@ class WidgetTest < ActiveSupport::TestCase
     assert_equal "graph", FactoryGirl.build(:widget).kind
   end
 
-  test "should initialize time" do
-    assert_equal "hour", FactoryGirl.build(:widget).time
+  test "should initialize range" do
+    assert_equal "30-minutes", FactoryGirl.build(:widget).range
   end
 
   test "name attribute is mandatory" do

@@ -22,7 +22,7 @@ module Api
     test "should respond to at params" do
       dp = [170, 1339315980]
       handler = mock('mock')
-      handler.stubs(:datapoint).returns(dp)
+      handler.stubs(:datapoints_at).returns(dp)
       Sources.stubs(:handler).returns(handler)
       get :show, :targets => ['test'], :at => Time.now.to_i, :format => :json
 

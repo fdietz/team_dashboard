@@ -15,5 +15,11 @@ module Sources
       raise "implement me"
     end
 
+    protected
+
+    def latest_datapoint(dps)
+      dps.reject { |dp| dp.first.nil? }.sort { |a, b| b.last <=> a.last }.first
+    end
+
   end
 end

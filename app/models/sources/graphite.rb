@@ -16,9 +16,11 @@ module Sources
       JSON.parse(request_datapoints(targets, from, to || Time.now.to_i ))
     end
 
-    def datapoint(target, at)
+    def datapoints_at(target, at)
       result = JSON.parse(request_datapoints(target, at, at))
-      latest_datapoint(result.first['datapoints'])
+      result.map do |r|
+        { 'target' => r['target'], 'datapoints' => [latest_datapoint(r['datapoints'])] }
+      end
     end
 
     class UrlBuilder
@@ -41,10 +43,6 @@ module Sources
     end
 
     private
-
-    def latest_datapoint(dps)
-      dps.reject { |dp| dp.first.nil? }.sort { |a, b| b.last <=> a.last }.first
-    end
 
     def request_metrics
       uri = URI.parse("#{@graphite_url}/metrics/index.json")

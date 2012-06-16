@@ -10,7 +10,7 @@ module Api
 
       handler = Sources.handler(source)
       datapoints = if at
-        handler.datapoint(targets, at.to_i)
+        handler.datapoints_at(targets, at.to_i)
       else
         handler.datapoints(targets, from.to_i, to.to_i)
       end

@@ -14,15 +14,14 @@ module Sources
     def datapoints(targets, from, to = nil)
       to = to || Time.now.to_i
       datapoints = []
-
       datapoints << { :target => 'demo.example1', :datapoints => generate_datapoints(from, to) }
       datapoints
     end
 
-    # TODO: implement me
-    def datapoint(target, at)
-      result = JSON.parse(request_datapoints(target, at, at))
-      latest_datapoint(result.first['datapoints'])
+    def datapoints_at(target, at)
+      datapoints = []
+      datapoints << { :target => 'demo.example1', :datapoints => [latest_datapoint(generate_datapoints(at-600, at))] }
+      datapoints
     end
 
     private
@@ -39,7 +38,7 @@ module Sources
       when  3600*24*3 then 10*12*3
       when  3600*24*7 then 10*12*7
       when  3600*24*7*4 then 10*12*7*4
-      end
+      else 10 end
 
       result = []
       timestamp = from

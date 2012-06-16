@@ -9,7 +9,8 @@
       this.collection = new collections.Graph({
         time: this.model.get('time'),
         targets: this.model.get('targets'),
-        source: this.model.get('source')
+        source: this.model.get('source'),
+        at: $.TimeSelector.getCurrent()
       });
 
       this.collection.on('change', this.render);
@@ -20,11 +21,15 @@
     widgetChanged: function() {
       this.collection = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets')
+        targets: this.model.get('targets'),
+        source: this.model.get('source'),
+        at: $.TimeSelector.getCurrent()
       });
     },
 
     value: function() {
+      console.log("collection", this.collection);
+
       var result = this.collection.map(function(model) {
         return _.last(model.get('datapoints'));
       });
