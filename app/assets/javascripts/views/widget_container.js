@@ -40,8 +40,8 @@
     editWidget: function() {
       var dialog = null;
       switch(this.model.get('kind')) {
-        case 'line_graph':
-          dialog = new views.LineGraphDialog({ model: this.model, dashboard: this.dashboard });
+        case 'graph':
+          dialog = new views.GraphDialog({ model: this.model, dashboard: this.dashboard });
           break;
         case 'counter':
           dialog = new views.CounterDialog({ model: this.model, dashboard: this.dashboard });
@@ -56,8 +56,8 @@
 
     renderWidget: function() {
       switch(this.model.get('kind')) {
-        case 'line_graph':
-          this.widget = new views.widgets.LineGraph({ model: this.model });
+        case 'graph':
+          this.widget = new views.widgets.Graph({ model: this.model });
           break;
         case 'counter':
           this.widget = new views.widgets.Counter({ model: this.model });

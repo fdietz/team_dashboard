@@ -16,7 +16,7 @@
     '#00A388'
   ].reverse();
 
-  views.widgets.LineGraph = Backbone.View.extend({
+  views.widgets.Graph = Backbone.View.extend({
 
     initialize: function() {
       _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice");
@@ -73,7 +73,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widgets/line_graph/show']({ time: this.model.get('time') }));
+      $(this.el).html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
 
       if (!this.collection.isFetched) {
         this.update();

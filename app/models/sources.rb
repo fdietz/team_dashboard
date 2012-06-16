@@ -3,10 +3,8 @@ module Sources
 
   def handler(source)
     case(source)
-    when 'simple_metrics'
-      Sources::SimpleMetrics.new
     when 'graphite'
-      Sources::Graphite.new(:graphite_url => ENV['GRAPHITE_URL'])
+      Sources::Graphite.new(:graphite_url => Rails.configuration.graphite_url)
     else
       raise ArgumentError, "Unknown source #{source}"
     end

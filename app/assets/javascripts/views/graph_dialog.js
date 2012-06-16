@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.LineGraphDialog = Backbone.View.extend({
+  views.GraphDialog = Backbone.View.extend({
 
     events: {
       "click .btn-primary" : "save"
@@ -22,9 +22,9 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widgets/line_graph/edit']({ model: this.model.toJSON() }));
+      $(this.el).html(JST['templates/widgets/graph/edit']({ model: this.model.toJSON() }));
 
-      this.populate("line-graph");
+      this.populate("graph");
       this.targetInput = this.$('.targets');
       this.prefillAutocomplete();
 
@@ -40,7 +40,7 @@
       var myModal = this.$('#dashboard-details-modal');
       myModal.modal("hide");
 
-      var formResult = this.parse("line-graph");
+      var formResult = this.parse("graph");
       formResult.targets = this.targetInput.select2('val').join(',');
 
       var result = this.model.save(formResult, {

@@ -7,7 +7,6 @@ module Api
       at      = params[:at]
       targets = params[:targets]
 
-      puts "===== from: #{from}, to: #{to}, at: #{at}"
       handler = Sources.handler(Rails.configuration.source)
       datapoints = if at
         handler.datapoint(targets, at.to_i)

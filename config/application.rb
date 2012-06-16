@@ -51,6 +51,7 @@ module SimpleMetricsWebapp
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.source = ENV['SOURCE'] || 'simple_metrics'
+    config.source = ENV['SOURCE'] || 'graphite'
+    config.graphite_url = ENV['GRAPHITE_URL'] || 'http://localhost:8080'
   end
 end

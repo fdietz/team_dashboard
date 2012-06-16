@@ -22,7 +22,7 @@ class WidgetTest < ActiveSupport::TestCase
   end
 
   test "should initialize kind" do
-    assert_equal "line_graph", FactoryGirl.build(:widget).kind
+    assert_equal "graph", FactoryGirl.build(:widget).kind
   end
 
   test "should initialize time" do

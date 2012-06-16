@@ -4,7 +4,7 @@
   views.Dashboard = Backbone.View.extend({
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
-      "click .add-line-graph"              : "showLineGraphDialog",
+      "click .add-graph"              : "showGraphDialog",
       "click .add-counter"                 : "showCounterDialog"
     },
 
@@ -102,9 +102,9 @@
       });
     },
 
-    showLineGraphDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'line_graph'});
-      var dialog = new views.LineGraphDialog({ model: widget, dashboard: this.model });
+    showGraphDialog: function(event) {
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph'});
+      var dialog = new views.GraphDialog({ model: widget, dashboard: this.model });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },

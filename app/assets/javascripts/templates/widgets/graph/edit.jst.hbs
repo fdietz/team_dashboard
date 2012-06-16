@@ -3,19 +3,19 @@
     <h3>Line Graph</h3>
   </div>
   <div class="modal-body">
-      <form id="line-graph" class="form-horizontal">
+      <form id="graph" class="form-horizontal">
         <fieldset>
           <div class="control-group">
             <label class="control-label">Title</label>
             <div class="controls">
-              <input name="line-graph[name]" class="name" type="text" placeholder="Enter widget name">
+              <input name="graph[name]" class="name" type="text" placeholder="Enter widget name">
             </div>
           </div>
 
           <div class="control-group">
             <label class="control-label">Size</label>
             <div class="controls">
-              <select name="line-graph[size]" class="size">
+              <select name="graph[size]" class="size">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -26,7 +26,7 @@
           <div class="control-group">
             <label class="control-label">Time</label>
             <div class="controls">
-              <select name="line-graph[time]" class="size">
+              <select name="graph[time]" class="size">
                 <option>minute</option>
                 <option>hour</option>
                 <option>day</option>
@@ -38,7 +38,7 @@
           <div class="control-group">
             <label class="control-label">Update Interval</label>
             <div class="controls">
-              <select name="line-graph[update_interval]" class="update-interval">
+              <select name="graph[update_interval]" class="update-interval">
                 <option value="10">10 sec</option>
                 <option value="600">1 min</option>
                 <option value="6000">10 min</option>
@@ -62,7 +62,7 @@
           <div class="control-group">
             <label class="control-label">Targets</label>
             <div class="controls">
-              <input name="line-graph[targets]" class="targets" size="16" type="text" style="width:300px">
+              <input name="graph[targets]" class="targets" size="16" type="text" style="width:300px">
               <p class="help-block">Comma separated metric names. Including wildcard support (example: test.system1, test.graph.*)</p>
             </div>
 

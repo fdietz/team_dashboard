@@ -68,7 +68,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widgets/line_graph/show']({ time: this.time }));
+      $(this.el).html(JST['templates/widgets/graph/show']({ time: this.time }));
 
       if (!this.collection.isFetched) {
         this.collection.fetch();
