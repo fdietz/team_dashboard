@@ -4,7 +4,6 @@ SimpleMetricsWebapp::Application.routes.draw do
 
   namespace :api do
     resources :metrics
-    # resources :instruments
     resources :dashboards do
       resources :widgets
     end
@@ -12,6 +11,7 @@ SimpleMetricsWebapp::Application.routes.draw do
 
   match "api/graph" => "api/datapoints#show"
   match "api/datapoints" => "api/datapoints#show"
+  match "api/counter" => "api/counters#show"
 
   # routes render the initial layout (client side rendering)
   match "metrics" => "home#index"

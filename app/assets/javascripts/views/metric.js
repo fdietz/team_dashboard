@@ -27,7 +27,6 @@
       this.to = options.to;
       this.range = options.range;
       this.source = options.source;
-      console.log("source", this.source);
       this.collection = new collections.Graph({
         targets: this.targets,
         from: this.from,
@@ -80,8 +79,6 @@
 
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
-        console.log("datapoints total", datapoints.length);
-        console.log("datapoints", datapoints);
         this.renderGraph(datapoints);
       } else {
         this.showEmptyDatasetNotice();
@@ -130,9 +127,7 @@
     },
 
     onClose: function() {
-      // this.collection.off('change', this.render);
       this.collection.off('reset', this.render);
-      // this.model.off('change', this.render);
     },
 
     timeUnit: function() {

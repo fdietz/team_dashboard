@@ -16,11 +16,10 @@ module Sources
       JSON.parse(request_datapoints(targets, from, to || Time.now.to_i ))
     end
 
-    def datapoints_at(target, at)
-      result = JSON.parse(request_datapoints(target, at, at))
-      result.map do |r|
-        { 'target' => r['target'], 'datapoints' => [latest_datapoint(r['datapoints'])] }
-      end
+    def datapoints_at(targets, aggregate_function, at)
+      result = JSON.parse(request_datapoints(targets, at, at))
+      dps = result.map { |r| latest_datapoint(r['datapoints']) }
+      aggregate(dps, aggregate_function)
     end
 
     class UrlBuilder

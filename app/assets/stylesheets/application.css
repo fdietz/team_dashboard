@@ -153,6 +153,13 @@
   margin-left: 10px;
   font-size: 40px;
   font-weight: bold;
+}
+
+.secondary-value-up {
+  color: #669900;
+}
+
+.secondary-value-down {
   color: #D26771;
 }
 

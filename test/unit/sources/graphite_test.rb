@@ -23,14 +23,14 @@ module Sources
       datapoints = [[1,123], [10, 456], [3, 122]]
       input = [{ "target" => 'test1', "datapoints" => datapoints }]
       @graphite.expects(:request_datapoints).returns(input.to_json)
-      assert_equal([{ "target" => 'test1', "datapoints" => [[10, 456]] }], @graphite.datapoints_at('test1', Time.now.to_i))
+      assert_equal 10, @graphite.datapoints_at(['test1'], 'sum', Time.now.to_i)
     end
 
     test "should return latest datapoint for multiple targets" do
       datapoints = [[1,123], [10, 456], [3, 122]]
       input = [{ "target" => 'test1', "datapoints" => datapoints }, { "target" => 'test2', "datapoints" => datapoints }]
       @graphite.expects(:request_datapoints).returns(input.to_json)
-      assert_equal([{ "target" => 'test1', "datapoints" => [[10, 456]] }, { "target" => 'test2', "datapoints" => [[10, 456]] }], @graphite.datapoints_at('test1', Time.now.to_i))
+      assert_equal 20, @graphite.datapoints_at(['test1'], 'sum', Time.now.to_i)
     end
   end
 

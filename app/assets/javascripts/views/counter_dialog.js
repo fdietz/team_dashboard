@@ -45,7 +45,7 @@
       var formResult = this.parse("counter");
       formResult.targets = this.targetInput.select2('val').join(',');
 
-      var result = this.model.save({}, {
+      var result = this.model.save(formResult, {
         success: function(model, request) {
           console.log("save mode", model);
           that.dashboard.updateLayout(model.id);

@@ -18,10 +18,8 @@ module Sources
       datapoints
     end
 
-    def datapoints_at(target, at)
-      datapoints = []
-      datapoints << { :target => 'demo.example1', :datapoints => [latest_datapoint(generate_datapoints(at-600, at))] }
-      datapoints
+    def datapoints_at(targets, aggregate_function, at)
+      latest_datapoint(generate_datapoints(at-600, at)).first
     end
 
     private
