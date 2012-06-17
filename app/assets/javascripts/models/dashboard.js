@@ -9,7 +9,6 @@
     },
 
     updateLayout: function(widgetId) {
-      console.log(this.get('layout'));
       if ( _.indexOf(this.get('layout'), widgetId) === -1) {
         this.get('layout').push(widgetId);
       }
