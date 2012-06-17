@@ -8,17 +8,8 @@
         this.targets = options.targets;
         this.from = options.from;
         this.to = options.to;
-        
         this.source = options.source;
-
         this.targetsArray = (this.targets || "").split(',');
-
-        this.isFetched = false;
-        // this.bind('reset', this.onReset, this);
-      },
-
-      onReset: function() {
-        this.isFetched = true;
       },
 
       buildTargetsParams: function() {

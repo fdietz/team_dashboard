@@ -27,6 +27,7 @@
       this.to = options.to;
       this.range = options.range;
       this.source = options.source;
+
       this.collection = new collections.Graph({
         targets: this.targets,
         from: this.from,
@@ -36,6 +37,8 @@
       this.collection.on('reset', this.render);
 
       this.renderer = 'line';
+
+      this.collection.fetch();
     },
 
     update: function(from, to, range) {
@@ -70,12 +73,8 @@
     },
 
     render: function() {
+      console.log("render")
       $(this.el).html(JST['templates/widgets/graph/show']({ time: this.time }));
-
-      if (!this.collection.isFetched) {
-        this.collection.fetch();
-        return this;
-      }
 
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
