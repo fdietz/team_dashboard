@@ -7,8 +7,10 @@
   Backbone.View.prototype.close = function(){
     this.remove();
 
-    if (this.onClose) { this.onClose(); }
-    this.unbind();
+    if (this.onClose) this.onClose();
+    this.off();
+    if (this.model) this.model.off();
+    if (this.collection) this.collection.off();
   };
 
   // simple form helper, html follows Rails conventions
