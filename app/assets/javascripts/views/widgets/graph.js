@@ -19,9 +19,9 @@
   views.widgets.Graph = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues");
+      _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues", "widgetChanged");
       this.range = this.model.get("range");
-
+      console.log("range", this.range);
       this.from = $.TimeSelector.getFrom(this.range);
       this.to = $.TimeSelector.getCurrent();
       this.source = options.source;

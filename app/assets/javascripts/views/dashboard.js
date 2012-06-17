@@ -9,45 +9,50 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "saveLayout", "appendWidget", "renderWidgets", "closeAllWidgets", "widgetsChanged");
+      _.bindAll(this, "render", "saveLayout", "_renderWidgets", "_closeAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget");
 
-      this.model.on('reset', this.render);
       this.model.on('change', this.render);
-      this.model.on("widgets:changed", this.widgetsChanged);
 
-      this.widgets = [];
+      this.model.on("widget:changed", this.widgetChanged);
+
+      this.widgetCollection = new collections.Widget({ dashboard_id: this.model.id });
+      this.widgetCollection.on('add', this.appendNewWidget);
+      this.widgetCollection.on('remove', this.removeWidget);
     },
 
-    widgetsChanged: function() {
-      this.model.fetch();
+    appendNewWidget: function(widget) {
+      this._appendWidget(widget);
     },
 
-    closeAllWidgets: function() {
-      _.each(this.widgets, function(widget) {
+    removeWidget: function(widget) {
+    },
+
+    widgetChanged: function(widget) {
+    },
+
+    _closeAllWidgets: function() {
+      if (this.widgetCollection.isFetched === false) return;
+
+      this.widgetCollection.each(function(widget) {
         widget.close();
-        widget = null;
       });
-
-      this.widgets = [];
     },
 
-    appendWidget: function(model) {
+    _appendWidget: function(model) {
       var widget = new views.WidgetContainer({ model: model, dashboard: this.model});
-      this.widgets.push(widget);
       this.container.append(widget.render().el);
     },
 
-    renderWidgets: function() {
+    _renderWidgets: function() {
       var that = this;
-      this.closeAllWidgets();
+      this._closeAllWidgets();
 
-      var widgetCollection = new collections.Widget({ dashboard_id: this.model.id });
-      widgetCollection.fetch({
+      this.widgetCollection.fetch({
         success: function(collection, request) {
           var layoutIds = that.model.get('layout');
           _.each(layoutIds, function(id, index) {
             var model = collection.get(id);
-            that.appendWidget(model);
+            if (model) that._appendWidget(model);
           });
 
         }
@@ -74,7 +79,7 @@
       });
 
       this.container.empty();
-      this.renderWidgets();
+      this._renderWidgets();
 
       return this;
     },
@@ -105,25 +110,23 @@
     },
 
     showGraphDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.first() });
-      var dialog = new views.GraphDialog({ model: widget, dashboard: this.model });
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.first(), range: '30-minutes' });
+      var dialog = new views.GraphDialog({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     showCounterDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.first() });
-      var dialog = new views.CounterDialog({ model: widget, dashboard: this.model });
+      var dialog = new views.CounterDialog({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     onClose: function() {
-      this.model.off('reset', this.render);
-      this.model.off('change', this.render);
-      this.model.off("widgets:changed", this.render);
-
-      this.closeAllWidgets();
+      this.model.off();
+      this.widgetCollection.off();
+      this._closeAllWidgets();
     }
 
   });

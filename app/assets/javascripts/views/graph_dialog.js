@@ -8,8 +8,9 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "prefillAutocomplete");
+      _.bindAll(this, "render", "prefillAutocomplete", "save");
       this.dashboard = options.dashboard;
+      this.widgetCollection = options.widgetCollection;
       collections.metrics.source = this.model.get('source');
     },
 
@@ -44,13 +45,15 @@
       var formResult = this.parse("graph");
       formResult.targets = this.targetInput.select2('val').join(',');
 
-      var result = this.model.save(formResult, {
-        success: function(model, request) {
-          console.log("save mode", model);
-          that.dashboard.updateLayout(model.id);
-          that.dashboard.trigger("widgets:changed");
-        }
-      });
+      console.log("formResult", formResult);
+      if (this.model.isNew()) {
+        this.model.set(formResult, { silent: true });
+        this.widgetCollection.create(this.model);
+      } else {
+        this.model.save(formResult).done(function() {
+          that.dashboard.trigger("widget:changed", that.model);
+        });
+      }
 
       return false;
     },

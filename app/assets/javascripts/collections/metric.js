@@ -8,7 +8,7 @@
       this.source = options.source;
       
       this.isFetched = false;
-      this.bind('reset', this.onReset, this);
+      this.on('reset', this.onReset, this);
     },
 
     onReset: function() {

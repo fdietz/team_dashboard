@@ -6,6 +6,13 @@
 
       initialize: function(options) {
         this.dashboard_id = options.dashboard_id;
+
+        this.isFetched = false;
+        this.on('reset', this.onReset, this);
+      },
+
+      onReset: function() {
+        this.isFetched = true;
       },
 
       url: function() {

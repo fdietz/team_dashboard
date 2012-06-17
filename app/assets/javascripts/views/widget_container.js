@@ -121,7 +121,7 @@
 
     onClose: function() {
       this.startPolling = false;
-      this.model.off('change', this.render);
+      this.model.off();
       this.clearTimeouts();
       this.widget.close();
     },

@@ -3,6 +3,7 @@ module Api
 
     def show
       dashboard = Dashboard.find(params[:id])
+      puts "========= #{dashboard.inspect}"
       respond_with dashboard
     end
 
