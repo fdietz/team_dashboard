@@ -4,15 +4,14 @@
   views.Dashboard = Backbone.View.extend({
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
-      "click .add-graph"              : "showGraphDialog",
+      "click .add-graph"                   : "showGraphDialog",
       "click .add-counter"                 : "showCounterDialog"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "saveLayout", "_renderWidgets", "_closeAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget");
+      _.bindAll(this, "render", "_saveLayout", "_renderWidgets", "_closeAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
 
       this.model.on('change', this.render);
-
       this.model.on("widget:changed", this.widgetChanged);
 
       this.widgetCollection = new collections.Widget({ dashboard_id: this.model.id });
@@ -75,7 +74,7 @@
 
       this.container.sortable({
         forcePlaceholderSize: true, revert: 300, delay: 100, opacity: 0.8,
-        stop:  function (e,ui) { that.saveLayout(); }
+        stop:  function (e,ui) { that._saveLayout(); }
       });
 
       this.container.empty();
@@ -84,7 +83,7 @@
       return this;
     },
 
-    currentLayout: function() {
+    _currentLayout: function() {
       var ids = [];
       this.$('.widget').each(function(index) {
         ids.push($(this).attr('data-widget-id'));
@@ -92,8 +91,8 @@
       return ids;
     },
 
-    saveLayout: function() {
-      this.model.save({ layout: this.currentLayout() }, {
+    _saveLayout: function() {
+      this.model.save({ layout: this._currentLayout() }, {
         success: function(model, request) {
           console.log("saved layout", model);
         }

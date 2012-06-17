@@ -122,7 +122,7 @@
     },
 
     onClose: function() {
-      this.model.off('change', this.render);
+      this.model.off();
     }
   });
 
