@@ -4,44 +4,29 @@
   views.widgets.Counter = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "onValueChange", "onSecondaryValueChange", "update", "updateValueSizeClass");
-
-      console.log("models", models);
+      _.bindAll(this, "render", "update", "widgetChanged");
 
       this.range = '30-minutes';
-      this.value = 0;
-      this.secondaryValue = 0;
 
-      this.counterModel = new models.Counter({
-        targets: this.model.get('targets'),
-        source: this.model.get('source'),
-        aggregate_function: 'sum',
-        at: $.TimeSelector.getCurrent()
-      });
+      this.updateCounterModel();
+      this.updateSecondaryCounterModel();
 
-      this.secondaryCounterModel = new models.Counter({
-        targets: this.model.get('targets'),
-        source: this.model.get('source'),
-        aggregate_function: 'sum',
-        at: $.TimeSelector.getFrom(this.range)
-      });
-
-      this.counterModel.on('change', this.onValueChange);
-      this.secondaryCounterModel.on('change', this.onSecondaryValueChange);
       this.model.on('change', this.widgetChanged);
 
       this.counterModel.fetch();
       this.secondaryCounterModel.fetch();
     },
 
-    widgetChanged: function() {
-      this.counterModel = new models.CounterModel({
+    updateCounterModel: function() {
+      this.counterModel = new models.Counter({
         targets: this.model.get('targets'),
         source: this.model.get('source'),
         aggregate_function: 'sum',
         at: $.TimeSelector.getCurrent()
       });
+    },
 
+    updateSecondaryCounterModel: function() {
       this.secondaryCounterModel = new models.Counter({
         targets: this.model.get('targets'),
         source: this.model.get('source'),
@@ -50,114 +35,83 @@
       });
     },
 
-    onValueChange: function() {
-      console.log("value", this.counterModel, this.counterModel.get('value'));
-      this.value = this.counterModel.get('value');
-      this.$value.html(this.value);
+    widgetChanged: function() {
+      this.updateCounterModel();
+      this.updateSecondaryCounterModel();
 
-      this.updateValueSizeClass();
+      this.render();
     },
 
-    onSecondaryValueChange: function() {
-      console.log("rate", this.secondaryCounterModel, this.secondaryCounterModel.get('value'))
-      var y1 = this.counterModel.get('value');
-      var y2 = this.secondaryCounterModel.get('value');
-      var result = ((y1 - y2) / y2) * 100;
-      this.secondaryValue = result.toFixed(2);
-      console.log("y1", y1, "y2", y2, this.secondaryValue);
+    value: function() {
+      return this.counterModel.get('value') || 0;
+    },
 
-      this.$arrow.removeClass('arrow-up');
-      this.$arrow.removeClass('arrow-down');
+    secondaryValue: function() {
+      var y1 = this.counterModel.get('value') || 0;
+      var y2 = this.secondaryCounterModel.get('value') || 0;
+      if (y1 && y2) {
+        var result = ((y1 - y2) / y2) * 100;
+        return result.toFixed(2);
+      } else {
+        return 0;
+      }
+    },
 
-      this.$secondaryValue.removeClass('secondary-value-up');
-      this.$secondaryValue.removeClass('secondary-value-down');
+    updateSecondaryValueClass: function(secondaryValue) {
       if (this.secondaryValue > 0) {
+        this.$arrow.removeClass('arrow-down');
         this.$arrow.addClass('arrow-up');
         this.$secondaryValue.addClass('secondary-value-up');
+        this.$secondaryValue.removeClass('secondary-value-down');
       } else {
         this.$arrow.addClass('arrow-down');
+        this.$arrow.removeClass('arrow-up');
         this.$secondaryValue.addClass('secondary-value-down');
+        this.$secondaryValue.removeClass('secondary-value-up');
       }
-      this.$secondaryValue.html(Math.abs(this.secondaryValue).toString() + ' %');
     },
 
-
-    updateValueSizeClass: function() {
-      var str = this.value.toString().length;
-      console.log("this.value.length", str, str.length);
-      this.$(".value").removeClass("value-size-large");
-      this.$(".value").removeClass("value-size-medium");
-      this.$(".value").removeClass("value-size-small");
+    updateValueSizeClass: function(value) {
+      var str = value.toString().length;
+      this.$value.removeClass("value-size-large");
+      this.$value.removeClass("value-size-medium");
+      this.$value.removeClass("value-size-small");
 
       if (str <= 5) {
-        this.$(".value").addClass("value-size-large");
+        this.$value.addClass("value-size-large");
       } else if (str > 5 && str < 8) {
-        this.$(".value").addClass("value-size-medium");
+        this.$value.addClass("value-size-medium");
       } else {
-        this.$(".value").addClass("value-size-small");
+        this.$value.addClass("value-size-small");
       }
     },
 
     render: function() {
-      var that = this;
+      var value = this.value();
+      var secondaryValue = this.secondaryValue();
 
-      $(this.el).html(JST['templates/widgets/counter/show']({ value: this.value, secondaryValue: this.secondaryValue }));
+      var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
+      $(this.el).html(JST['templates/widgets/counter/show']({ value: value, secondaryValue: secondaryValueString }));
 
       this.$value = this.$('.value');
       this.$secondaryValue = this.$('.secondary-value');
       this.$arrow = this.$('.arrow');
-
-      this.$(".value").addClass("value-size-large");
-
-      // var str = this.value.toString().length;
-      // console.log("this.value.length", str, str.length);
-      // if (str <= 5) {
-      //   this.$(".value").addClass("value-size-large");
-      // } else if (str > 5 && str < 8) {
-      //   this.$(".value").addClass("value-size-medium");
-      // } else {
-      //   this.$(".value").addClass("value-size-small");
-      // }
+      this.updateValueSizeClass(value);
+      this.updateSecondaryValueClass(secondaryValue);
 
       return this;
     },
 
-    update: function(callback) {
+    update: function() {
       var that = this;
-      console.log("update");
-
       this.counterModel.at = $.TimeSelector.getCurrent();
       this.secondaryCounterModel.at = $.TimeSelector.getFrom(this.range);
-
-      this.counterModel.fetch({ complete: function() {
-        that.hideAjaxSpinner();
-        if (callback) { callback(); }
-      }});
-      this.secondaryCounterModel.fetch();
-      // var that = this;
-
-      // this.counterModel.fetch({
-      //   success: function(model, response) {},
-      //   error: function(model, response) { that.showLoadingError(); },
-      //   complete: function(model, response) {
-      //     that.hideAjaxSpinner();
-      //     if (callback) { callback(); }
-      //   },
-      //   suppressErrors: true
-      // });
+      var options = { suppressErrors: true };
+      return $.when(this.counterModel.fetch(options), this.secondaryCounterModel.fetch(options));
     },
 
-    hideAjaxSpinner: function() {
-      $(this.el).parent().parent().find(".ajax-spinner").hide();
-    },
-
-    showLoadingError: function() {
-      $(this.el).html("<div><p>Error loading datapoints...</p></div>");
-    },
 
     onClose: function() {
-      this.counterModel.off('change', this.render);
-      this.secondaryCounterModel.off('change', this.render);
       this.model.off('change', this.render);
     }
   });

@@ -26,7 +26,6 @@
 
     url: function() {
       var params = [this.buildTargetsParams(), 'at=' + this.at, "aggregate_function=" + this.aggregate_function, 'source=' + this.source];
-      console.log("params", params);
       return "/api/counter?" + params.join('&');
     }
   });

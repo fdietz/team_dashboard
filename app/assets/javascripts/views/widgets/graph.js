@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, collections){
+(function ($, _, Backbone, Rickshaw, moment, views, collections){
   "use strict";
 
   var pastel = [
@@ -26,13 +26,7 @@
       this.to = $.TimeSelector.getCurrent();
       this.source = options.source;
 
-      this.collection = new collections.Graph({
-        time: this.model.get('time'),
-        targets: this.model.get('targets'),
-        source: this.model.get('source'),
-        from: this.from,
-        to: this.to
-      });
+      this.updateGraphCollection();
 
       this.collection.on('change', this.render);
       this.collection.on('reset', this.render);
@@ -42,7 +36,7 @@
       this.currentColors = [];
     },
 
-    widgetChanged: function() {
+    updateGraphCollection: function() {
       this.collection = new collections.Graph({
         time: this.model.get('time'),
         targets: this.model.get('targets'),
@@ -50,13 +44,16 @@
         from: this.from,
         to: this.to
       });
-      render();
+    },
+
+    widgetChanged: function() {
+      this.updateGraphCollection();
+      this.render();
     },
 
     transformDatapoints: function() {
       var that = this;
       var series = this.collection.toJSON();
-      console.log("series", series);
       series.hasData = true;
       _.each(series, function(model, index) {
         if (model.color === undefined) {
@@ -144,23 +141,7 @@
       this.collection.from = this.from;
       this.collection.to = this.to;
 
-      this.collection.fetch({
-        success: function(collection, response) {},
-        error: function(collection, response) { that.showLoadingError(); },
-        complete: function(collection, response) {
-          that.hideAjaxSpinner();
-          if (callback) { callback(); }
-        },
-        suppressErrors: true
-      });
-    },
-
-    hideAjaxSpinner: function() {
-      $(this.el).parent().parent().find(".ajax-spinner").hide();
-    },
-
-    showLoadingError: function() {
-      $(this.el).html("<p>Error loading datapoints...</p>");
+      return this.collection.fetch({suppressErrors: true});
     },
 
     showEmptyDatasetNotice: function() {
@@ -203,4 +184,4 @@
     }
   });
 
-})($, _, Backbone, app.views, app.collections);
+})($, _, Backbone, Rickshaw, moment, app.views, app.collections);

@@ -48,7 +48,6 @@
       var result = this.model.save(formResult, {
         success: function(model, request) {
           console.log("save mode", model);
-          that.dashboard.updateLayout(model.id);
           that.dashboard.trigger("widgets:changed");
         }
       });

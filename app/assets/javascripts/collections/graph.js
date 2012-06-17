@@ -8,10 +8,8 @@
         this.targets = options.targets;
         this.from = options.from;
         this.to = options.to;
-        this.at = options.at;
         
         this.source = options.source;
-        this.aggregate_function = options.aggregate_function;
 
         this.targetsArray = (this.targets || "").split(',');
 
@@ -30,22 +28,12 @@
       },
 
       buildDateRangeParams: function() {
-        var result = null;
-        if (this.at) {
-          result = "at=" + this.at;
-        } else {
-          result = "from=" + this.from + "&to=" + this.to;
-        }
+        var result = "from=" + this.from + "&to=" + this.to;
         return result;
       },
 
       url: function() {
         var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + this.source];
-        if (this.aggregate_function) {
-          params.push("aggregate_function=" + this.aggregate_function)
-        }
-
-        console.log("params", params);
         return "/api/graph?" + params.join('&');
       }
 

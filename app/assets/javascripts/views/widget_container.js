@@ -12,7 +12,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "updateWidget");
+      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail");
 
       this.model.on('change', this.render);
 
@@ -22,19 +22,31 @@
     },
 
     updateWidget: function() {
-      var that = this;
+      if (this.timerId) clearTimeout(this.timerId);
+      if (this.startPolling === false) return;
 
-      if (that.timerId) {
-        clearTimeout(that.timerId);
-      }
+      this.$ajaxSpinner.show();
+      this.widget.update().done(this.updateWidgetDone).fail(this.updateWidgetFail);
+    },
 
-      if (this.startPolling === false) { return; }
+    updateWidgetDone: function() {
+      this.triggerTimeout();
+      this.$ajaxSpinner.hide('slow');
+      if (this.$content.find('.error')) this.renderWidget();
+    },
 
-      this.widget.update(function() {
-        console.log("update widget", that.model.get('name'), that.model.get('update_interval') * 1000);
-        that.timeoutId = setTimeout(that.updateWidget, that.model.get('update_interval') * 1000);
-      });
+    updateWidgetFail: function() {
+      this.triggerTimeout();
+      this.$ajaxSpinner.hide('slow');
+      this.showLoadingError();
+    },
 
+    triggerTimeout: function() {
+      this.timeoutId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000/2);
+    },
+
+    showLoadingError: function() {
+      this.$content.html("<div class='error'><p>Error loading datapoints...</p></div>");
     },
 
     editWidget: function() {
@@ -54,7 +66,7 @@
       return false;
     },
 
-    renderWidget: function() {
+    createWidget: function() {
       switch(this.model.get('kind')) {
         case 'graph':
           this.widget = new views.widgets.Graph({ model: this.model });
@@ -65,8 +77,10 @@
         default:
           alert("unknown widget kind: "+this.model.get('kind'));
       }
+    },
 
-      this.$('.portlet-content').html(this.widget.render().el);
+    renderWidget: function() {
+      this.$content.html(this.widget.render().el);
     },
 
     render: function() {
@@ -79,6 +93,10 @@
         .attr("id", "widget-span-" + this.model.get('size') || 1)
         .attr("data-widget-id", this.model.get("id"));
 
+      this.$ajaxSpinner = this.$('.ajax-spinner');
+      this.$content = this.$('.portlet-content');
+
+      this.createWidget();
       this.renderWidget();
       this.updateWidget();
 
@@ -105,7 +123,6 @@
       this.model.off('change', this.render);
       this.clearTimeouts();
       this.widget.close();
-      this.widget = null;
     },
 
     clearTimeouts: function() {
