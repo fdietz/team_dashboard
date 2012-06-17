@@ -52,7 +52,6 @@
     },
 
     render: function() {
-      console.log("render graph");
       var that = this;
 
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));

@@ -31,13 +31,14 @@
 
     updateWidgetDone: function() {
       this.triggerTimeout();
-      this.$ajaxSpinner.hide('slow');
+      this.$ajaxSpinner.fadeOut('slow');
+      console.log("error found", this.$content.find('.error'));
       if (this.$content.find('.error')) this.renderWidget();
     },
 
     updateWidgetFail: function() {
       this.triggerTimeout();
-      this.$ajaxSpinner.hide('slow');
+      this.$ajaxSpinner.hide();
       this.showLoadingError();
     },
 
@@ -84,7 +85,7 @@
     },
 
     render: function() {
-      console.log("render widget", this.model.get('name'));
+      console.log("render widget container", this.model.get('name'));
 
       $(this.el).html(JST['templates/widget_container/show']({ widget: this.model.toJSON() }));
 

@@ -19,7 +19,7 @@
   views.widgets.Graph = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice");
+      _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues");
       this.range = this.model.get("range");
 
       this.from = $.TimeSelector.getFrom(this.range);
@@ -28,8 +28,8 @@
 
       this.updateGraphCollection();
 
-      this.collection.on('change', this.render);
-      this.collection.on('reset', this.render);
+      // this.collection.on('change', this.render);
+      // this.collection.on('reset', this.render);
       this.model.on('change', this.widgetChanged);
 
       this.renderer = 'line';
@@ -81,45 +81,45 @@
     },
 
     render: function() {
+      console.log("render")
       $(this.el).html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
 
-      if (!this.collection.isFetched) {
-        this.update();
-        return this;
-      }
+      // if (!this.collection.isFetched) {
+      //   this.update();
+      //   return this;
+      // }
 
-      var datapoints = this.transformDatapoints();
-      if (datapoints.hasData === true) {
-        this.renderGraph(datapoints);
-      } else {
-        this.showEmptyDatasetNotice();
-      }
+      this.$graph = this.$('.graph');
+      this.$yAxis = this.$('.y-axis');
+      
+      this.updateValues();
 
       return this;
     },
 
     renderGraph: function(datapoints) {
+      console.log("renderGraph");
+
       this.graph = new Rickshaw.Graph({
-        element: this.$('.graph').get(0),
+        element: this.$graph.get(0),
         renderer: this.renderer,
-        width: this.$('.graph').parent().width()-80,
+        width: this.$graph.parent().width()-80,
         series: datapoints
       });
-
       this.graph.render();
 
-      var xAxis = new Rickshaw.Graph.Axis.Time({
+       this.xAxis = new Rickshaw.Graph.Axis.Time({
         graph: this.graph,
         timeUnit: this.timeUnit()
       });
-      xAxis.render();
+      this.xAxis.render();
 
-      var yAxis = new Rickshaw.Graph.Axis.Y({
+      this.yAxis = new Rickshaw.Graph.Axis.Y({
         graph: this.graph,
         orientation: 'left',
-        element: this.$('.y-axis').get(0)
+        element: this.$yAxis.get(0)
       });
-      yAxis.render();
+      this.yAxis.render();
 
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph,
@@ -134,6 +134,7 @@
     },
 
     update: function(callback) {
+      console.log("update")
       var that = this;
 
       this.from = $.TimeSelector.getFrom(this.range);
@@ -141,7 +142,17 @@
       this.collection.from = this.from;
       this.collection.to = this.to;
 
-      return this.collection.fetch({suppressErrors: true});
+      return this.collection.fetch({suppressErrors: true}).done(this.updateValues);
+    },
+
+    updateValues: function() {
+      console.log("updateValues")
+      var datapoints = this.transformDatapoints();
+      if (datapoints.hasData === true) {
+        this.renderGraph(datapoints);
+      } else {
+        this.showEmptyDatasetNotice();
+      }
     },
 
     showEmptyDatasetNotice: function() {
@@ -154,8 +165,8 @@
     },
 
     onClose: function() {
-      this.collection.off('change', this.render);
-      this.collection.off('reset', this.render);
+      // this.collection.off('change', this.render);
+      // this.collection.off('reset', this.render);
       this.model.off('change', this.render);
     },
 
