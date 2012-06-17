@@ -9,13 +9,17 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "saveLayout", "appendWidget", "renderWidgets", "closeAllWidgets");
+      _.bindAll(this, "render", "saveLayout", "appendWidget", "renderWidgets", "closeAllWidgets", "widgetsChanged");
 
       this.model.on('reset', this.render);
       this.model.on('change', this.render);
-      this.model.on("widgets:changed", this.render);
+      this.model.on("widgets:changed", this.widgetsChanged);
 
       this.widgets = [];
+    },
+
+    widgetsChanged: function() {
+      this.model.fetch();
     },
 
     closeAllWidgets: function() {
@@ -41,7 +45,6 @@
       widgetCollection.fetch({
         success: function(collection, request) {
           var layoutIds = that.model.get('layout');
-
           _.each(layoutIds, function(id, index) {
             var model = collection.get(id);
             that.appendWidget(model);
@@ -70,7 +73,7 @@
         stop:  function (e,ui) { that.saveLayout(); }
       });
 
-      this.container.html("");
+      this.container.empty();
       this.renderWidgets();
 
       return this;
@@ -102,14 +105,14 @@
     },
 
     showGraphDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph'});
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.first() });
       var dialog = new views.GraphDialog({ model: widget, dashboard: this.model });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     showCounterDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter' });
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.first() });
       var dialog = new views.CounterDialog({ model: widget, dashboard: this.model });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;

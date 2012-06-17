@@ -5,8 +5,9 @@
     model: model,
 
     initialize: function(options) {
-      this.isFetched = false;
       this.source = options.source;
+      
+      this.isFetched = false;
       this.bind('reset', this.onReset, this);
     },
 
