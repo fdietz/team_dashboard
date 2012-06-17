@@ -84,11 +84,6 @@
       console.log("render")
       $(this.el).html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
 
-      // if (!this.collection.isFetched) {
-      //   this.update();
-      //   return this;
-      // }
-
       this.$graph = this.$('.graph');
       this.$yAxis = this.$('.y-axis');
       
@@ -100,6 +95,9 @@
     renderGraph: function(datapoints) {
       console.log("renderGraph");
 
+      this.$graph.empty();
+      this.$yAxis.empty();
+      
       this.graph = new Rickshaw.Graph({
         element: this.$graph.get(0),
         renderer: this.renderer,
@@ -151,12 +149,12 @@
       if (datapoints.hasData === true) {
         this.renderGraph(datapoints);
       } else {
-        this.showEmptyDatasetNotice();
+        // this.showEmptyDatasetNotice();
       }
     },
 
     showEmptyDatasetNotice: function() {
-      $(this.el).html("<p>No data available.</p>");
+      $(this.el).html("<p class='empty-data'>No data available.</p>");
     },
 
     changeRenderer: function(renderer) {

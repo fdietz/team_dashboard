@@ -14,7 +14,7 @@
         this.targetsArray = (this.targets || "").split(',');
 
         this.isFetched = false;
-        this.bind('reset', this.onReset, this);
+        // this.bind('reset', this.onReset, this);
       },
 
       onReset: function() {

@@ -78,10 +78,11 @@
         default:
           alert("unknown widget kind: "+this.model.get('kind'));
       }
+      this.$content.html(this.widget.render().el);
     },
 
     renderWidget: function() {
-      this.$content.html(this.widget.render().el);
+      this.$content.html(this.widget.el);
     },
 
     render: function() {
@@ -98,7 +99,6 @@
       this.$content = this.$('.portlet-content');
 
       this.createWidget();
-      this.renderWidget();
       this.updateWidget();
 
       return this;
