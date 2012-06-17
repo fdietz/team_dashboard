@@ -119,6 +119,7 @@
       });
       this.yAxis.render();
 
+      // TODO: HoverDetail binds two events. Find a way to unbind these events.
       var hoverDetail = new Rickshaw.Graph.HoverDetail({
         graph: this.graph,
         formatter: function(series, x, y) {
