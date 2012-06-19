@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.CounterDialog = Backbone.View.extend({
+  views.WidgetEditor.Graph = Backbone.View.extend({
 
     events: {
       "click .btn-primary" : "save"
@@ -24,16 +24,15 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widgets/counter/edit']({ model: this.model.toJSON() }));
+      $(this.el).html(JST['templates/widgets/graph/edit']({ model: this.model.toJSON() }));
 
-      this.populate("counter");
+      this.populate("graph");
       this.targetInput = this.$('.targets');
-      this.targetInput.val(this.model.get('targets'));
       this.prefillAutocomplete();
 
       var myModal = this.$('#dashboard-details-modal');
       var nameInput = this.$('input.name');
-      myModal.on("shown", function() { nameInput.focus(); });
+      myModal.on("shown", function() { nameInput.blur().focus(); });
       myModal.modal({ keyboard: true });
       return this;
     },
@@ -43,9 +42,10 @@
       var myModal = this.$('#dashboard-details-modal');
       myModal.modal("hide");
 
-      var formResult = this.parse("counter");
+      var formResult = this.parse("graph");
       formResult.targets = this.targetInput.select2('val').join(',');
 
+      console.log("formResult", formResult);
       if (this.model.isNew()) {
         this.model.set(formResult, { silent: true });
         this.widgetCollection.create(this.model);
@@ -59,7 +59,6 @@
     },
 
     onClose: function() {
-      this._modelBinder.unbind();
     }
 
   });

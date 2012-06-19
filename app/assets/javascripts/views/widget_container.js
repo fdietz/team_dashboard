@@ -55,10 +55,10 @@
       var dialog = null;
       switch(this.model.get('kind')) {
         case 'graph':
-          dialog = new views.GraphDialog({ model: this.model, dashboard: this.dashboard });
+          dialog = new views.WidgetEditor.Graph({ model: this.model, dashboard: this.dashboard });
           break;
         case 'counter':
-          dialog = new views.CounterDialog({ model: this.model, dashboard: this.dashboard });
+          dialog = new views.WidgetEditor.Counter({ model: this.model, dashboard: this.dashboard });
           break;
         default:
           alert("unknown widget kind: "+this.model.get('kind'));

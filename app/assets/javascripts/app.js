@@ -8,6 +8,7 @@
   app.models = {};
   app.views = {};
   app.views.widgets = {};
+  app.views.WidgetEditor = {};
   app.mixins = {};
 
   $(function(){

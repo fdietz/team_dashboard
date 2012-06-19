@@ -32,7 +32,7 @@
     _appendWidget: function(model) {
       var widget = new views.WidgetContainer({ model: model, dashboard: this.model});
       this.addChildView(widget);
-      this.container.append(widget.render().el);
+      this.$container.append(widget.render().el);
     },
 
     _renderWidgets: function() {
@@ -56,24 +56,32 @@
 
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
-      this.container = this.$("#dashboard-widget-container");
+      this._setup_editable_header();
 
+      this.$container = this.$("#dashboard-widget-container");
+      this.$container.empty();
+      this._setup_sortable_widgets();
+      this._renderWidgets();
+
+      return this;
+    },
+
+    _setup_editable_header: function() {
+      var that = this;
       this.$("h2#dashboard-name").editable(
         this.$('#dashboard-editable'), {
           success: function(value) {
             that.model.save({ name: value});
           }
       });
+    },
 
-      this.container.sortable({
+    _setup_sortable_widgets: function() {
+      var that = this;
+      this.$container.sortable({
         forcePlaceholderSize: true, revert: 300, delay: 100, opacity: 0.8,
-        stop:  function (e,ui) { that._saveLayout(); }
+        stop: function (e,ui) { that._saveLayout(); }
       });
-
-      this.container.empty();
-      this._renderWidgets();
-
-      return this;
     },
 
     _currentLayout: function() {
@@ -103,14 +111,14 @@
 
     showGraphDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.first(), range: '30-minutes' });
-      var dialog = new views.GraphDialog({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
+      var dialog = new views.WidgetEditor.Graph({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     showCounterDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.first() });
-      var dialog = new views.CounterDialog({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
+      var dialog = new views.WidgetEditor.Counter({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
