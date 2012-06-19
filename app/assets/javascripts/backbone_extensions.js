@@ -48,4 +48,32 @@
     }
   });
 
+  Backbone.CompositeView = Backbone.View.extend({
+    constructor: function(){
+      Backbone.View.prototype.constructor.apply(this, arguments);
+      this.children = {};
+    },
+
+    addView: function(view) {
+      this.children[view.cid] = view;
+    },
+
+    removeView: function(view) {
+      view.close();
+      delete this.children[view.cid];
+    },
+
+    close: function() {
+      this.closeChildren();
+      Backbone.View.prototype.close.apply(this, arguments);
+    },
+
+    closeChildren: function() {
+      var that = this;
+      _.each(this.children, function(view){
+        that.removeView(view);
+      });
+    }
+  });
+
 })($, _, Backbone);
