@@ -31,7 +31,6 @@
 
     _closeAllWidgets: function() {
       if (this.widgetCollection.isFetched === false) return;
-
       this.widgetCollection.each(function(widget) {
         widget.close();
       });
@@ -123,9 +122,9 @@
     },
 
     onClose: function() {
+      this._closeAllWidgets();
       this.model.off();
       this.widgetCollection.off();
-      this._closeAllWidgets();
     }
 
   });

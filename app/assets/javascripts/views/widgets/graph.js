@@ -21,7 +21,7 @@
     initialize: function(options) {
       _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues", "widgetChanged");
       this.range = this.model.get("range");
-      console.log("range", this.range);
+           console.log("widget", this)
       this.from = $.TimeSelector.getFrom(this.range);
       this.to = $.TimeSelector.getCurrent();
       this.source = options.source;
@@ -86,8 +86,8 @@
 
       this.$graph = this.$('.graph');
       this.$yAxis = this.$('.y-axis');
-      
-      this.updateValues();
+
+      // this.updateValues();
 
       return this;
     },
@@ -97,7 +97,7 @@
 
       this.$graph.empty();
       this.$yAxis.empty();
-      
+
       this.graph = new Rickshaw.Graph({
         element: this.$graph.get(0),
         renderer: this.renderer,

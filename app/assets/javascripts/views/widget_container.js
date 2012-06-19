@@ -22,6 +22,7 @@
     },
 
     updateWidget: function() {
+      console.log("updateWidget");
       if (this.timerId) clearTimeout(this.timerId);
       if (this.startPolling === false) return;
 

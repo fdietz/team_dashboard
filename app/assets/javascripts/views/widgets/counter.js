@@ -13,8 +13,8 @@
 
       this.model.on('change', this.widgetChanged);
 
-      this.counterModel.fetch();
-      this.secondaryCounterModel.fetch();
+      // this.counterModel.fetch();
+      // this.secondaryCounterModel.fetch();
     },
 
     updateCounterModel: function() {
