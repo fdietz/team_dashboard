@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections, router) {
   "use strict";
 
-  views.Dashboard = Backbone.View.extend({
+  views.Dashboard = Backbone.CompositeView.extend({
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
       "click .add-graph"                   : "showGraphDialog",
@@ -9,7 +9,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "_saveLayout", "_renderWidgets", "_closeAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
+      _.bindAll(this, "render", "_saveLayout", "_renderWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
 
       this.model.on('change', this.render);
       this.model.on("widget:changed", this.widgetChanged);
@@ -29,21 +29,16 @@
     widgetChanged: function(widget) {
     },
 
-    _closeAllWidgets: function() {
-      if (this.widgetCollection.isFetched === false) return;
-      this.widgetCollection.each(function(widget) {
-        widget.close();
-      });
-    },
-
     _appendWidget: function(model) {
       var widget = new views.WidgetContainer({ model: model, dashboard: this.model});
+      this.addChildView(widget);
       this.container.append(widget.render().el);
     },
 
     _renderWidgets: function() {
       var that = this;
-      this._closeAllWidgets();
+      // TODO: do we need this
+      this.closeChildren();
 
       this.widgetCollection.fetch({
         success: function(collection, request) {
@@ -52,7 +47,6 @@
             var model = collection.get(id);
             if (model) that._appendWidget(model);
           });
-
         }
       });
     },
@@ -122,7 +116,6 @@
     },
 
     onClose: function() {
-      this._closeAllWidgets();
       this.model.off();
       this.widgetCollection.off();
     }

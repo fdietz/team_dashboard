@@ -54,11 +54,11 @@
       this.children = {};
     },
 
-    addView: function(view) {
+    addChildView: function(view) {
       this.children[view.cid] = view;
     },
 
-    removeView: function(view) {
+    removeChildView: function(view) {
       view.close();
       delete this.children[view.cid];
     },
@@ -70,8 +70,8 @@
 
     closeChildren: function() {
       var that = this;
-      _.each(this.children, function(view){
-        that.removeView(view);
+      _.each(this.children, function(view) {
+        that.removeChildView(view);
       });
     }
   });
