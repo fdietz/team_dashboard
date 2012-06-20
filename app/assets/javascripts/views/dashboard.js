@@ -9,7 +9,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "_saveLayout", "_renderWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
+      _.bindAll(this, "render", "_renderWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
 
       this.model.on('change', this.render);
       this.model.on("widget:changed", this.widgetChanged);
@@ -80,7 +80,9 @@
       var that = this;
       this.$container.sortable({
         forcePlaceholderSize: true, revert: 300, delay: 100, opacity: 0.8,
-        stop: function (e,ui) { that._saveLayout(); }
+        stop: function (e,ui) {
+          that._saveLayout();
+        }
       });
     },
 

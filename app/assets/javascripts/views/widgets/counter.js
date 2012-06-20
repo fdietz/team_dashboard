@@ -12,9 +12,6 @@
       this.updateSecondaryCounterModel();
 
       this.model.on('change', this.widgetChanged);
-
-      // this.counterModel.fetch();
-      // this.secondaryCounterModel.fetch();
     },
 
     updateCounterModel: function() {
@@ -38,7 +35,6 @@
     widgetChanged: function() {
       this.updateCounterModel();
       this.updateSecondaryCounterModel();
-
       this.render();
     },
 
@@ -87,7 +83,6 @@
     },
 
     render: function() {
-      console.log("render");
       var value = this.value();
       var secondaryValue = this.secondaryValue();
       var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
@@ -104,7 +99,6 @@
     },
 
     update: function() {
-      console.log("update")
       var that = this;
       this.counterModel.at = $.TimeSelector.getCurrent();
       this.secondaryCounterModel.at = $.TimeSelector.getFrom(this.range);
@@ -113,7 +107,6 @@
     },
 
     updateValues: function() {
-      console.log("updateValues");
       var value = this.value();
       var secondaryValue = this.secondaryValue();
       var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';

@@ -21,15 +21,12 @@
     initialize: function(options) {
       _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues", "widgetChanged");
       this.range = this.model.get("range");
-           console.log("widget", this)
       this.from = $.TimeSelector.getFrom(this.range);
       this.to = $.TimeSelector.getCurrent();
       this.source = options.source;
 
       this.updateGraphCollection();
 
-      // this.collection.on('change', this.render);
-      // this.collection.on('reset', this.render);
       this.model.on('change', this.widgetChanged);
 
       this.renderer = 'line';
@@ -81,20 +78,15 @@
     },
 
     render: function() {
-      console.log("render")
       $(this.el).html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
 
       this.$graph = this.$('.graph');
       this.$yAxis = this.$('.y-axis');
 
-      // this.updateValues();
-
       return this;
     },
 
     renderGraph: function(datapoints) {
-      console.log("renderGraph");
-
       this.$graph.empty();
       this.$yAxis.empty();
 
@@ -133,7 +125,6 @@
     },
 
     update: function(callback) {
-      console.log("update")
       var that = this;
 
       this.from = $.TimeSelector.getFrom(this.range);
@@ -145,7 +136,6 @@
     },
 
     updateValues: function() {
-      console.log("updateValues")
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
         this.renderGraph(datapoints);
@@ -164,8 +154,6 @@
     },
 
     onClose: function() {
-      // this.collection.off('change', this.render);
-      // this.collection.off('reset', this.render);
       this.model.off('change', this.render);
     },
 

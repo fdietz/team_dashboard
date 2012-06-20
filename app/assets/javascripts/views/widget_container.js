@@ -22,8 +22,7 @@
     },
 
     updateWidget: function() {
-      console.log("updateWidget");
-      if (this.timerId) clearTimeout(this.timerId);
+      this.clearTimeout();
       if (this.startPolling === false) return;
 
       this.$ajaxSpinner.show();
@@ -33,7 +32,7 @@
     updateWidgetDone: function() {
       this.triggerTimeout();
       this.$ajaxSpinner.fadeOut('slow');
-      console.log("error found", this.$content.find('.error'));
+      // TODO clean up
       if (this.$content.find('.error')) this.renderWidget();
     },
 
@@ -43,8 +42,12 @@
       this.showLoadingError();
     },
 
+    clearTimeout: function() {
+      if (this.timerId) clearTimeout(this.timerId);
+    },
+
     triggerTimeout: function() {
-      this.timeoutId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000);
+      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000);
     },
 
     showLoadingError: function() {
