@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.WidgetContainer = Backbone.View.extend({
+  views.Widget = Backbone.View.extend({
     tagName: "div",
     className: "widget",
 

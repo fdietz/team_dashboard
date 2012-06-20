@@ -92,14 +92,13 @@
 
     dashboardsShow: function(id) {
       console.log("ROUTER: dashboard_detail");
-
-      var dashboard = new app.models.Dashboard({ id: id });
       var that = this;
-      dashboard.fetch({
-        success: function(model, response) {
-          var dashboardView = new app.views.Dashboard({ model: model });
-          that.showView(dashboardView);
-        }
+      var model = new app.models.Dashboard({ id: id });
+      var collection = new app.collections.Widget({ dashboard_id:model.id });
+
+      $.when(model.fetch(), collection.fetch()).done(function() {
+        var dashboardView = new app.views.Dashboard({ model: model, collection: collection });
+        that.showView(dashboardView);
       });
     },
 

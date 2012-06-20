@@ -9,14 +9,13 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "_renderWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
+      _.bindAll(this, "render", "_appendAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "removeDashboard");
 
       this.model.on('change', this.render);
       this.model.on("widget:changed", this.widgetChanged);
 
-      this.widgetCollection = new collections.Widget({ dashboard_id: this.model.id });
-      this.widgetCollection.on('add', this.appendNewWidget);
-      this.widgetCollection.on('remove', this.removeWidget);
+      this.collection.on('add', this.appendNewWidget);
+      this.collection.on('remove', this.removeWidget);
     },
 
     appendNewWidget: function(widget) {
@@ -30,38 +29,33 @@
     },
 
     _appendWidget: function(model) {
-      var widget = new views.WidgetContainer({ model: model, dashboard: this.model});
+      var widget = new views.Widget({ model: model, dashboard: this.model});
       this.addChildView(widget);
       this.$container.append(widget.render().el);
     },
 
-    _renderWidgets: function() {
-      var that = this;
-      // TODO: do we need this
-      this.closeChildren();
-
-      this.widgetCollection.fetch({
-        success: function(collection, request) {
-          var layoutIds = that.model.get('layout');
-          _.each(layoutIds, function(id, index) {
-            var model = collection.get(id);
-            if (model) that._appendWidget(model);
-          });
-        }
-      });
+    _appendAllWidgets: function() {
+      var layoutIds = this.model.get('layout');
+      _.each(layoutIds, _.bind(function(id, index) {
+        var model = this.collection.get(id);
+        if (model) this._appendWidget(model);
+      }, this));
     },
 
     render: function() {
+      console.log("dashboard render")
       var that = this;
 
       $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
       this._setup_editable_header();
 
-      this.$container = this.$("#dashboard-widget-container");
-      this.$container.empty();
+      this.$container = this.$("#widget-container");
       this._setup_sortable_widgets();
-      this._renderWidgets();
+
+      // TODO: do we need this
+      this.closeChildren();
+      this._appendAllWidgets();
 
       return this;
     },
@@ -113,21 +107,21 @@
 
     showGraphDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.first(), range: '30-minutes' });
-      var dialog = new views.WidgetEditor.Graph({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
+      var dialog = new views.WidgetEditor.Graph({ model: widget, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     showCounterDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.first() });
-      var dialog = new views.WidgetEditor.Counter({ model: widget, dashboard: this.model, widgetCollection: this.widgetCollection });
+      var dialog = new views.WidgetEditor.Counter({ model: widget, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     onClose: function() {
       this.model.off();
-      this.widgetCollection.off();
+      this.collection.off();
     }
 
   });
