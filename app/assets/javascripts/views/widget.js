@@ -64,7 +64,7 @@
           dialog = new views.WidgetEditor.Counter({ model: this.model, dashboard: this.dashboard });
           break;
         default:
-          alert("unknown widget kind: "+this.model.get('kind'));
+          throw("unknown widget kind: "+this.model.get('kind'));
       }
 
       $("#widget-dialog").html(dialog.render().el);
@@ -80,7 +80,7 @@
           this.widget = new views.widgets.Counter({ model: this.model });
           break;
         default:
-          alert("unknown widget kind: "+this.model.get('kind'));
+          throw("unknown widget kind: "+this.model.get('kind'));
       }
       this.$content.html(this.widget.render().el);
     },
@@ -90,9 +90,7 @@
     },
 
     render: function() {
-      console.log("render widget container", this.model.get('name'));
-
-      $(this.el).html(JST['templates/widget_container/show']({ widget: this.model.toJSON() }));
+      $(this.el).html(JST['templates/widget/show']({ widget: this.model.toJSON() }));
 
       $(this.el)
         .addClass("portlet well well-small ui-widget ui-widget-content ui-corner-all")
@@ -111,11 +109,7 @@
     removeWidget: function(event) {
       this.close();
 
-      var result = this.model.destroy({
-        success: function(model, request) {
-          console.log("deleted model: ", model);
-        }
-      });
+      var result = this.model.destroy();
     },
 
     collapseWidget: function(event) {
