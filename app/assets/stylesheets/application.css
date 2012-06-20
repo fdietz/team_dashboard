@@ -8,17 +8,16 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- 
+
  *= require twitter/bootstrap
  *= require theme/index
- 
- *= require colorpicker
+
  *= require select2
  *= require rickshaw.min
  *= jquery-ui-1.8.20.custom
 
  *= require graph
-  
+
  *= require_self
 */
 
@@ -80,18 +79,18 @@
 #widget-span-2 { width: 63%; }
 #widget-span-3 { width: 96%; }
 
-.portlet { 
+.portlet {
   height: 325px;
 }
 
 .portlet-minimized { height: auto !important; }
 
-.portlet-header { 
+.portlet-header {
   border-bottom: 1px solid #33B5E5;
 
   /*margin: 0.3em; */
   margin-bottom: 0.2em;
-  padding-bottom: 0.4em; 
+  padding-bottom: 0.4em;
   /*padding-left: 0.2em; */
 
   cursor: move;
@@ -99,29 +98,29 @@
   text-transform:uppercase;
 }
 
-.portlet-header .ui-icon { 
-  float: right; 
+.portlet-header .ui-icon {
+  float: right;
   cursor: pointer;
   /*opacity: 0.5;*/
 
   margin-left: 8px;
 }
 
-.portlet-content { 
-  padding: 0.4em; 
+.portlet-content {
+  padding: 0.4em;
   margin-top: 1em;
 }
 
 .portlet-minimized .portlet-content { display: none !important; }
 
-.ui-sortable-placeholder { 
-  border: 2px dashed #FFF; 
-  visibility: visible !important; 
-  height: 300px !important; 
+.ui-sortable-placeholder {
+  border: 2px dashed #FFF;
+  visibility: visible !important;
+  height: 300px !important;
 }
 
-.ui-sortable-placeholder * { 
-  visibility: hidden; 
+.ui-sortable-placeholder * {
+  visibility: hidden;
 }
 
 .counter {
@@ -133,10 +132,10 @@
 
 .value {
   margin-top: 80px;
-  
+
   font-weight: bold;
   color: #eee;
-  -webkit-text-stroke: 1px #330; 
+  -webkit-text-stroke: 1px #330;
 }
 
 .value-size-large {

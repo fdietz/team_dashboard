@@ -23,7 +23,6 @@
 //= require d3.v2.min
 //= require rickshaw.min
 //= require moment.min
-//= require colorpicker
 //= require select2.min
 
 //= require backbone_extensions
