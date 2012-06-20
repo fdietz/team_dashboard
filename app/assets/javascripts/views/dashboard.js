@@ -23,8 +23,8 @@
       this._setup_editable_header();
 
       this.$container = this.$("#widget-container");
-      this.widgetContainer = new views.WidgetContainer({ el: this.$container, model: this.model, collection: this.collection });
-      this.widgetContainer.render();
+      this.widgetsContainer = new views.WidgetsContainer({ el: this.$container, model: this.model, collection: this.collection });
+      this.widgetsContainer.render();
 
       return this;
     },
@@ -61,7 +61,7 @@
     },
 
     onClose: function() {
-      this.widgetContainer.close();
+      this.widgetsContainer.close();
 
       this.model.off();
       this.collection.off();

@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.WidgetContainer = Backbone.CompositeView.extend({
+  views.WidgetsContainer = Backbone.CompositeView.extend({
 
     initialize: function(options) {
       _.bindAll(this, "render", "_appendAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget");
