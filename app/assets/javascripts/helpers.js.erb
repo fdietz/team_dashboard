@@ -32,7 +32,7 @@
     }
   });
 
-  $.fn.editable = function(target, options) {
+  $.fn.editable = function(target, callback) {
     var label = $(this);
     var form = target;
     var input = form.find('> input');
@@ -61,14 +61,14 @@
         event.preventDefault();
         stopEditing();
         label.html(input.val());
-        options.success(input.val());
+        if (callback) callback(input.val());
       });
 
       form.on('submit', function(event) {
         event.preventDefault();
         stopEditing();
         label.html(input.val());
-        if (options.success) { options.success(input.val()); }
+        if (callback) callback(input.val());
       });
 
       input.on('keyup', function(event) {

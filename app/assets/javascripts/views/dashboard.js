@@ -32,11 +32,10 @@
     _setup_editable_header: function() {
       var that = this;
       this.$("h2#dashboard-name").editable(
-        this.$('#dashboard-editable'), {
-          success: function(value) {
-            that.model.save({ name: value});
-          }
-      });
+        this.$('#dashboard-editable'), function(value) {
+          that.model.save({ name: value});
+        }
+      );
     },
 
     removeDashboard: function() {
