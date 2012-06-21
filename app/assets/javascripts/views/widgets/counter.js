@@ -118,7 +118,6 @@
     },
 
     render: function() {
-      console.log("render")
       var value = this.value();
       var secondaryValue = this.secondaryValue();
       var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
@@ -150,7 +149,6 @@
     },
 
     update: function() {
-      console.log("update")
       var that = this;
       this.counterModel.at = $.TimeSelector.getCurrent();
       this.secondaryCounterModel.at = $.TimeSelector.getFrom(this.range);

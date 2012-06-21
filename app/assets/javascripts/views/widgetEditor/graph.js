@@ -4,14 +4,26 @@
   views.WidgetEditor.Graph = Backbone.View.extend({
 
     events: {
-      "click .btn-primary" : "save"
+      "click .btn-primary" : "save",
+      "change .source"     : "sourceChanged"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "prefillAutocomplete", "save");
+      _.bindAll(this, "render", "prefillAutocomplete", "save", "sourceChanged");
       this.dashboard = options.dashboard;
       this.widgetCollection = options.widgetCollection;
       collections.metrics.source = this.model.get('source');
+    },
+
+    sourceChanged: function() {
+      var that = this;
+      var source = this.$sourceSelect.val();
+      this.$targetInput.val("");
+
+      collections.metrics.source = source;
+      collections.metrics.fetch().done(function() {
+        that.targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+      });
     },
 
     prefillAutocomplete: function() {
@@ -20,25 +32,28 @@
         collections.metrics.fetch({ success: that.prefillAutocomplete });
         return;
       }
-      this.targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+      this.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
     },
 
     render: function() {
+      var that = this;
       $(this.el).html(JST['templates/widgets/graph/edit']({ model: this.model.toJSON() }));
 
       this.populate("graph");
-      this.targetInput = this.$('.targets');
+      this.$targetInput = this.$('.targets');
+      this.$sourceSelect = this.$('.source');
+
       this.prefillAutocomplete();
 
-      var myModal = this.$('#dashboard-details-modal');
-      var nameInput = this.$('.name');
-      myModal.on("shown", function() {
+      this.$modal = this.$('#dashboard-details-modal');
+      this.$nameInput = this.$('.name');
+      this.$modal.on("shown", function() {
         setTimeout(function() {
-          nameInput.focus();
+          that.$nameInput.focus();
         }, 10);
       });
 
-      myModal.modal({
+      this.$modal.modal({
         keyboard: true,
         show: true,
         backdrop: 'static'
@@ -49,11 +64,9 @@
 
     save: function() {
       var that = this;
-      var myModal = this.$('#dashboard-details-modal');
-      myModal.modal("hide");
-
+      this.$modal.modal("hide");
       var formResult = this.parse("graph");
-      formResult.targets = this.targetInput.select2('val').join(',');
+      formResult.targets = this.$targetInput.select2('val').join(',');
 
       if (this.model.isNew()) {
         this.model.set(formResult, { silent: true });
