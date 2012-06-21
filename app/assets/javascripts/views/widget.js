@@ -12,7 +12,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail");
+      _.bindAll(this, "render", "editWidget", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail");
 
       this.model.on('change', this.render);
 
@@ -66,8 +66,10 @@
         default:
           throw("unknown widget kind: "+this.model.get('kind'));
       }
+      var dialogElement = $(document.getElementById('widget-dialog'));
 
-      $("#widget-dialog").html(dialog.render().el);
+      console.log(dialogElement);
+      dialogElement.html(dialog.render().el);
       return false;
     },
 

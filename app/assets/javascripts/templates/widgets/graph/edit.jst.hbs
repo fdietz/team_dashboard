@@ -6,13 +6,14 @@
       <form id="graph" class="form-horizontal">
         <fieldset>
           <div class="control-group">
-            <label class="control-label">Title</label>
+            <label class="control-label" for="title">Title</label>
             <div class="controls">
-              <input name="graph[name]" class="name" type="text" placeholder="Enter widget name">
+              <input id="title" name="graph[name]" class="name" type="text" tabIndex>
             </div>
           </div>
 
-          <div class="control-group">
+
+           <div class="control-group">
             <label class="control-label">Size</label>
             <div class="controls">
               <select name="graph[size]" class="size">
@@ -69,7 +70,7 @@
             </div>
 
           </div>
-        </fieldset>
+         </fieldset>
       </form>
   </div>
   <div class="modal-footer">
