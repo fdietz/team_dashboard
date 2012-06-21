@@ -10,7 +10,7 @@ It is implemented as a Rails app and uses MySQL to store your custom dashboards.
 
 Clone the repository:
 
-    git://github.com/fdietz/team_dashboard.git
+    git clone git://github.com/fdietz/team_dashboard.git
 
 Run bundler:
 
