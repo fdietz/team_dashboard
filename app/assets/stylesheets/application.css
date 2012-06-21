@@ -124,15 +124,22 @@
 }
 
 .counter {
+  margin-left: 10px;
+  margin-top: 30px;
   width: 300px;
-  height: 250px;
+  height: 100px;
+  display:block;
+}
 
-  float: left;
+.counter2 {
+  margin-left: 10px;
+  margin-top: 50px;
+  width: 300px;
+  height: 100px;
+  display:block;
 }
 
 .value {
-  margin-top: 80px;
-
   font-weight: bold;
   color: #eee;
   -webkit-text-stroke: 1px #330;

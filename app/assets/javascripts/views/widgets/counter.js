@@ -10,6 +10,8 @@
 
       this.updateCounterModel();
       this.updateSecondaryCounterModel();
+      this.updateCounterModel2();
+      this.updateSecondaryCounterModel2();
 
       this.model.on('change', this.widgetChanged);
     },
@@ -26,6 +28,24 @@
     updateSecondaryCounterModel: function() {
       this.secondaryCounterModel = new models.Counter({
         targets: this.model.get('targets'),
+        source: this.model.get('source'),
+        aggregate_function: 'sum',
+        at: $.TimeSelector.getFrom(this.range)
+      });
+    },
+
+    updateCounterModel2: function() {
+      this.counterModel2 = new models.Counter({
+        targets: this.model.get('targets2'),
+        source: this.model.get('source'),
+        aggregate_function: 'sum',
+        at: $.TimeSelector.getCurrent()
+      });
+    },
+
+    updateSecondaryCounterModel2: function() {
+      this.secondaryCounterModel2 = new models.Counter({
+        targets: this.model.get('targets2'),
         source: this.model.get('source'),
         aggregate_function: 'sum',
         at: $.TimeSelector.getFrom(this.range)
@@ -53,32 +73,47 @@
       }
     },
 
-    updateSecondaryValueClass: function(secondaryValue) {
-      if (this.secondaryValue > 0) {
-        this.$arrow.removeClass('arrow-down');
-        this.$arrow.addClass('arrow-up');
-        this.$secondaryValue.addClass('secondary-value-up');
-        this.$secondaryValue.removeClass('secondary-value-down');
+    value2: function() {
+      return this.counterModel2.get('value') || 0;
+    },
+
+    secondaryValue2: function() {
+      var y1 = this.counterModel2.get('value') || 0;
+      var y2 = this.secondaryCounterModel2.get('value') || 0;
+      if (y1 && y2) {
+        var result = ((y1 - y2) / y2) * 100;
+        return result.toFixed(2);
       } else {
-        this.$arrow.addClass('arrow-down');
-        this.$arrow.removeClass('arrow-up');
-        this.$secondaryValue.addClass('secondary-value-down');
-        this.$secondaryValue.removeClass('secondary-value-up');
+        return 0;
       }
     },
 
-    updateValueSizeClass: function(value) {
+    updateSecondaryValueClass: function(element, arrowElement, secondaryValue) {
+      if (this.secondaryValue > 0) {
+        arrowElement.removeClass('arrow-down');
+        arrowElement.addClass('arrow-up');
+        element.addClass('secondary-value-up');
+        element.removeClass('secondary-value-down');
+      } else {
+        arrowElement.addClass('arrow-down');
+        arrowElement.removeClass('arrow-up');
+        element.addClass('secondary-value-down');
+        element.removeClass('secondary-value-up');
+      }
+    },
+
+    updateValueSizeClass: function(element, value) {
       var str = value.toString().length;
-      this.$value.removeClass("value-size-large");
-      this.$value.removeClass("value-size-medium");
-      this.$value.removeClass("value-size-small");
+      element.removeClass("value-size-large");
+      element.removeClass("value-size-medium");
+      element.removeClass("value-size-small");
 
       if (str <= 5) {
-        this.$value.addClass("value-size-large");
+        element.addClass("value-size-large");
       } else if (str > 5 && str < 8) {
-        this.$value.addClass("value-size-medium");
+        element.addClass("value-size-medium");
       } else {
-        this.$value.addClass("value-size-small");
+        element.addClass("value-size-small");
       }
     },
 
@@ -87,13 +122,28 @@
       var secondaryValue = this.secondaryValue();
       var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
 
-      $(this.el).html(JST['templates/widgets/counter/show']({ value: value, secondaryValue: secondaryValueString }));
+      var value2 = this.value2();
+      var secondaryValue2 = this.secondaryValue2();
+      var secondaryValueString2 = Math.abs(secondaryValue2).toString() + ' %';
 
-      this.$value = this.$('.value');
-      this.$secondaryValue = this.$('.secondary-value');
-      this.$arrow = this.$('.arrow');
-      this.updateValueSizeClass(value);
-      this.updateSecondaryValueClass(secondaryValue);
+      $(this.el).html(JST['templates/widgets/counter/show']({
+        value: value,
+        secondaryValue: secondaryValueString,
+        value2: value2,
+        secondaryValue2: secondaryValueString2
+      }));
+
+      this.$value = this.$('.counter .value');
+      this.$value2 = this.$('.counter2 .value');
+      this.$secondaryValue = this.$('.counter .secondary-value');
+      this.$secondaryValue2 = this.$('.counter2 .secondary-value');
+      this.$arrow = this.$('.counter .arrow');
+      this.$arrow2 = this.$('.counter2 .arrow');
+
+      this.updateValueSizeClass(this.$value, value);
+      this.updateValueSizeClass(this.$value2, value2);
+      this.updateSecondaryValueClass(this.$secondaryValue, this.$arrow, secondaryValue);
+      this.updateSecondaryValueClass(this.$secondaryValue2, this.$arrow2, secondaryValue2);
 
       return this;
     },
@@ -102,8 +152,15 @@
       var that = this;
       this.counterModel.at = $.TimeSelector.getCurrent();
       this.secondaryCounterModel.at = $.TimeSelector.getFrom(this.range);
+      this.counterModel2.at = $.TimeSelector.getCurrent();
+      this.secondaryCounterModel2.at = $.TimeSelector.getFrom(this.range);
       var options = { suppressErrors: true };
-      return $.when(this.counterModel.fetch(options), this.secondaryCounterModel.fetch(options)).done(this.updateValues());
+      return $.when(
+        this.counterModel.fetch(options),
+        this.secondaryCounterModel.fetch(options),
+        this.counterModel2.fetch(options),
+        this.secondaryCounterModel2.fetch(options)
+      ).done(this.updateValues());
     },
 
     updateValues: function() {

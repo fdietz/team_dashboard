@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120616131320) do
+ActiveRecord::Schema.define(:version => 20120621142155) do
 
   create_table "dashboards", :force => true do |t|
     t.string   "name"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20120616131320) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "update_interval"
+    t.string   "targets2"
   end
 
 end

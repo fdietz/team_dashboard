@@ -21,6 +21,7 @@
         return;
       }
       this.targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+      this.targetInput2.select2({ tags: collections.metrics.autocomplete_names() });
     },
 
     render: function() {
@@ -29,6 +30,9 @@
       this.populate("counter");
       this.targetInput = this.$('.targets');
       this.targetInput.val(this.model.get('targets'));
+      this.targetInput2 = this.$('.targets2');
+      this.targetInput2.val(this.model.get('targets2'));
+
       this.prefillAutocomplete();
 
       var myModal = this.$('#dashboard-details-modal');
@@ -49,6 +53,7 @@
 
       var formResult = this.parse("counter");
       formResult.targets = this.targetInput.select2('val').join(',');
+      formResult.targets2 = this.targetInput2.select2('val').join(',');
 
       if (this.model.isNew()) {
         this.model.set(formResult, { silent: true });
