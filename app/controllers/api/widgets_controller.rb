@@ -8,7 +8,6 @@ module Api
 
     def index
       widgets = Widget.for_dashboard(params[:dashboard_id]).all
-      puts "========== #{widgets.inspect}"
       respond_with(widgets)
     end
 

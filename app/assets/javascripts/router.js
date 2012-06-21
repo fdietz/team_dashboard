@@ -4,15 +4,15 @@
   app.Router = Backbone.Router.extend({
 
     routes: {
-      "":                 "metricsIndex",
-      "metrics":          "metricsIndex",
-      "metrics/:source":          "metricsIndex",
-      "metrics/:source/:name":    "metricsShow",
-      "dashboards":       "dashboardsIndex",
-      "dashboards/:id":   "dashboardsShow",
-      "instruments":      "instrumentsIndex",
-      "instruments/:id":  "instrumentsShow",
-      "about":            "aboutShow"
+      "":                       "metricsIndex",
+      "metrics":                "metricsIndex",
+      "metrics/:source":        "metricsIndex",
+      "metrics/:source/:name":  "metricsShow",
+      "dashboards":             "dashboardsIndex",
+      "dashboards/:id":         "dashboardsShow",
+      "instruments":            "instrumentsIndex",
+      "instruments/:id":        "instrumentsShow",
+      "about":                  "aboutShow"
     },
 
     initialize: function(options) {
@@ -61,30 +61,22 @@
     },
 
     metricsIndex: function(source) {
-      console.log("ROUTER: metrics", source);
-
       app.collections.metrics.source = source || $.Sources.first();
       var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
       this.showView(metricsView);
-      
     },
 
     metricsShow: function(source, name) {
-      console.log("ROUTER: metric details:", source, name);
-
-      var view = new app.views.Metric({ model: new app.models.Metric({ name: name }), source: source });
+      var view = new app.views.Metric({ model: new app.models.Metric({ name: name }), source: source || $.Sources.first() });
       this.showView(view);
     },
 
     dashboardsIndex: function() {
-      console.log("ROUTER: dashboards");
-
       var dashboardsView = new app.views.Dashboards({ collection: app.collections.dashboards });
       this.showView(dashboardsView);
     },
 
     dashboardsShow: function(id) {
-      console.log("ROUTER: dashboard_detail");
       var that = this;
       var model = new app.models.Dashboard({ id: id });
       var collection = new app.collections.Widget({ dashboard_id:model.id });
@@ -96,7 +88,6 @@
     },
 
     aboutShow: function() {
-      console.log("ROUTER: about");
       var aboutView = new app.views.About();
       this.showView(aboutView);
     }
