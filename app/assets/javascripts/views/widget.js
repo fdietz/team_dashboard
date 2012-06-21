@@ -68,7 +68,6 @@
       }
       var dialogElement = $(document.getElementById('widget-dialog'));
 
-      console.log(dialogElement);
       dialogElement.html(dialog.render().el);
       return false;
     },

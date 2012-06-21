@@ -4,7 +4,7 @@
   views.widgets.Counter = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "update", "widgetChanged", "updateValues");
+      _.bindAll(this, "render", "update", "widgetChanged");
 
       this.range = '30-minutes';
 
@@ -118,6 +118,7 @@
     },
 
     render: function() {
+      console.log("render")
       var value = this.value();
       var secondaryValue = this.secondaryValue();
       var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
@@ -149,6 +150,7 @@
     },
 
     update: function() {
+      console.log("update")
       var that = this;
       this.counterModel.at = $.TimeSelector.getCurrent();
       this.secondaryCounterModel.at = $.TimeSelector.getFrom(this.range);
@@ -160,15 +162,7 @@
         this.secondaryCounterModel.fetch(options),
         this.counterModel2.fetch(options),
         this.secondaryCounterModel2.fetch(options)
-      ).done(this.updateValues());
-    },
-
-    updateValues: function() {
-      var value = this.value();
-      var secondaryValue = this.secondaryValue();
-      var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
-      this.$value.html(value);
-      this.$secondaryValue.html(secondaryValueString);
+      ).done(this.render());
     },
 
     onClose: function() {

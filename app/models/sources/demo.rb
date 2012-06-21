@@ -14,7 +14,9 @@ module Sources
     def datapoints(targets, from, to = nil)
       to = to || Time.now.to_i
       datapoints = []
-      datapoints << { :target => 'demo.example1', :datapoints => generate_datapoints(from, to) }
+      targets.each do |target|
+        datapoints << { :target => "demo.example1", :datapoints => generate_datapoints(from, to) }
+      end
       datapoints
     end
 
@@ -42,7 +44,7 @@ module Sources
       timestamp = from
       while (timestamp < to) 
         result << [1+rand(100), timestamp]    
-        timestamp = timestamp + interval * (1+rand(5))
+        timestamp = timestamp + interval*5 #* (1+rand(5))
       end
       result
     end
