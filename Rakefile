@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-SimpleMetricsWebapp::Application.load_tasks
+TeamDashboard::Application.load_tasks

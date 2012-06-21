@@ -1,4 +1,4 @@
-SimpleMetricsWebapp::Application.routes.draw do
+TeamDashboard::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

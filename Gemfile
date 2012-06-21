@@ -10,8 +10,6 @@ gem "handlebars_assets"
 
 gem 'jbuilder'
 
-gem 'simple_metrics', "~> 0.4.6"
-
 gem 'mysql2'
 
 group :development do
