@@ -66,21 +66,14 @@
       app.collections.metrics.source = source || $.Sources.first();
       var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
       this.showView(metricsView);
+      
     },
 
     metricsShow: function(source, name) {
       console.log("ROUTER: metric details:", source, name);
 
-      var that = this;
-      app.collections.metrics.source = source;
-      app.collections.metrics.fetch({
-        success: function(collection, response) {
-          var model = collection.where({ name: name })[0];
-          console.log("collection", collection, model);
-          var view = new app.views.Metric({ model: model, source: source });
-          that.showView(view);
-        }
-      });
+      var view = new app.views.Metric({ model: new app.models.Metric({ name: name }), source: source });
+      this.showView(view);
     },
 
     dashboardsIndex: function() {

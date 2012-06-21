@@ -13,7 +13,6 @@
     },
 
     render: function() {
-      console.log("fetch again", this.collection.source);
       $(this.el).html(JST['templates/metrics/index']({ metrics: this.collection.toJSON(), source: this.collection.source }));
 
       if (!this.collection.isFetched) {

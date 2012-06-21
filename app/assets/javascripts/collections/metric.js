@@ -11,6 +11,11 @@
       this.on('reset', this.onReset, this);
     },
 
+    deferredFetch: function() {
+      this.deferred = this.fetch();
+      return this.deferred;
+    },
+
     onReset: function() {
       this.isFetched = true;
     },
