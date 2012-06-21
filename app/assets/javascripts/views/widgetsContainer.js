@@ -11,7 +11,7 @@
     },
 
     render: function() {
-      this.setup_sortable_widgets();
+      this.setupSortableWidgets();
 
       // TODO: do we need this
       this.closeChildren();
@@ -20,7 +20,7 @@
       return this;
     },
 
-    setup_sortable_widgets: function() {
+    setupSortableWidgets: function() {
       var that = this;
       this.$el.sortable({
         forcePlaceholderSize: true, revert: 300, delay: 100, opacity: 0.8,
