@@ -31,9 +31,6 @@ GEM
     addressable (2.2.8)
     arel (3.0.2)
     blankslate (2.1.2.4)
-    bson (1.6.4)
-    bson_ext (1.6.4)
-      bson (~> 1.6.4)
     builder (3.0.0)
     childprocess (0.3.2)
       ffi (~> 1.0.6)
@@ -93,8 +90,6 @@ GEM
     mime-types (1.18)
     mocha (0.11.4)
       metaclass (~> 0.0.1)
-    mongo (1.6.4)
-      bson (~> 1.6.4)
     multi_json (1.3.6)
     mysql2 (0.3.11)
     polyglot (0.3.3)
@@ -147,13 +142,6 @@ GEM
       libwebsocket (~> 0.1.3)
       multi_json (~> 1.0)
       rubyzip
-    simple_metrics (0.4.6)
-      activesupport
-      bson (~> 1.6)
-      bson_ext (~> 1.6)
-      daemons
-      eventmachine (>= 1.0.0.beta.4)
-      mongo (~> 1.6)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -190,7 +178,6 @@ DEPENDENCIES
   rails (~> 3.2.3)
   rails-backbone
   sass-rails
-  simple_metrics (~> 0.4.6)
   therubyracer
   thin
   uglifier (>= 1.0.3)
