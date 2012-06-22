@@ -9,6 +9,7 @@
       _.bindAll(this, "render");
 
       this.secondaryModel = options.secondaryModel;
+      this.model.on('change', this.render);
     },
 
     value: function() {
@@ -73,6 +74,11 @@
       } else {
         this.$value.addClass("value-size-small");
       }
+    },
+
+    onClose: function() {
+      this.model.off();
+      this.secondaryModel.off();
     }
 
   });
@@ -88,6 +94,9 @@
       this.updateSecondaryCounterModel();
       this.updateCounterModel2();
       this.updateSecondaryCounterModel2();
+
+      this.counter1 = new CounterSubview({ model: this.counterModel, secondaryModel: this.secondaryCounterModel });
+      this.counter2 = new CounterSubview({ model: this.counterModel2, secondaryModel: this.secondaryCounterModel2 });
 
       this.model.on('change', this.widgetChanged);
     },
@@ -135,9 +144,6 @@
     },
 
     render: function() {
-      this.counter1 = new CounterSubview({ model: this.counterModel, secondaryModel: this.secondaryCounterModel });
-      this.counter2 = new CounterSubview({ model: this.counterModel2, secondaryModel: this.secondaryCounterModel2 });
-
       $(this.el).empty();
       $(this.el).append(this.counter1.render().el);
       $(this.el).append(this.counter2.render().el);
@@ -157,11 +163,13 @@
         this.secondaryCounterModel.fetch(options),
         this.counterModel2.fetch(options),
         this.secondaryCounterModel2.fetch(options)
-      ).done(this.render());
+      );
     },
 
     onClose: function() {
       this.model.off();
+      this.counter1.close();
+      this.counter2.close();
     }
   });
 
