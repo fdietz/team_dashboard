@@ -126,14 +126,7 @@
 .counter {
   margin-left: 10px;
   margin-top: 30px;
-  width: 300px;
-  height: 100px;
-  display:block;
-}
-
-.counter2 {
-  margin-left: 10px;
-  margin-top: 50px;
+  padding-bottom: 15px;
   width: 300px;
   height: 100px;
   display:block;
@@ -162,7 +155,7 @@
 }
 
 .secondary-value-up {
-  color: #669900;
+  color: #8ec15c;
 }
 
 .secondary-value-down {
@@ -171,6 +164,7 @@
 
 .rate-container {
   margin-top: 50px;
+  margin-left: 10px;
 }
 
 .percentage {
@@ -188,7 +182,7 @@
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 10px solid #669900;
+  border-bottom: 10px solid #8ec15c;
 }
 
 .arrow-down {
