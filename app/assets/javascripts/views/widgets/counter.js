@@ -89,7 +89,7 @@
     },
 
     updateSecondaryValueClass: function(element, arrowElement, secondaryValue) {
-      if (this.secondaryValue > 0) {
+      if (secondaryValue > 0) {
         arrowElement.removeClass('arrow-down');
         arrowElement.addClass('arrow-up');
         element.addClass('secondary-value-up');
@@ -120,17 +120,14 @@
     render: function() {
       var value = this.value();
       var secondaryValue = this.secondaryValue();
-      var secondaryValueString = Math.abs(secondaryValue).toString() + ' %';
-
       var value2 = this.value2();
       var secondaryValue2 = this.secondaryValue2();
-      var secondaryValueString2 = Math.abs(secondaryValue2).toString() + ' %';
 
       $(this.el).html(JST['templates/widgets/counter/show']({
         value: value,
-        secondaryValue: secondaryValueString,
+        secondaryValue: Math.abs(secondaryValue),
         value2: value2,
-        secondaryValue2: secondaryValueString2
+        secondaryValue2: Math.abs(secondaryValue2)
       }));
 
       this.$value = this.$('.counter .value');
@@ -139,11 +136,13 @@
       this.$secondaryValue2 = this.$('.counter2 .secondary-value');
       this.$arrow = this.$('.counter .arrow');
       this.$arrow2 = this.$('.counter2 .arrow');
+      this.$rateContainer = this.$('.counter .rate-container');
+      this.$rateContainer2 = this.$('.counter2 .rate-container');
 
       this.updateValueSizeClass(this.$value, value);
       this.updateValueSizeClass(this.$value2, value2);
-      this.updateSecondaryValueClass(this.$secondaryValue, this.$arrow, secondaryValue);
-      this.updateSecondaryValueClass(this.$secondaryValue2, this.$arrow2, secondaryValue2);
+      this.updateSecondaryValueClass(this.$rateContainer, this.$arrow, secondaryValue);
+      this.updateSecondaryValueClass(this.$rateContainer2, this.$arrow2, secondaryValue2);
 
       return this;
     },

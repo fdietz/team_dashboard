@@ -173,8 +173,14 @@
   margin-top: 50px;
 }
 
+.percentage {
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .arrow-up, .arrow-down {
   display: inline-block;
+  margin-bottom: 5px;
 }
 
 .arrow-up {
@@ -182,12 +188,12 @@
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 20px solid #669900;
+  border-bottom: 10px solid #669900;
 }
 
 .arrow-down {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 20px solid #D26771;
+  border-top: 10px solid #D26771;
 }
