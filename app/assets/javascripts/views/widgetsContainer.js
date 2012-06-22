@@ -23,9 +23,17 @@
     setupSortableWidgets: function() {
       var that = this;
       this.$el.sortable({
-        forcePlaceholderSize: true, revert: 300, delay: 100, opacity: 0.8,
+        forcePlaceholderSize: true, forceHelperSize: true, revert: 300, delay: 100, opacity: 0.8, handle: '.portlet-header',
+        tolerance: 'pointer',
         stop: function (e,ui) {
           that._saveLayout();
+        },
+        start: function (event, block) {
+          // set placeholder size to the widget size
+          that.$('.ui-sortable-placeholder').css({
+              'width': that.$(block.helper).outerWidth(),
+              'height': that.$(block.helper).outerHeight()
+          });
         }
       });
     },
