@@ -31,8 +31,8 @@
         start: function (event, block) {
           // set placeholder size to the widget size
           that.$('.ui-sortable-placeholder').css({
-              'width': that.$(block.helper).outerWidth(),
-              'height': that.$(block.helper).outerHeight()
+              'width': that.$(block.helper).width(),
+              'height': that.$(block.helper).height()
           });
         }
       });
