@@ -52,12 +52,14 @@
             </div>
           </div>
 
+
           <div class="control-group">
             <label class="control-label">Data Source</label>
             <div class="controls">
               <select name="graph[source]" class="source">
-                <option value="demo">Demo</option>
-                <option value="graphite">Graphite</option>
+                {{#each sources}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
               </select>
             </div>
           </div>

@@ -9,12 +9,8 @@ module Api
       source  = params[:source]
       aggregate_function = params[:aggregate_function]
 
-      handler = Sources.handler(source)
-      datapoints = if at
-        handler.datapoints_at(targets, aggregate_function, at.to_i)
-      else
-        handler.datapoints(targets, from.to_i, to.to_i)
-      end
+      handler = Sources.datapoints_plugin_class(source).new
+      datapoints = handler.get(targets, from.to_i, to.to_i)
       respond_with datapoints.to_json
     end
 

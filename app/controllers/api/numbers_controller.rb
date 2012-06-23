@@ -1,5 +1,5 @@
 module Api
-  class CountersController < BaseController
+  class NumbersController < BaseController
 
     def show
       at      = params[:at]
@@ -7,8 +7,8 @@ module Api
       source  = params[:source]
       aggregate_function = params[:aggregate_function]
 
-      handler = Sources.handler(source)
-      count = handler.datapoints_at(targets, aggregate_function, at.to_i)
+      handler = Sources.number_plugin_class(source).new
+      count = handler.get(targets, aggregate_function, at.to_i)
       respond_with({ :value => count }.to_json)
     end
 

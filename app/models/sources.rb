@@ -1,15 +1,49 @@
 module Sources
   extend self
 
-  def handler(source)
-    raise ArgumentError, "Unknown source #{source}" unless Rails.configuration.available_sources.include?(source)
+  class UnknownPluginError < StandardError; end
 
-    case(source)
-    when 'demo'
-      Sources::Demo.new
-    when 'graphite'
-      Sources::Graphite.new(:graphite_url => Rails.configuration.graphite_url)
+  TYPES = %w(boolean datapoints number targets)
+
+  # require all source plugins
+  def eager_require
+    TYPES.each do |name|
+      path = Rails.root.join("app/models/sources/#{name}")
+      Dir["#{path}/*"].each { |f| require f }
     end
   end
 
+  # def boolean_source_names
+  #   sources("boolean")
+  # end
+  TYPES.each do |type|
+    define_method("#{type}_source_names") do
+      source_names(type)
+    end
+  end
+
+  # def boolean_plugin_class(name)
+  #   plugin_clazz(type, name)
+  # end
+  TYPES.each do |type|
+    define_method("#{type}_plugin_class") do |name|
+      plugin_clazz(type, name)
+    end
+  end
+
+  protected
+
+  def source_names(type)
+    "Sources::#{type.camelize}::Base".constantize.descendants.map { |clazz| clazz_name(clazz) }
+  end
+
+  def plugin_clazz(type, name)
+    "Sources::#{type.camelize}::#{name.camelize}".constantize
+  rescue NameError => e
+    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}"
+  end
+
+  def clazz_name(clazz)
+    clazz.to_s.split("::").last.downcase
+  end
 end

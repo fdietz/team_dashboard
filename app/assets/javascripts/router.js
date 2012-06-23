@@ -61,13 +61,13 @@
     },
 
     metricsIndex: function(source) {
-      app.collections.metrics.source = source || $.Sources.first();
+      app.collections.metrics.source = source || $.Sources.getDefaultTarget();
       var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
       this.showView(metricsView);
     },
 
     metricsShow: function(source, name) {
-      var view = new app.views.Metric({ model: new app.models.Metric({ name: name }), source: source || $.Sources.first() });
+      var view = new app.views.Metric({ model: new app.models.Metric({ name: name }), source: source || $.Sources.getDefaultTarget() });
       this.showView(view);
     },
 

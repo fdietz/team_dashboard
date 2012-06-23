@@ -1,0 +1,25 @@
+require 'open-uri'
+
+module Sources
+  module Datapoints
+    class Graphite < Sources::Datapoints::Base
+
+      def initialize
+        @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
+      end
+
+      def get(targets, from, to = nil)
+        JSON.parse(request_datapoints(targets, from, to || Time.now.to_i ))
+      end
+
+      private
+
+      def request_datapoints(targets, from, to)
+        uri = URI.parse(@url_builder.datapoints_url(targets, from, to))
+        Rails.logger.debug("Requesting datapoints from #{uri} ...")
+        uri.read
+      end
+
+    end
+  end
+end

@@ -11,7 +11,8 @@ TeamDashboard::Application.routes.draw do
 
   match "api/graph" => "api/datapoints#show"
   match "api/datapoints" => "api/datapoints#show"
-  match "api/counter" => "api/counters#show"
+  match "api/number" => "api/numbers#show"
+  match "api/boolean" => "api/booleans#show"
 
   # routes render the initial layout (client side rendering)
   match "metrics" => "home#index"

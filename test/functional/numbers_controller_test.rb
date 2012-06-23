@@ -3,7 +3,7 @@ require 'test_helper'
 module Api
 
   class CountersControllerShowTest < ActionController::TestCase
-    tests CountersController
+    tests NumbersController
 
     test "should respond successfully" do
       handler = mock('mock')

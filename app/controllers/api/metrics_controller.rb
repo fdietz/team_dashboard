@@ -3,8 +3,8 @@ module Api
     respond_to :json
     
     def index
-      metrics = Sources.handler(params[:source]).metrics
-      respond_with metrics.inject([]) { |result, m| result << { :name => m } }.to_json
+      targets = Sources.targets_plugin_class(params[:source]).new.targets
+      respond_with targets.inject([]) { |result, m| result << { :name => m } }.to_json
     end
 
   end

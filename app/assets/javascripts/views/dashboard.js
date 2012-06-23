@@ -47,14 +47,14 @@
     },
 
     showGraphDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.first(), range: '30-minutes' });
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.getDefaultTarget(), range: '30-minutes' });
       var dialog = new views.WidgetEditor.Graph({ model: widget, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },
 
     showCounterDialog: function(event) {
-      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.first() });
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.getDefaultTarget() });
       var dialog = new views.WidgetEditor.Counter({ model: widget, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
