@@ -46,7 +46,6 @@
       this.to = to;
       this.range = range;
 
-      console.log("update graph", new Date(this.from*1000), new Date(this.to*1000));
       this.collection.from = from;
       this.collection.to = to;
       this.collection.fetch();
@@ -73,7 +72,6 @@
     },
 
     render: function() {
-      console.log("render")
       $(this.el).html(JST['templates/widgets/graph/show']({ time: this.time }));
 
       var datapoints = this.transformDatapoints();
@@ -167,7 +165,6 @@
       this.from = $.TimeSelector.getFrom(this.range);
       this.to = $.TimeSelector.getCurrent();
       this.source = options.source;
-      console.log("metric source", this.source);
     },
 
     render: function() {
@@ -188,7 +185,6 @@
       var button = this.$(event.target);
       this.range = button.attr("data-range");
       // button.button("toggle");
-      console.log("switchTime", this.range );
 
       this.from = $.TimeSelector.getFrom(this.range);
       this.to = $.TimeSelector.getCurrent();

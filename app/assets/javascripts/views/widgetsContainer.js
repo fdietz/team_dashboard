@@ -61,11 +61,7 @@
     },
 
     _saveLayout: function() {
-      this.model.save({ layout: this._currentLayout() }, {
-        success: function(model, request) {
-          console.log("saved layout", model);
-        }
-      });
+      this.model.save({ layout: this._currentLayout() });
     },
 
     appendNewWidget: function(widget) {

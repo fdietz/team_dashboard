@@ -26,7 +26,6 @@
     switchSource: function(event) {
       var button = this.$(event.target);
       var source = button.attr("data-source");
-      console.log("switchSource", source );
       this.collection.source = source;
       this.collection.fetch();
     }

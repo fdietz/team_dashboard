@@ -6,7 +6,6 @@
         return;
     }
 
-    console.log(xhr.status, xhr.responseText, "exception: " + exception);
     var message = null;
     if (xhr.status === 0) {
       message = "The server could not be contacted.";
