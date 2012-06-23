@@ -69,15 +69,16 @@
 }
 
 .portlet {
-  margin: 10px;
+  margin: 0px 10px 10px 0px;
   float: left;
-  /*height: 100px;*/
 }
+
+.portlet:first-child { margin-left: 0px !important; }
 
 /* TODO: check why jquery sortable depends on id instead of class here */
 #widget-span-1 { width: 320px; }
-#widget-span-2 { width: 680px; }
-#widget-span-3 { width: 1040px; }
+#widget-span-2 { width: 670px; }
+#widget-span-3 { width: 1020px; }
 
 
 .portlet {
