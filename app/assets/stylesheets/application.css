@@ -75,9 +75,10 @@
 }
 
 /* TODO: check why jquery sortable depends on id instead of class here */
-#widget-span-1 { width: 30%; }
-#widget-span-2 { width: 63%; }
-#widget-span-3 { width: 96%; }
+#widget-span-1 { width: 320px; }
+#widget-span-2 { width: 680px; }
+#widget-span-3 { width: 1040px; }
+
 
 .portlet {
   height: 325px;
