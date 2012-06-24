@@ -72,7 +72,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widgets/graph/show']({ time: this.time }));
+      this.$el.html(JST['templates/widgets/graph/show']({ time: this.time }));
 
       var datapoints = this.transformDatapoints();
       if (datapoints.hasData === true) {
@@ -85,7 +85,7 @@
     },
 
     showEmptyDatasetNotice: function() {
-      $(this.el).html("<p>No data available.</p>");
+      this.$el.html("<p>No data available.</p>");
     },
 
     renderGraph: function(datapoints) {
@@ -167,7 +167,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/metrics/show']({ metric: this.model.toJSON() }));
+      this.$el.html(JST['templates/metrics/show']({ metric: this.model.toJSON() }));
 
       // this.$("button.data-time").button();
 

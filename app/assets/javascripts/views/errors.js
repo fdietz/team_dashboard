@@ -16,7 +16,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/errors/show']({ message: this.message }));
+      this.$el.html(JST['templates/errors/show']({ message: this.message }));
 
       var that = this;
       this.$('#alert').bind('closed', function () {

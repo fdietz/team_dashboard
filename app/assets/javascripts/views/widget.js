@@ -91,9 +91,9 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widget/show']({ widget: this.model.toJSON() }));
+      this.$el.html(JST['templates/widget/show']({ widget: this.model.toJSON() }));
 
-      $(this.el)
+      this.$el
         .addClass("portlet well well-small ui-widget ui-widget-content ui-corner-all")
         .attr("id", "widget-span-" + this.model.get('size') || 1)
         .attr("data-widget-id", this.model.get("id"));
@@ -114,7 +114,7 @@
     },
 
     collapseWidget: function(event) {
-      $(this.el).toggleClass("portlet-minimized");
+      this.$el.toggleClass("portlet-minimized");
       return false;
     },
 

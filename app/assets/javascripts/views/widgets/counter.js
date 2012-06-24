@@ -41,7 +41,7 @@
     render: function() {
       var value = this.value();
       var secondaryValue = this.secondaryValue();
-      $(this.el).html(JST['templates/widgets/counter/subview']({ 
+      this.$el.html(JST['templates/widgets/counter/subview']({ 
         value: Math.abs(value),
         secondaryValue: Math.abs(secondaryValue)
       }));
@@ -172,9 +172,9 @@
     },
 
     render: function() {
-      $(this.el).empty();
-      $(this.el).append(this.counter1.render().el);
-      $(this.el).append(this.counter2.render().el);
+      this.$el.empty();
+      this.$el.append(this.counter1.render().el);
+      this.$el.append(this.counter2.render().el);
 
       return this;
     },

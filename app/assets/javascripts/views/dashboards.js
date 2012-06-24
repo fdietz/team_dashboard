@@ -13,7 +13,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/dashboards/index']({ dashboards: this.collection.toJSON() }));
+      this.$el.html(JST['templates/dashboards/index']({ dashboards: this.collection.toJSON() }));
 
       if (!this.collection.isFetched) {
         this.collection.fetch();

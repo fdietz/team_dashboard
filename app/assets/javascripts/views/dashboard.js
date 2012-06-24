@@ -18,7 +18,7 @@
     render: function() {
       var that = this;
 
-      $(this.el).html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
+      this.$el.html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
       this._setup_editable_header();
 

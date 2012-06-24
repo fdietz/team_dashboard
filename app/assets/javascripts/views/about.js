@@ -7,7 +7,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/abouts/show']());
+      this.$el.html(JST['templates/abouts/show']());
       return this;
     }
   });

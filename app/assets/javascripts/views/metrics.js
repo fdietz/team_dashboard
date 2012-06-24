@@ -13,7 +13,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/metrics/index']({ metrics: this.collection.toJSON(), source: this.collection.source }));
+      this.$el.html(JST['templates/metrics/index']({ metrics: this.collection.toJSON(), source: this.collection.source }));
 
       if (!this.collection.isFetched) {
         this.collection.fetch();

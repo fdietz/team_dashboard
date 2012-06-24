@@ -83,7 +83,7 @@
     },
 
     render: function() {
-      $(this.el).html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
+      this.$el.html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
 
       this.$graph = this.$('.graph');
       this.$yAxis = this.$('.y-axis');
@@ -152,7 +152,7 @@
     },
 
     showEmptyDatasetNotice: function() {
-      $(this.el).html("<p class='empty-data'>No data available.</p>");
+      this.$el.html("<p class='empty-data'>No data available.</p>");
     },
 
     changeRenderer: function(renderer) {

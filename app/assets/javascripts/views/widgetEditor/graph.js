@@ -37,7 +37,7 @@
 
     render: function() {
       var that = this;
-      $(this.el).html(JST['templates/widgets/graph/edit']({ model: this.model.toJSON(), sources: $.Sources.getDatapoints() }));
+      this.$el.html(JST['templates/widgets/graph/edit']({ model: this.model.toJSON(), sources: $.Sources.getDatapoints() }));
 
       this.populate("graph");
       this.$targetInput = this.$('.targets');
