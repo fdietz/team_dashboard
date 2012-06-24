@@ -145,9 +145,8 @@
         return { name: 'day', seconds: 60*4*24*7*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
       case "4-weeks":
         return { name: 'week', seconds: 60*4*24*7*4, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
-
       default:
-        alert("unknown rangeString: " + this.range);
+        throw "unknown rangeString: " + this.range;
       }
     }
   });
@@ -162,7 +161,7 @@
       _.bindAll(this, "render", "switchDateRange");
       this.time = 'hour';
       this.range = "30-minutes";
-      this.from = $.TimeSelector.getFrom(this.range);
+      this.from = $.TimeSelector.getFrom(new Date().getTime(), this.range);
       this.to = $.TimeSelector.getCurrent();
       this.source = options.source;
     },
@@ -186,7 +185,7 @@
       this.range = button.attr("data-range");
       // button.button("toggle");
 
-      this.from = $.TimeSelector.getFrom(this.range);
+      this.from = $.TimeSelector.getFrom(new Date().getTime(), this.range);
       this.to = $.TimeSelector.getCurrent();
 
       this.graph.update(this.from, this.to, this.range);

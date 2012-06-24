@@ -40,7 +40,7 @@
 
     render: function() {
       var that = this;
-      $(this.el).html(JST['templates/widgets/counter/edit']({ model: this.model.toJSON(), sources: $.Sources.getNumber() }));
+      $(this.el).html(JST['templates/widgets/counter/edit']({ model: this.model.toJSON(), sources: $.Sources.getDatapoints() }));
 
       this.populate("counter");
       this.$sourceSelect = this.$('.source');
@@ -74,7 +74,7 @@
       var formResult = this.parse("counter");
       formResult.targets = this.$targetInput.select2('val').join(',');
       formResult.targets2 = this.$targetInput2.select2('val').join(',');
-
+      console.log("form", formResult)
       if (this.model.isNew()) {
         this.model.set(formResult, { silent: true });
         this.widgetCollection.create(this.model);

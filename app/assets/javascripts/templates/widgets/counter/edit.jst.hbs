@@ -12,8 +12,8 @@
             </div>
           </div>
 
-          <!-- <div class="control-group">
-            <label class="control-label">Date Time Range</label>
+          <div class="control-group">
+            <label class="control-label">Period</label>
             <div class="controls">
               <select name="counter[range]" class="range">
                 <option value="30-minutes">Last 30 minutes</option>
@@ -26,7 +26,7 @@
                 <option value="4-weeks">Last 4 weeks</option>
               </select>
             </div>
-          </div> -->
+          </div>
 
           <div class="control-group">
             <label class="control-label">Update Interval</label>
@@ -59,10 +59,30 @@
           </div>
 
           <div class="control-group">
+            <label class="control-label">Aggregate Function</label>
+            <div class="controls">
+              <select name="counter[aggregate_function]" class="aggregate_function">
+                <option value="sum">Sum</option>
+                <option value="average">Average</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group">
             <label class="control-label">Second Targets</label>
             <div class="controls">
               <input name="counter[targets2]" class="targets2" size="16" type="text" style="width:300px">
-              <p class="help-block">Comma separated metric names. Including wildcard support (example: test.system1, test.graph.*)</p>
+              <!-- <p class="help-block">Comma separated metric names. Including wildcard support (example: test.system1, test.graph.*)</p> -->
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Aggregate Function</label>
+            <div class="controls">
+              <select name="counter[aggregate_function2]" class="aggregate_function">
+                <option value="sum">Sum</option>
+                <option value="average">Average</option>
+              </select>
             </div>
           </div>
 

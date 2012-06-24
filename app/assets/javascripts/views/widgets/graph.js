@@ -20,12 +20,9 @@
 
     initialize: function(options) {
       _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues", "widgetChanged");
-      this.range = this.model.get("range");
-      this.from = $.TimeSelector.getFrom(this.range);
-      this.to = $.TimeSelector.getCurrent();
-      this.source = options.source;
+      // this.range = this.model.get("range");
 
-      this.updateGraphCollection();
+      this.updateCollection();
 
       this.model.on('change', this.widgetChanged);
 
@@ -33,18 +30,26 @@
       this.currentColors = [];
     },
 
-    updateGraphCollection: function() {
+    from: function() {
+      console.log("model", this.model.get('range'))
+      return $.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+    },
+
+    to: function() {
+      return $.TimeSelector.getCurrent();
+    },
+
+    updateCollection: function() {
       this.collection = new collections.Graph({
-        time: this.model.get('time'),
         targets: this.model.get('targets'),
         source: this.model.get('source'),
-        from: this.from,
-        to: this.to
+        from: this.from(),
+        to: this.to()
       });
     },
 
     widgetChanged: function() {
-      this.updateGraphCollection();
+      this.updateCollection();
       this.render();
     },
 
@@ -125,12 +130,14 @@
     },
 
     update: function(callback) {
+      console.log("update");
       var that = this;
 
-      this.from = $.TimeSelector.getFrom(this.range);
-      this.to = $.TimeSelector.getCurrent();
-      this.collection.from = this.from;
-      this.collection.to = this.to;
+      // this.from = $.TimeSelector.getFrom(this.range);
+      // this.to = $.TimeSelector.getCurrent();
+      // this.collection.from = this.from;
+      // this.collection.to = this.to;
+      this.updateCollection();
 
       return this.collection.fetch({suppressErrors: true}).done(this.updateValues);
     },
@@ -158,7 +165,7 @@
     },
 
     timeUnit: function() {
-      switch(this.range) {
+      switch(this.model.get('range')) {
       case "30-minutes":
         return { name: 'minute', seconds: 60*2*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
       case "60-minutes":
@@ -175,9 +182,8 @@
         return { name: 'day', seconds: 60*4*24*7*2*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
       case "4-weeks":
         return { name: 'week', seconds: 60*4*24*7*4*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
-
       default:
-        alert("unknown rangeString: " + this.range);
+        throw "unknown rangeString: " + this.model.get('range');
       }
     }
   });

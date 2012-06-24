@@ -8,17 +8,28 @@
     initialize: function(options) {
       _.bindAll(this, "render");
 
-      this.secondaryModel = options.secondaryModel;
-      this.model.on('change', this.render);
+      this.source = options.source;
+      this.secondaryCollection = options.secondaryCollection;
+      this.collection.on('reset', this.render);
+    },
+
+    // example object: [{ target: "aggregated targets", datapoints: [[1776, 1340547208]] }]
+    valueFromCollection: function(collection) {
+      var datapoints = collection.at(0).get('datapoints');
+      if (datapoints) {
+        return datapoints[0][0];
+      } else {
+        return 0;
+      }
     },
 
     value: function() {
-      return this.model.get('value') || 0;
+      return this.valueFromCollection(this.collection);
     },
 
     secondaryValue: function() {
-      var y1 = this.model.get('value') || 0;
-      var y2 = this.secondaryModel.get('value') || 0;
+      var y1 = this.valueFromCollection(this.collection);
+      var y2 = this.valueFromCollection(this.secondaryCollection);
       if (y1 && y2) {
         var result = ((y1 - y2) / y2) * 100;
         return result.toFixed(2);
@@ -30,7 +41,6 @@
     render: function() {
       var value = this.value();
       var secondaryValue = this.secondaryValue();
-
       $(this.el).html(JST['templates/widgets/counter/subview']({ 
         value: Math.abs(value),
         secondaryValue: Math.abs(secondaryValue)
@@ -77,8 +87,8 @@
     },
 
     onClose: function() {
-      this.model.off();
-      this.secondaryModel.off();
+      this.collection.off();
+      this.secondaryCollection.off();
     }
 
   });
@@ -88,58 +98,76 @@
     initialize: function(options) {
       _.bindAll(this, "render", "update", "widgetChanged");
 
-      this.range = '30-minutes';
+      this.updateCollection();
+      this.updateSecondaryCollection();
+      this.updateCollection2();
+      this.updateSecondaryCollection2();
 
-      this.updateCounterModel();
-      this.updateSecondaryCounterModel();
-      this.updateCounterModel2();
-      this.updateSecondaryCounterModel2();
-
-      this.counter1 = new CounterSubview({ model: this.counterModel, secondaryModel: this.secondaryCounterModel });
-      this.counter2 = new CounterSubview({ model: this.counterModel2, secondaryModel: this.secondaryCounterModel2 });
+      this.counter1 = new CounterSubview({ collection: this.collection, secondaryCollection: this.secondaryCollection });
+      this.counter2 = new CounterSubview({ collection: this.collection2, secondaryCollection: this.secondaryCollection2 });
 
       this.model.on('change', this.widgetChanged);
     },
 
-    updateCounterModel: function() {
-      this.counterModel = new models.Counter({
+    from: function() {
+      return $.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+    },
+
+    previousFrom: function() {
+      return $.TimeSelector.getPreviousFrom(new Date().getTime(), this.model.get('range'));
+    },
+
+    to: function() {
+      return $.TimeSelector.getCurrent();
+    },
+
+    updateCollection: function() {
+      this.collection = new collections.Graph({
         targets: this.model.get('targets'),
         source: this.model.get('source'),
-        aggregate_function: 'sum',
-        at: $.TimeSelector.getCurrent()
+        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        from: this.from(),
+        to: this.to()
       });
     },
 
-    updateSecondaryCounterModel: function() {
-      this.secondaryCounterModel = new models.Counter({
+    updateSecondaryCollection: function() {
+      this.secondaryCollection = new collections.Graph({
+        time: this.model.get('time'),
         targets: this.model.get('targets'),
         source: this.model.get('source'),
-        aggregate_function: 'sum',
-        at: $.TimeSelector.getFrom(this.range)
+        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        from: this.previousFrom(),
+        to: this.to()
       });
     },
 
-    updateCounterModel2: function() {
-      this.counterModel2 = new models.Counter({
-        targets: this.model.get('targets2'),
+    updateCollection2: function() {
+      this.collection2 = new collections.Graph({
+        targets: this.model.get('targets'),
         source: this.model.get('source'),
-        aggregate_function: 'sum',
-        at: $.TimeSelector.getCurrent()
+        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        from: this.from(),
+        to: this.to()
       });
     },
 
-    updateSecondaryCounterModel2: function() {
-      this.secondaryCounterModel2 = new models.Counter({
-        targets: this.model.get('targets2'),
+    updateSecondaryCollection2: function() {
+      this.secondaryCollection2 = new collections.Graph({
+        time: this.model.get('time'),
+        targets: this.model.get('targets'),
         source: this.model.get('source'),
-        aggregate_function: 'sum',
-        at: $.TimeSelector.getFrom(this.range)
+        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        from: this.previousFrom(),
+        to: this.to()
       });
     },
 
     widgetChanged: function() {
-      this.updateCounterModel();
-      this.updateSecondaryCounterModel();
+      this.updateCollection();
+      this.updateSecondaryCollection();
+      this.updateCollection2();
+      this.updateSecondaryCollection2();
       this.render();
     },
 
@@ -153,16 +181,12 @@
 
     update: function() {
       var that = this;
-      this.counterModel.at = $.TimeSelector.getCurrent();
-      this.secondaryCounterModel.at = $.TimeSelector.getFrom(this.range);
-      this.counterModel2.at = $.TimeSelector.getCurrent();
-      this.secondaryCounterModel2.at = $.TimeSelector.getFrom(this.range);
       var options = { suppressErrors: true };
       return $.when(
-        this.counterModel.fetch(options),
-        this.secondaryCounterModel.fetch(options),
-        this.counterModel2.fetch(options),
-        this.secondaryCounterModel2.fetch(options)
+        this.collection.fetch(options),
+        this.secondaryCollection.fetch(options),
+        this.collection2.fetch(options),
+        this.secondaryCollection2.fetch(options)
       );
     },
 

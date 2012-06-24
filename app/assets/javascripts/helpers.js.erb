@@ -104,7 +104,21 @@
   };
 
   $.TimeSelector = {
-    getFrom: function(rangeString) {
+    getFrom: function(time, rangeString) {
+      var range = this.getRange(rangeString);
+      return Math.round((time - range) / 1000);
+    },
+
+    getPreviousFrom: function(time, rangeString) {
+      var range = this.getRange(rangeString) * 2;
+      return Math.round((time - range) / 1000);
+    },
+
+    getCurrent: function() {
+      return Math.round((new Date()).getTime() / 1000);
+    },
+
+    getRange: function(rangeString) {
       var range = null;
       switch(rangeString) {
         case "30-minutes":
@@ -131,16 +145,10 @@
         case "4-weeks":
           range = 60*60*24*7*4;
           break;
-
         default:
-          alert("unknown rangeString: " + rangeString);
+          throw "Unknown rangeString: " + rangeString;
       }
-      range = range * 1000;
-      return Math.round(((new Date()).getTime() - range) / 1000);
-    },
-
-    getCurrent: function() {
-      return Math.round((new Date()).getTime() / 1000);
+      return range * 1000;
     }
   };
 

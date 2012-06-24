@@ -10,6 +10,7 @@
         this.to = options.to;
         this.source = options.source;
         this.targetsArray = (this.targets || "").split(',');
+        this.aggregate_function = options.aggregate_function;
 
         this.isFetched = false;
         this.bind('reset', this.onReset, this);
@@ -32,6 +33,9 @@
 
       url: function() {
         var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + this.source];
+        if (this.aggregate_function) {
+          params.push("aggregate_function=" + this.aggregate_function);
+        }
         return "/api/graph?" + params.join('&');
       }
 

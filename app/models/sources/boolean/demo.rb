@@ -1,9 +1,9 @@
 module Sources
-  module Number
-    class Base
+  module Boolean
+    class Demo
       def get
+        true
       end
-
     end
   end
 end

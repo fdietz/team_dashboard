@@ -3,7 +3,8 @@
 
   models.Widget = Backbone.Model.extend({
     defaults: {
-      "name"        : "Undefined name"
+      "name"        : "Undefined name",
+      "range"       : '30-minutes'
     },
 
     url: function() {
