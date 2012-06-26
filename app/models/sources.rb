@@ -14,7 +14,7 @@ module Sources
   end
 
   # def boolean_source_names
-  #   sources("boolean")
+  #   source_names("boolean")
   # end
   TYPES.each do |type|
     define_method("#{type}_source_names") do

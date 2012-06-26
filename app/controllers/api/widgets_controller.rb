@@ -24,7 +24,8 @@ module Api
     def update
       dashboard = Dashboard.find(params[:dashboard_id])
       widget = dashboard.widgets.find(params[:id])
-      if widget.update_attributes(JSON.parse(request.body.read.to_s))
+      input = JSON.parse(request.body.read.to_s)
+      if widget.update_attributes(input)
         head :no_content
       else
         render :json => widget.errors, :status => :unprocessable_entity

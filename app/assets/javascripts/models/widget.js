@@ -4,7 +4,18 @@
   models.Widget = Backbone.Model.extend({
     defaults: {
       "name"        : "Undefined name",
-      "range"       : '30-minutes'
+      "range"       : '30-minutes',
+      "source1"     : '',
+      "source2"     : '',
+      "source3"     : '',
+      "label1"      : '',
+      "label2"      : '',
+      "label3"      : '',
+      "aggregate_function1" : 'sum',
+      "aggregate_function2" : 'sum',
+      "targets1"      : '',
+      "targets2"      : '',
+      "update_interval": '10'
     },
 
     url: function() {
@@ -20,10 +31,6 @@
     targetsString: function() {
       return (this.get("targets") || "").split(',');
     }
-
-    // toJSON: function() {
-    //   return { widget: _.clone(this.attributes) }
-    // }
 
   });
 

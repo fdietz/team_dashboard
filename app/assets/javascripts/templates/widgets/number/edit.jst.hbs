@@ -1,0 +1,88 @@
+<div class="modal" id="dashboard-details-modal">
+  <div class="modal-header">
+    <h3>Number Widget</h3>
+  </div>
+  <div class="modal-body">
+      <form id="number" class="form-horizontal">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">Title</label>
+            <div class="controls">
+              <input name="number[name]" class="name" type="text" placeholder="Enter widget name">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Update Interval</label>
+            <div class="controls">
+              <select name="number[update_interval]" class="update-interval">
+                <option value="10">10 sec</option>
+                <option value="600">1 min</option>
+                <option value="6000">10 min</option>
+                <option value="3600">1 hour</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Data Source 1</label>
+            <div class="controls">
+              <select name="number[source1]" class="source1">
+                {{#each sources}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Label 1</label>
+            <div class="controls">
+              <input name="number[label1]" class="label1" size="16" type="text" style="width:300px">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Data Source 2</label>
+            <div class="controls">
+              <select name="number[source2]" class="source2">
+                {{#each sources}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Label 2</label>
+            <div class="controls">
+              <input name="number[label2]" class="label2" size="16" type="text" style="width:300px">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Data Source 3</label>
+            <div class="controls">
+              <select name="number[source3]" class="source3">
+                {{#each sources}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Label 3</label>
+            <div class="controls">
+              <input name="number[label3]" class="label3" size="16" type="text" style="width:300px">
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    <a href="#" class="btn btn-primary">Save</a>
+  </div>
+</div>

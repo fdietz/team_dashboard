@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120624142249) do
+ActiveRecord::Schema.define(:version => 20120616131320) do
 
   create_table "dashboards", :force => true do |t|
     t.string   "name"
@@ -30,12 +30,9 @@ ActiveRecord::Schema.define(:version => 20120624142249) do
     t.string   "range"
     t.text     "settings"
     t.integer  "dashboard_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "update_interval"
-    t.string   "targets2"
-    t.string   "aggregate_function"
-    t.string   "aggregate_function2"
   end
 
 end

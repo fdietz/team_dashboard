@@ -36,7 +36,7 @@
         if (this.aggregate_function) {
           params.push("aggregate_function=" + this.aggregate_function);
         }
-        return "/api/graph?" + params.join('&');
+        return "/api/datapoints?" + params.join('&');
       }
 
     });

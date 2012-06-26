@@ -29,4 +29,7 @@ task :populate => :environment do
 
   d6 = Dashboard.create!(:name => "Example 6 Combined Counter Widget")
   d6.widgets.create!(:name => "Page Visits", :targets => [target1, target2].join(','), :kind => 'counter', :source => 'demo')
+
+  d7 = Dashboard.create!(:name => "Example 7 Number Widget")
+  d7.widgets.create!(:name => "Page Visits", :kind => 'number', :source => 'demo')
 end

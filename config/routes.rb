@@ -9,7 +9,6 @@ TeamDashboard::Application.routes.draw do
     end
   end
 
-  match "api/graph" => "api/datapoints#show"
   match "api/datapoints" => "api/datapoints#show"
   match "api/number" => "api/numbers#show"
   match "api/boolean" => "api/booleans#show"
@@ -18,8 +17,6 @@ TeamDashboard::Application.routes.draw do
   match "metrics" => "home#index"
   match "metrics/:source" => "home#index", :constraints => { :source => /[^\/]+/ }
   match "metrics/:source/:name" => "home#index", :constraints => { :source => /[^\/]+/, :name => /[^\/]+/ }
-  # match "instruments" => "home#index"
-  # match "instruments/:id" => "home#index"
   match "dashboards" => "home#index"
   match "dashboards/:id" => "home#index"
   match "about" => "home#index"

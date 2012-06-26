@@ -5,7 +5,8 @@
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
       "click .add-graph"                   : "showGraphDialog",
-      "click .add-counter"                 : "showCounterDialog"
+      "click .add-counter"                 : "showCounterDialog",
+      "click .add-number"                  : "showNumberDialog"
     },
 
     initialize: function(options) {
@@ -56,6 +57,13 @@
     showCounterDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.getDefaultTarget()});
       var dialog = new views.WidgetEditor.Counter({ model: widget, dashboard: this.model, widgetCollection: this.collection });
+      this.$("#widget-dialog").html(dialog.render().el);
+      return false;
+    },
+
+    showNumberDialog: function(event) {
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'number' });
+      var dialog = new views.WidgetEditor.Number({ model: widget, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },

@@ -1,6 +1,9 @@
 class Widget < ActiveRecord::Base
   belongs_to :dashboard
-  store :settings, :accessors => []
+  store :settings, :accessors => [
+    :source1, :source2, :source3, :label1, :label2, :label3, # number widget
+    :targets1, :targets2, :aggregate_function1, :aggregate_function2 # counter widget
+  ]
 
   validates :name, :presence => true
   validates :dashboard_id, :presence => true
@@ -14,6 +17,13 @@ class Widget < ActiveRecord::Base
     def for_dashboard(id)
       where(:dashboard_id => id)
     end
+  end
+
+  # flatten settings hash
+  def as_json(options = {})
+    result = super(:except => :settings)
+    result.merge!(settings)
+    result
   end
 
   protected

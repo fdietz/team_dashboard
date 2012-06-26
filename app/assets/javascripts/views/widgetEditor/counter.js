@@ -34,7 +34,7 @@
         collections.metrics.fetch({ success: that.prefillAutocomplete });
         return;
       }
-      this.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+      this.$targetInput1.select2({ tags: collections.metrics.autocomplete_names() });
       this.$targetInput2.select2({ tags: collections.metrics.autocomplete_names() });
     },
 
@@ -44,8 +44,8 @@
 
       this.populate("counter");
       this.$sourceSelect = this.$('.source');
-      this.$targetInput = this.$('.targets');
-      this.$targetInput.val(this.model.get('targets'));
+      this.$targetInput1 = this.$('.targets1');
+      this.$targetInput1.val(this.model.get('targets1'));
       this.$targetInput2 = this.$('.targets2');
       this.$targetInput2.val(this.model.get('targets2'));
 
@@ -72,9 +72,9 @@
       this.$modal.modal("hide");
 
       var formResult = this.parse("counter");
-      formResult.targets = this.$targetInput.select2('val').join(',');
+      formResult.targets1 = this.$targetInput1.select2('val').join(',');
       formResult.targets2 = this.$targetInput2.select2('val').join(',');
-      console.log("form", formResult)
+
       if (this.model.isNew()) {
         this.model.set(formResult, { silent: true });
         this.widgetCollection.create(this.model);

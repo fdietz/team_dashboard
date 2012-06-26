@@ -1,6 +1,6 @@
 module Sources
   module Boolean
-    class Demo
+    class Demo < Sources::Boolean::Base
       def get
         true
       end

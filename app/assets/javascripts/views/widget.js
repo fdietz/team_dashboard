@@ -47,7 +47,7 @@
     },
 
     triggerTimeout: function() {
-      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000);
+      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 10000);
     },
 
     showLoadingError: function() {
@@ -62,6 +62,9 @@
           break;
         case 'counter':
           dialog = new views.WidgetEditor.Counter({ model: this.model, dashboard: this.dashboard });
+          break;
+        case 'number':
+          dialog = new views.WidgetEditor.Number({ model: this.model, dashboard: this.dashboard });
           break;
         default:
           throw("unknown widget kind: "+this.model.get('kind'));
@@ -79,6 +82,9 @@
           break;
         case 'counter':
           this.widget = new views.widgets.Counter({ model: this.model });
+          break;
+        case 'number':
+          this.widget = new views.widgets.Number({ model: this.model });
           break;
         default:
           throw("unknown widget kind: "+this.model.get('kind'));
