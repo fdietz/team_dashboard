@@ -8,7 +8,7 @@ module Api
       source  = params[:source]
       aggregate_function = params[:aggregate_function]
 
-      plugin = Sources.datapoints_plugin_class(source).new
+      plugin = Sources.datapoints_plugin(source)
       datapoints = plugin.get(targets, from.to_i, to.to_i, aggregate_function)
       respond_with datapoints.to_json
     end

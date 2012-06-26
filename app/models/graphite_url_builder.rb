@@ -12,8 +12,6 @@ class GraphiteUrlBuilder
     "#{@graphite_url}/metrics/index.json"
   end
   
-  private
-
   def format(timestamp)
     time = Time.at(timestamp)
     time.strftime("%H:%M_%Y%m%d")

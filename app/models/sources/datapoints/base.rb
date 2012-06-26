@@ -4,8 +4,6 @@ module Sources
       def get(targets, from, to, aggregate_function = nil)
       end
 
-      protected
-
       def aggregated_result(result, aggregate_function)
         dps = []
         result.each { |r| dps += r['datapoints'] }

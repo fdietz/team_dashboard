@@ -22,12 +22,12 @@ module Sources
     end
   end
 
-  # def boolean_plugin_class(name)
+  # def boolean_plugin(name)
   #   plugin_clazz(type, name)
   # end
   TYPES.each do |type|
-    define_method("#{type}_plugin_class") do |name|
-      plugin_clazz(type, name)
+    define_method("#{type}_plugin") do |name|
+      plugin_clazz(type, name).new
     end
   end
 

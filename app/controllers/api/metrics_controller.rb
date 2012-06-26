@@ -3,7 +3,7 @@ module Api
     respond_to :json
     
     def index
-      targets = Sources.targets_plugin_class(params[:source]).new.targets
+      targets = Sources.targets_plugin(params[:source]).targets
       respond_with targets.inject([]) { |result, m| result << { :name => m } }.to_json
     end
 
