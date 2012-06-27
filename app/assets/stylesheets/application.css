@@ -111,6 +111,50 @@
   visibility: hidden;
 }
 
+.boolean {
+  margin: 20px 0 0 0;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+
+.boolean-value {
+  float: left;
+  width: 100px;
+  height: 60px;
+  margin-right: 10px;
+  /*font-weight: bold;*/
+  /*color: #8ec15c;*/
+  /*-webkit-text-stroke: 1px #330;*/
+}
+
+.red {
+  background: #D26771;
+}
+
+.green {
+  background: #8ec15c;
+}
+
+.boolean .label-container {
+  margin-top: 20px;
+}
+
+.boolean .label {
+  font-size: 16px;
+  line-height: 16px;
+  background: 0;
+}
+
+.boolean-value-size-medium {
+  font-size: 60px;
+  line-height: 60px;
+}
+
+.boolean-value-size-small {
+  font-size: 40px;
+  line-height: 40px;
+}
+
 .number {
   margin: 20px 0 0px 0;
   padding-bottom: 10px;
@@ -140,7 +184,6 @@
 }
 
 .number .label {
-  /*margin-top: 10px;*/
   font-size: 16px;
   line-height: 16px;
   background: 0;

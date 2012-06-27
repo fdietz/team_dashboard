@@ -32,4 +32,7 @@ task :populate => :environment do
 
   d7 = Dashboard.create!(:name => "Example 7 Number Widget")
   d7.widgets.create!(:name => "Page Visits", :kind => 'number', :source => 'demo')
+
+  d8 = Dashboard.create!(:name => "Example 7 Boolean Widget")
+  d8.widgets.create!(:name => "Page Visits", :kind => 'boolean', :source => 'demo')
 end

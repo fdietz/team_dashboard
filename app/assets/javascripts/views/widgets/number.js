@@ -17,7 +17,6 @@
     },
 
     render: function() {
-      console.log("render", this.model.toJSON())
       this.$el.html(JST['templates/widgets/number/subview']({ value: this.model.get("value"), label: this.widget.get('label'+this.number) }));
 
       this.$value = this.$('.number-value');
@@ -60,7 +59,7 @@
     updateNumberModels: function() {
       this.numberModel1 = new models.Number({ source: this.model.get('source1') });
       this.numberModel2 = new models.Number({ source: this.model.get('source2') });
-      this.numberModel3 = new models.Number({ source: this.model.get('source2') });
+      this.numberModel3 = new models.Number({ source: this.model.get('source3') });
     },
 
 

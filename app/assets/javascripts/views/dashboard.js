@@ -6,7 +6,8 @@
       "click button.dashboard-delete"      : "removeDashboard",
       "click .add-graph"                   : "showGraphDialog",
       "click .add-counter"                 : "showCounterDialog",
-      "click .add-number"                  : "showNumberDialog"
+      "click .add-number"                  : "showNumberDialog",
+      "click .add-boolean"                  : "showBooleanDialog"
     },
 
     initialize: function(options) {
@@ -64,6 +65,13 @@
     showNumberDialog: function(event) {
       var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'number' });
       var dialog = new views.WidgetEditor.Number({ model: widget, dashboard: this.model, widgetCollection: this.collection });
+      this.$("#widget-dialog").html(dialog.render().el);
+      return false;
+    },
+
+    showBooleanDialog: function(event) {
+      var widget = new models.Widget({ dashboard_id: this.model.id, kind: 'boolean' });
+      var dialog = new views.WidgetEditor.Boolean({ model: widget, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
     },

@@ -66,6 +66,9 @@
         case 'number':
           dialog = new views.WidgetEditor.Number({ model: this.model, dashboard: this.dashboard });
           break;
+        case 'boolean':
+          dialog = new views.WidgetEditor.Boolean({ model: this.model, dashboard: this.dashboard });
+          break;
         default:
           throw("unknown widget kind: "+this.model.get('kind'));
       }
@@ -85,6 +88,9 @@
           break;
         case 'number':
           this.widget = new views.widgets.Number({ model: this.model });
+          break;
+        case 'boolean':
+          this.widget = new views.widgets.Boolean({ model: this.model });
           break;
         default:
           throw("unknown widget kind: "+this.model.get('kind'));
