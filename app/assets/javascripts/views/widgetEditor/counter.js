@@ -74,7 +74,6 @@
       var formResult = this.parse("counter");
       formResult.targets1 = this.$targetInput1.select2('val').join(',');
       formResult.targets2 = this.$targetInput2.select2('val').join(',');
-
       if (this.model.isNew()) {
         this.model.set(formResult, { silent: true });
         this.widgetCollection.create(this.model);

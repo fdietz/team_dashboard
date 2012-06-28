@@ -11,12 +11,13 @@ module Sources
       end
 
       def aggregate(dps, aggregate_function)
+        puts 
         case aggregate_function
         when 'average'
-          sum = dps.inject(0) { |result, dp| result += dp.first; result }
+          sum = dps.inject(0) { |result, dp| result += dp.first if dp.first; result }
           sum / dps.size
         when 'sum'
-          dps.inject(0) { |result, dp| result += dp.first; result }
+          dps.inject(0) { |result, dp| result += dp.first if dp.first; result }
         else
           raise ArgumentError, "Unknown aggregate function: #{aggregate_function}"
         end

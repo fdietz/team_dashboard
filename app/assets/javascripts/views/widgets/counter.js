@@ -42,7 +42,7 @@
       var value = this.value();
       var secondaryValue = this.secondaryValue();
       this.$el.html(JST['templates/widgets/counter/subview']({
-        value: Math.abs(value),
+        value: Math.round(value).toFixed(1),
         secondaryValue: Math.abs(secondaryValue)
       }));
 
@@ -110,7 +110,7 @@
 
     updateCollection: function() {
       this.collection = new collections.Graph({
-        targets: this.model.get('targets'),
+        targets: this.model.get('targets1'),
         source: this.model.get('source'),
         aggregate_function: this.model.get('aggregate_function') || 'sum',
         from: this.from(),
@@ -121,7 +121,7 @@
     updateSecondaryCollection: function() {
       this.secondaryCollection = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets'),
+        targets: this.model.get('targets1'),
         source: this.model.get('source'),
         aggregate_function: this.model.get('aggregate_function') || 'sum',
         from: this.previousFrom(),
@@ -131,7 +131,7 @@
 
     updateCollection2: function() {
       this.collection2 = new collections.Graph({
-        targets: this.model.get('targets'),
+        targets: this.model.get('targets2'),
         source: this.model.get('source'),
         aggregate_function: this.model.get('aggregate_function') || 'sum',
         from: this.from(),
@@ -142,7 +142,7 @@
     updateSecondaryCollection2: function() {
       this.secondaryCollection2 = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets'),
+        targets: this.model.get('targets2'),
         source: this.model.get('source'),
         aggregate_function: this.model.get('aggregate_function') || 'sum',
         from: this.previousFrom(),
