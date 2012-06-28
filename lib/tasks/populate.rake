@@ -31,8 +31,8 @@ task :populate => :environment do
   d6.widgets.create!(:name => "Page Visits", :targets => [target1, target2].join(','), :kind => 'counter', :source => 'demo')
 
   d7 = Dashboard.create!(:name => "Example 7 Number Widget")
-  d7.widgets.create!(:name => "Page Visits", :kind => 'number', :source => 'demo')
+  d7.widgets.create!(:name => "Page Visits", :kind => 'number', :source1 => 'demo')
 
   d8 = Dashboard.create!(:name => "Example 7 Boolean Widget")
-  d8.widgets.create!(:name => "Page Visits", :kind => 'boolean', :source => 'demo')
+  d8.widgets.create!(:name => "Page Visits", :kind => 'boolean', :source2 => 'demo')
 end

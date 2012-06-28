@@ -41,7 +41,7 @@
     render: function() {
       var value = this.value();
       var secondaryValue = this.secondaryValue();
-      this.$el.html(JST['templates/widgets/counter/subview']({ 
+      this.$el.html(JST['templates/widgets/counter/subview']({
         value: Math.abs(value),
         secondaryValue: Math.abs(secondaryValue)
       }));
@@ -58,32 +58,19 @@
     },
 
     updateSecondaryValueClass: function(secondaryValue) {
-      if (secondaryValue > 0) {
-        this.$arrow.removeClass('arrow-down');
-        this.$arrow.addClass('arrow-up');
-        this.$rateContainer.addClass('secondary-value-up');
-        this.$rateContainer.removeClass('secondary-value-down');
-      } else {
-        this.$arrow.addClass('arrow-down');
-        this.$arrow.removeClass('arrow-up');
-        this.$rateContainer.addClass('secondary-value-down');
-        this.$rateContainer.removeClass('secondary-value-up');
-      }
+      var up = secondaryValue > 0;
+      this.$arrow.toggleClass('arrow-up', up);
+      this.$arrow.toggleClass('arrow-down', !up);
+      this.$rateContainer.toggleClass('secondary-value-up', up);
+      this.$rateContainer.toggleClass('secondary-value-down', !up);
     },
 
     updateValueSizeClass: function(value) {
       var str = value.toString().length;
-      this.$value.removeClass("value-size-large");
-      this.$value.removeClass("value-size-medium");
-      this.$value.removeClass("value-size-small");
 
-      if (str <= 5) {
-        this.$value.addClass("value-size-large");
-      } else if (str > 5 && str < 8) {
-        this.$value.addClass("value-size-medium");
-      } else {
-        this.$value.addClass("value-size-small");
-      }
+      this.$value.toggleClass("value-size-large", str <= 5);
+      this.$value.toggleClass("value-size-medium", str > 5 && str < 8);
+      this.$value.toggleClass("value-size-small", str >= 8);
     },
 
     onClose: function() {

@@ -17,23 +17,20 @@
     },
 
     render: function() {
-      this.$el.html(JST['templates/widgets/number/subview']({ value: this.model.get("value"), label: this.widget.get('label'+this.number) }));
+      console.log(this.model.get('value'))
+      this.$el.html(JST['templates/widgets/number/subview']({ value: this.value().toFixed(1), label: this.widget.get('label'+this.number) }));
 
       this.$value = this.$('.number-value');
+      this.$value.toggleClass('color-up', this.value() > 0);
+      this.$value.toggleClass('color-down', this.value() < 0);
       this.updateValueSizeClass();
       return this;
     },
 
     updateValueSizeClass: function(){
       var str = this.value().toString().length;
-      this.$value.removeClass("number-value-size-medium");
-      this.$value.removeClass("number-value-size-small");
-
-      if (str <= 5) {
-        this.$value.addClass("number-value-size-medium");
-      } else {
-        this.$value.addClass("number-value-size-small");
-      }
+      this.$value.toggleClass("number-value-size-medium", str <= 5);
+      this.$value.toggleClass("number-value-size-small", str > 5);
     },
 
     onClose: function() {

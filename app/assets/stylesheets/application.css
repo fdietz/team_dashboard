@@ -165,8 +165,16 @@
   float: left;
   margin-right: 10px;
   font-weight: bold;
-  color: #8ec15c;
+  /*color: #8ec15c;*/
   -webkit-text-stroke: 1px #330;
+}
+
+.color-up {
+  color: #8ec15c;
+}
+
+.color-down {
+  color: #D26771;
 }
 
 .number-value-size-medium {

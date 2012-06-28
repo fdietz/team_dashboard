@@ -20,14 +20,8 @@
       this.$el.html(JST['templates/widgets/boolean/subview']({ value: this.value(), label: this.widget.get('label'+this.number) }));
 
       this.$value = this.$('.boolean-value');
-
-      this.$value.removeClass('green');
-      this.$value.removeClass('red');
-      if (this.value()) {
-        this.$value.addClass('green');
-      } else {
-        this.$value.addClass('red');
-      }
+      this.$value.toggleClass('green', this.value() === true);
+      this.$value.toggleClass('red', this.value() === false);
 
       return this;
     },
