@@ -152,28 +152,4 @@
     }
   };
 
-  $.Sources = {
-
-    getDatapoints: function() {
-      return JSON.parse('<%= Sources.datapoints_source_names.to_json %>');
-    },
-
-    getBoolean: function() {
-      return JSON.parse('<%= Sources.boolean_source_names.to_json %>');
-    },
-
-    getNumber: function() {
-      return JSON.parse('<%= Sources.number_source_names.to_json %>');
-    },
-
-    getTargets: function() {
-      return JSON.parse('<%= Sources.targets_source_names.to_json %>');
-    },
-
-    getDefaultTarget: function() {
-      return this.getTargets()[0];
-    }
-  };
-
-
 })($, _, Backbone);
