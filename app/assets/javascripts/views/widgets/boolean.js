@@ -13,7 +13,8 @@
     },
 
     value: function() {
-      return this.model.get('value') || true;
+      var value = this.model.get('value');
+      return (typeof value === "undefined") ? true : value;
     },
 
     render: function() {

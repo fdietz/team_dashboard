@@ -17,7 +17,6 @@
     },
 
     render: function() {
-      console.log(this.model.get('value'))
       this.$el.html(JST['templates/widgets/number/subview']({ value: this.value().toFixed(1), label: this.widget.get('label'+this.number) }));
 
       this.$value = this.$('.number-value');
