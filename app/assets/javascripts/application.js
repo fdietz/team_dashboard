@@ -26,11 +26,11 @@
 //= require select2.min
 
 //= require backbone_extensions
-//= require ajax_error_handler
 //= require app
 //= require router
 //= require helpers
 //= require behaviours
+//= require ajax_error_handler
 
 //= require_tree ./models
 //= require_tree ./collections

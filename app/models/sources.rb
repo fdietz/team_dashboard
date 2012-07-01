@@ -7,8 +7,8 @@ module Sources
 
   # require all source plugins
   def eager_require
-    TYPES.each do |name|
-      path = Rails.root.join("app/models/sources/#{name}")
+    TYPES.each do |type|
+      path = Rails.root.join("app/models/sources/#{type}")
       Dir["#{path}/*"].each { |f| require f }
     end
   end
@@ -38,6 +38,7 @@ module Sources
   end
 
   def plugin_clazz(type, name)
+    raise ArgumentError, "source name param missing" if name.blank?
     "Sources::#{type.camelize}::#{name.camelize}".constantize
   rescue NameError => e
     raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}"

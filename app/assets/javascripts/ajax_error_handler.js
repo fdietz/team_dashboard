@@ -1,4 +1,4 @@
-(function($, _, Backbone) {
+(function($, _, Backbone, views) {
   "use strict";
 
   $(document).ajaxError(function(error, xhr, settings, exception) {
@@ -14,8 +14,8 @@
     } else if (500 <= xhr.status <= 600) {
       message = "There was an error on the server.";
     }
-    var errorsView = new app.views.Errors({ message: message });
+    var errorsView = new views.Errors({ message: message });
     $('#flash').html(errorsView.render().el);
   });
 
-})($, _, Backbone);
+})($, _, Backbone, window.app.views);
