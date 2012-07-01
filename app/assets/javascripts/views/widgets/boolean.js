@@ -9,20 +9,49 @@
       _.bindAll(this, "render");
       this.widget = options.widget;
       this.number = options.number;
-      this.model.on('change', this.render);
+      this.updateModel();
     },
 
-    value: function() {
-      var value = this.model.get('value');
-      return (typeof value === "undefined") ? true : value;
+    fetch: function() {
+      return this.model ? this.model.fetch() : null;
+    },
+
+    updateModel: function() {
+      if (this.getSource()) {
+        if (this.model) {
+          this.model.off();
+        }
+        this.model = new models.Boolean({ source: this.getSource() });
+        this.model.on('change', this.render);
+      }
+    },
+
+    getSource: function() {
+      return this.widget.get("source" + this.number);
+    },
+
+    getLabel: function() {
+      return this.widget.get("label" + this.number);
+    },
+
+    getValue: function() {
+      var value = null;
+      if (this.model) {
+        value = this.model.get('value');
+        return (typeof value === "undefined") ? true : value;
+      } else {
+        return true;
+      }
     },
 
     render: function() {
-      this.$el.html(JST['templates/widgets/boolean/subview']({ value: this.value(), label: this.widget.get('label'+this.number) }));
+      if (this.model) {
+        this.$el.html(JST['templates/widgets/boolean/subview']({ value: this.getValue(), label: this.getLabel() }));
 
-      this.$value = this.$('.boolean-value');
-      this.$value.toggleClass('green', this.value() === true);
-      this.$value.toggleClass('red', this.value() === false);
+        this.$value = this.$('.boolean-value');
+        this.$value.toggleClass('green', this.getValue() === true);
+        this.$value.toggleClass('red', this.getValue() === false);
+      }
 
       return this;
     },
@@ -33,26 +62,19 @@
 
   });
 
-  views.widgets.Boolean = Backbone.View.extend({
+  views.widgets.Boolean = Backbone.CompositeView.extend({
 
     initialize: function(options) {
       _.bindAll(this, "render", "update", "widgetChanged");
-
       this.updateBooleanModels();
-
-      this.booleanView1 = new BooleanSubview({ model: this.booleanModel1, widget: this.model, number: 1 });
-      this.booleanView2 = new BooleanSubview({ model: this.booleanModel2, widget: this.model, number: 2 });
-      this.booleanView3 = new BooleanSubview({ model: this.booleanModel3, widget: this.model, number: 3 });
-
       this.model.on('change', this.widgetChanged);
     },
 
     updateBooleanModels: function() {
-      this.booleanModel1 = new models.Boolean({ source: this.model.get('source1') });
-      this.booleanModel2 = new models.Boolean({ source: this.model.get('source2') });
-      this.booleanModel3 = new models.Boolean({ source: this.model.get('source3') });
+      this.forEachChild(function(child) {
+        child.updateModel();
+      });
     },
-
 
     widgetChanged: function() {
       this.updateBooleanModels();
@@ -60,26 +82,31 @@
     },
 
     render: function() {
-      this.$el.empty();
-      this.$el.append(this.booleanView1.render().el);
-      this.$el.append(this.booleanView2.render().el);
-      this.$el.append(this.booleanView3.render().el);
+      this.booleanView1 = new BooleanSubview({ widget: this.model, number: 1 });
+      this.addChildView(this.booleanView1);
+    
+      this.booleanView2 = new BooleanSubview({ widget: this.model, number: 2 });
+      this.addChildView(this.booleanView2);
+
+      this.booleanView3 = new BooleanSubview({ widget: this.model, number: 3 });
+      this.addChildView(this.booleanView3);
+
       return this;
     },
 
     update: function() {
       var that = this;
       var options = { suppressErrors: true };
-      return $.when(
-        this.booleanModel1.fetch(options),
-        this.booleanModel2.fetch(options),
-        this.booleanModel3.fetch(options)
-      );
+      var validModels = [];
+      this.forEachChild(function(child) {
+        validModels.push(child.fetch());
+      });
+
+      return $.when.apply(null, validModels);
     },
 
     onClose: function() {
       this.model.off();
-      this.booleanView1.close();
     }
   });
 

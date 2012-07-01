@@ -41,7 +41,6 @@
     _appendWidget: function(model) {
       var widget = new views.Widget({ model: model, dashboard: this.model});
       this.addChildView(widget);
-      this.$el.append(widget.render().el);
     },
 
     _appendAllWidgets: function() {

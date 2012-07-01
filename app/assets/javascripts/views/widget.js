@@ -30,6 +30,7 @@
     },
 
     updateWidgetDone: function() {
+      console.log("updateWidgetDone")
       this.triggerTimeout();
       this.$ajaxSpinner.fadeOut('slow');
       // TODO clean up
@@ -37,6 +38,7 @@
     },
 
     updateWidgetFail: function() {
+      console.log("updateWidgetFail")
       this.triggerTimeout();
       this.$ajaxSpinner.hide();
       this.showLoadingError();

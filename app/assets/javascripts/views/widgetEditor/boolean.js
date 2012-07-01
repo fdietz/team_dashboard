@@ -21,7 +21,9 @@
 
     render: function() {
       var that = this;
-      this.$el.html(JST['templates/widgets/boolean/edit']({ model: this.model.toJSON(), sources: $.Sources.getBoolean() }));
+      var sources = $.Sources.getBoolean();
+      sources.unshift(null);
+      this.$el.html(JST['templates/widgets/boolean/edit']({ model: this.model.toJSON(), sources: sources }));
 
       this.populate("boolean");
       this.$sourceSelect = this.$('.source');

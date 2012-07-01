@@ -54,8 +54,15 @@
       this.children = {};
     },
 
+    forEachChild: function(callback) {
+      _.each(this.children, function(view) {
+        callback(view);
+      });
+    },
+
     addChildView: function(view) {
       this.children[view.cid] = view;
+      this.$el.append(view.render().el);
     },
 
     removeChildView: function(view) {
