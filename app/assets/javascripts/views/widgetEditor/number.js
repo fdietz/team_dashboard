@@ -21,7 +21,9 @@
 
     render: function() {
       var that = this;
-      this.$el.html(JST['templates/widgets/number/edit']({ model: this.model.toJSON(), sources: $.Sources.getNumber() }));
+      var sources = $.Sources.getNumber();
+      sources.unshift(null);
+      this.$el.html(JST['templates/widgets/number/edit']({ model: this.model.toJSON(), sources: sources }));
 
       this.populate("number");
       this.$sourceSelect = this.$('.source');

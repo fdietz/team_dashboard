@@ -9,25 +9,46 @@
       _.bindAll(this, "render");
       this.widget = options.widget;
       this.number = options.number;
-      this.model.on('change', this.render);
+      this.updateModel();
     },
 
-    value: function() {
+    fetch: function() {
+      return this.model ? this.model.fetch() : null;
+    },
+
+    updateModel: function() {
+      if (this.getSource()) {
+        if (this.model) {
+          this.model.off();
+        }
+        this.model = new models.Number({ source: this.getSource() });
+        this.model.on('change', this.render);
+      }
+    },
+
+    getSource: function() {
+      return this.widget.get("source" + this.number);
+    },
+
+    getValue: function() {
       return this.model.get('value') || 0;
     },
 
     render: function() {
-      this.$el.html(JST['templates/widgets/number/subview']({ value: this.value().toFixed(1), label: this.widget.get('label'+this.number) }));
+      if (this.model) {
+        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue().toFixed(1), label: this.widget.get('label'+this.number) }));
 
-      this.$value = this.$('.number-value');
-      this.$value.toggleClass('color-up', this.value() > 0);
-      this.$value.toggleClass('color-down', this.value() < 0);
-      this.updateValueSizeClass();
+        this.$value = this.$('.number-value');
+        this.$value.toggleClass('color-up', this.getValue() > 0);
+        this.$value.toggleClass('color-down', this.getValue() < 0);
+        this.updateValueSizeClass();
+      }
+
       return this;
     },
 
     updateValueSizeClass: function(){
-      var str = this.value().toString().length;
+      var str = this.getValue().toString().length;
       this.$value.toggleClass("number-value-size-medium", str <= 5);
       this.$value.toggleClass("number-value-size-small", str > 5);
     },
@@ -38,24 +59,20 @@
 
   });
 
-  views.widgets.Number = Backbone.View.extend({
+  views.widgets.Number = Backbone.CompositeView.extend({
 
     initialize: function(options) {
       _.bindAll(this, "render", "update", "widgetChanged");
 
       this.updateNumberModels();
 
-      this.numberView1 = new NumberSubview({ model: this.numberModel1, widget: this.model, number: 1 });
-      this.numberView2 = new NumberSubview({ model: this.numberModel2, widget: this.model, number: 2 });
-      this.numberView3 = new NumberSubview({ model: this.numberModel3, widget: this.model, number: 3 });
-
       this.model.on('change', this.widgetChanged);
     },
 
     updateNumberModels: function() {
-      this.numberModel1 = new models.Number({ source: this.model.get('source1') });
-      this.numberModel2 = new models.Number({ source: this.model.get('source2') });
-      this.numberModel3 = new models.Number({ source: this.model.get('source3') });
+      this.forEachChild(function(child) {
+        child.updateModel();
+      });
     },
 
 
@@ -65,26 +82,28 @@
     },
 
     render: function() {
-      this.$el.empty();
-      this.$el.append(this.numberView1.render().el);
-      this.$el.append(this.numberView2.render().el);
-      this.$el.append(this.numberView3.render().el);
+      this.numberView1 = new NumberSubview({ widget: this.model, number: 1 });
+      this.addChildView(this.numberView1);
+      this.numberView2 = new NumberSubview({ widget: this.model, number: 2 });
+      this.addChildView(this.numberView2);
+      this.numberView3 = new NumberSubview({ widget: this.model, number: 3 });
+      this.addChildView(this.numberView3);
       return this;
     },
 
     update: function() {
       var that = this;
       var options = { suppressErrors: true };
-      return $.when(
-        this.numberModel1.fetch(options),
-        this.numberModel2.fetch(options),
-        this.numberModel3.fetch(options)
-      );
+      var validModels = [];
+      this.forEachChild(function(child) {
+        validModels.push(child.fetch());
+      });
+
+      return $.when.apply(null, validModels);
     },
 
     onClose: function() {
       this.model.off();
-      this.numberView1.close();
     }
   });
 
