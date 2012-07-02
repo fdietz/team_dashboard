@@ -3,7 +3,7 @@
 
   var NumberSubview = Backbone.View.extend({
 
-    className: 'number',
+    className: 'triple-row',
 
     initialize: function(options) {
       _.bindAll(this, "render");
@@ -49,8 +49,8 @@
 
     updateValueSizeClass: function(){
       var str = this.getValue().toString().length;
-      this.$value.toggleClass("number-value-size-medium", str <= 5);
-      this.$value.toggleClass("number-value-size-small", str > 5);
+      this.$value.toggleClass("value-size-medium", str <= 5);
+      this.$value.toggleClass("value-size-small", str > 5);
     },
 
     onClose: function() {

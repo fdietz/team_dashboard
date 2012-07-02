@@ -3,7 +3,7 @@
 
   var BooleanSubview = Backbone.View.extend({
 
-    className: 'boolean',
+    className: 'triple-row',
 
     initialize: function(options) {
       _.bindAll(this, "render");
@@ -46,7 +46,7 @@
 
     render: function() {
       if (this.model) {
-        this.$el.html(JST['templates/widgets/boolean/subview']({ value: this.getValue(), label: this.getLabel() }));
+        this.$el.html(JST['templates/widgets/boolean/subview']({ label: this.getLabel() }));
 
         this.$value = this.$('.boolean-value');
         this.$value.toggleClass('green', this.getValue() === true);

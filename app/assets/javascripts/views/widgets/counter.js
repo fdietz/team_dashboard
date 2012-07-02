@@ -3,7 +3,7 @@
 
   var CounterSubview = Backbone.View.extend({
 
-    className: 'counter',
+    className: 'double-row',
 
     initialize: function(options) {
       _.bindAll(this, "render");
@@ -47,9 +47,8 @@
       }));
 
       this.$value = this.$('.value');
-      this.$secondaryValue = this.$('.secondary-value');
       this.$arrow = this.$('.arrow');
-      this.$rateContainer = this.$('.rate-container');
+      this.$secondaryValueContainer = this.$('.secondary-value-container');
 
       this.updateValueSizeClass(value);
       this.updateSecondaryValueClass(secondaryValue);
@@ -61,8 +60,8 @@
       var up = secondaryValue > 0;
       this.$arrow.toggleClass('arrow-up', up);
       this.$arrow.toggleClass('arrow-down', !up);
-      this.$rateContainer.toggleClass('secondary-value-up', up);
-      this.$rateContainer.toggleClass('secondary-value-down', !up);
+      this.$secondaryValueContainer.toggleClass('color-up', up);
+      this.$secondaryValueContainer.toggleClass('color-down', !up);
     },
 
     updateValueSizeClass: function(value) {

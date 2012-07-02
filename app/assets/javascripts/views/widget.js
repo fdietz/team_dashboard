@@ -49,7 +49,7 @@
     },
 
     triggerTimeout: function() {
-      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000);
+      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 10000);
     },
 
     showLoadingError: function() {
