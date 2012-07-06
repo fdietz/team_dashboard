@@ -31,7 +31,6 @@
     },
 
     from: function() {
-      console.log("model", this.model.get('range'))
       return TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
     },
 

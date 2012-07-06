@@ -8,24 +8,26 @@
     initialize: function(options) {
       _.bindAll(this, "render");
 
-      this.source = options.source;
       this.number = options.number;
 
-      this.updateCollection();
-      this.updateSecondaryCollection();
+      // this.updateCollection();
+      // this.updateSecondaryCollection();
+      this.updateModel();
     },
 
     fetchCollection: function() {
-      return this.collection.fetch();
+      return this.collection ? this.collection.fetch() : null;
     },
 
     fetchSecondaryCollection: function() {
-      return this.secondaryCollection.fetch();
+      return this.secondaryCollection ? this.secondaryCollection.fetch() : null;
     },
 
     updateModel: function() {
-      this.updateCollection();
-      this.updateSecondaryCollection();
+      if (this.model.get('source') && this.getTargets()) {
+        this.updateCollection();
+        this.updateSecondaryCollection();
+      }
     },
 
     from: function() {
@@ -40,13 +42,17 @@
       return TimeSelector.getCurrent();
     },
 
+    getTargets: function() {
+      return this.model.get('targets' + this.number);
+    },
+
     updateCollection: function() {
       if (this.collection) {
         this.collection.off();
       }
 
       this.collection = new collections.Graph({
-        targets: this.model.get('targets' + this.number),
+        targets: this.getTargets(),
         source: this.model.get('source'),
         aggregate_function: this.model.get('aggregate_function') || 'sum',
         from: this.from(),
@@ -63,7 +69,7 @@
 
       this.secondaryCollection = new collections.Graph({
         time: this.model.get('time'),
-        targets: this.model.get('targets' + this.number),
+        targets: this.getTargets(),
         source: this.model.get('source'),
         aggregate_function: this.model.get('aggregate_function') || 'sum',
         from: this.previousFrom(),
@@ -97,19 +103,21 @@
     },
 
     render: function() {
-      var value = this.value();
-      var secondaryValue = this.secondaryValue();
-      this.$el.html(JST['templates/widgets/counter/subview']({
-        value: Math.round(value).toFixed(1),
-        secondaryValue: Math.abs(secondaryValue)
-      }));
+      if (this.collection && this.secondaryCollection) {
+        var value = this.value();
+        var secondaryValue = this.secondaryValue();
+        this.$el.html(JST['templates/widgets/counter/subview']({
+          value: Math.round(value).toFixed(1),
+          secondaryValue: Math.abs(secondaryValue)
+        }));
 
-      this.$value = this.$('.value');
-      this.$arrow = this.$('.arrow');
-      this.$secondaryValueContainer = this.$('.secondary-value-container');
+        this.$value = this.$('.value');
+        this.$arrow = this.$('.arrow');
+        this.$secondaryValueContainer = this.$('.secondary-value-container');
 
-      this.updateValueSizeClass(value);
-      this.updateSecondaryValueClass(secondaryValue);
+        this.updateValueSizeClass(value);
+        this.updateSecondaryValueClass(secondaryValue);
+      }
 
       return this;
     },

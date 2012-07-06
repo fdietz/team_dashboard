@@ -17,8 +17,8 @@
       },
 
       onReset: function() {
-      this.isFetched = true;
-    },
+        this.isFetched = true;
+      },
 
       buildTargetsParams: function() {
         return _.map(this.targetsArray, function(target) {
