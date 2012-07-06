@@ -1,4 +1,4 @@
-(function ($, _, Backbone, Rickshaw, moment, views, collections){
+(function ($, _, Backbone, Rickshaw, moment, views, collections, ColorFactory, TimeSelector){
   "use strict";
 
   var pastel = [
@@ -32,11 +32,11 @@
 
     from: function() {
       console.log("model", this.model.get('range'))
-      return $.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+      return TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
     },
 
     to: function() {
-      return $.TimeSelector.getCurrent();
+      return TimeSelector.getCurrent();
     },
 
     updateCollection: function() {
@@ -61,7 +61,7 @@
         if (model.color === undefined) {
           var color = null;
           if (that.currentColors[index] === undefined) {
-            color = $.ColorFactory.get();
+            color = ColorFactory.get();
             that.currentColors.push(color);
           } else {
             color = that.currentColors[index];
@@ -133,8 +133,8 @@
       console.log("update");
       var that = this;
 
-      // this.from = $.TimeSelector.getFrom(this.range);
-      // this.to = $.TimeSelector.getCurrent();
+      // this.from = TimeSelector.getFrom(this.range);
+      // this.to = TimeSelector.getCurrent();
       // this.collection.from = this.from;
       // this.collection.to = this.to;
       this.updateCollection();
@@ -188,4 +188,4 @@
     }
   });
 
-})($, _, Backbone, Rickshaw, moment, app.views, app.collections);
+})($, _, Backbone, Rickshaw, moment, app.views, app.collections, app.helpers.ColorFactory, app.helpers.TimeSelector);

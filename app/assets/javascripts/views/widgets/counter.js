@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections){
+(function ($, _, Backbone, views, models, collections, TimeSelector){
   "use strict";
 
   var CounterSubview = Backbone.View.extend({
@@ -29,15 +29,15 @@
     },
 
     from: function() {
-      return $.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+      return TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
     },
 
     previousFrom: function() {
-      return $.TimeSelector.getPreviousFrom(new Date().getTime(), this.model.get('range'));
+      return TimeSelector.getPreviousFrom(new Date().getTime(), this.model.get('range'));
     },
 
     to: function() {
-      return $.TimeSelector.getCurrent();
+      return TimeSelector.getCurrent();
     },
 
     updateCollection: function() {
@@ -181,4 +181,4 @@
     }
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers.TimeSelector);

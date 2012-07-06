@@ -29,6 +29,8 @@
 //= require app
 //= require router
 //= require helpers
+//= require handlebars_helpers
+//= require jquery_plugins
 //= require behaviours
 //= require ajax_error_handler
 
