@@ -9,8 +9,66 @@
       _.bindAll(this, "render");
 
       this.source = options.source;
-      this.secondaryCollection = options.secondaryCollection;
+      this.number = options.number;
+
+      this.updateCollection();
+      this.updateSecondaryCollection();
+    },
+
+    fetchCollection: function() {
+      return this.collection.fetch();
+    },
+
+    fetchSecondaryCollection: function() {
+      return this.secondaryCollection.fetch();
+    },
+
+    updateModel: function() {
+      this.updateCollection();
+      this.updateSecondaryCollection();
+    },
+
+    from: function() {
+      return $.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+    },
+
+    previousFrom: function() {
+      return $.TimeSelector.getPreviousFrom(new Date().getTime(), this.model.get('range'));
+    },
+
+    to: function() {
+      return $.TimeSelector.getCurrent();
+    },
+
+    updateCollection: function() {
+      if (this.collection) {
+        this.collection.off();
+      }
+
+      this.collection = new collections.Graph({
+        targets: this.model.get('targets' + this.number),
+        source: this.model.get('source'),
+        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        from: this.from(),
+        to: this.to()
+      });
+
       this.collection.on('reset', this.render);
+    },
+
+    updateSecondaryCollection: function() {
+      if (this.secondaryCollection) {
+        this.secondaryCollection.off();
+      }
+
+      this.secondaryCollection = new collections.Graph({
+        time: this.model.get('time'),
+        targets: this.model.get('targets' + this.number),
+        source: this.model.get('source'),
+        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        from: this.previousFrom(),
+        to: this.to()
+      });
     },
 
     // example object: [{ target: "aggregated targets", datapoints: [[1776, 1340547208]] }]
@@ -79,88 +137,26 @@
 
   });
 
-  views.widgets.Counter = Backbone.View.extend({
+  views.widgets.Counter = Backbone.CompositeView.extend({
 
     initialize: function(options) {
       _.bindAll(this, "render", "update", "widgetChanged");
 
-      this.updateCollection();
-      this.updateSecondaryCollection();
-      this.updateCollection2();
-      this.updateSecondaryCollection2();
-
-      this.counter1 = new CounterSubview({ collection: this.collection, secondaryCollection: this.secondaryCollection });
-      this.counter2 = new CounterSubview({ collection: this.collection2, secondaryCollection: this.secondaryCollection2 });
-
       this.model.on('change', this.widgetChanged);
     },
 
-    from: function() {
-      return $.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
-    },
-
-    previousFrom: function() {
-      return $.TimeSelector.getPreviousFrom(new Date().getTime(), this.model.get('range'));
-    },
-
-    to: function() {
-      return $.TimeSelector.getCurrent();
-    },
-
-    updateCollection: function() {
-      this.collection = new collections.Graph({
-        targets: this.model.get('targets1'),
-        source: this.model.get('source'),
-        aggregate_function: this.model.get('aggregate_function') || 'sum',
-        from: this.from(),
-        to: this.to()
-      });
-    },
-
-    updateSecondaryCollection: function() {
-      this.secondaryCollection = new collections.Graph({
-        time: this.model.get('time'),
-        targets: this.model.get('targets1'),
-        source: this.model.get('source'),
-        aggregate_function: this.model.get('aggregate_function') || 'sum',
-        from: this.previousFrom(),
-        to: this.to()
-      });
-    },
-
-    updateCollection2: function() {
-      this.collection2 = new collections.Graph({
-        targets: this.model.get('targets2'),
-        source: this.model.get('source'),
-        aggregate_function: this.model.get('aggregate_function') || 'sum',
-        from: this.from(),
-        to: this.to()
-      });
-    },
-
-    updateSecondaryCollection2: function() {
-      this.secondaryCollection2 = new collections.Graph({
-        time: this.model.get('time'),
-        targets: this.model.get('targets2'),
-        source: this.model.get('source'),
-        aggregate_function: this.model.get('aggregate_function') || 'sum',
-        from: this.previousFrom(),
-        to: this.to()
-      });
-    },
-
     widgetChanged: function() {
-      this.updateCollection();
-      this.updateSecondaryCollection();
-      this.updateCollection2();
-      this.updateSecondaryCollection2();
+      this.forEachChild(function(child) {
+        child.updateModel();
+      });
       this.render();
     },
 
     render: function() {
-      this.$el.empty();
-      this.$el.append(this.counter1.render().el);
-      this.$el.append(this.counter2.render().el);
+      this.counter1 = new CounterSubview({ model: this.model, number: 1 });
+      this.addChildView(this.counter1);
+      this.counter2 = new CounterSubview({ model: this.model, number: 2 });
+      this.addChildView(this.counter2);
 
       return this;
     },
@@ -168,12 +164,14 @@
     update: function() {
       var that = this;
       var options = { suppressErrors: true };
-      return $.when(
-        this.collection.fetch(options),
-        this.secondaryCollection.fetch(options),
-        this.collection2.fetch(options),
-        this.secondaryCollection2.fetch(options)
-      );
+
+      var validModels = [];
+      this.forEachChild(function(child) {
+        validModels.push(child.fetchCollection());
+        validModels.push(child.fetchSecondaryCollection());
+      });
+
+      return $.when.apply(null, validModels);
     },
 
     onClose: function() {
