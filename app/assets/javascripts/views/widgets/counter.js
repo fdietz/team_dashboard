@@ -88,7 +88,12 @@
     },
 
     value: function() {
-      return this.valueFromCollection(this.collection);
+      var result = this.valueFromCollection(this.collection);
+      if (result % 1 === 0) {
+        return result;
+      } else {
+        return result.toFixed(2);
+      }
     },
 
     secondaryValue: function() {
@@ -96,7 +101,11 @@
       var y2 = this.valueFromCollection(this.secondaryCollection);
       if (y1 && y2) {
         var result = ((y1 - y2) / y2) * 100;
-        return result.toFixed(2);
+        if ( result % 1 === 0) {
+          return result;
+        } else {
+          return result.toFixed(2);
+        }
       } else {
         return 0;
       }
@@ -107,8 +116,8 @@
         var value = this.value();
         var secondaryValue = this.secondaryValue();
         this.$el.html(JST['templates/widgets/counter/subview']({
-          value: Math.round(value).toFixed(1),
-          secondaryValue: Math.abs(secondaryValue)
+          value: value,
+          secondaryValue: secondaryValue
         }));
 
         this.$value = this.$('.value');

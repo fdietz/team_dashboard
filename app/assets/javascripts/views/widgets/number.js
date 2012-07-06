@@ -31,12 +31,17 @@
     },
 
     getValue: function() {
-      return this.model.get('value') || 0;
+      var result = this.model.get('value') || 0;
+      if (result % 1 === 0) {
+        return result;
+      } else {
+        return result.toFixed(2);
+      }
     },
 
     render: function() {
       if (this.model) {
-        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue().toFixed(1), label: this.widget.get('label'+this.number) }));
+        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue(), label: this.widget.get('label'+this.number) }));
 
         this.$value = this.$('.number-value');
         this.$value.toggleClass('color-up', this.getValue() > 0);
