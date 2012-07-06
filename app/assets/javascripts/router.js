@@ -36,7 +36,6 @@
       var selectedMenu = null;
       switch(url) {
         case "dashboards":
-        case "dashboard":
           selectedMenu = "dashboards";
           break;
         case "about":
@@ -48,15 +47,17 @@
     },
 
     dashboardsIndex: function() {
-      var dashboardsView = new app.views.Dashboards({ collection: app.collections.dashboards });
-      this.showView(dashboardsView);
+      var that = this;
+      app.collections.dashboards.fetch().done(function() {
+        var dashboardsView = new app.views.Dashboards({ collection: app.collections.dashboards });
+        that.showView(dashboardsView);
+      });
     },
 
     dashboardsShow: function(id) {
       var that = this;
       var model = new app.models.Dashboard({ id: id });
       var collection = new app.collections.Widget({ dashboard_id:model.id });
-
       $.when(model.fetch(), collection.fetch()).done(function() {
         var dashboardView = new app.views.Dashboard({ model: model, collection: collection });
         that.showView(dashboardView);

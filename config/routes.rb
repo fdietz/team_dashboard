@@ -13,10 +13,7 @@ TeamDashboard::Application.routes.draw do
   match "api/number" => "api/numbers#show"
   match "api/boolean" => "api/booleans#show"
 
-  # routes render the initial layout (client side rendering)
-  match "metrics" => "home#index"
-  match "metrics/:source" => "home#index", :constraints => { :source => /[^\/]+/ }
-  match "metrics/:source/:name" => "home#index", :constraints => { :source => /[^\/]+/, :name => /[^\/]+/ }
+  # copy of backbone routes render the initial layout for first request
   match "dashboards" => "home#index"
   match "dashboards/:id" => "home#index"
   match "about" => "home#index"

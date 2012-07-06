@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, router){
+(function ($, _, Backbone, views, models, router){
   "use strict";
 
   views.Dashboards = Backbone.View.extend({
@@ -24,7 +24,7 @@
     },
 
     createDashboard: function() {
-      var model = new app.models.Dashboard();
+      var model = new models.Dashboard();
       model.save({}, {
         success: function(model, request) {
           window.app.router.navigate("/dashboards/" + model.id, { trigger: true });
@@ -34,4 +34,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.router);
+})($, _, Backbone, app.views, app.models, app.router);
