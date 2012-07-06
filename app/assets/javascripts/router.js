@@ -4,14 +4,9 @@
   app.Router = Backbone.Router.extend({
 
     routes: {
-      "":                       "metricsIndex",
-      "metrics":                "metricsIndex",
-      "metrics/:source":        "metricsIndex",
-      "metrics/:source/:name":  "metricsShow",
+      "":                       "dashboardsIndex",
       "dashboards":             "dashboardsIndex",
       "dashboards/:id":         "dashboardsShow",
-      "instruments":            "instrumentsIndex",
-      "instruments/:id":        "instrumentsShow",
       "about":                  "aboutShow"
     },
 
@@ -40,14 +35,6 @@
 
       var selectedMenu = null;
       switch(url) {
-        case "metric":
-        case "metrics":
-          selectedMenu = "metrics";
-          break;
-        case "instruments":
-        case "instrument":
-          selectedMenu = "instruments";
-          break;
         case "dashboards":
         case "dashboard":
           selectedMenu = "dashboards";
@@ -58,17 +45,6 @@
       }
 
       $("div.navbar a[href='/"+ selectedMenu +"']").parent().addClass("active");
-    },
-
-    metricsIndex: function(source) {
-      app.collections.metrics.source = source || $.Sources.getDefaultTarget();
-      var metricsView = new app.views.Metrics({ collection: app.collections.metrics });
-      this.showView(metricsView);
-    },
-
-    metricsShow: function(source, name) {
-      var view = new app.views.Metric({ model: new app.models.Metric({ name: name }), source: source || $.Sources.getDefaultTarget() });
-      this.showView(view);
     },
 
     dashboardsIndex: function() {

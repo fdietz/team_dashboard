@@ -7,8 +7,7 @@
 
     events: {
       "click .widget-delete"   : "removeWidget",
-      "click .widget-edit"     : "editWidget",
-      "click .widget-collapse" : "collapseWidget"
+      "click .widget-edit"     : "editWidget"
     },
 
     initialize: function(options) {
@@ -123,11 +122,6 @@
       this.close();
 
       var result = this.model.destroy();
-    },
-
-    collapseWidget: function(event) {
-      this.$el.toggleClass("portlet-minimized");
-      return false;
     },
 
     onClose: function() {
