@@ -148,8 +148,8 @@
     },
 
     onClose: function() {
-      this.collection.off();
-      this.secondaryCollection.off();
+      if (this.collection) this.collection.off();
+      if (this.secondaryCollection) this.secondaryCollection.off();
     }
 
   });

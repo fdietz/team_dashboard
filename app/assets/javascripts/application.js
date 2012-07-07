@@ -17,8 +17,11 @@
 //= require underscore
 //= require backbone
 //= require handlebars
-
 //= require twitter/bootstrap
+//= require backbone-forms
+//= require backbone-forms-list
+//= require backbone-forms-bootstrap
+//= require backbone-forms-bootstrap-modal
 
 //= require d3.v2.min
 //= require rickshaw.min

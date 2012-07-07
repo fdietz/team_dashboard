@@ -3,67 +3,52 @@
 
   views.WidgetEditor.Number = Backbone.View.extend({
 
-    events: {
-      "click .btn-primary" : "save",
-      "change .source"     : "sourceChanged"
-    },
-
-    initialize: function(options) {
-      _.bindAll(this, "render", "save", "sourceChanged");
-      this.dashboard = options.dashboard;
-      this.widgetCollection = options.widgetCollection;
-    },
-
-    sourceChanged: function() {
-      var that = this;
-      var source = this.$sourceSelect.val();
+    initialize: function() {
     },
 
     render: function() {
-      var that = this;
-      var sources = $.Sources.getNumber();
-      sources.unshift(null);
-      this.$el.html(JST['templates/widgets/number/edit']({ model: this.model.toJSON(), sources: sources }));
-
-      this.populate("number");
-      this.$sourceSelect = this.$('.source');
-
-      this.$modal = this.$('#dashboard-details-modal');
-      this.$nameInput = this.$('input.name');
-      this.$modal.on("shown", function() {
-        setTimeout(function() {
-          that.$nameInput.focus();
-        }, 10);
+      this.form = new Backbone.Form({
+        data  : this.model.toJSON(),
+        schema: this.getSchema()
       });
-
-      this.$modal.modal({
-        keyboard: true,
-        show: true,
-        backdrop: 'static'
-      });
+      this.$el.html(this.form.render().el);
       return this;
     },
 
-    save: function() {
-      var that = this;
-      this.$modal.modal("hide");
-
-      var formResult = this.parse("number");
-      
-      if (this.model.isNew()) {
-        this.model.set(formResult, { silent: true });
-        this.widgetCollection.create(this.model);
-      } else {
-        this.model.save(formResult).done(function() {
-          that.dashboard.trigger("widget:changed", that.model);
-        });
-      }
-
-      return false;
+    getValue: function() {
+      return this.form.getValue();
     },
 
-    onClose: function() {
-      this._modelBinder.unbind();
+    getSources: function() {
+      var sources = $.Sources.getNumber();
+      sources.unshift("");
+      return sources;
+    },
+
+    getUpdateIntervalOptions: function() {
+      return [
+        { val: 10, label: '10 sec' },
+        { val: 600, label: '1 min' },
+        { val: 6000, label: '10 min' },
+        { val: 36000, label: '1 hour' }
+      ];
+    },
+
+    getSchema: function() {
+      return {
+        name: 'Text',
+        update_interval:  {
+          title: 'Update Interval',
+          type: 'Select',
+          options: this.getUpdateIntervalOptions()
+        },
+        source1: { title: "Source 1", type: 'Select', options: this.getSources() },
+        label1: { title: "Label 1", type: 'Text' },
+        source2: { title: "Source 2", type: 'Select', options: this.getSources() },
+        label2: { title: "Label 2", type: 'Text' },
+        source3: { title: "Source 3", type: 'Select', options: this.getSources() },
+        label3: { title: "Label 3", type: 'Text' }
+      };
     }
 
   });

@@ -54,23 +54,24 @@
     },
 
     editWidget: function() {
-      var dialog = null;
+      var editor = null;
       switch(this.model.get('kind')) {
         case 'graph':
-          dialog = new views.WidgetEditor.Graph({ model: this.model, dashboard: this.dashboard });
+          editor = new views.WidgetEditor.Graph({ model: this.model });
           break;
         case 'counter':
-          dialog = new views.WidgetEditor.Counter({ model: this.model, dashboard: this.dashboard });
+          editor = new views.WidgetEditor.Counter({ model: this.model });
           break;
         case 'number':
-          dialog = new views.WidgetEditor.Number({ model: this.model, dashboard: this.dashboard });
+          editor = new views.WidgetEditor.Number({ model: this.model });
           break;
         case 'boolean':
-          dialog = new views.WidgetEditor.Boolean({ model: this.model, dashboard: this.dashboard });
+          editor = new views.WidgetEditor.Boolean({ model: this.model  });
           break;
         default:
           throw("unknown widget kind: "+this.model.get('kind'));
       }
+      var dialog = new views.WidgetEditor({ editor: editor, model: this.model, dashboard: this.dashboard });
       var dialogElement = $(document.getElementById('widget-dialog'));
 
       dialogElement.html(dialog.render().el);

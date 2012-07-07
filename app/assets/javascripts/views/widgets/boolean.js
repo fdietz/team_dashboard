@@ -84,7 +84,7 @@
     render: function() {
       this.booleanView1 = new BooleanSubview({ widget: this.model, number: 1 });
       this.addChildView(this.booleanView1);
-    
+
       this.booleanView2 = new BooleanSubview({ widget: this.model, number: 2 });
       this.addChildView(this.booleanView2);
 
