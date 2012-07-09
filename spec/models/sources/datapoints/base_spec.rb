@@ -35,5 +35,10 @@ describe Sources::Datapoints::Base do
     it "aggregates datapoints using average function" do
       @base.aggregate(@input, 'average').should eq(1)
     end
+
+    it "aggregates datapoints using delta function" do
+      input = [[1, 123], [5, 123]]
+      @base.aggregate(input, 'delta').should eq(4)
+    end
   end
 end

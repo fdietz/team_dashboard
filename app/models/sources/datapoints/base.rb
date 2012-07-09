@@ -18,6 +18,8 @@ module Sources
           sum / dps.size
         when 'sum'
           dps.inject(0) { |result, dp| result += dp.first if dp.first; result }
+        when 'delta'
+          dps.last.first - dps.first.first
         else
           raise ArgumentError, "Unknown aggregate function: #{aggregate_function}"
         end
