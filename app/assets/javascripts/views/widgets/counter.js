@@ -46,6 +46,10 @@
       return this.model.get('targets' + this.number);
     },
 
+    getAggregateFunction: function() {
+      return this.model.get('aggregate_function' + this.number) || 'sum';
+    },
+
     updateCollection: function() {
       if (this.collection) {
         this.collection.off();
@@ -54,7 +58,7 @@
       this.collection = new collections.Graph({
         targets: this.getTargets(),
         source: this.model.get('source'),
-        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        aggregate_function: this.getAggregateFunction(),
         from: this.from(),
         to: this.to()
       });
@@ -71,7 +75,7 @@
         time: this.model.get('time'),
         targets: this.getTargets(),
         source: this.model.get('source'),
-        aggregate_function: this.model.get('aggregate_function') || 'sum',
+        aggregate_function: this.getAggregateFunction(),
         from: this.previousFrom(),
         to: this.to()
       });
