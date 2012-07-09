@@ -57,7 +57,7 @@
     },
 
     onClose: function() {
-      this.model.off();
+      if (this.model) this.model.off();
     }
 
   });
