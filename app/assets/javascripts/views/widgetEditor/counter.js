@@ -63,7 +63,7 @@
     getAggregateOptions: function() {
       return [
         { val: "sum", label: 'Sum' },
-        { val: "avg", label: 'Average' }
+        { val: "average", label: 'Average' }
       ];
     },
 
