@@ -102,7 +102,7 @@
         collections.metrics.fetch({ success: that.prefillAutocomplete });
         return;
       }
-      this.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+      this.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
     },
 
     sourceChanged: function() {
@@ -111,7 +111,7 @@
 
       collections.metrics.source = this.$sourceSelect.val();
       collections.metrics.fetch().done(function() {
-        that.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+        that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
       });
     }
 

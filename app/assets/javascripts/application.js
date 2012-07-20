@@ -26,7 +26,7 @@
 //= require d3.v2.min
 //= require rickshaw.min
 //= require moment.min
-//= require select2.min
+//= require select2
 
 //= require backbone_extensions
 //= require app

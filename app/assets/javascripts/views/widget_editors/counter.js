@@ -97,8 +97,8 @@
         collections.metrics.fetch({ success: that.prefillAutocomplete });
         return;
       }
-      this.$targetInput1.select2({ tags: collections.metrics.autocomplete_names() });
-      this.$targetInput2.select2({ tags: collections.metrics.autocomplete_names() });
+      this.$targetInput1.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
+      this.$targetInput2.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
     },
 
     sourceChanged: function() {
@@ -108,8 +108,8 @@
 
       collections.metrics.source = this.$sourceSelect.val();
       collections.metrics.fetch().done(function() {
-        that.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
-        that.$targetInput2.select2({ tags: collections.metrics.autocomplete_names() });
+        that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
+        that.$targetInput2.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
       });
     }
 
