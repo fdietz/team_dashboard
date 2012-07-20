@@ -57,7 +57,7 @@
       var kind = $(event.target).data("widget-kind");
       var className = this.toTitleCase(kind);
       var model = new models.Widget({ dashboard_id: this.model.id, kind: kind });
-      var editor = new views.WidgetEditor[className]({ model: model });
+      var editor = new views.WidgetEditors[className]({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
@@ -65,7 +65,7 @@
 
     showGraphDialog: function(event) {
       var model = new models.Widget({ dashboard_id: this.model.id, kind: 'graph' });
-      var editor = new views.WidgetEditor.Graph({ model: model });
+      var editor = new views.WidgetEditors.Graph({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;

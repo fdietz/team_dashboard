@@ -55,7 +55,7 @@
 
     editWidget: function() {
       var className = this.toTitleCase(this.model.get('kind'));
-      var editor = new views.WidgetEditor[className]({ model: this.model });
+      var editor = new views.WidgetEditors[className]({ model: this.model });
       var dialog = new views.WidgetEditor({ editor: editor, model: this.model, dashboard: this.dashboard });
       var dialogElement = $(document.getElementById('widget-dialog'));
 

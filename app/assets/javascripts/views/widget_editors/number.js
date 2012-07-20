@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.WidgetEditor.Number = Backbone.View.extend({
+  views.WidgetEditors.Number = Backbone.View.extend({
 
     initialize: function() {
     },

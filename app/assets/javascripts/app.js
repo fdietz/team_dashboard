@@ -8,7 +8,7 @@
   app.models = {};
   app.views = {};
   app.views.widgets = {};
-  app.views.WidgetEditor = {};
+  app.views.WidgetEditors = {};
   app.views.schemas = {};
   app.mixins = {};
   app.helpers = {};

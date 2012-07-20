@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.WidgetEditor.Boolean = Backbone.View.extend({
+  views.WidgetEditors.Boolean = Backbone.View.extend({
 
     initialize: function() {
     },

@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views, models, collections) {
   "use strict";
 
-  views.WidgetEditor.Graph = Backbone.View.extend({
+  views.WidgetEditors.Counter = Backbone.View.extend({
 
     events: {
       "change #source"     : "sourceChanged"
@@ -9,8 +9,6 @@
 
     initialize: function() {
       _.bindAll(this, "render", "prefillAutocomplete", "sourceChanged");
-
-      // TODO: why is graph.js setting the source of metrics collection?
       collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
     },
 
@@ -21,8 +19,9 @@
       });
       this.$el.html(this.form.render().el);
 
-      this.$targetInput = this.$('#targets');
       this.$sourceSelect = this.$('#source');
+      this.$targetInput1 = this.$('#targets1');
+      this.$targetInput2 = this.$('#targets2');
 
       this.prefillAutocomplete();
 
@@ -69,14 +68,6 @@
       ];
     },
 
-    getSizeOptions: function() {
-      return [
-        { val: 1, label: '1 Column' },
-        { val: 2, label: '2 Columns' },
-        { val: 3, label: '3 Columns' }
-      ];
-    },
-
     getSchema: function() {
       return {
         name:             'Text',
@@ -90,9 +81,13 @@
           type: 'Select',
           options: this.getPeriodOptions()
         },
-        size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         source: { title: "Source", type: 'Select', options: this.getSources() },
-        targets: { title: "Targets", type: 'Text' }
+
+        targets1: { title: "Targets 1", type: 'Text' },
+        aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
+
+        targets2: { title: "Targets 2", type: 'Text' },
+        aggregate_function2: { title: "Aggregate Function 2", type: 'Select', options: this.getAggregateOptions() }
       };
     },
 
@@ -102,16 +97,19 @@
         collections.metrics.fetch({ success: that.prefillAutocomplete });
         return;
       }
-      this.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+      this.$targetInput1.select2({ tags: collections.metrics.autocomplete_names() });
+      this.$targetInput2.select2({ tags: collections.metrics.autocomplete_names() });
     },
 
     sourceChanged: function() {
       var that = this;
-      this.$targetInput.val("");
+      this.$targetInput1.val("");
+      this.$targetInput2.val("");
 
       collections.metrics.source = this.$sourceSelect.val();
       collections.metrics.fetch().done(function() {
         that.$targetInput.select2({ tags: collections.metrics.autocomplete_names() });
+        that.$targetInput2.select2({ tags: collections.metrics.autocomplete_names() });
       });
     }
 
