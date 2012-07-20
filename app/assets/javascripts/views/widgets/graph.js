@@ -163,24 +163,51 @@
       this.model.off('change', this.render);
     },
 
+    sizeFactor: function() {
+      switch(this.model.get("size")) {
+        case "1":
+          return 3;
+        case "2":
+          return 2;
+        default:
+          return 1;
+      }
+    },
+
+    minuteTimeFormatter: function(d) {
+      return moment.utc(d).local().format("HH:mm");
+    },
+
+    hourTimeFormatter: function(d) {
+      return moment.utc(d).local().format("MM-DD HH:mm");
+    },
+
+    dayTimeFormatter: function(d) {
+      return moment.utc(d).local().format("MM-DD");
+    },
+
     timeUnit: function() {
+      var sizeFactor = this.sizeFactor();
+      var minute = 60;
+      var hour = 8*minute;
+      var day = 24*8*minute;
       switch(this.model.get('range')) {
       case "30-minutes":
-        return { name: 'minute', seconds: 60*2*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'minute', seconds: 4*minute*sizeFactor, formatter: this.minuteTimeFormatter };
       case "60-minutes":
-        return { name: 'minute', seconds: 60*4*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'minute', seconds: hour*sizeFactor, formatter: this.minuteTimeFormatter };
       case "3-hours":
-        return { name: 'hour', seconds: 60*4*3*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'hour', seconds: 24*minute*sizeFactor, formatter: this.minuteTimeFormatter };
       case "12-hours":
-        return { name: 'hour', seconds: 60*4*12*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'hour', seconds: 12*8*minute*sizeFactor, formatter: this.minuteTimeFormatter };
       case "24-hours":
-        return { name: 'hour', seconds: 60*4*24*2, formatter: function(d) { return moment.utc(d).local().format("HH:mm"); }};
+        return { name: 'hour', seconds: day*sizeFactor, formatter: this.minuteTimeFormatter };
       case "3-days":
-        return { name: 'day', seconds: 60*4*24*3*2*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD HH:mm"); }};
+        return { name: 'day', seconds: 3*day*sizeFactor, formatter: this.hourTimeFormatter };
       case "7-days":
-        return { name: 'day', seconds: 60*4*24*7*2*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
+        return { name: 'day', seconds: 7*day*sizeFactor, formatter: this.dayTimeFormatter };
       case "4-weeks":
-        return { name: 'week', seconds: 60*4*24*7*4*2, formatter: function(d) { return moment.utc(d).local().format("MM-DD"); }};
+        return { name: 'week', seconds: 7*4*day*sizeFactor, formatter: this.dayTimeFormatter };
       default:
         throw "unknown rangeString: " + this.model.get('range');
       }
