@@ -9,21 +9,21 @@
       _.bindAll(this, "render");
 
       this.number = options.number;
-      this.updateModel();
+      this.updateModels();
     },
 
-    fetchCollection: function() {
-      return this.collection ? this.collection.fetch() : null;
+    fetchPrimaryModel: function() {
+      return this.primaryModel ? this.primaryModel.fetch() : null;
     },
 
-    fetchSecondaryCollection: function() {
-      return this.secondaryCollection ? this.secondaryCollection.fetch() : null;
+    fetchSecondaryModel: function() {
+      return this.secondaryModel ? this.secondaryModel.fetch() : null;
     },
 
-    updateModel: function() {
+    updateModels: function() {
       if (this.model.get('source') && this.getTargets()) {
-        this.updateCollection();
-        this.updateSecondaryCollection();
+        this.updatePrimaryModel();
+        this.updateSecondaryModel();
       }
     },
 
@@ -47,12 +47,12 @@
       return this.model.get('aggregate_function' + this.number) || 'sum';
     },
 
-    updateCollection: function() {
-      if (this.collection) {
-        this.collection.off();
+    updatePrimaryModel: function() {
+      if (this.primaryModel) {
+        this.primaryModel.off();
       }
 
-      this.collection = new collections.Graph({
+      this.primaryModel = new models.Counter({
         targets: this.getTargets(),
         source: this.model.get('source'),
         aggregate_function: this.getAggregateFunction(),
@@ -60,15 +60,15 @@
         to: this.to()
       });
 
-      this.collection.on('reset', this.render);
+      this.primaryModel.on('change', this.render);
     },
 
-    updateSecondaryCollection: function() {
-      if (this.secondaryCollection) {
-        this.secondaryCollection.off();
+    updateSecondaryModel: function() {
+      if (this.secondaryModel) {
+        this.secondaryModel.off();
       }
 
-      this.secondaryCollection = new collections.Graph({
+      this.secondaryModel = new models.Counter({
         time: this.model.get('time'),
         targets: this.getTargets(),
         source: this.model.get('source'),
@@ -78,18 +78,8 @@
       });
     },
 
-    // example object: [{ target: "aggregated targets", datapoints: [[1776, 1340547208]] }]
-    valueFromCollection: function(collection) {
-      var datapoints = collection.at(0).get('datapoints');
-      if (datapoints) {
-        return datapoints[0][0];
-      } else {
-        return 0;
-      }
-    },
-
     value: function() {
-      var result = this.valueFromCollection(this.collection);
+      var result = this.primaryModel.get('value') || 0;
       if (result % 1 === 0) {
         return result;
       } else {
@@ -98,8 +88,8 @@
     },
 
     secondaryValue: function() {
-      var y1 = this.valueFromCollection(this.collection);
-      var y2 = this.valueFromCollection(this.secondaryCollection);
+      var y1 = this.primaryModel.get('value');
+      var y2 = this.secondaryModel.get('value');
       if (y1 && y2) {
         var result = ((y1 - y2) / y2) * 100;
         if ( result % 1 === 0) {
@@ -113,7 +103,7 @@
     },
 
     render: function() {
-      if (this.collection && this.secondaryCollection) {
+      if (this.primaryModel && this.secondaryModel) {
         var value = this.value();
         var secondaryValue = this.secondaryValue();
         this.$el.html(JST['templates/widgets/counter/subview']({
@@ -149,8 +139,9 @@
     },
 
     onClose: function() {
-      if (this.collection) this.collection.off();
-      if (this.secondaryCollection) this.secondaryCollection.off();
+      this.model.off();
+      if (this.primaryModel) this.primaryModel.off();
+      if (this.secondaryModel) this.secondaryModel.off();
     }
 
   });
@@ -185,8 +176,8 @@
 
       var validModels = [];
       this.forEachChild(function(child) {
-        validModels.push(child.fetchCollection());
-        validModels.push(child.fetchSecondaryCollection());
+        validModels.push(child.fetchPrimaryModel());
+        validModels.push(child.fetchSecondaryModel());
       });
 
       return $.when.apply(null, validModels);

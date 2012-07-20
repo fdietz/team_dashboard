@@ -6,8 +6,8 @@ describe Aggregation do
 
     before do
       @input = [
-        { 'target' => 'test1', 'datapoints' => [[1, 123]]},
-        { 'target' => 'test2', 'datapoints' => [[2, 123]]}
+        { :target => 'test1', :datapoints => [[1, 123]]},
+        { :target => 'test2', :datapoints => [[2, 123]]}
       ]
     end
 

@@ -10,6 +10,7 @@ TeamDashboard::Application.routes.draw do
   end
 
   match "api/datapoints" => "api/datapoints#show"
+  match "api/counter" => "api/counters#show"
   match "api/number" => "api/numbers#show"
   match "api/boolean" => "api/booleans#show"
 
