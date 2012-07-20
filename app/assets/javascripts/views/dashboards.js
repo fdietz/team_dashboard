@@ -15,11 +15,6 @@
     render: function() {
       this.$el.html(JST['templates/dashboards/index']({ dashboards: this.collection.toJSON() }));
 
-      if (!this.collection.isFetched) {
-        this.collection.fetch();
-        return this;
-      }
-
       return this;
     },
 
