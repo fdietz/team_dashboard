@@ -9,7 +9,7 @@
 
     initialize: function() {
       _.bindAll(this, "render", "prefillAutocomplete", "sourceChanged");
-      collections.metrics.source = this.model.get('source');
+      collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
     },
 
     render: function() {

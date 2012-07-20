@@ -9,9 +9,6 @@
       _.bindAll(this, "render");
 
       this.number = options.number;
-
-      // this.updateCollection();
-      // this.updateSecondaryCollection();
       this.updateModel();
     },
 

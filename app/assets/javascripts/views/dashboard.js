@@ -49,7 +49,7 @@
     },
 
     showGraphDialog: function(event) {
-      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'graph', source: $.Sources.getDefaultTarget() });
+      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'graph' });
       var editor = new views.WidgetEditor.Graph({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
@@ -57,7 +57,7 @@
     },
 
     showCounterDialog: function(event) {
-      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'counter', source: $.Sources.getDefaultTarget()});
+      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'counter' });
       var editor = new views.WidgetEditor.Counter({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
