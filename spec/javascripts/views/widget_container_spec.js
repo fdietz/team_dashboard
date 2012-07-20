@@ -12,7 +12,6 @@ describe("WidgetContainer View", function() {
 
   it("renders html correctly", function() {
     this.view.render();
-    console.log(this.view.$el);
 
     expect(this.view.$(".widget:nth-child(1)")).toExist();
     expect(this.view.$(".widget:nth-child(1)")).toHaveAttr("data-widget-id", "1");

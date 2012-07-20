@@ -18,7 +18,12 @@
     app.collections.dashboards  = new app.collections.Dashboard({});
 
     app.router = new window.app.Router();
-    Backbone.history.start({ pushState: true });
+    try {
+      Backbone.history.start({ pushState: true });
+    }
+    catch(x) {
+      console.log(x);
+    }
   };
 
 })($, _, Backbone);
