@@ -13,7 +13,6 @@
   app.mixins = {};
   app.helpers = {};
 
-
   app.init = function() {
     app.collections.metrics     = new app.collections.Metric({});
     app.collections.dashboards  = new app.collections.Dashboard({});

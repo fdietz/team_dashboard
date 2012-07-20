@@ -1,5 +1,3 @@
-"use strict";
-
 $(function() {
 
   $("body").on("click", "a[href^='/']", function(event) {
@@ -8,9 +6,8 @@ $(function() {
       event.preventDefault();
       // remove leading slash to use path as backbone route
       var url = $(event.currentTarget).attr("href").replace(/^\//, "");
-      app.router.navigate(url, { trigger: true });
+      window.app.router.navigate(url, { trigger: true });
     }
   });
 
 });
-

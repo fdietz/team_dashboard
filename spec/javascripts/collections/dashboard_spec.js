@@ -1,5 +1,3 @@
-"use strict";
-
 describe("Dashboard Collection", function() {
 
   beforeEach(function() {
@@ -9,4 +7,5 @@ describe("Dashboard Collection", function() {
   it("has default url set", function() {
     expect(this.dashboard.url).toBe("/api/dashboards");
   });
+
 });
