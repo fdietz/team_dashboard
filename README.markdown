@@ -153,7 +153,7 @@ Shows the current boolean value provided by the data source and an label. The wi
 The datapoints source supports data for rendering graphs and aggregated values. Following a minimal implementation.
 
     class Example < Sources::Datapoints::Base
-      def get(targets, from, to, aggregate_function = nil)
+      def get(targets, from, to)
         result = []
         targets.each do |target|
           # retrieve the actual data here
