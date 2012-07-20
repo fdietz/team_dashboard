@@ -9,7 +9,7 @@ All widgets have a name, time interval in which to update themselves and a data 
 ### Graph Widget
 The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
-#### Configuration
+##### Configuration
 <table>
   <tr>
     <th>Name</th>
@@ -36,7 +36,7 @@ The graph widget shows a time series line graph (using rickshaw.js internally). 
 ### Counter Widget
 Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
 
-#### Configuration
+##### Configuration
 <table>
   <tr>
     <th>Name</th>
@@ -67,7 +67,7 @@ Shows the current value and the percentage of change of the last period. It is b
 ### Number Widget
 Shows the current integer value provided by the data source and a label. The widget supports up to three values. Use it to show for the example the number of errors on specific system.
 
-#### Configuration
+##### Configuration
 <table>
   <tr>
     <th>Name</th>
@@ -87,7 +87,7 @@ Shows the current integer value provided by the data source and a label. The wid
 ### Boolean Widget
 Shows the current boolean value provided by the data source and an label. The widget supports up to three values. Use it to show for example the success of a Jenkins build.
 
-#### Configuration
+##### Configuration
 <table>
   <tr>
     <th>Name</th>
