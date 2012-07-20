@@ -5,16 +5,6 @@
     defaults: {
       "name"        : "Undefined name",
       "range"       : '30-minutes',
-      "source1"     : '',
-      "source2"     : '',
-      "source3"     : '',
-      "label1"      : '',
-      "label2"      : '',
-      "label3"      : '',
-      "aggregate_function1" : 'sum',
-      "aggregate_function2" : 'sum',
-      "targets1"      : '',
-      "targets2"      : '',
       "update_interval": '10'
     },
 
