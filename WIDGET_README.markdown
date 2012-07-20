@@ -1,4 +1,4 @@
-# Team Dashboard Widget Readme
+# Team Dashboard Widget
 
 A dashboard in Team Dashboard consists of multiple Widgets, which request data from a data source via AJAX request.
 
@@ -11,10 +11,10 @@ The graph widget shows a time series line graph (using rickshaw.js internally). 
 
 #### Configuration
 <table>
-  <th>
-    <td>Name</td>
-    <td>Documentation</td>
-  </th>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
   <tr>
     <td>Date Range/Period</td>
     <td>Select a date range of for example "Last 3 hours"</td>
@@ -38,10 +38,10 @@ Shows the current value and the percentage of change of the last period. It is b
 
 #### Configuration
 <table>
-  <th>
-    <td>Name</td>
-    <td>Documentation</td>
-  </th>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
   <tr>
     <td>Date Range/Period</td>
     <td>Select a date range of for example "Last 3 hours"</td>
@@ -69,10 +69,10 @@ Shows the current integer value provided by the data source and a label. The wid
 
 #### Configuration
 <table>
-  <th>
-    <td>Name</td>
-    <td>Documentation</td>
-  </th>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
   <tr>
     <td>Date Range/Period</td>
     <td>Select a date range of for example "Last 3 hours"</td>
@@ -89,10 +89,10 @@ Shows the current boolean value provided by the data source and an label. The wi
 
 #### Configuration
 <table>
-  <th>
-    <td>Name</td>
-    <td>Documentation</td>
-  </th>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
   <tr>
     <td>Date Range/Period</td>
     <td>Select a date range of for example "Last 3 hours"</td>
