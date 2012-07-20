@@ -54,23 +54,8 @@
     },
 
     editWidget: function() {
-      var editor = null;
-      switch(this.model.get('kind')) {
-        case 'graph':
-          editor = new views.WidgetEditor.Graph({ model: this.model });
-          break;
-        case 'counter':
-          editor = new views.WidgetEditor.Counter({ model: this.model });
-          break;
-        case 'number':
-          editor = new views.WidgetEditor.Number({ model: this.model });
-          break;
-        case 'boolean':
-          editor = new views.WidgetEditor.Boolean({ model: this.model  });
-          break;
-        default:
-          throw("unknown widget kind: "+this.model.get('kind'));
-      }
+      var className = this.toTitleCase(this.model.get('kind'));
+      var editor = new views.WidgetEditor[className]({ model: this.model });
       var dialog = new views.WidgetEditor({ editor: editor, model: this.model, dashboard: this.dashboard });
       var dialogElement = $(document.getElementById('widget-dialog'));
 
@@ -78,23 +63,15 @@
       return false;
     },
 
+    toTitleCase: function(str) {
+      return str.replace(/(?:^|\s)\w/g, function(match) {
+          return match.toUpperCase();
+      });
+    },
+
     createWidget: function() {
-      switch(this.model.get('kind')) {
-        case 'graph':
-          this.widget = new views.widgets.Graph({ model: this.model });
-          break;
-        case 'counter':
-          this.widget = new views.widgets.Counter({ model: this.model });
-          break;
-        case 'number':
-          this.widget = new views.widgets.Number({ model: this.model });
-          break;
-        case 'boolean':
-          this.widget = new views.widgets.Boolean({ model: this.model });
-          break;
-        default:
-          throw("unknown widget kind: "+this.model.get('kind'));
-      }
+      var className = this.toTitleCase(this.model.get('kind'));
+      this.widget = new views.widgets[className]({ model: this.model });
       this.$content.html(this.widget.render().el);
     },
 

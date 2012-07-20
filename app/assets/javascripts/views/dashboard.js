@@ -4,10 +4,9 @@
   views.Dashboard = Backbone.View.extend({
     events: {
       "click button.dashboard-delete"      : "removeDashboard",
+
       "click .add-graph"                   : "showGraphDialog",
-      "click .add-counter"                 : "showCounterDialog",
-      "click .add-number"                  : "showNumberDialog",
-      "click .add-boolean"                  : "showBooleanDialog"
+      "click .add-actions"                 : "showDialog"
     },
 
     initialize: function(options) {
@@ -48,33 +47,25 @@
       });
     },
 
+    toTitleCase: function(str) {
+      return str.replace(/(?:^|\s)\w/g, function(match) {
+          return match.toUpperCase();
+      });
+    },
+
+    showDialog: function(event) {
+      var kind = $(event.target).data("widget-kind");
+      var className = this.toTitleCase(kind);
+      var model = new models.Widget({ dashboard_id: this.model.id, kind: kind });
+      var editor = new views.WidgetEditor[className]({ model: model });
+      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
+      this.$("#widget-dialog").html(dialog.render().el);
+      return false;
+    },
+
     showGraphDialog: function(event) {
       var model = new models.Widget({ dashboard_id: this.model.id, kind: 'graph' });
       var editor = new views.WidgetEditor.Graph({ model: model });
-      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
-      this.$("#widget-dialog").html(dialog.render().el);
-      return false;
-    },
-
-    showCounterDialog: function(event) {
-      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'counter' });
-      var editor = new views.WidgetEditor.Counter({ model: model });
-      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
-      this.$("#widget-dialog").html(dialog.render().el);
-      return false;
-    },
-
-    showNumberDialog: function(event) {
-      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'number' });
-      var editor = new views.WidgetEditor.Number({ model: model });
-      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
-      this.$("#widget-dialog").html(dialog.render().el);
-      return false;
-    },
-
-    showBooleanDialog: function(event) {
-      var model = new models.Widget({ dashboard_id: this.model.id, kind: 'boolean' });
-      var editor = new views.WidgetEditor.Boolean({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
       this.$("#widget-dialog").html(dialog.render().el);
       return false;
