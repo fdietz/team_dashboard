@@ -1,7 +1,7 @@
 (function ($, _, Backbone, collections, model) {
   "use strict";
 
-    collections.Graph = Backbone.Collection.extend({
+    collections.Datapoint = Backbone.Collection.extend({
       model: model,
 
       initialize: function(options) {
@@ -37,4 +37,4 @@
 
     });
 
-})( $, _, Backbone, app.collections, app.models.Graph);
+})( $, _, Backbone, app.collections, app.models.Datapoint);

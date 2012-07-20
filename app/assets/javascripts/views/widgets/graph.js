@@ -39,7 +39,7 @@
     },
 
     updateCollection: function() {
-      this.collection = new collections.Graph({
+      this.collection = new collections.Datapoint({
         targets: this.model.get('targets'),
         source: this.model.get('source'),
         from: this.from(),

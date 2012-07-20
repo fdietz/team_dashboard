@@ -1,7 +1,7 @@
 (function ($, _, Backbone, models) {
   "use strict";
 
-  models.Graph = Backbone.Model.extend({
+  models.Datapoint = Backbone.Model.extend({
   });
 
 })($, _, Backbone, app.models);
