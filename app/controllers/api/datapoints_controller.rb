@@ -9,7 +9,16 @@ module Api
       aggregate_function = params[:aggregate_function]
 
       plugin = Sources.datapoints_plugin(source)
-      datapoints = plugin.get(targets, from.to_i, to.to_i, aggregate_function)
+      datapoints = plugin.get(targets, from.to_i, to.to_i)
+
+      if aggregate_function
+        datapoints = [
+          { 'target'     => 'aggregated targets',
+            'datapoints' => [[Aggregation.aggregated_result(datapoints, aggregate_function), to]]
+          }
+        ]
+      end
+
       respond_with datapoints.to_json
     end
 

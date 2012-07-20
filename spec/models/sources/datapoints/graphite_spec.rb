@@ -16,12 +16,5 @@ describe Sources::Datapoints::Graphite do
       result = @graphite.get(@targets, @from, @to)
       result.should eq(input)
     end
-
-    it "calls aggregated_results" do
-      input = [{ 'target' => 'test1', 'datapoints' => [[1, 123], [2, 1234]] }]
-      @graphite.expects(:request_datapoints).with(@targets, @from, @to).returns(input.to_json)
-      result = @graphite.get(@targets, @from, @to, "sum")
-      result.first['datapoints'].first.first.should eq(3)
-    end
   end
 end

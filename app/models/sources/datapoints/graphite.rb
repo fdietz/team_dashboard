@@ -8,13 +8,8 @@ module Sources
         @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
       end
 
-      def get(targets, from, to, aggregate_function = nil)
-        result = JSON.parse(request_datapoints(targets, from, to))
-        if aggregate_function
-          [{ 'target' => 'aggregated targets', 'datapoints' => [[aggregated_result(result, aggregate_function), to]]}]
-        else
-          result
-        end
+      def get(targets, from, to)
+        JSON.parse(request_datapoints(targets, from, to))
       end
 
       private
