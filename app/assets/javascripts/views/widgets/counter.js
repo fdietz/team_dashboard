@@ -156,7 +156,7 @@
 
     widgetChanged: function() {
       this.forEachChild(function(child) {
-        child.updateModel();
+        child.updateModels();
       });
       this.render();
     },
