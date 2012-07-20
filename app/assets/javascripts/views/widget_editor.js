@@ -33,7 +33,7 @@
       this.$modal.modal({
         keyboard: true,
         show: true,
-        backdrop: false //'static'
+        backdrop: 'static'
       });
 
       return this;
