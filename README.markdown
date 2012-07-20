@@ -1,6 +1,6 @@
 # Team Dashboard
 
-Team Dashboard lets you visualize your team's metrics all in one place.
+Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshot](https://github.com/fdietz/team_dashboard/raw/master/gh-pages/screenshot.png)).
 
 This beta version leverages Graphite as the first input source to display graphs and other widgets.
 
