@@ -47,9 +47,9 @@
         this.model.set(formResult, { silent: true });
         this.widgetCollection.create(this.model);
       } else {
-        this.model.save(formResult).done(function() {
+        this.model.save(formResult, { success: function() {
           that.dashboard.trigger("widget:changed", that.model);
-        });
+        }});
       }
 
       return false;
