@@ -17,3 +17,5 @@
 /public/assets
 
 .DS_Store
+
+.jhw-cache
