@@ -31,7 +31,7 @@
     },
 
     getLabel: function() {
-      return this.widget.get("label" + this.number);
+      return this.model.get("label") || this.widget.get("label" + this.number);
     },
 
     getValue: function() {

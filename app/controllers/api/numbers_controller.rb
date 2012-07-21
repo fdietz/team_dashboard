@@ -3,8 +3,8 @@ module Api
 
     def show
       plugin = Sources.number_plugin(params[:source])
-      count = plugin.get
-      respond_with({ :value => count }.to_json)
+      result = plugin.get
+      respond_with(result.to_json)
     end
 
   end

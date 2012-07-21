@@ -2,11 +2,8 @@ module Sources
   module Number
     class Demo < Sources::Number::Base
 
-      def initialize
-      end
-
       def get
-        rand(100*2) - 100
+        { :value => rand(100*2) - 100, :label => "demo label" }
       end
 
     end

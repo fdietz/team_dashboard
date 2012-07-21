@@ -39,9 +39,13 @@
       }
     },
 
+    getLabel: function() {
+      return this.model.get("label") || this.widget.get('label'+this.number);
+    },
+
     render: function() {
       if (this.model) {
-        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue(), label: this.widget.get('label'+this.number) }));
+        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue(), label: this.getLabel() }));
 
         this.$value = this.$('.number-value');
         this.$value.toggleClass('color-up', this.getValue() > 0);

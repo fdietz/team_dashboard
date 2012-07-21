@@ -32,7 +32,8 @@ describe Api::WidgetsController do
 
     it "should respond with json error message if dashboard not found" do
       @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget).to_json
-      post :create, :dashboard_id => nil, :format => :json
+      unknown_id = -1
+      post :create, :dashboard_id => unknown_id, :format => :json
       assert_response :unprocessable_entity
       result = JSON.parse(@response.body)
       assert result["message"]
@@ -98,7 +99,8 @@ describe Api::WidgetsController do
 
     it "should respond with json error message if dashboard not found" do
       @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget).to_json
-      post :update, :dashboard_id => nil, :format => :json
+      unknown_id = -1
+      post :update, :dashboard_id => unknown_id, :id => @widget.id, :format => :json
       assert_response :unprocessable_entity
       result = JSON.parse(@response.body)
       assert result["message"]
@@ -123,7 +125,8 @@ describe Api::WidgetsController do
     end
 
     it "should respond with json error message if dashboard not found" do
-      delete :destroy, :dashboard_id => nil, :id => @widget.id, :format => :json
+      unknown_id = -1
+      delete :destroy, :dashboard_id => unknown_id, :id => @widget.id, :format => :json
       assert_response :unprocessable_entity
       result = JSON.parse(@response.body)
       assert result["message"]

@@ -67,6 +67,10 @@ The graph widget shows a time series line graph (using rickshaw.js internally). 
     <td>Number of Columns (Possible Values: 1, 2 or 3)</td>
   </tr>
   <tr>
+    <td>Graph Type</td>
+    <td>Either a line or stacked graph.</td>
+  </tr>
+  <tr>
     <td>Data Source</td>
     <td>Only "demo" and "graphite" currently supported.</td>
   </tr>
@@ -166,22 +170,22 @@ The datapoints source supports data for rendering graphs and aggregated values. 
 Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.
 
 ### Number
-The number data source supports a single integer value.
+The number data source supports a single integer value and an optional label.
 
     class Example < Sources::Number::Base
       def get
         # retrieve actual data here
-        115
+        { :value => 115, :label => "example label" }
       end
     end
 
 ### Boolean
-The boolean data source supports a single boolean value.
+The boolean data source supports a single boolean value and an optional label.
 
     class Example < Sources::Boolean::Base
       def get
         # retrieve actual data here
-        true
+        { :value => true, :label => "example label" }
       end
     end
 

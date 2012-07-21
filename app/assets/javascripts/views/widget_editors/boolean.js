@@ -43,11 +43,11 @@
           options: this.getUpdateIntervalOptions()
         },
         source1: { title: "Source 1", type: 'Select', options: this.getSources() },
-        label1: { title: "Label 1", type: 'Text' },
+        label1: { title: "Default Label 1", type: 'Text' },
         source2: { title: "Source 2", type: 'Select', options: this.getSources() },
-        label2: { title: "Label 2", type: 'Text' },
+        label2: { title: "Default Label 2", type: 'Text' },
         source3: { title: "Source 3", type: 'Select', options: this.getSources() },
-        label3: { title: "Label 3", type: 'Text' }
+        label3: { title: "Default Label 3", type: 'Text' }
       };
     }
 

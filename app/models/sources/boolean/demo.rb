@@ -2,7 +2,7 @@ module Sources
   module Boolean
     class Demo < Sources::Boolean::Base
       def get
-        rand(2) == 1
+        { :value => rand(2) == 1, :label => "demo label" }
       end
     end
   end
