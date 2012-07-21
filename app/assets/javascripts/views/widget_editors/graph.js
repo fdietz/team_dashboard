@@ -77,6 +77,13 @@
       ];
     },
 
+    getGraphTypeOptions: function() {
+      return [
+        { val: 'line', label: 'Line Graph' },
+        { val: 'stack', label: 'Stacked Graph' }
+      ];
+    },
+
     getSchema: function() {
       return {
         name:             'Text',
@@ -91,6 +98,7 @@
           options: this.getPeriodOptions()
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
+        graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
         source: { title: "Source", type: 'Select', options: this.getSources() },
         targets: { title: "Targets", type: 'Text' }
       };

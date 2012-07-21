@@ -20,13 +20,11 @@
 
     initialize: function(options) {
       _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues", "widgetChanged");
-      // this.range = this.model.get("range");
 
       this.updateCollection();
 
       this.model.on('change', this.widgetChanged);
 
-      this.renderer = 'line';
       this.currentColors = [];
     },
 
@@ -96,7 +94,7 @@
 
       this.graph = new Rickshaw.Graph({
         element: this.$graph.get(0),
-        renderer: this.renderer,
+        renderer: this.model.get("graph_type") || "line",
         width: this.$graph.parent().width()-80,
         series: datapoints
       });
@@ -147,11 +145,6 @@
 
     showEmptyDatasetNotice: function() {
       this.$el.html("<p class='empty-data'>No data available.</p>");
-    },
-
-    changeRenderer: function(renderer) {
-      this.graph.configure({ renderer: renderer });
-      this.graph.update();
     },
 
     onClose: function() {

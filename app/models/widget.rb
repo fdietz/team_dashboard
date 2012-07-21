@@ -2,12 +2,13 @@ class Widget < ActiveRecord::Base
   belongs_to :dashboard
   store :settings, :accessors => [
     :source1, :source2, :source3, :label1, :label2, :label3, # number widget
-    :targets1, :targets2, :aggregate_function1, :aggregate_function2 # counter widget
+    :targets1, :targets2, :aggregate_function1, :aggregate_function2, # counter widget
+    :graph_type # graph widget
   ]
 
   validates :name, :presence => true
   validates :dashboard_id, :presence => true
-  
+
   after_initialize :set_defaults
 
   after_create :add_to_dashboard_layout
