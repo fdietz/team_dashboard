@@ -34,25 +34,17 @@ module Sources
   protected
 
   def source_names(type)
-    loaded_names(type) + default_names
-  end
-
-  def loaded_names(type)
     "Sources::#{type.camelize}::Base".constantize.descendants.map { |clazz| clazz_name(clazz) }
-  end
-
-  def default_names
-    ["http_proxy"]
   end
 
   def plugin_clazz(type, name)
     raise ArgumentError, "source name param missing" if name.blank?
     "Sources::#{type.camelize}::#{name.camelize}".constantize
   rescue NameError => e
-    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}"
+    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}: #{e}"
   end
 
   def clazz_name(clazz)
-    clazz.to_s.split("::").last.downcase
+    clazz.to_s.demodulize.underscore
   end
 end
