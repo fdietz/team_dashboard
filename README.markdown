@@ -52,6 +52,8 @@ All widgets have a name, time interval in which to update themselves and a data 
 ### Graph Widget
 The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
+It currently only supports a Demo data source and [Graphite](http://graphite.wikidot.com/).
+
 #### Configuration
 <table>
   <tr>
@@ -82,6 +84,8 @@ The graph widget shows a time series line graph (using rickshaw.js internally). 
 
 ### Counter Widget
 Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
+
+It currently only supports a Demo data source and [Graphite](http://graphite.wikidot.com/).
 
 #### Configuration
 <table>
@@ -114,6 +118,8 @@ Shows the current value and the percentage of change of the last period. It is b
 ### Number Widget
 Shows the current integer value provided by the data source and a label. The widget supports up to three values. Use it to show for the example the number of errors on specific system.
 
+It currently supports a demo data source and a http proxy data source.
+
 #### Configuration
 <table>
   <tr>
@@ -127,6 +133,10 @@ Shows the current integer value provided by the data source and a label. The wid
   <tr>
     <td>Label</td>
     <td>Label for this value</td>
+  </tr>
+  <tr>
+    <td>HTTP Proxy URL</td>
+    <td>HTTP URL should return a JSON structure as described below</td>
   </tr>
   <tr>
 </table>
@@ -134,6 +144,8 @@ Shows the current integer value provided by the data source and a label. The wid
 ### Boolean Widget
 Shows the current boolean value provided by the data source and an label. The widget supports up to three values. Use it to show for example the success of a Jenkins build.
 
+It currently supports a demo data source and a http proxy data source.
+
 #### Configuration
 <table>
   <tr>
@@ -147,6 +159,10 @@ Shows the current boolean value provided by the data source and an label. The wi
   <tr>
     <td>Label</td>
     <td>Label for this value</td>
+  </tr>
+  <tr>
+    <td>HTTP Proxy URL</td>
+    <td>HTTP URL should return a JSON structure as described below</td>
   </tr>
   <tr>
 </table>
