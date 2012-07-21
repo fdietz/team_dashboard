@@ -129,16 +129,11 @@
     },
 
     update: function(callback) {
-      console.log("update");
       var that = this;
+      var options = { suppressErrors: true };
 
-      // this.from = TimeSelector.getFrom(this.range);
-      // this.to = TimeSelector.getCurrent();
-      // this.collection.from = this.from;
-      // this.collection.to = this.to;
       this.updateCollection();
-
-      return this.collection.fetch({suppressErrors: true}).done(this.updateValues);
+      return $.when(this.collection.fetch(options)).done(this.updateValues);
     },
 
     updateValues: function() {

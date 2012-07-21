@@ -44,7 +44,7 @@
     },
 
     getAggregateFunction: function() {
-      return this.model.get('aggregate_function' + this.number) || 'sum';
+      return this.model.get('aggregate_function' + this.number);
     },
 
     updatePrimaryModel: function() {
@@ -74,7 +74,7 @@
         source: this.model.get('source'),
         aggregate_function: this.getAggregateFunction(),
         from: this.previousFrom(),
-        to: this.to()
+        to: this.from()
       });
     },
 

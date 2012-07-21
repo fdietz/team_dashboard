@@ -101,7 +101,6 @@
       this.forEachChild(function(child) {
         validModels.push(child.fetch());
       });
-
       return $.when.apply(null, validModels);
     },
 
