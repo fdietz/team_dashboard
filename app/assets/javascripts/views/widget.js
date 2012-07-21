@@ -6,16 +6,16 @@
     className: "widget",
 
     events: {
-      "click .widget-delete"   : "removeWidget",
-      "click .widget-edit"     : "editWidget"
+      "click .widget-delete"   : "removeWidget"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "editWidget", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail");
+      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail");
 
       this.model.on('change', this.render);
 
       this.dashboard = options.dashboard;
+      this.dialogEl = options.dialogEl;
 
       this.startPolling = true;
     },
@@ -51,16 +51,6 @@
 
     showLoadingError: function() {
       this.$content.html("<div class='error'><p>Error loading datapoints...</p></div>");
-    },
-
-    editWidget: function() {
-      var className = this.toTitleCase(this.model.get('kind'));
-      var editor = new views.WidgetEditors[className]({ model: this.model });
-      var dialog = new views.WidgetEditor({ editor: editor, model: this.model, dashboard: this.dashboard });
-      var dialogElement = $(document.getElementById('widget-dialog'));
-
-      dialogElement.html(dialog.render().el);
-      return false;
     },
 
     toTitleCase: function(str) {

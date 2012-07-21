@@ -71,4 +71,12 @@ describe("Dashboard View", function() {
     });
   });
 
+  describe("#editWidget", function() {
+    it("displays widget edit dialog", function() {
+      this.view.render();
+      this.view.$(".widget-edit").trigger("click");
+      expect(this.view.$("#widget-dialog .modal-body form")).toExist();
+    });
+  });
+
 });

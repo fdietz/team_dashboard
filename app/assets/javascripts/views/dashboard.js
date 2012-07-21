@@ -6,14 +6,28 @@
       "click button.dashboard-delete"      : "removeDashboard",
 
       "click .add-graph"                   : "showGraphDialog",
-      "click .add-actions"                 : "showDialog"
+      "click .add-actions"                 : "showDialog",
+
+      "click .widget-edit"                 : "editWidget"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "removeDashboard");
+      _.bindAll(this, "render", "removeDashboard", "editWidget");
 
       this.model.on('change', this.render);
       this.model.on("widget:changed", this.widgetChanged);
+    },
+
+    editWidget: function(event) {
+      var widgetId = $(event.currentTarget).data("widget-id");
+      var model = this.collection.get(widgetId);
+
+      var className = this.toTitleCase(model.get('kind'));
+      var editor = new views.WidgetEditors[className]({ model: model });
+      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model });
+      var dialogElement = this.$('#widget-dialog');
+      dialogElement.html(dialog.render().el);
+      return false;
     },
 
     render: function() {

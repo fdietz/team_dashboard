@@ -1,0 +1,13 @@
+describe("Widget View", function() {
+  beforeEach(function() {
+    this.model = new window.app.models.Widget({ name: "widget 1", kind: "boolean", id: 1 });
+    this.view = new window.app.views.Widget({ model: this.model, el: this.el });
+  });
+
+  it("renders correctly", function() {
+    this.view.render();
+    expect(this.view.$(".portlet-header")).toExist();
+    expect(this.view.$(".portlet-content")).toExist();
+  });
+
+});
