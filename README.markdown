@@ -157,7 +157,7 @@ Shows the current boolean value provided by the data source and an label. The wi
 The datapoints source supports data for rendering graphs and aggregated values. Following a minimal implementation.
 
     class Example < Sources::Datapoints::Base
-      def get(targets, from, to)
+      def get(targets, from, to, options = {})
         result = []
         targets.each do |target|
           # retrieve the actual data here
@@ -173,7 +173,7 @@ Note the datapoints array consists of pairs of number values (y-value and timest
 The number data source supports a single integer value and an optional label.
 
     class Example < Sources::Number::Base
-      def get
+      def get(options = {})
         # retrieve actual data here
         { :value => 115, :label => "example label" }
       end
@@ -183,7 +183,7 @@ The number data source supports a single integer value and an optional label.
 The boolean data source supports a single boolean value and an optional label.
 
     class Example < Sources::Boolean::Base
-      def get
+      def get(options = {})
         # retrieve actual data here
         { :value => true, :label => "example label" }
       end

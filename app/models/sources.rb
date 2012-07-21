@@ -34,7 +34,15 @@ module Sources
   protected
 
   def source_names(type)
+    loaded_names(type) + default_names
+  end
+
+  def loaded_names(type)
     "Sources::#{type.camelize}::Base".constantize.descendants.map { |clazz| clazz_name(clazz) }
+  end
+
+  def default_names
+    ["http_proxy"]
   end
 
   def plugin_clazz(type, name)

@@ -2,7 +2,7 @@ module Sources
   module Datapoints
     class Demo < Sources::Datapoints::Base
 
-      def get(targets, from, to, aggregate_function = nil)
+      def get(targets, from, to, options = {})
         to = to || Time.now.to_i
         datapoints = []
         targets.each do |target|

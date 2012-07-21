@@ -5,7 +5,7 @@ module Sources
       # Returns ruby hash:
       #  * value (boolean) mandatory
       #  * label (string) optional
-      def get
+      def get(options = {})
       end
 
     end

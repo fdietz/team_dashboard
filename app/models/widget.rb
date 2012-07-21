@@ -3,7 +3,8 @@ class Widget < ActiveRecord::Base
   store :settings, :accessors => [
     :source1, :source2, :source3, :label1, :label2, :label3, # number widget
     :targets1, :targets2, :aggregate_function1, :aggregate_function2, # counter widget
-    :graph_type # graph widget
+    :graph_type, # graph widget
+    :http_proxy_url1, :http_proxy_url2, :http_proxy_url3 # http_proxy source supported by all widgets
   ]
 
   validates :name, :presence => true

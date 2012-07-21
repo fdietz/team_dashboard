@@ -8,7 +8,7 @@ module Sources
         @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
       end
 
-      def get(targets, from, to)
+      def get(targets, from, to, options = {})
         JSON.parse(request_datapoints(targets, from, to))
       end
 

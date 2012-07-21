@@ -21,9 +21,13 @@
         if (this.model) {
           this.model.off();
         }
-        this.model = new models.Number({ source: this.getSource() });
+        this.model = new models.Number({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl() });
         this.model.on('change', this.render);
       }
+    },
+
+    getHttpProxyUrl: function() {
+      return this.widget.get("http_proxy_url" + this.number);
     },
 
     getSource: function() {

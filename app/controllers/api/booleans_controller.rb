@@ -3,8 +3,12 @@ module Api
 
     def show
       plugin = Sources.boolean_plugin(params[:source])
-      result = plugin.get
-      respond_with(result.to_json)
+      result = plugin.get(params)
+      if result
+        respond_with(result.to_json)
+      else
+        head 500
+      end
     end
 
   end
