@@ -52,7 +52,7 @@ All widgets have a name, time interval in which to update themselves and a data 
 ### Graph Widget
 The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
-It currently only supports a Demo data source and [Graphite](http://graphite.wikidot.com/).
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and the http proxy source.
 
 #### Configuration
 <table>
@@ -85,7 +85,7 @@ It currently only supports a Demo data source and [Graphite](http://graphite.wik
 ### Counter Widget
 Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
 
-It currently only supports a Demo data source and [Graphite](http://graphite.wikidot.com/).
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and the http proxy source.
 
 #### Configuration
 <table>
@@ -177,7 +177,7 @@ The datapoints source supports data for rendering graphs and aggregated values. 
         result = []
         targets.each do |target|
           # retrieve the actual data here
-          result << { 'target' => "demo.example1", 'datapoints' => [[1, 123456], [1, 123466]] }
+          result << { 'target' => "demo.example1", 'datapoints' => [[1, 123456], [7, 123466]] }
         end
         result
       end
@@ -208,6 +208,43 @@ The boolean data source supports a single boolean value and an optional label.
 ## Create your own Data Source
 
 Create a data source ruby file under app/models/sources. As long as it extends from the specific base class (for example Sources::Boolean::Base) it will be automatically available.
+
+## HTTP Proxy Source
+As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
+
+### Datapoints
+The datapoints source supports data for rendering graphs and aggregated values
+
+    [
+      {
+        "target" : "demo.example",
+        "datapoints" : [
+          [1,123456], [7,23466]
+        ]
+      },
+      {
+        "target" : "demo.example2",
+        "datapoints" : [
+          [-6,123456], [8,23466]
+        ]
+      }
+    ]
+
+### Number
+The number data source supports a single integer value and an optional label.
+
+    {
+      "value" : 8,
+      "label" : "This is an example label"
+    }
+
+### Boolean
+The boolean data source supports a single boolean value and an optional label.
+
+    {
+      "value" : true,
+      "label" : "This is an example label"
+    }
 
 ## The MIT License
 
