@@ -12,6 +12,10 @@
       collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
     },
 
+    validate: function() {
+      return this.form.validate();
+    },
+
     render: function() {
       this.form = new Backbone.Form({
         data  : this.model.toJSON(),
@@ -70,7 +74,7 @@
 
     getSchema: function() {
       return {
-        name:             'Text',
+        name: { title: "Text", validators: ["required"] },
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
@@ -83,7 +87,7 @@
         },
         source: { title: "Source", type: 'Select', options: this.getSources() },
 
-        targets1: { title: "Targets 1", type: 'Text' },
+        targets1: { title: "Targets 1", type: 'Text', validators: ["required"] },
         aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
 
         targets2: { title: "Targets 2", type: 'Text' },

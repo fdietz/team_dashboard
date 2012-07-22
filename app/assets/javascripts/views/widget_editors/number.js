@@ -13,6 +13,10 @@
       _.bindAll(this, "sourceChanged", "render");
     },
 
+    validate: function() {
+      return this.form.validate();
+    },
+
     sourceChanged: function(event) {
       var value  = this.$(event.target).val(),
           id     = this.$(event.target).attr("id"),
@@ -75,23 +79,36 @@
     },
 
     getSchema: function() {
-      return {
-        name: 'Text',
+      var that = this;
+      var err = { type: 'required', message: 'Required' };
+
+      var sourceFormBuilder = function(number) {
+        var result = {};
+        result["source" + number] = { title: "Source " + number, type: 'Select', options: that.getSources() };
+        result["http_proxy_url" + number] = {
+          title: "Proxy URL " + number,
+          type: "Text",
+          validators: [ function checkHttpProxyUrl(value, formValues) {
+            if (formValues.source1 === "http_proxy" && value.length === 0) { return err; }
+          }]
+        };
+        result["label" + number] = { title: "Default Label " + number, type: 'Text' };
+        return result;
+      };
+
+      var result = {
+        name: { title: "Text", validators: ["required"] },
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
           options: this.getUpdateIntervalOptions()
-        },
-        source1: { title: "Source 1", type: 'Select', options: this.getSources() },
-        http_proxy_url1: {  title: "Proxy URL 1", type: "Text" },
-        label1: { title: "Default Label 1", type: 'Text' },
-        source2: { title: "Source 2", type: 'Select', options: this.getSources() },
-        http_proxy_url2: {  title: "Proxy URL 2", type: "Text" },
-        label2: { title: "Default Label 2", type: 'Text' },
-        source3: { title: "Source 3", type: 'Select', options: this.getSources() },
-        http_proxy_url3: {  title: "Proxy URL 3", type: "Text" },
-        label3: { title: "Default Label 3", type: 'Text' }
+        }
       };
+
+      result = _.extend(result, sourceFormBuilder(1));
+      result = _.extend(result, sourceFormBuilder(2));
+      result = _.extend(result, sourceFormBuilder(3));
+      return result;
     }
 
   });

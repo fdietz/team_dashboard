@@ -29,6 +29,10 @@
       return this;
     },
 
+    validate: function() {
+      return this.form.validate();
+    },
+
     getValue: function() {
       return this.form.getValue();
     },
@@ -86,7 +90,7 @@
 
     getSchema: function() {
       return {
-        name:             'Text',
+        name: { title: "Text", validators: ["required"] },
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
@@ -100,7 +104,7 @@
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
         source: { title: "Source", type: 'Select', options: this.getSources() },
-        targets: { title: "Targets", type: 'Text' }
+        targets: { title: "Targets", type: 'Text', validators: ["required"] }
       };
     },
 
