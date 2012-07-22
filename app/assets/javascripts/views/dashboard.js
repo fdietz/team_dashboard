@@ -54,11 +54,16 @@
     },
 
     removeDashboard: function() {
-      var result = this.model.destroy({
-        success: function(model, request) {
-          window.app.router.navigate("/dashboards", { trigger: true });
+      bootbox.animate(false);
+      bootbox.confirm("Do you want to delete this dashboard?", "Cancel", "Delete", _.bind(function(result) {
+        if (result) {
+          this.model.destroy({
+            success: function(model, request) {
+              window.app.router.navigate("/dashboards", { trigger: true });
+            }
+          });
         }
-      });
+      }, this));
     },
 
     toTitleCase: function(str) {
