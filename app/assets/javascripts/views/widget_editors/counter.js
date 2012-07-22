@@ -9,7 +9,7 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "sourceChanged");
+      _.bindAll(this, "render", "sourceChanged", "showConnectionError");
       this.metricsCollection1 = new collections.Metric({ source: this.model.get("source1")});
       this.metricsCollection2 = new collections.Metric({ source: this.model.get("source2")});
     },
@@ -19,22 +19,25 @@
     },
 
     render: function() {
+      var flash = "<div id='modal-flash' class='alert alert-error' style='display:none;'></div>";
       this.form = new Backbone.Form({
         data  : this.model.toJSON(),
         schema: this.getSchema()
       });
-      this.$el.html(this.form.render().el);
+      this.$el.html(flash);
+      this.$el.append(this.form.render().el);
 
-      this.$sourceSelect1 = this.$('select#source1');
-      this.$sourceSelect2 = this.$('select#source2');
-      this.$targetInput1 = this.$('input#targets1');
-      this.$targetInput2 = this.$('input#targets2');
-      this.$targetInputField1 = this.$('.field-targets1');
+      this.$flash                    = this.$("#modal-flash");
+      this.$sourceSelect1           = this.$('select#source1');
+      this.$sourceSelect2           = this.$('select#source2');
+      this.$targetInput1            = this.$('input#targets1');
+      this.$targetInput2            = this.$('input#targets2');
+      this.$targetInputField1       = this.$('.field-targets1');
       this.$aggregateFunctionField1 = this.$('.field-aggregate_function1');
-      this.$httpProxyUrlField1 = this.$(".field-http_proxy_url1");
-      this.$targetInputField2 = this.$('.field-targets2');
+      this.$httpProxyUrlField1      = this.$(".field-http_proxy_url1");
+      this.$targetInputField2       = this.$('.field-targets2');
       this.$aggregateFunctionField2 = this.$('.field-aggregate_function2');
-      this.$httpProxyUrlField2 = this.$(".field-http_proxy_url2");
+      this.$httpProxyUrlField2      = this.$(".field-http_proxy_url2");
 
       this.updateSourceFormControls(1, this.$sourceSelect1.val());
       this.updateSourceFormControls(2, this.$sourceSelect2.val());
@@ -104,9 +107,11 @@
             if (formValues.source1 === "http_proxy" && value.length === 0) { return err; }
           }]
         },
-        targets1: { title: "Targets 1", type: 'Text', validators: ["required"] },
+        targets1: { title: "Targets 1", type: 'Text', validators: [ function(value, formValues) {
+            if (formValues.source === "demo" || formValues.source === "graphite" && value.length === 0) { return err; }
+          }
+        ]},
         aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
-
         source2: { title: "Source 2", type: 'Select', options: this.getSources() },
         http_proxy_url2: {
           title: "Proxy URL 2",
@@ -115,7 +120,10 @@
             if (formValues.source2 === "http_proxy" && value.length === 0) { return err; }
           }]
         },
-        targets2: { title: "Targets 2", type: 'Text' },
+        targets2: { title: "Targets 2", type: 'Text', validators: [ function(value, formValues) {
+            if (formValues.source === "demo" || formValues.source === "graphite" && value.length === 0) { return err; }
+          }
+        ]},
         aggregate_function2: { title: "Aggregate Function 2", type: 'Select', options: this.getAggregateOptions() }
       };
     },
@@ -135,11 +143,11 @@
           targetInput            = this["$targetInput" + number],
           metrics                = this["metricsCollection" + number];
 
-      var sourceSupportsTarget   = function(source) {
+      var sourceSupportsTarget   = function() {
         return (source === "demo" || source === "graphite");
       };
 
-      if (sourceSupportsTarget(source)) {
+      if (sourceSupportsTarget()) {
         httpProxyUrlField.hide();
         targetInputField.show();
         aggregateFunctionField.show();
@@ -155,12 +163,26 @@
     },
 
     updateAutocompleteTargets: function(number) {
-      var metrics = this["metricsCollection" + number];
-      metrics.source = this.$sourceSelect1.val();
-      metrics.fetch({ success: _.bind(function() {
-        this["$targetInput" + number].select2({ tags: metrics.autocomplete_names(), width: "17em" });
-      }, this)});
+      var metrics = this["metricsCollection" + number],
+          source  = this["$sourceSelect" + number].val(),
+          options = { suppressErrors: true };
+      metrics.source = source;
+      metrics.fetch(options)
+        .done(_.bind(function() {
+          this["$targetInput" + number].select2({ tags: metrics.autocomplete_names(), width: "17em" });
+        }, this))
+        .error(this.showConnectionError);
+    },
+
+    showConnectionError: function() {
+      var that    = this,
+          message = JSON.parse(arguments[0].responseText).message;
+
+      this.$flash.html("<p>Error while retrieving available targets: " + message + "</p>");
+      this.$flash.slideDown();
+      window.setTimeout(function() { that.$flash.fadeOut(); }, 10000);
     }
+
 
   });
 

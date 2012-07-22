@@ -8,7 +8,7 @@ module Api
       source  = params[:source]
 
       plugin = Sources.datapoints_plugin(source)
-      datapoints = plugin.get(targets, from.to_i, to.to_i)
+      datapoints = plugin.get(targets, from.to_i, to.to_i, params)
 
       respond_with datapoints.to_json
     end

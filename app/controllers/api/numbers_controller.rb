@@ -7,7 +7,7 @@ module Api
       if result
         respond_with(result.to_json)
       else
-        head 500
+        respond_with({ :message => "No Data available" }.to_json, 500)
       end
     end
 

@@ -5,14 +5,6 @@ module Sources
 
   TYPES = %w(boolean datapoints number targets)
 
-  # require all source plugins
-  def eager_require
-    TYPES.each do |type|
-      path = Rails.root.join("app/models/sources/#{type}")
-      Dir["#{path}/*"].each { |f| require f }
-    end
-  end
-
   # def boolean_source_names
   #   source_names("boolean")
   # end
@@ -34,7 +26,8 @@ module Sources
   protected
 
   def source_names(type)
-    "Sources::#{type.camelize}::Base".constantize.descendants.map { |clazz| clazz_name(clazz) }
+    path = Rails.root.join("app/models/sources/#{type}")
+    Dir["#{path}/*"].map { |f| File.basename(f, '.*') }.reject! { |name| name == "base" }
   end
 
   def plugin_clazz(type, name)

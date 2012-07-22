@@ -8,22 +8,25 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "sourceChanged");
+      _.bindAll(this, "render", "sourceChanged", "showConnectionError");
 
       // TODO: why is graph.js setting the source of metrics collection?
       collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
     },
 
     render: function() {
+      var flash = "<div id='modal-flash' class='alert alert-error' style='display:none;'></div>";
       this.form = new Backbone.Form({
         data  : this.model.toJSON(),
         schema: this.getSchema()
       });
-      this.$el.html(this.form.render().el);
+      this.$el.html(flash);
+      this.$el.append(this.form.render().el);
 
-      this.$targetInput = this.$('input#targets');
-      this.$targetInputField = this.$('.field-targets');
-      this.$sourceSelect = this.$('select#source');
+      this.$flash             = this.$("#modal-flash");
+      this.$targetInput       = this.$('input#targets');
+      this.$targetInputField  = this.$('.field-targets');
+      this.$sourceSelect      = this.$('select#source');
       this.$httpProxyUrlField = this.$(".field-http_proxy_url");
 
       this.sourceChanged();
@@ -114,13 +117,18 @@
             if (formValues.source === "http_proxy" && value.length === 0) { return err; }
           }]
         },
-        targets: { title: "Targets", type: 'Text', validators: ["required"] }
+        targets: { title: "Targets", type: 'Text', validators: [ function(value, formValues) {
+            if (formValues.source === "demo" || formValues.source === "graphite" && value.length === 0) { return err; }
+          }
+        ]}
       };
     },
 
     sourceChanged: function(event) {
-      var that = this;
-      var source = this.$sourceSelect.val();
+      var that    = this,
+          source  = this.$sourceSelect.val(),
+          options = { suppressErrors: true };
+
       if (source === "demo" || source === "graphite") {
         this.$httpProxyUrlField.hide();
         this.$targetInputField.show();
@@ -129,13 +137,24 @@
         }
 
         collections.metrics.source = source;
-        collections.metrics.fetch().done(function() {
+        collections.metrics.fetch(options)
+        .done(function() {
           that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-        });
+        })
+        .error(this.showConnectionError);
       } else if (source === "http_proxy") {
         this.$targetInputField.hide();
         this.$httpProxyUrlField.show();
       }
+    },
+
+    showConnectionError: function() {
+      var that    = this,
+          message = JSON.parse(arguments[0].responseText).message;
+
+      this.$flash.html("<p>Error while retrieving available targets: " + message + "</p>");
+      this.$flash.slideDown();
+      window.setTimeout(function() { that.$flash.fadeOut(); }, 10000);
     }
 
   });

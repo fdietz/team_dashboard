@@ -44,6 +44,7 @@
 
       var validationResult = this.editor.validate();
       if (validationResult) {
+        console.log("validation error", validationResult);
       } else {
         this.$modal.modal("hide");
         var formResult = this.editor.getValue();
