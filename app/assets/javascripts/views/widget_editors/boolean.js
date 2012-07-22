@@ -89,7 +89,7 @@
           title: "Proxy URL " + number,
           type: "Text",
           validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues.source1 === "http_proxy" && value.length === 0) { return err; }
+            if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
           }]
         };
         result["label" + number] = { title: "Default Label " + number, type: 'Text' };
