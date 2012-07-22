@@ -108,7 +108,7 @@
           }]
         },
         targets1: { title: "Targets 1", type: 'Text', validators: [ function(value, formValues) {
-            if (formValues.source === "demo" || formValues.source === "graphite" && value.length === 0) { return err; }
+            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
           }
         ]},
         aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
@@ -121,7 +121,7 @@
           }]
         },
         targets2: { title: "Targets 2", type: 'Text', validators: [ function(value, formValues) {
-            if (formValues.source === "demo" || formValues.source === "graphite" && value.length === 0) { return err; }
+            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
           }
         ]},
         aggregate_function2: { title: "Aggregate Function 2", type: 'Select', options: this.getAggregateOptions() }
@@ -147,7 +147,7 @@
         return (source === "demo" || source === "graphite");
       };
 
-      if (sourceSupportsTarget()) {
+      if (source === "demo" || source === "graphite") {
         httpProxyUrlField.hide();
         targetInputField.show();
         aggregateFunctionField.show();
@@ -155,8 +155,12 @@
           targetInput.val("");
         }
         this.updateAutocompleteTargets(number);
-      } else {
+      } else if (source === "http_proxy") {
         httpProxyUrlField.show();
+        targetInputField.hide();
+        aggregateFunctionField.hide();
+      } else {
+        httpProxyUrlField.hide();
         targetInputField.hide();
         aggregateFunctionField.hide();
       }

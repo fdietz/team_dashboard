@@ -29,7 +29,7 @@
       this.$sourceSelect      = this.$('select#source');
       this.$httpProxyUrlField = this.$(".field-http_proxy_url");
 
-      this.sourceChanged();
+      this.updateSourceFormControls(this.$sourceSelect.val());
 
       return this;
     },
@@ -117,17 +117,21 @@
             if (formValues.source === "http_proxy" && value.length === 0) { return err; }
           }]
         },
-        targets: { title: "Targets", type: 'Text', validators: [ function(value, formValues) {
-            if (formValues.source === "demo" || formValues.source === "graphite" && value.length === 0) { return err; }
+        targets: { title: "Targets", type: 'Text', validators: [ function checkTargets(value, formValues) {
+            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
           }
         ]}
       };
     },
 
     sourceChanged: function(event) {
-      var that    = this,
-          source  = this.$sourceSelect.val(),
-          options = { suppressErrors: true };
+      var source  = this.$sourceSelect.val();
+      this.updateSourceFormControls(source);
+    },
+
+    updateSourceFormControls: function(source) {
+      var options = { suppressErrors: true },
+          that    = this;
 
       if (source === "demo" || source === "graphite") {
         this.$httpProxyUrlField.hide();
@@ -145,6 +149,9 @@
       } else if (source === "http_proxy") {
         this.$targetInputField.hide();
         this.$httpProxyUrlField.show();
+      } else {
+        this.$targetInputField.hide();
+        this.$httpProxyUrlField.hide();
       }
     },
 
