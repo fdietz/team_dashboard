@@ -21,7 +21,7 @@
     },
 
     updateModels: function() {
-      if (this.model.get('source') && this.getTargets()) {
+      if (this.getSource() && this.getTargets()) {
         this.updatePrimaryModel();
         this.updateSecondaryModel();
       }
@@ -39,12 +39,20 @@
       return TimeSelector.getCurrent();
     },
 
+    getSource: function() {
+      return this.model.get('source' + this.number);
+    },
+
     getTargets: function() {
       return this.model.get('targets' + this.number);
     },
 
     getAggregateFunction: function() {
       return this.model.get('aggregate_function' + this.number);
+    },
+
+    getHttpProxyUrl: function() {
+      return this.model.get("http_proxy_url" + this.number);
     },
 
     updatePrimaryModel: function() {
@@ -54,10 +62,11 @@
 
       this.primaryModel = new models.Counter({
         targets: this.getTargets(),
-        source: this.model.get('source'),
+        source: this.getSource(),
         aggregate_function: this.getAggregateFunction(),
         from: this.from(),
-        to: this.to()
+        to: this.to(),
+        http_proxy_url: this.getHttpProxyUrl()
       });
 
       this.primaryModel.on('change', this.render);
@@ -71,10 +80,11 @@
       this.secondaryModel = new models.Counter({
         time: this.model.get('time'),
         targets: this.getTargets(),
-        source: this.model.get('source'),
+        source: this.getSource(),
         aggregate_function: this.getAggregateFunction(),
         from: this.previousFrom(),
-        to: this.from()
+        to: this.from(),
+        http_proxy_url: this.getHttpProxyUrl()
       });
     },
 

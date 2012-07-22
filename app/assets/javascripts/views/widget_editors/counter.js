@@ -4,12 +4,14 @@
   views.WidgetEditors.Counter = Backbone.View.extend({
 
     events: {
-      "change #source"     : "sourceChanged"
+      "change #source1"     : "sourceChanged",
+      "change #source2"     : "sourceChanged"
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "prefillAutocomplete", "sourceChanged");
-      collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
+      _.bindAll(this, "render", "sourceChanged");
+      this.metricsCollection1 = new collections.Metric({ source: this.model.get("source1")});
+      this.metricsCollection2 = new collections.Metric({ source: this.model.get("source2")});
     },
 
     validate: function() {
@@ -23,11 +25,19 @@
       });
       this.$el.html(this.form.render().el);
 
-      this.$sourceSelect = this.$('#source');
-      this.$targetInput1 = this.$('#targets1');
-      this.$targetInput2 = this.$('#targets2');
+      this.$sourceSelect1 = this.$('select#source1');
+      this.$sourceSelect2 = this.$('select#source2');
+      this.$targetInput1 = this.$('input#targets1');
+      this.$targetInput2 = this.$('input#targets2');
+      this.$targetInputField1 = this.$('.field-targets1');
+      this.$aggregateFunctionField1 = this.$('.field-aggregate_function1');
+      this.$httpProxyUrlField1 = this.$(".field-http_proxy_url1");
+      this.$targetInputField2 = this.$('.field-targets2');
+      this.$aggregateFunctionField2 = this.$('.field-aggregate_function2');
+      this.$httpProxyUrlField2 = this.$(".field-http_proxy_url2");
 
-      this.prefillAutocomplete();
+      this.updateSourceFormControls(1, this.$sourceSelect1.val());
+      this.updateSourceFormControls(2, this.$sourceSelect2.val());
 
       return this;
     },
@@ -73,6 +83,7 @@
     },
 
     getSchema: function() {
+      var err = { type: 'required', message: 'Required' };
       return {
         name: { title: "Text", validators: ["required"] },
         update_interval:  {
@@ -85,36 +96,70 @@
           type: 'Select',
           options: this.getPeriodOptions()
         },
-        source: { title: "Source", type: 'Select', options: this.getSources() },
-
+        source1: { title: "Source 1", type: 'Select', options: this.getSources() },
+        http_proxy_url1: {
+          title: "Proxy URL 1",
+          type: "Text",
+          validators: [ function checkHttpProxyUrl(value, formValues) {
+            if (formValues.source1 === "http_proxy" && value.length === 0) { return err; }
+          }]
+        },
         targets1: { title: "Targets 1", type: 'Text', validators: ["required"] },
         aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
 
+        source2: { title: "Source 2", type: 'Select', options: this.getSources() },
+        http_proxy_url2: {
+          title: "Proxy URL 2",
+          type: "Text",
+          validators: [ function checkHttpProxyUrl(value, formValues) {
+            if (formValues.source2 === "http_proxy" && value.length === 0) { return err; }
+          }]
+        },
         targets2: { title: "Targets 2", type: 'Text' },
         aggregate_function2: { title: "Aggregate Function 2", type: 'Select', options: this.getAggregateOptions() }
       };
     },
 
-    prefillAutocomplete: function() {
-      var that = this;
-      if (!collections.metrics.isFetched) {
-        collections.metrics.fetch({ success: that.prefillAutocomplete });
-        return;
-      }
-      this.$targetInput1.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-      this.$targetInput2.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
+    sourceChanged: function() {
+      var source   = this.$(event.target).val(),
+          id       = this.$(event.target).attr("id"),
+          number   = parseInt(id.charAt(id.length-1), 10);
+
+      this.updateSourceFormControls(number, source);
     },
 
-    sourceChanged: function() {
-      var that = this;
-      this.$targetInput1.val("");
-      this.$targetInput2.val("");
+    updateSourceFormControls: function(number, source) {
+      var httpProxyUrlField      = this["$httpProxyUrlField" + number],
+          targetInputField       = this["$targetInputField" + number],
+          aggregateFunctionField = this["$aggregateFunctionField" + number],
+          targetInput            = this["$targetInput" + number],
+          metrics                = this["metricsCollection" + number];
 
-      collections.metrics.source = this.$sourceSelect.val();
-      collections.metrics.fetch().done(function() {
-        that.$targetInput1.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-        that.$targetInput2.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-      });
+      var sourceSupportsTarget   = function(source) {
+        return (source === "demo" || source === "graphite");
+      };
+
+      if (sourceSupportsTarget(source)) {
+        httpProxyUrlField.hide();
+        targetInputField.show();
+        aggregateFunctionField.show();
+        if (metrics.source !== source) {
+          targetInput.val("");
+        }
+        this.updateAutocompleteTargets(number);
+      } else {
+        httpProxyUrlField.show();
+        targetInputField.hide();
+        aggregateFunctionField.hide();
+      }
+    },
+
+    updateAutocompleteTargets: function(number) {
+      var metrics = this["metricsCollection" + number];
+      metrics.source = this.$sourceSelect1.val();
+      metrics.fetch({ success: _.bind(function() {
+        this["$targetInput" + number].select2({ tags: metrics.autocomplete_names(), width: "17em" });
+      }, this)});
     }
 
   });

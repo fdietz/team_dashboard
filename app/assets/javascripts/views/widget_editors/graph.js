@@ -8,7 +8,7 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "prefillAutocomplete", "sourceChanged");
+      _.bindAll(this, "render", "sourceChanged");
 
       // TODO: why is graph.js setting the source of metrics collection?
       collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
@@ -21,10 +21,12 @@
       });
       this.$el.html(this.form.render().el);
 
-      this.$targetInput = this.$('#targets');
-      this.$sourceSelect = this.$('#source');
+      this.$targetInput = this.$('input#targets');
+      this.$targetInputField = this.$('.field-targets');
+      this.$sourceSelect = this.$('select#source');
+      this.$httpProxyUrlField = this.$(".field-http_proxy_url");
 
-      this.prefillAutocomplete();
+      this.sourceChanged();
 
       return this;
     },
@@ -89,6 +91,7 @@
     },
 
     getSchema: function() {
+      var err = { type: 'required', message: 'Required' };
       return {
         name: { title: "Text", validators: ["required"] },
         update_interval:  {
@@ -104,27 +107,35 @@
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
         source: { title: "Source", type: 'Select', options: this.getSources() },
+        http_proxy_url: {
+          title: "Proxy URL",
+          type: "Text",
+          validators: [ function checkHttpProxyUrl(value, formValues) {
+            if (formValues.source === "http_proxy" && value.length === 0) { return err; }
+          }]
+        },
         targets: { title: "Targets", type: 'Text', validators: ["required"] }
       };
     },
 
-    prefillAutocomplete: function() {
+    sourceChanged: function(event) {
       var that = this;
-      if (!collections.metrics.isFetched) {
-        collections.metrics.fetch({ success: that.prefillAutocomplete });
-        return;
+      var source = this.$sourceSelect.val();
+      if (source === "demo" || source === "graphite") {
+        this.$httpProxyUrlField.hide();
+        this.$targetInputField.show();
+        if (collections.metrics.source !== source) {
+          this.$targetInput.val("");
+        }
+
+        collections.metrics.source = source;
+        collections.metrics.fetch().done(function() {
+          that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
+        });
+      } else if (source === "http_proxy") {
+        this.$targetInputField.hide();
+        this.$httpProxyUrlField.show();
       }
-      this.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-    },
-
-    sourceChanged: function() {
-      var that = this;
-      this.$targetInput.val("");
-
-      collections.metrics.source = this.$sourceSelect.val();
-      collections.metrics.fetch().done(function() {
-        that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-      });
     }
 
   });

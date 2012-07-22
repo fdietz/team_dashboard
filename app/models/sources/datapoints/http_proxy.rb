@@ -1,6 +1,6 @@
 module Sources
-  module Number
-    class HttpProxy < Sources::Number::Base
+  module Datapoints
+    class HttpProxy < Sources::Datapoints::Base
       def get(options = {})
         Sources::HttpProxy.request(options.fetch(:http_proxy_url))
       end
