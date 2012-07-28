@@ -8,6 +8,8 @@ It has built-in support for [Graphite](http://graphite.wikidot.com/) and makes i
 
 It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.
 
+Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!forum/team_dashboard)
+
 ## Getting Started
 
 Clone the repository:
