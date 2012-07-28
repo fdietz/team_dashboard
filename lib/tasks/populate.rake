@@ -9,30 +9,25 @@ task :populate => :environment do
   target1 = "demo.example1"
   target2 = "demo.example2"
 
-  d1 = Dashboard.create!(:name => "Example 1 Line Graph Widget")
-  d1.widgets.create!(:name => "Page Visits", :targets => target1, :source => 'demo')
+  d1 = Dashboard.create!(:name => "Example 1 (Graph Widgets)")
+  d1.widgets.create!(:name => "Single Target Line Graph", :targets => target1, :size => 1, :source => 'demo')
+  d1.widgets.create!(:name => "Two Targets Line Graph", :targets => [target1, target2].join(','), :size => 2, :source => 'demo')
+  d1.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(','), :size => 3, :source => 'demo', :graph_type => 'stack')
 
-  d3 = Dashboard.create!(:name => "Example 2 Combined Line Graph Widget")
-  d3.widgets.create!(:name => "Page Visits/Send Invoices", :targets => [target1, target2].join(','), :source => 'demo')
-
-  d4 = Dashboard.create!(:name => "Example 3 Combined, 2 Line Graphs")
-  d4.widgets.create!(:name => "Page Visits", :targets => target1, :size => 1, :source => 'demo')
-  d4.widgets.create!(:name => "Send Invoices", :targets => target2, :size => 2, :source => 'demo')
-
-  d5 = Dashboard.create!(:name => "Example 4 Combined, 3 Line Graphs")
-  d5.widgets.create!(:name => "Page Visits", :targets => target1, :size => 1, :source => 'demo')
-  d5.widgets.create!(:name => "Send Invoices", :targets => target2, :size => 2, :source => 'demo')
-  d5.widgets.create!(:name => "Page Visits/Send Invoices", :targets => [target1, target2].join(','), :size => 3, :source => 'demo')
-
-  d6 = Dashboard.create!(:name => "Example 5 Counter Widget")
-  d6.widgets.create!(:name => "Page Visits", :targets => target1, :kind => 'counter', :source => 'demo')
-
-  d6 = Dashboard.create!(:name => "Example 6 Combined Counter Widget")
-  d6.widgets.create!(:name => "Page Visits", :targets => [target1, target2].join(','), :kind => 'counter', :source => 'demo')
-
-  d7 = Dashboard.create!(:name => "Example 7 Number Widget")
-  d7.widgets.create!(:name => "Page Visits", :kind => 'number', :source1 => 'demo')
-
-  d8 = Dashboard.create!(:name => "Example 7 Boolean Widget")
-  d8.widgets.create!(:name => "Page Visits", :kind => 'boolean', :source2 => 'demo')
+  d2 = Dashboard.create!(:name => "Example 2 (Counters, Numbers, Boolean and Graph Widgets)")
+  d2.widgets.create!(:name => "Counter", :kind => 'counter',
+    :source1 => 'demo', :targets1 => target1, :aggregate_function1 => 'sum',
+    :source2 => 'demo', :targets2 => target2, :aggregate_function2 => 'average'
+  )
+  d2.widgets.create!(:name => "Number", :kind => 'number',
+    :source1 => 'demo', :label1 => "Total Errors all time",
+    :source2 => 'demo', :label2 => "Errors per day",
+    :source3 => 'demo', :label3 => "Errors per minute"
+  )
+  d2.widgets.create!(:name => "Boolean", :kind => 'boolean', :source2 => 'demo',
+    :source1 => 'demo', :label1 => "Web App Jenkins Build",
+    :source2 => 'demo', :label2 => "DB Health",
+    :source3 => 'demo', :label3 => "App Status"
+  )
+  d2.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(','), :size => 3, :source => 'demo', :graph_type => 'stack')
 end
