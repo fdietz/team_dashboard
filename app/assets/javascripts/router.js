@@ -49,7 +49,6 @@
     dashboardsIndex: function() {
       var that = this;
       app.collections.dashboards.fetch().done(function() {
-        console.log(app.collections.dashboards)
         var dashboardsView = new app.views.Dashboards({ collection: app.collections.dashboards });
         that.showView(dashboardsView);
       });

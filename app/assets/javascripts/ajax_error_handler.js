@@ -16,6 +16,7 @@
     }
     var errorsView = new views.Errors({ message: message });
     $('#flash').html(errorsView.render().el);
+    window.setTimeout(function() { $('#flash').fadeOut(); }, 10000);
   });
 
 })($, _, Backbone, window.app.views);
