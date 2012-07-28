@@ -8,13 +8,10 @@ gem 'less-rails-bootstrap'
 gem "rails-backbone"
 gem "handlebars_assets"
 
-gem 'jbuilder'
-
 gem 'mysql2'
 
-group :development do
-  gem 'thin'
-end
+gem 'thin'
+gem 'foreman'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.0"

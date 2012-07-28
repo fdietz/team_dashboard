@@ -1,0 +1,18 @@
+default: &mysql
+  adapter: mysql2
+  pool: 5
+  timeout: 5000
+  user: root
+  password:
+
+development:
+  <<: *mysql
+  database: team_dashboard_development
+
+test:
+  <<: *mysql
+  database: team_dashboard_test
+
+production:
+  <<: *mysql
+  database: team_dashboard_production

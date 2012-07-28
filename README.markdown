@@ -2,9 +2,9 @@
 
 Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshot](https://github.com/fdietz/team_dashboard/raw/master/gh-pages/screenshot.png)).
 
-This beta version leverages Graphite as the first input source to display graphs and other widgets.
+It has built-in support for [Graphite](http://graphite.wikidot.com/) and makes it really easy to add more input sources.
 
-It is implemented as a Rails app and uses MySQL to store your custom dashboards.
+It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.
 
 ## Getting Started
 
@@ -16,10 +16,13 @@ Run bundler:
 
     bundle install
 
+Create a database.yml from the example config:
+
+    cp config/database.example.yml config/database.yml
+
 Create the database and run migrations:
 
-    rake db:create
-    rake db:migrate
+    rake db:create && rake db:migrate
 
 There is an initial "Demo" source and sample dashboards provided. Generate these via:
 
