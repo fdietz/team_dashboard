@@ -99,7 +99,7 @@
           type: 'Select',
           options: this.getPeriodOptions()
         },
-        source1: { title: "Source 1", type: 'Select', options: this.getSources() },
+        source1: { title: "Source 1", type: 'Select', options: this.getSources(), validators: ["required"] },
         http_proxy_url1: {
           title: "Proxy URL 1",
           type: "Text",

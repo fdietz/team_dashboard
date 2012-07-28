@@ -109,7 +109,7 @@
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
-        source: { title: "Source", type: 'Select', options: this.getSources() },
+        source: { title: "Source", type: 'Select', options: this.getSources(), validators: ["required"] },
         http_proxy_url: {
           title: "Proxy URL",
           type: "Text",

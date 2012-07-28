@@ -84,7 +84,14 @@
 
       var sourceFormBuilder = function(number) {
         var result = {};
-        result["source" + number] = { title: "Source " + number, type: 'Select', options: that.getSources() };
+        result["source" + number] = {
+          title: "Source " + number,
+          type: 'Select',
+          options: that.getSources(),
+          validators: [function requiredSource(value, formValues) {
+            if (number === 1 && value.length === 0 ) { return err; }
+          }]
+        };
         result["http_proxy_url" + number] = {
           title: "Proxy URL " + number,
           type: "Text",
