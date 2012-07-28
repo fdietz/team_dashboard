@@ -53,6 +53,6 @@ module TeamDashboard
 
     config.available_sources = ['demo', 'graphite']
     config.source = ENV['SOURCE'] || 'graphite'
-    config.graphite_url = ENV['GRAPHITE_URL'] || 'http://localhost:8080'
+    config.graphite_url = ENV['GRAPHITE_URL']
   end
 end
