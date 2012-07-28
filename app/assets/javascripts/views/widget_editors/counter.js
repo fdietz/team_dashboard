@@ -108,7 +108,7 @@
           }]
         },
         targets1: { title: "Targets 1", type: 'Text', validators: [ function(value, formValues) {
-            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
+            if ((formValues.source1 === "demo" || formValues.source1 === "graphite") && value.length === 0) { return err; }
           }
         ]},
         aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
@@ -121,7 +121,7 @@
           }]
         },
         targets2: { title: "Targets 2", type: 'Text', validators: [ function(value, formValues) {
-            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
+            if ((formValues.source2 === "demo" || formValues.source2 === "graphite") && value.length === 0) { return err; }
           }
         ]},
         aggregate_function2: { title: "Aggregate Function 2", type: 'Select', options: this.getAggregateOptions() }
