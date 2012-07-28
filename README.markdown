@@ -1,6 +1,6 @@
 # Team Dashboard
 
-Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshot](https://github.com/fdietz/team_dashboard/raw/master/gh-pages/screenshot.png)).
+Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshot](https://github.com/fdietz/team_dashboard/raw/master/gh-pages/screenshot.png)). It is build to be shown on a big screen in your team's space.
 
 [Heroku hosted Demo](http://team-dashboard.herokuapp.com/)
 
@@ -9,6 +9,8 @@ It has built-in support for [Graphite](http://graphite.wikidot.com/) and makes i
 It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.
 
 Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!forum/team_dashboard)
+
+Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
 
 ## Getting Started
 
