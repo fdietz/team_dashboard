@@ -20,4 +20,6 @@
 
 .jhw-cache
 
+.rake_tasks
+
 config/database.yml
