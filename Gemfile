@@ -8,6 +8,7 @@ gem 'less-rails-bootstrap'
 gem "rails-backbone"
 gem "handlebars_assets"
 gem "nokogiri"
+gem "newrelic_api"
 
 gem 'mysql2'
 
