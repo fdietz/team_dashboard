@@ -22,7 +22,7 @@
           id     = this.$(event.target).attr("id"),
           number = id.charAt(id.length-1),
           el     = this.$(".field-http_proxy_url"+number);
-      if (value === "http_proxy") {
+      if (value !== "demo" && value !== "graphite") {
         el.slideDown();
       } else {
         el.slideUp();
@@ -44,7 +44,7 @@
     },
 
     updateHttpProxyFieldVisibility: function(number) {
-      if (this.getSourceEl(number).val() === "http_proxy") {
+      if (this.getSourceEl(number).val() !== "demo" && this.getSourceEl(number).val() !== "graphite") {
         this.getHttpProxyFieldEl(number).show();
       } else {
         this.getHttpProxyFieldEl(number).hide();

@@ -146,7 +146,7 @@
           that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
         })
         .error(this.showConnectionError);
-      } else if (source === "http_proxy") {
+      } else if (source !== "demo" && source !== "graphite") {
         this.$targetInputField.hide();
         this.$httpProxyUrlField.show();
       } else {

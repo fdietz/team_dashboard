@@ -155,7 +155,7 @@
           targetInput.val("");
         }
         this.updateAutocompleteTargets(number);
-      } else if (source === "http_proxy") {
+      } else if (source !== "http_proxy" && source !== "graphite") {
         httpProxyUrlField.show();
         targetInputField.hide();
         aggregateFunctionField.hide();

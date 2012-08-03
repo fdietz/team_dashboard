@@ -1,9 +1,15 @@
 class NewRelicConnection
 
-  NewRelicApi.api_key = "XXXX"
+  attr_reader :api_key
 
-  def self.instance
-    @instance ||= self.new
+  def initialize(api_key)
+    @api_key = api_key
+  end
+
+  def self.instance(api_key)
+    @instances ||= {}
+    @instances[api_key] ||= self.new(api_key)
+    @instances[api_key]
   end
 
   def account
@@ -15,7 +21,7 @@ class NewRelicConnection
   end
 
   def threshold_value(name)
-    @application.threshold_values.find { |tv| tv.name == name }
+    application.threshold_values.find { |tv| tv.name == name }
   end
 
 end
