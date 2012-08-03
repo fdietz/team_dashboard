@@ -13,6 +13,7 @@ class NewRelicConnection
   end
 
   def account
+    NewRelicApi.api_key = api_key
     @account ||= NewRelicApi::Account.find(:first)
   end
 

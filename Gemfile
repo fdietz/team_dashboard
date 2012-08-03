@@ -9,6 +9,7 @@ gem "rails-backbone"
 gem "handlebars_assets"
 gem "nokogiri"
 gem "newrelic_api"
+gem "pingdom-client", :git => "git://github.com/rubymaverick/pingdom-client.git"
 
 gem 'mysql2'
 
