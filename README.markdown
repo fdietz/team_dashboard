@@ -174,7 +174,7 @@ It currently supports a demo data source and a http proxy data source.
   <tr>
 </table>
 
-### CI Widget
+### CI (Continous Integration Server) Widget
 Shows the current build status for a given project. It currently supports a demo source, Jenkins and Travis CI.
 
 #### Configuration
@@ -210,6 +210,20 @@ The datapoints source supports data for rendering graphs and aggregated values. 
     end
 
 Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.
+
+### CI (Continous Integration Server)
+The CI data source delivers build status results.
+
+    class Demo < Sources::Ci::Base
+      def get(server_url, project, options = {})
+        {
+          :label             => "Demo name",
+          :last_build_time   => Time.now.iso8601,
+          :last_build_status => 0, # success
+          :current_status    => 1  # building
+        }
+      end
+    end
 
 ### Number
 The number data source supports a single integer value and an optional label.
@@ -272,7 +286,7 @@ The boolean data source supports a single boolean value and an optional label.
       "label" : "This is an example label"
     }
 
-## Credis & Contributors
+## Credits & Contributors
 
 Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
 

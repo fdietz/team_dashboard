@@ -48,7 +48,7 @@
         value = this.model.get('last_build_status');
         return (typeof value === "undefined") ? true : value;
       } else {
-        return true;
+        return -1;
       }
     },
 
@@ -59,6 +59,7 @@
         this.$value = this.$('.ci-value');
         this.$value.toggleClass('green', this.getValue() === 0);
         this.$value.toggleClass('red', this.getValue() === 1);
+        this.$value.toggleClass('gray', this.getValue() === -1);
       }
 
       return this;
