@@ -11,6 +11,7 @@ TeamDashboard::Application.routes.draw do
 
   match "api/datapoints" => "api/datapoints#show"
   match "api/counter" => "api/counters#show"
+  match "api/ci" => "api/ci#show"
   match "api/number" => "api/numbers#show"
   match "api/boolean" => "api/booleans#show"
 

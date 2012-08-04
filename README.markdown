@@ -10,8 +10,6 @@ It is implemented as a Rails app and uses MySQL to store your custom dashboards 
 
 Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!forum/team_dashboard)
 
-Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
-
 ## Getting Started
 
 Clone the repository:
@@ -176,6 +174,25 @@ It currently supports a demo data source and a http proxy data source.
   <tr>
 </table>
 
+### CI Widget
+Shows the current build status for a given project. It currently supports a demo source, Jenkins and Travis CI.
+
+#### Configuration
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
+  <tr>
+    <td>Server URL</td>
+    <td>For Travis CI this would be for example http://travis-ci.org/ for Jenkins for example http://ci.jenkins-ci.org/</td>
+  </tr>
+  <tr>
+    <td>Project</td>
+    <td>Name of Jenkins Job (example: infra_plugin_changes_report) or Travis CI Slug (example: travis-ci/travis-ci)</td>
+  </tr>
+</table>
+
 ## Data Sources
 
 ### Datapoints
@@ -254,6 +271,10 @@ The boolean data source supports a single boolean value and an optional label.
       "value" : true,
       "label" : "This is an example label"
     }
+
+## Credis & Contributors
+
+Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
 
 ## The MIT License
 

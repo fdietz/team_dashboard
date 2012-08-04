@@ -33,4 +33,11 @@ task :populate => :environment do
     }
   )
   d2.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(','), :size => 3, :source => 'demo', :graph_type => 'stack')
+
+  d3 = Dashboard.create!(:name => "Example 3 (Jenkins and Travis CI Builds)")
+  d3.widgets.create!(:name => "Jenkins/Travis CI", :kind => 'ci', :settings => {
+    :source1 => 'jenkins', :server_url1 => "http://ci.jenkins-ci.org/", :project1 => 'infra_plugin_changes_report',
+    :source2 => 'travis', :server_url2 => "http://travis-ci.org", :project2 => 'travis-ci/travis-ci'
+    }
+  )
 end

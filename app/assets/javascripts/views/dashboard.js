@@ -75,6 +75,7 @@
     showDialog: function(event) {
       var kind = $(event.target).data("widget-kind");
       var className = this.toTitleCase(kind);
+      console.log(kind, className)
       var model = new models.Widget({ dashboard_id: this.model.id, kind: kind });
       var editor = new views.WidgetEditors[className]({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });

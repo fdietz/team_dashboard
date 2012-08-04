@@ -3,7 +3,7 @@ module Sources
 
   class UnknownPluginError < StandardError; end
 
-  TYPES = %w(boolean datapoints number targets)
+  TYPES = %w(boolean datapoints number targets ci)
 
   # def boolean_source_names
   #   source_names("boolean")

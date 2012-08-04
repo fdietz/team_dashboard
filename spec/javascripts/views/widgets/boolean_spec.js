@@ -35,7 +35,7 @@ describe("Boolean Widget View", function() {
       this.view = new window.app.views.widgets.Boolean({ model: this.model });
     });
 
-    it("fetches model again and updates view", function() {
+    it("fetches model again and updates view with red status", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
         expect(options.url).toEqual("/api/boolean?source=demo1");
@@ -45,6 +45,18 @@ describe("Boolean Widget View", function() {
       this.view.update();
       var firstRow = this.view.$(".triple-row:nth-child(1)");
       expect(firstRow.find(".boolean-value")).toHaveClass("red");
+    });
+
+    it("fetches model again and updates view with green status", function() {
+      this.view.render();
+      spyOn($, "ajax").andCallFake(function(options) {
+        expect(options.url).toEqual("/api/boolean?source=demo1");
+        options.success({ value: true });
+      });
+
+      this.view.update();
+      var firstRow = this.view.$(".triple-row:nth-child(1)");
+      expect(firstRow.find(".boolean-value")).toHaveClass("green");
     });
   });
 });
