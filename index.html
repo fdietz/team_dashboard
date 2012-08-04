@@ -73,8 +73,6 @@
 
 <p>Support via <a href="https://groups.google.com/forum/#!forum/team_dashboard">Team Dashboard Google Group</a></p>
 
-<p>Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a <a href="http://www.xing.com">XING</a> Hackathon Project.</p>
-
 <h2>Getting Started</h2>
 
 <p>Clone the repository:</p>
@@ -162,7 +160,29 @@
 <td>Targets</td>
     <td>Comma-separated targets. Also supports wildcards (example: visits.server.*).</td>
   </tr>
-</table><h3>Counter Widget</h3>
+</table>
+
+<h3>CI (Continous Integration Server) Widget</h3>
+<p>Shows the current build status for a given project. It currently supports a demo source, Jenkins and Travis CI.</p>
+
+<h4>Configuration</h4>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
+  <tr>
+    <td>Server URL</td>
+    <td>For Travis CI this would be for example http://travis-ci.org/ for Jenkins for example http://ci.jenkins-ci.org/</td>
+  </tr>
+  <tr>
+    <td>Project</td>
+    <td>Name of Jenkins Job (example: infra_plugin_changes_report) or Travis CI Slug (example: travis-ci/travis-ci)</td>
+  </tr>
+</table>
+
+
+<h3>Counter Widget</h3>
 
 <p>Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.</p>
 
@@ -195,7 +215,9 @@
 <td>Aggregate Function</td>
     <td>The values of the selected period are aggregated using selected function. Supports sum, average and delta.</td>
   </tr>
-</table><h3>Number Widget</h3>
+</table>
+
+<h3>Number Widget</h3>
 
 <p>Shows the current integer value provided by the data source and a label. The widget supports up to three values. Use it to show for the example the number of errors on specific system.</p>
 
@@ -266,6 +288,25 @@ end
 </code></pre>
 
 <p>Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.</p>
+
+<h3>CI (Continous Integration Server)</h3>
+<p>The CI data source delivers build status results.</p>
+
+<pre>
+  <code>
+class Demo < Sources::Ci::Base
+  def get(server_url, project, options = {})
+    {
+      :label             => "Demo name",
+      :last_build_time   => Time.now.iso8601,
+      :last_build_status => 0, # success
+      :current_status    => 1  # building
+    }
+  end
+end
+  </code>
+</pre>
+
 
 <h3>Number</h3>
 
@@ -338,6 +379,9 @@ end
   "label" : "This is an example label"
 }
 </code></pre>
+
+<h2>Credits and Contributors</h2>
+<p>Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a <a href="http://www.xing.com">XING</a> Hackathon Project.</p>
 
 <h2>The MIT License</h2>
 
