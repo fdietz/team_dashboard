@@ -21,13 +21,13 @@ task :populate => :environment do
     }
   )
   d2.widgets.create!(:name => "Number", :kind => 'number', :settings => {
-    :source1 => 'demo', :label1 => "Total Errors all time",
+    :source1 => 'http_proxy', :label1 => "Build duration", :http_proxy_url1 => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", :value_path1 => "duration",
     :source2 => 'demo', :label2 => "Errors per day",
     :source3 => 'demo', :label3 => "Errors per minute"
     }
   )
   d2.widgets.create!(:name => "Boolean", :kind => 'boolean', :source2 => 'demo', :settings => {
-    :source1 => 'demo', :label1 => "Web App Jenkins Build",
+    :source1 => 'http_proxy', :label1 => "Jenkins Status", :http_proxy_url1 => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", :value_path1 => "building",
     :source2 => 'demo', :label2 => "DB Health",
     :source3 => 'demo', :label3 => "App Status"
     }
