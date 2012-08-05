@@ -12,15 +12,35 @@
  *= require twitter/bootstrap
  *= require theme/index
  *= require backbone-forms-bootstrap
-
  *= require select2
  *= require rickshaw.min
  *= jquery-ui-1.8.20.custom
 
  *= require graph
-
  *= require_self
 */
+
+@import "theme/variables";
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  color: @grayDark;
+}
 
 .modal-body {
     max-height: 500px;
