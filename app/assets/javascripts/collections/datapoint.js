@@ -22,19 +22,19 @@
 
       buildTargetsParams: function() {
         return _.map(this.targetsArray, function(target) {
-          return "targets[]="+target;
+          return "targets[]=" + encodeURIComponent(target);
         }).join('&');
       },
 
       buildDateRangeParams: function() {
-        var result = "from=" + this.from + "&to=" + this.to;
+        var result = "from=" + encodeURIComponent(this.from) + "&to=" + encodeURIComponent(this.to);
         return result;
       },
 
       url: function() {
-        var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + this.source];
+        var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + encodeURIComponent(this.source)];
         if (this.http_proxy_url) {
-          params.push("http_proxy_url=" + this.http_proxy_url);
+          params.push("http_proxy_url=" + encodeURIComponent(this.http_proxy_url));
         }
         return "/api/datapoints?" + params.join('&');
       }

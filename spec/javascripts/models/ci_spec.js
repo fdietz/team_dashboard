@@ -4,6 +4,6 @@ describe("Ci Model", function() {
   });
 
   it("builds url for given source param", function() {
-    expect(this.model.url()).toEqual("/api/ci?source=demo&server_url=http://localhost&project=test-build");
+    expect(this.model.url()).toEqual("/api/ci?source=demo&server_url=http%3A%2F%2Flocalhost&project=test-build");
   });
 });

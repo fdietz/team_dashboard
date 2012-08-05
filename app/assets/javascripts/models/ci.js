@@ -9,7 +9,7 @@
     },
 
     url: function() {
-      var params = ['source=' + this.source, 'server_url=' + this.server_url, 'project=' + this.project];
+      var params = ['source=' + encodeURIComponent(this.source), 'server_url=' + encodeURIComponent(this.server_url), 'project=' + encodeURIComponent(this.project)];
       return "/api/ci?" + params.join('&');
     }
   });

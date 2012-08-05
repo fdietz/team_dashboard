@@ -6,7 +6,7 @@
 
     initialize: function(options) {
       this.source = options.source;
-      
+
       this.isFetched = false;
       this.on('reset', this.onReset, this);
     },
@@ -27,7 +27,7 @@
     },
 
     url: function() {
-      var params = ['source=' + this.source];
+      var params = ['source=' + encodeURIComponent(this.source)];
       return "/api/metrics?" + params.join('&');
     }
   });

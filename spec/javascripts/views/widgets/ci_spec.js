@@ -30,7 +30,7 @@ describe("Ci Widget View", function() {
     it("updates view with green build", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
-        expect(options.url).toEqual("/api/ci?source=travis&server_url=http://travis-ci.org&project=bla1");
+        expect(options.url).toEqual("/api/ci?source=travis&server_url=http%3A%2F%2Ftravis-ci.org&project=bla1");
         options.success({ last_build_status: 0 });
       });
 
@@ -42,7 +42,7 @@ describe("Ci Widget View", function() {
     it("updates view with red build", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
-        expect(options.url).toEqual("/api/ci?source=travis&server_url=http://travis-ci.org&project=bla1");
+        expect(options.url).toEqual("/api/ci?source=travis&server_url=http%3A%2F%2Ftravis-ci.org&project=bla1");
         options.success({ last_build_status: 1 });
       });
 
@@ -54,7 +54,7 @@ describe("Ci Widget View", function() {
     it("updates view with gray build", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
-        expect(options.url).toEqual("/api/ci?source=travis&server_url=http://travis-ci.org&project=bla1");
+        expect(options.url).toEqual("/api/ci?source=travis&server_url=http%3A%2F%2Ftravis-ci.org&project=bla1");
         options.success({ last_build_status: -1 });
       });
 

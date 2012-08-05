@@ -8,9 +8,9 @@
     },
 
     url: function() {
-      var params = ['source=' + this.source];
+      var params = ['source=' + encodeURIComponent(this.source)];
       if (this.http_proxy_url) {
-        params.push("http_proxy_url=" + this.http_proxy_url);
+        params.push("http_proxy_url=" + encodeURIComponent(this.http_proxy_url));
       }
       return "/api/number?" + params.join('&');
     }

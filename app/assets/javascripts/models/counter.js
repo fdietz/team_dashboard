@@ -13,17 +13,17 @@
 
     buildTargetsParams: function() {
       return _.map(this.targetsArray, function(target) {
-        return "targets[]="+target;
+        return "targets[]=" + encodeURIComponent(target);
       }).join('&');
     },
 
     buildDateRangeParams: function() {
-      var result = "from=" + this.from + "&to=" + this.to;
+      var result = "from=" + encodeURIComponent(this.from) + "&to=" + encodeURIComponent(this.to);
       return result;
     },
 
     url: function() {
-      var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + this.source];
+      var params = [this.buildTargetsParams(), this.buildDateRangeParams(), 'source=' + encodeURIComponent(this.source)];
       if (this.aggregate_function) {
         params.push("aggregate_function=" + this.aggregate_function);
       }
