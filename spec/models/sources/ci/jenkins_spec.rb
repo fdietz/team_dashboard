@@ -37,15 +37,15 @@ describe Sources::Ci::Jenkins do
 
   describe "#current_status" do
     it "returns 0 for sleeping status" do
-      @ci.current_status("SLEEPING").should == 0
+      @ci.current_status(false).should == 0
     end
 
     it "returns 1 for building status" do
-      @ci.current_status("BUILDING").should == 1
+      @ci.current_status(true).should == 1
     end
 
     it "returns -1 otherwise" do
-      @ci.current_status("BLA").should == -1
+      @ci.current_status(nil).should == -1
     end
   end
 

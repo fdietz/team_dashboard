@@ -33,15 +33,9 @@ module Sources
         end
       end
 
-      def current_status(activity)
-        case activity
-        when /sleeping/i
-          0
-        when /building/i
-          1
-        else
-          -1
-        end
+      def current_status(building)
+        return -1 if building.nil?
+        building  ? 1 : 0
       end
 
     end

@@ -42,6 +42,18 @@
       return this.model.get("label") || this.widget.get("label" + this.number);
     },
 
+    getCurrentStatus: function() {
+      var status = this.model.get("current_status");
+      switch(status) {
+        case 0:
+          return "Sleeping...";
+        case 1:
+          return "Building...";
+        default:
+          return "";
+      }
+    },
+
     getValue: function() {
       var value = null;
       if (this.model) {
@@ -54,7 +66,7 @@
 
     render: function() {
       if (this.model) {
-        this.$el.html(JST['templates/widgets/ci/subview']({ label: this.getLabel() }));
+        this.$el.html(JST['templates/widgets/ci/subview']({ label: this.getLabel(), currentStatus: this.getCurrentStatus() }));
 
         this.$value = this.$('.ci-value');
         this.$value.toggleClass('green', this.getValue() === 0);
