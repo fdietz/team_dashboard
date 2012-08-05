@@ -47,7 +47,6 @@ describe("Widget Editor View", function() {
   it("saves model", function() {
     this.view.render();
     spyOn($, "ajax").andCallFake(function(options) {
-      console.log(options)
       expect(options.type).toEqual("PUT");
       expect(options.url).toEqual("/api/dashboards/1/widgets/1");
       options.success({});

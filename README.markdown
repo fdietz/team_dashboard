@@ -142,8 +142,12 @@ It currently supports a demo data source and a http proxy data source.
     <td>Label for this value</td>
   </tr>
   <tr>
-    <td>HTTP Proxy URL</td>
+    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
     <td>HTTP URL should return a JSON structure as described below</td>
+  </tr>
+  <tr>
+    <td>Value Path (only available for HTTP Proxy Data Source)</td>
+    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
   </tr>
   <tr>
 </table>
@@ -168,8 +172,12 @@ It currently supports a demo data source and a http proxy data source.
     <td>Label for this value</td>
   </tr>
   <tr>
-    <td>HTTP Proxy URL</td>
+    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
     <td>HTTP URL should return a JSON structure as described below</td>
+  </tr>
+  <tr>
+    <td>Value Path (only available for HTTP Proxy Data Source)</td>
+    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
   </tr>
   <tr>
 </table>
@@ -251,6 +259,19 @@ Create a data source ruby file under app/models/sources. As long as it extends f
 
 ## HTTP Proxy Source
 As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
+
+#### HTTP Proxy URL
+Since we want to support generic JSON documents as data source for various kinds of widgets we use a simple path notation to support selection of a single value. This path selection is currently supported in the Number and Boolean data source.
+
+    {
+      "parent" : {
+        "child" : {
+          "child2" : "myValue"
+        }
+      }
+    }
+
+A value path of "parent.child.child2" would resolve "myValue".
 
 ### Datapoints
 The datapoints source supports data for rendering graphs and aggregated values

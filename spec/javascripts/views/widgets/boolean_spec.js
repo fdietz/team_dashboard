@@ -17,12 +17,12 @@ describe("Boolean Widget View", function() {
       var firstRow = this.view.$(".triple-row:nth-child(1)");
       var secondRow = this.view.$(".triple-row:nth-child(2)");
       var thirdRow = this.view.$(".triple-row:nth-child(3)");
-      expect(firstRow.find(".boolean-value")).toHaveClass("green");
-      expect(firstRow.find(".label")).toHaveText("demo1");
-      expect(secondRow.find(".boolean-value")).toHaveClass("green");
-      expect(secondRow.find(".label")).toHaveText("demo2");
-      expect(thirdRow.find(".boolean-value")).toHaveClass("green");
-      expect(thirdRow.find(".label")).toHaveText("demo3");
+      expect(firstRow.find(".boolean-value")).toExist();
+      expect(firstRow.find(".label")).toExist();
+      expect(secondRow.find(".boolean-value")).toExist();
+      expect(secondRow.find(".label")).toExist();
+      expect(thirdRow.find(".boolean-value")).toExist();
+      expect(thirdRow.find(".label")).toExist();
     });
   });
 

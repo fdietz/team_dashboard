@@ -21,11 +21,14 @@
       var value  = this.$(event.target).val(),
           id     = this.$(event.target).attr("id"),
           number = id.charAt(id.length-1),
-          el     = this.$(".field-http_proxy_url"+number);
+          el1    = this.getValuePathFieldEl(number),
+          el2    = this.getHttpProxyFieldEl(number);
       if (value === "http_proxy") {
-        el.slideDown();
+        el1.slideDown();
+        el2.slideDown();
       } else {
-        el.slideUp();
+        el1.slideUp();
+        el2.slideUp();
       }
     },
 
@@ -36,18 +39,20 @@
       });
       this.$el.html(this.form.render().el);
 
-      this.updateHttpProxyFieldVisibility(1);
-      this.updateHttpProxyFieldVisibility(2);
-      this.updateHttpProxyFieldVisibility(3);
+      this.updateHttpProxyVisibility(1);
+      this.updateHttpProxyVisibility(2);
+      this.updateHttpProxyVisibility(3);
 
       return this;
     },
 
-    updateHttpProxyFieldVisibility: function(number) {
+    updateHttpProxyVisibility: function(number) {
       if (this.getSourceEl(number).val() === "http_proxy") {
         this.getHttpProxyFieldEl(number).show();
+        this.getValuePathFieldEl(number).show();
       } else {
         this.getHttpProxyFieldEl(number).hide();
+        this.getValuePathFieldEl(number).hide();
       }
     },
 
@@ -57,6 +62,10 @@
 
     getHttpProxyFieldEl: function(number) {
       return this.$(".field-http_proxy_url"+number);
+    },
+
+    getValuePathFieldEl: function(number) {
+      return this.$(".field-value_path"+number);
     },
 
     getValue: function() {
@@ -98,6 +107,10 @@
           validators: [ function checkHttpProxyUrl(value, formValues) {
             if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
           }]
+        };
+        result["value_path" + number] = {
+          title: "Value Path " + number,
+          type: "Text"
         };
         result["label" + number] = { title: "Default Label " + number, type: 'Text' };
         return result;
