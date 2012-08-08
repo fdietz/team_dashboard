@@ -2,6 +2,10 @@ module Sources
   module Datapoints
     class Demo < Sources::Datapoints::Base
 
+      def supports_target_browsing?
+        true
+      end
+      
       def get(targets, from, to, options = {})
         to = to || Time.now.to_i
         datapoints = []

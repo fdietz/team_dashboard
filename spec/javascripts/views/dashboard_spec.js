@@ -13,20 +13,34 @@ describe("Dashboard View", function() {
 
     // TODO: remove global stuff
     $.Sources = {
-      getDefaultTarget: function() {
-        return "demo";
+      "boolean": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getDatapoints: function() {
-        return [];
+      "number": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getBoolean: function() {
-        return ["demo"];
+      "datapoints": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getNumber: function() {
-        return ["demo"];
+      "counter": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getCounter: function() {
-        return "demo";
+      "targets": {
+        "demo": {
+          name: "demo"
+        }
       }
     };
 

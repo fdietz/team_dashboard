@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.WidgetEditors.Graph = Backbone.View.extend({
@@ -11,7 +11,7 @@
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
 
       // TODO: why is graph.js setting the source of metrics collection?
-      collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
+      collections.metrics.source = this.model.get('source') || $.Sources.targets[0];
     },
 
     render: function() {
@@ -40,12 +40,6 @@
 
     getValue: function() {
       return this.form.getValue();
-    },
-
-    getSources: function() {
-      var sources = $.Sources.getDatapoints();
-      sources.unshift("");
-      return sources;
     },
 
     getUpdateIntervalOptions: function() {
@@ -109,7 +103,14 @@
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
-        source: { title: "Source", type: 'Select', options: this.getSources(), validators: ["required"] },
+        source: {
+          title: "Source",
+          type: 'Select',
+          options: function(callback) {
+            callback(helpers.FormBuilder.options($.Sources.datapoints));
+          },
+          validators: ["required"]
+        },
         http_proxy_url: {
           title: "Proxy URL",
           type: "Text",
@@ -146,13 +147,15 @@
           this.$targetInput.val("");
         }
 
-        if (source === "demo" || source === "graphite") {
+        if ( $.Sources.datapoints[source].supports_target_browsing === true) {
           collections.metrics.source = source;
           collections.metrics.fetch(options)
           .done(function() {
             that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
           })
           .error(this.showConnectionError);
+        } else {
+          that.$targetInput.select2("destroy");
         }
       }
     },
@@ -168,4 +171,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

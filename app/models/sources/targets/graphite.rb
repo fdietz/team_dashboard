@@ -8,6 +8,10 @@ module Sources
         @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
       end
 
+      def available?
+        Rails.configuration.graphite_url.present?
+      end
+
       def targets
         JSON.parse(request_metrics)
       end

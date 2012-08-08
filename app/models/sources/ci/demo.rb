@@ -2,7 +2,7 @@ require 'open-uri'
 
 module Sources
   module Ci
-    class Demo
+    class Demo < Sources::Ci::Base
 
       # Returns ruby hash:
       def get(server_url, project, options = {})

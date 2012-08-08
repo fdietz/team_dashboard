@@ -2,6 +2,14 @@ module Sources
   module Ci
     class Base
 
+      def available?
+        true
+      end
+
+      def supports_target_browsing?
+        false
+      end
+
       # Returns ruby hash:
       # * label                 optional label
       # * last_build_time       time of last build

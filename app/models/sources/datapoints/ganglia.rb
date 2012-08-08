@@ -7,6 +7,10 @@ module Sources
       def initialize
         @url_builder = GangliaUrlBuilder.new(Rails.configuration.ganglia_url)
       end
+      
+      def available?
+        Rails.configuration.ganglia_url.present?
+      end
 
       def get(targets, from, to, options = {})
         ganglia_datapoints = request_datapoints(targets, from, to)

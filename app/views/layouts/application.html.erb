@@ -10,31 +10,7 @@
 
     <script>
       (function($) {
-        $.Sources = {
-          getDatapoints: function() {
-            return JSON.parse('<%= raw Sources.datapoints_source_names.to_json %>');
-          },
-
-          getBoolean: function() {
-            return JSON.parse('<%= raw Sources.boolean_source_names.to_json %>');
-          },
-
-          getNumber: function() {
-            return JSON.parse('<%= raw Sources.number_source_names.to_json %>');
-          },
-
-          getCI: function() {
-            return JSON.parse('<%= raw Sources.ci_source_names.to_json %>');
-          },
-
-          getTargets: function() {
-            return JSON.parse('<%= raw Sources.targets_source_names.to_json %>');
-          },
-
-          getDefaultTarget: function() {
-            return this.getTargets()[0];
-          }
-        };
+        $.Sources = JSON.parse('<%= raw Sources.sources.to_json %>');
       })($);
 
       $(function() {

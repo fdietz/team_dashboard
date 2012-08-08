@@ -2,7 +2,7 @@ require 'open-uri'
 
 module Sources
   module Ci
-    class Jenkins
+    class Jenkins < Sources::Ci::Base
 
       # Returns ruby hash:
       def get(server_url, project, options = {})

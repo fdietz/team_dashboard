@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.WidgetEditors.Boolean = Backbone.View.extend({
@@ -72,12 +72,6 @@
       return this.form.getValue();
     },
 
-    getSources: function() {
-      var sources = $.Sources.getBoolean();
-      sources.unshift("");
-      return sources;
-    },
-
     getUpdateIntervalOptions: function() {
       return [
         { val: 10, label: '10 sec' },
@@ -96,7 +90,10 @@
         result["source" + number] = {
           title: "Source " + number,
           type: 'Select',
-          options: that.getSources(),
+          options: function(callback) {
+            var ops = { emptyOption: number > 1 };
+            callback(helpers.FormBuilder.options($.Sources.boolean, ops));
+          },
           validators: [function requiredSource(value, formValues) {
             if (number === 1 && value.length === 0 ) { return err; }
           }]
@@ -133,4 +130,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);
