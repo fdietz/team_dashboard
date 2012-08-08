@@ -1,8 +1,8 @@
 require 'open-uri'
 
 module Sources
-  module Targets
-    class Graphite < Sources::Targets::Base
+  module DatapointsTargets
+    class Graphite < Sources::DatapointsTargets::Base
 
       def initialize
         @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
@@ -12,7 +12,7 @@ module Sources
         Rails.configuration.graphite_url.present?
       end
 
-      def targets
+      def get(options = {})
         JSON.parse(request_metrics)
       end
 

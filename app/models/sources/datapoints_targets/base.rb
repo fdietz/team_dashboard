@@ -1,5 +1,5 @@
 module Sources
-  module Targets
+  module DatapointsTargets
     class Base
 
       def available?
@@ -10,7 +10,7 @@ module Sources
         false
       end
 
-      def targets
+      def get(options = {})
       end
     end
   end

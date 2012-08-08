@@ -3,13 +3,13 @@ TeamDashboard::Application.routes.draw do
   # first created -> highest priority.
 
   namespace :api do
-    resources :metrics
     resources :dashboards do
       resources :widgets
     end
   end
 
   match "api/datapoints" => "api/datapoints#show"
+  match "api/datapoints_targets" => "api/datapoints_targets#index"
   match "api/counter" => "api/counters#show"
   match "api/ci" => "api/ci#show"
   match "api/number" => "api/numbers#show"

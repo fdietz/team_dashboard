@@ -1,7 +1,7 @@
 (function ($, _, Backbone, collections, model) {
   "use strict";
 
-  collections.Metric = Backbone.Collection.extend({
+  collections.DatapointsTarget = Backbone.Collection.extend({
     model: model,
 
     initialize: function(options) {
@@ -28,8 +28,8 @@
 
     url: function() {
       var params = ['source=' + encodeURIComponent(this.source)];
-      return "/api/metrics?" + params.join('&');
+      return "/api/datapoints_targets?" + params.join('&');
     }
   });
 
-})($, _, Backbone, app.collections, app.models.Metric);
+})($, _, Backbone, app.collections, app.models.DatapointsTarget);

@@ -9,7 +9,7 @@ class GraphiteUrlBuilder
   end
 
   def metrics_url
-    "#{@base_url}/metrics/index.json"
+    "#{@base_url}/datapoints_targets/index.json"
   end
   
   def format(timestamp)

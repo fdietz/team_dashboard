@@ -41,7 +41,7 @@ describe("Widget Editor View", function() {
           name: "demo"
         }
       },
-      "targets": {
+      "datapoints_targets": {
         "demo": {
           name: "demo"
         }
