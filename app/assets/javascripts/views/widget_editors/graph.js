@@ -118,7 +118,7 @@
           }]
         },
         targets: { title: "Targets", type: 'Text', validators: [ function checkTargets(value, formValues) {
-            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
+            if (formValues.source !== "http_proxy" && value.length === 0) { return err; }
           }
         ]}
       };
@@ -133,25 +133,27 @@
       var options = { suppressErrors: true },
           that    = this;
 
-      if (source === "demo" || source === "graphite") {
+      if (source === "http_proxy") {
+        this.$targetInputField.hide();
+        this.$httpProxyUrlField.show();
+      } else if (source.length === 0) {
+        this.$targetInputField.hide();
+        this.$httpProxyUrlField.hide();
+      } else {
         this.$httpProxyUrlField.hide();
         this.$targetInputField.show();
         if (collections.metrics.source !== source) {
           this.$targetInput.val("");
         }
 
-        collections.metrics.source = source;
-        collections.metrics.fetch(options)
-        .done(function() {
-          that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-        })
-        .error(this.showConnectionError);
-      } else if (source === "http_proxy") {
-        this.$targetInputField.hide();
-        this.$httpProxyUrlField.show();
-      } else {
-        this.$targetInputField.hide();
-        this.$httpProxyUrlField.hide();
+        if (source === "demo" || source === "graphite") {
+          collections.metrics.source = source;
+          collections.metrics.fetch(options)
+          .done(function() {
+            that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
+          })
+          .error(this.showConnectionError);
+        }
       }
     },
 

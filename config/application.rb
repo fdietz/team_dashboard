@@ -51,8 +51,7 @@ module TeamDashboard
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.available_sources = ['demo', 'graphite']
-    config.source = ENV['SOURCE'] || 'graphite'
     config.graphite_url = ENV['GRAPHITE_URL']
+    config.ganglia_url  = ENV['GANGLIA_URL']
   end
 end
