@@ -137,7 +137,7 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
   </tr>
   <tr>
     <td>Aggregate Function</td>
-    <td>The values of the selected period are aggregated using selected function. Supports sum, average and delta.</td>
+    <td>The values of the selected period are aggregated using selected function. Supports <code>sum</code>, <code>average</code> and <code>delta</code>.</td>
   </tr>
 </table>
 
