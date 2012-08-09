@@ -166,7 +166,7 @@ It currently supports a demo data source and a http proxy data source.
   </tr>
   <tr>
     <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
+    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
   </tr>
   <tr>
 </table>
