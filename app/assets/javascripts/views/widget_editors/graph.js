@@ -10,7 +10,7 @@
     initialize: function() {
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
 
-      this.collection = new collections.DatapointsTarget({ source: this.model.get('source') || $.Sources.datapoints_targets[0]});
+      this.collection = new collections.DatapointsTarget({ source: this.model.get('source') || $.Sources.datapoints[0]});
     },
 
     render: function() {

@@ -32,11 +32,6 @@ describe("Dashboard View", function() {
           available: true,
           name: "demo"
         }
-      },
-      "datapoints_targets": {
-        "demo": {
-          name: "demo"
-        }
       }
     };
 

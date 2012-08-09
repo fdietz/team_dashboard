@@ -11,20 +11,29 @@ describe("WidgetContainer View", function() {
 
     // TODO: remove global stuff
     $.Sources = {
-      getDefaultTarget: function() {
-        return "demo";
+      "boolean": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getDatapoints: function() {
-        return [];
+      "number": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getBoolean: function() {
-        return ["demo"];
+      "datapoints": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getNumber: function() {
-        return ["demo"];
-      },
-      getCounter: function() {
-        return "demo";
+      "counter": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       }
     };
   });
@@ -41,20 +50,6 @@ describe("WidgetContainer View", function() {
     expect(this.view.$(".portlet-header")).toExist();
     expect(this.view.$(".portlet-header .widget-delete")).toExist();
     expect(this.view.$(".portlet-header .widget-edit")).toExist();
-  });
-
-  it("removes widget from view correctly", function() {
-    this.view.render();
-    spyOn($, "ajax").andCallFake(function(options) {
-      expect(options.type).toEqual("DELETE");
-      expect(options.url).toEqual("/api/dashboards/1/widgets/2");
-      options.success({});
-    });
-
-    this.view.$(".widget:nth-child(2) .portlet-header .widget-delete").trigger("click");
-
-    expect(this.view.$(".widget:nth-child(1)")).toExist();
-    expect(this.view.$(".widget:nth-child(2)")).not.toExist();
   });
 
 });
