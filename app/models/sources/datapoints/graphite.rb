@@ -17,25 +17,25 @@ module Sources
       end
 
       def get(targets, from, to, options = {})
-        JSON.parse(request_datapoints(targets, from, to))
+        request_datapoints(targets, from, to)
       end
 
       def available_targets(options = {})
-        JSON.parse(request_available_targets)
+        request_available_targets
       end
 
       private
 
       def request_datapoints(targets, from, to)
-        uri = URI.parse(@url_builder.datapoints_url(targets, from, to))
-        Rails.logger.debug("Requesting datapoints from #{uri} ...")
-        uri.read
+        url = @url_builder.datapoints_url(targets, from, to)
+        Rails.logger.debug("Requesting datapoints from #{url} ...")
+        ::HttpProxy.request(url)
       end
 
       def request_available_targets
-        uri = URI.parse(@url_builder.metrics_url)
-        Rails.logger.debug("Requesting available targets from #{uri} ...")
-        uri.read
+        url = @url_builder.metrics_url
+        Rails.logger.debug("Requesting available targets from #{url} ...")
+        ::HttpProxy.request(url)
       end
     end
   end
