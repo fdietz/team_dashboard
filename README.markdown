@@ -42,11 +42,13 @@ You have to configure the MySQL database in config/database.yml.
 
 Graphite is the first input source Team Dashboard supports. Use the environment variable GRAPHITE_URL or change the rails configuration (see application.rb and environment specific files) directly.
 
-    GRAPHITE_URL=http://mygraphiteserver
-
 For example:
 
     GRAPHITE_URL=http://localhost:8080 rails s
+
+Ganglia is now supported too, it uses the same configuration mechanism
+
+    GANGLIA_URL=http://localhost:8080 rails s
 
 # Dashboard Widgets
 
@@ -59,7 +61,7 @@ All widgets have a name, time interval in which to update themselves and a data 
 ### Graph Widget
 The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and the http proxy source.
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/) and the http proxy source.
 
 #### Configuration
 <table>
@@ -81,18 +83,27 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
   </tr>
   <tr>
     <td>Data Source</td>
-    <td>Only "demo" and "graphite" currently supported.</td>
+    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
   </tr>
   <tr>
     <td>Targets</td>
-    <td>Comma-separated targets. Also supports wildcards (example: visits.server.*).</td>
+    <td>
+      <p>
+        In case of Graphite you can pass a comma-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
+      </p>
+      <p>
+        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
+        </br><code>hostname@cluster(metric-name)</code>
+      </p>
+    </td>
   </tr>
 </table>
 
 ### Counter Widget
 Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and the http proxy source.
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/) and the http proxy source.
+
 
 #### Configuration
 <table>
@@ -110,11 +121,19 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
   </tr>
   <tr>
     <td>Data Source</td>
-    <td>Only "demo" and "graphite" currently supported.</td>
+    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
   </tr>
   <tr>
     <td>Targets</td>
-    <td>Comma-separated targets. Also supports wildcards (example: visits.server.*).</td>
+    <td>
+      <p>
+        In case of Graphite you can pass a comma-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
+      </p>
+      <p>
+        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
+        </br><code>hostname@cluster(metric-name)</code>
+      </p>
+    </td>
   </tr>
   <tr>
     <td>Aggregate Function</td>
@@ -177,7 +196,7 @@ It currently supports a demo data source and a http proxy data source.
   </tr>
   <tr>
     <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
+    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
   </tr>
   <tr>
 </table>
@@ -193,11 +212,11 @@ Shows the current build status for a given project. It currently supports a demo
   </tr>
   <tr>
     <td>Server URL</td>
-    <td>For Travis CI this would be for example http://travis-ci.org/ for Jenkins for example http://ci.jenkins-ci.org/</td>
+    <td>For Travis CI this would be for example <code>http://travis-ci.org</code> for Jenkins for example <code>http://ci.jenkins-ci.org</code></td>
   </tr>
   <tr>
     <td>Project</td>
-    <td>Name of Jenkins Job (example: infra_plugin_changes_report) or Travis CI Slug (example: travis-ci/travis-ci)</td>
+    <td>Name of Jenkins Job (example: <code>infra_plugin_changes_report</code>) or Travis CI Slug (example: <code>travis-ci/travis-ci</code>)</td>
   </tr>
 </table>
 
@@ -215,9 +234,19 @@ The datapoints source supports data for rendering graphs and aggregated values. 
         end
         result
       end
+
+      def available_targets(options = {})
+        ["demo.example1", "demo.example2"]
+      end
+
+      def supports_target_browsing?
+        true
+      end
     end
 
 Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.
+
+For datapoints sources it makes sense to enable users to browse them easily. The widget editor dialog features an autosuggest textfield. it requires the <code>available_targets</code> method to return an array of strings. Additionally <code>supports_target_browsing?</code> should return true.
 
 ### CI (Continous Integration Server)
 The CI data source delivers build status results.
