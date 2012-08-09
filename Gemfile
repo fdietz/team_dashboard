@@ -13,6 +13,7 @@ gem 'mysql2'
 gem 'thin'
 gem 'foreman'
 gem 'faraday'
+gem 'faraday_middleware'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
