@@ -283,8 +283,31 @@ The boolean data source supports a single boolean value and an optional label.
     end
 
 ## Create your own Data Source
-
 Create a data source ruby file under app/models/sources. As long as it extends from the specific base class (for example Sources::Boolean::Base) it will be automatically available.
+
+### Global configuration for your data source
+It some cases it makes sense to have a global configuration in the Rails app instead of a separate option as part of the widget configuration.
+
+Let's have a look at how its done for for the Graphite data source. There's an entry in application.rb.
+
+    module TeamDashboard
+      class Application < Rails::Application
+        config.graphite_url = ENV['GRAPHITE_URL']
+      end
+    end
+
+Note that it is set to the environment variable GRAPHITE_URL, which makes it easy to set without changing the rails app directly. Additionally, this configuration can be set in the environment specific config files.
+
+The graphite data source now can easily access the configuration. In order to determine if the data source is configured correctly you have to implement the <code>available?</code> method:
+
+    class Graphite < Sources::Datapoints::Base
+      def available?
+        Rails.configuration.graphite_url.present?
+      end
+    end
+
+Only if <code>available?</code> returns true will the data source be available in the widget editor.
+
 
 ## HTTP Proxy Source
 As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
