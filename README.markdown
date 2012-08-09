@@ -1,6 +1,6 @@
 # Team Dashboard
 
-Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshot](https://github.com/fdietz/team_dashboard/raw/master/gh-pages/screenshot.png)). It is build to be shown on a big screen in your team's space.
+Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshots](http://fdietz.github.com/team_dashboard/)). It is build to be shown on a big screen in your team's space.
 
 [Heroku hosted Demo](http://team-dashboard.herokuapp.com/)
 
