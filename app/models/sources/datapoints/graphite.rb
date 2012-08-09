@@ -20,6 +20,10 @@ module Sources
         JSON.parse(request_datapoints(targets, from, to))
       end
 
+      def available_targets(options = {})
+        JSON.parse(request_available_targets)
+      end
+
       private
 
       def request_datapoints(targets, from, to)
@@ -28,6 +32,11 @@ module Sources
         uri.read
       end
 
+      def request_available_targets
+        uri = URI.parse(@url_builder.metrics_url)
+        Rails.logger.debug("Requesting available targets from #{uri} ...")
+        uri.read
+      end
     end
   end
 end

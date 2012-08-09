@@ -1,10 +1,10 @@
 describe("Datapoints Targets Collection", function() {
 
   beforeEach(function() {
-    metric = new window.app.collections.DatapointsTagerts({ source: "demo" });
+    this.collection = new window.app.collections.DatapointsTarget({ source: "demo" });
   });
 
   it("has default url set", function() {
-    expect(metric.url()).toEqual("/api/datapoints_targets?source=demo");
+    expect(this.collection.url()).toEqual("/api/datapoints_targets?source=demo");
   });
 });

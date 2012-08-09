@@ -15,6 +15,13 @@ module Sources
         datapoints
       end
 
+      def available_targets(options = {})
+        targets = []
+        targets << "demo.example1"
+        targets << "demo.example2"
+        targets
+      end
+
     end
   end
 end

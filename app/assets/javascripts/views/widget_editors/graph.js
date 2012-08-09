@@ -10,8 +10,7 @@
     initialize: function() {
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
 
-      // TODO: why is graph.js setting the source of metrics collection?
-      collections.datapointsTargets.source = this.model.get('source') || $.Sources.datapoints_targets[0];
+      this.collection = new collections.DatapointsTarget({ source: this.model.get('source') || $.Sources.datapoints_targets[0]});
     },
 
     render: function() {
@@ -143,15 +142,15 @@
       } else {
         this.$httpProxyUrlField.hide();
         this.$targetInputField.show();
-        if (collections.datapointsTargets.source !== source) {
+        if (this.collection.source !== source) {
           this.$targetInput.val("");
         }
 
         if ( $.Sources.datapoints[source].supports_target_browsing === true) {
-          collections.datapointsTargets.source = source;
-          collections.datapointsTargets.fetch(options)
+          this.collection.source = source;
+          this.collection.fetch(options)
           .done(function() {
-            that.$targetInput.select2({ tags: collections.datapointsTargets.autocomplete_names(), width: "17em" });
+            that.$targetInput.select2({ tags: that.collection.autocomplete_names(), width: "17em" });
           })
           .error(this.showConnectionError);
         } else {
