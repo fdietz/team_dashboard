@@ -4,6 +4,6 @@ describe("Boolean Model", function() {
   });
 
   it("builds url for given source param", function() {
-    expect(this.boolean.url()).toEqual("/api/boolean?source=demo")
+    expect(this.boolean.url()).toEqual("/api/boolean?source=demo");
   });
 });

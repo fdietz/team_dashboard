@@ -6,6 +6,8 @@ class Dashboard < ActiveRecord::Base
 
   after_initialize :set_defaults
 
+  attr_accessible :name, :time, :layout
+
   protected
 
   def set_defaults

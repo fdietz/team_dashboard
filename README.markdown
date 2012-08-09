@@ -10,8 +10,6 @@ It is implemented as a Rails app and uses MySQL to store your custom dashboards 
 
 Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!forum/team_dashboard)
 
-Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
-
 ## Getting Started
 
 Clone the repository:
@@ -144,8 +142,12 @@ It currently supports a demo data source and a http proxy data source.
     <td>Label for this value</td>
   </tr>
   <tr>
-    <td>HTTP Proxy URL</td>
+    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
     <td>HTTP URL should return a JSON structure as described below</td>
+  </tr>
+  <tr>
+    <td>Value Path (only available for HTTP Proxy Data Source)</td>
+    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
   </tr>
   <tr>
 </table>
@@ -170,10 +172,33 @@ It currently supports a demo data source and a http proxy data source.
     <td>Label for this value</td>
   </tr>
   <tr>
-    <td>HTTP Proxy URL</td>
+    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
     <td>HTTP URL should return a JSON structure as described below</td>
   </tr>
   <tr>
+    <td>Value Path (only available for HTTP Proxy Data Source)</td>
+    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
+  </tr>
+  <tr>
+</table>
+
+### CI (Continous Integration Server) Widget
+Shows the current build status for a given project. It currently supports a demo source, Jenkins and Travis CI.
+
+#### Configuration
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
+  <tr>
+    <td>Server URL</td>
+    <td>For Travis CI this would be for example http://travis-ci.org/ for Jenkins for example http://ci.jenkins-ci.org/</td>
+  </tr>
+  <tr>
+    <td>Project</td>
+    <td>Name of Jenkins Job (example: infra_plugin_changes_report) or Travis CI Slug (example: travis-ci/travis-ci)</td>
+  </tr>
 </table>
 
 ## Data Sources
@@ -193,6 +218,20 @@ The datapoints source supports data for rendering graphs and aggregated values. 
     end
 
 Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.
+
+### CI (Continous Integration Server)
+The CI data source delivers build status results.
+
+    class Demo < Sources::Ci::Base
+      def get(server_url, project, options = {})
+        {
+          :label             => "Demo name",
+          :last_build_time   => Time.now.iso8601,
+          :last_build_status => 0, # success
+          :current_status    => 1  # building
+        }
+      end
+    end
 
 ### Number
 The number data source supports a single integer value and an optional label.
@@ -220,6 +259,19 @@ Create a data source ruby file under app/models/sources. As long as it extends f
 
 ## HTTP Proxy Source
 As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
+
+#### HTTP Proxy URL
+Since we want to support generic JSON documents as data source for various kinds of widgets we use a simple path notation to support selection of a single value. This path selection is currently supported in the Number and Boolean data source.
+
+    {
+      "parent" : {
+        "child" : {
+          "child2" : "myValue"
+        }
+      }
+    }
+
+A value path of "parent.child.child2" would resolve "myValue".
 
 ### Datapoints
 The datapoints source supports data for rendering graphs and aggregated values
@@ -254,6 +306,10 @@ The boolean data source supports a single boolean value and an optional label.
       "value" : true,
       "label" : "This is an example label"
     }
+
+## Credits & Contributors
+
+Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
 
 ## The MIT License
 

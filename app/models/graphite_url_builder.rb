@@ -1,15 +1,15 @@
 class GraphiteUrlBuilder
 
-  def initialize(graphite_url)
-    @graphite_url = graphite_url
+  def initialize(base_url)
+    @base_url = base_url
   end
 
   def datapoints_url(targets, from, to)
-    "#{@graphite_url}/render?#{target_params(targets)}&format=json&from=#{format(from)}&until=#{format(to)}"
+    "#{@base_url}/render?#{target_params(targets)}&format=json&from=#{format(from)}&until=#{format(to)}"
   end
 
   def metrics_url
-    "#{@graphite_url}/metrics/index.json"
+    "#{@base_url}/datapoints_targets/index.json"
   end
   
   def format(timestamp)
@@ -19,19 +19,6 @@ class GraphiteUrlBuilder
 
   def target_params(targets)
     Array(targets).map { |t| "target=#{t}" }.join('&')
-  end
-
-  def from(time)
-    case(time)
-    when 'minute'
-      '-10min'
-    when 'hour'
-      '-1h'
-    when 'day'
-      '-1d'
-    when 'week'
-      "-7d"
-    end
   end
 
 end

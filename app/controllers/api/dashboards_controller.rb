@@ -12,7 +12,8 @@ module Api
     end
 
     def create
-      dashboard = Dashboard.new(JSON.parse(request.body.read.to_s))
+      input = JSON.parse(request.body.read.to_s)
+      dashboard = Dashboard.new(input.slice(*Dashboard.accessible_attributes))
       if dashboard.save
         render :json => dashboard, :status => :created, :location => dashboards_url(dashboard)
       else
@@ -22,7 +23,8 @@ module Api
 
     def update
       dashboard = Dashboard.find(params[:id])
-      if dashboard.update_attributes(JSON.parse(request.body.read.to_s))
+      input = JSON.parse(request.body.read.to_s)
+      if dashboard.update_attributes(input.slice(*Dashboard.accessible_attributes))
         head :no_content
       else
         render :json => dashboard.errors, :status => :unprocessable_entity

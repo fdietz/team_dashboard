@@ -10,7 +10,7 @@ describe Widget do
     it "updates dashboard layout on widget creation" do
       widget = Widget.create!(:name => "name", :dashboard => @dashboard)
       @dashboard.reload.layout.should eq([widget.id])
-    end 
+    end
   end
 
   describe "#remove_from_dashboard_layout callback" do
@@ -20,7 +20,7 @@ describe Widget do
       @dashboard.reload.layout.should eq([])
     end
   end
-  
+
   describe "#set_defaults" do
     it "should initialize size" do
       FactoryGirl.build(:widget).size.should == 1
@@ -40,6 +40,26 @@ describe Widget do
 
     it "dashboard_id attribute is mandatory" do
       FactoryGirl.build(:widget, :dashboard_id => nil).should_not be_valid
+    end
+  end
+
+  describe "#settings" do
+    describe "#as_json" do
+      it "flattens settings attributes into widgets attributes" do
+        widget = FactoryGirl.build(:widget, :name => "name", :settings => { :graph_type => "line" })
+        result = widget.as_json
+        result["name"].should == "name"
+        result["graph_type"].should == "line"
+      end
+    end
+
+    describe "#slice_attributes" do
+      it "returns settings attributes as nested settings hash" do
+        input = { :name => "name", :graph_type => "line" }
+        result = Widget.slice_attributes(input)
+        result[:name].should == "name"
+        result[:settings][:graph_type].should == "line"
+      end
     end
   end
 end

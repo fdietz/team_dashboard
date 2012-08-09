@@ -1,9 +1,9 @@
 module Api
-  class MetricsController < BaseController
+  class DatapointsTargetsController < BaseController
     respond_to :json
 
     def index
-      targets = Sources.targets_plugin(params[:source]).targets
+      targets = Sources.datapoints_targets_plugin(params[:source]).get(params)
       respond_with targets.inject([]) { |result, m| result << { :name => m } }.to_json
     end
 

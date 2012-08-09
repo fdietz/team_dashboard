@@ -1,11 +1,7 @@
 class Widget < ActiveRecord::Base
   belongs_to :dashboard
-  store :settings, :accessors => [
-    :source1, :source2, :source3, :label1, :label2, :label3, # number widget
-    :targets1, :targets2, :aggregate_function1, :aggregate_function2, # counter widget
-    :graph_type, # graph widget
-    :http_proxy_url, :http_proxy_url1, :http_proxy_url2, :http_proxy_url3 # http_proxy source supported by all widgets
-  ]
+
+  serialize :settings
 
   validates :name, :presence => true
   validates :dashboard_id, :presence => true
@@ -15,16 +11,26 @@ class Widget < ActiveRecord::Base
   after_create :add_to_dashboard_layout
   after_destroy :remove_from_dashboard_layout
 
+  attr_accessible :name, :kind, :size, :source, :targets, :range, :update_interval, :dashboard_id, :dashboard, :settings
+
   class << self
+
     def for_dashboard(id)
       where(:dashboard_id => id)
+    end
+
+    # settings specific attributes handling
+    def slice_attributes(input)
+      input.symbolize_keys!
+      default_set = accessible_attributes.to_a.map(&:to_sym)
+      input.slice(*default_set).merge(:settings => input.except(*default_set))
     end
   end
 
   # flatten settings hash
   def as_json(options = {})
     result = super(:except => :settings)
-    result.merge!(settings)
+    result.merge!((settings || {}).stringify_keys)
     result
   end
 

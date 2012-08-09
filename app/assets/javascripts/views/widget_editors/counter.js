@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.WidgetEditors.Counter = Backbone.View.extend({
@@ -10,8 +10,8 @@
 
     initialize: function() {
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
-      this.metricsCollection1 = new collections.Metric({ source: this.model.get("source1")});
-      this.metricsCollection2 = new collections.Metric({ source: this.model.get("source2")});
+      this.metricsCollection1 = new collections.DatapointsTarget({ source: this.model.get("source1")});
+      this.metricsCollection2 = new collections.DatapointsTarget({ source: this.model.get("source2")});
     },
 
     validate: function() {
@@ -86,8 +86,45 @@
     },
 
     getSchema: function() {
+      var that = this;
       var err = { type: 'required', message: 'Required' };
-      return {
+
+      var sourceFormBuilder = function(number) {
+        var result = {};
+        result["source" + number] = {
+          title: "Source " + number,
+          type: 'Select',
+          options: function(callback) {
+            var ops = { emptyOption: number > 1 };
+            callback(helpers.FormBuilder.options($.Sources.datapoints, ops));
+          },
+          validators: [function requiredSource(value, formValues) {
+            if (number === 1 && value.length === 0 ) { return err; }
+          }]
+        };
+        result["http_proxy_url" + number] = {
+          title: "Proxy URL " + number,
+          type: "Text",
+          validators: [ function checkHttpProxyUrl(value, formValues) {
+            if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
+          }]
+        };
+        result["targets" + number] = {
+          title: "Targets " + number,
+          type: 'Text',
+          validators: [ function(value, formValues) {
+            if (formValues["source" + number].length > 0 && formValues.source1 !== "http_proxy" && value.length === 0) { return err; }
+          }]
+        };
+        result["aggregate_function" + number] = {
+          title: "Aggregate Function " + number,
+          type: 'Select',
+          options: that.getAggregateOptions()
+        };
+        return result;
+      };
+
+      var result = {
         name: { title: "Text", validators: ["required"] },
         update_interval:  {
           title: 'Update Interval',
@@ -98,34 +135,13 @@
           title: 'Period',
           type: 'Select',
           options: this.getPeriodOptions()
-        },
-        source1: { title: "Source 1", type: 'Select', options: this.getSources(), validators: ["required"] },
-        http_proxy_url1: {
-          title: "Proxy URL 1",
-          type: "Text",
-          validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues.source1 === "http_proxy" && value.length === 0) { return err; }
-          }]
-        },
-        targets1: { title: "Targets 1", type: 'Text', validators: [ function(value, formValues) {
-            if ((formValues.source1 === "demo" || formValues.source1 === "graphite") && value.length === 0) { return err; }
-          }
-        ]},
-        aggregate_function1: { title: "Aggregate Function 1", type: 'Select', options: this.getAggregateOptions() },
-        source2: { title: "Source 2", type: 'Select', options: this.getSources() },
-        http_proxy_url2: {
-          title: "Proxy URL 2",
-          type: "Text",
-          validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues.source2 === "http_proxy" && value.length === 0) { return err; }
-          }]
-        },
-        targets2: { title: "Targets 2", type: 'Text', validators: [ function(value, formValues) {
-            if ((formValues.source2 === "demo" || formValues.source2 === "graphite") && value.length === 0) { return err; }
-          }
-        ]},
-        aggregate_function2: { title: "Aggregate Function 2", type: 'Select', options: this.getAggregateOptions() }
+        }
       };
+
+      result = _.extend(result, sourceFormBuilder(1));
+      result = _.extend(result, sourceFormBuilder(2));
+
+      return result;
     },
 
     sourceChanged: function() {
@@ -147,22 +163,27 @@
         return (source === "demo" || source === "graphite");
       };
 
-      if (source === "demo" || source === "graphite") {
+      if (source === "http_proxy") {
+        httpProxyUrlField.show();
+        targetInputField.hide();
+        aggregateFunctionField.hide();
+      } else if (source.length === 0) {
+        httpProxyUrlField.hide();
+        targetInputField.hide();
+        aggregateFunctionField.hide();
+      } else {
         httpProxyUrlField.hide();
         targetInputField.show();
         aggregateFunctionField.show();
         if (metrics.source !== source) {
           targetInput.val("");
         }
-        this.updateAutocompleteTargets(number);
-      } else if (source !== "http_proxy" && source !== "graphite") {
-        httpProxyUrlField.show();
-        targetInputField.hide();
-        aggregateFunctionField.hide();
-      } else {
-        httpProxyUrlField.hide();
-        targetInputField.hide();
-        aggregateFunctionField.hide();
+
+        if ($.Sources.datapoints[source].supports_target_browsing === true) {
+          this.updateAutocompleteTargets(number);
+        } else {
+          targetInput.select2("destroy");
+        }
       }
     },
 
@@ -190,4 +211,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

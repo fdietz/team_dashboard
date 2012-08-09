@@ -38,6 +38,15 @@ describe Api::WidgetsController do
       result = JSON.parse(@response.body)
       assert result["message"]
     end
+
+    it "handles settings attributes as single attribute with nested attributes on its own" do
+      @request.env['RAW_POST_DATA'] = { :name => "name", :dashboard_id => @dashboard.id, :source1 => "a", :source2 => "b" }.to_json
+      post :create, :dashboard_id => @dashboard.id, :format => :json
+      assert_response :created
+      result = JSON.parse(@response.body)
+      assert_equal "a", result["source1"]
+      assert_equal "b", result["source2"]
+    end
   end
 
   describe "#show" do

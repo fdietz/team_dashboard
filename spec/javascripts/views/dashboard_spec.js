@@ -2,8 +2,8 @@ describe("Dashboard View", function() {
 
   beforeEach(function() {
     // TODO: why is graph.js setting the source of metrics collection?
-    window.app.collections.metrics = new window.app.collections.Metric({});
-    spyOn(window.app.collections.metrics, "fetch");
+    window.app.collections.datapointsTargets = new window.app.collections.DatapointsTarget({});
+    spyOn(window.app.collections.datapointsTargets, "fetch");
 
     this.model = new window.app.models.Dashboard({ name: "example 1", id: 1, layout: [1] });
     this.collection = new window.app.collections.Widget([
@@ -13,20 +13,34 @@ describe("Dashboard View", function() {
 
     // TODO: remove global stuff
     $.Sources = {
-      getDefaultTarget: function() {
-        return "demo";
+      "boolean": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getDatapoints: function() {
-        return [];
+      "number": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getBoolean: function() {
-        return ["demo"];
+      "datapoints": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getNumber: function() {
-        return ["demo"];
+      "counter": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getCounter: function() {
-        return "demo";
+      "datapoints_targets": {
+        "demo": {
+          name: "demo"
+        }
       }
     };
 

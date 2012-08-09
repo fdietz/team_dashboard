@@ -21,7 +21,7 @@
         if (this.model) {
           this.model.off();
         }
-        this.model = new models.Number({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl() });
+        this.model = new models.Number({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl(), value_path: this.getValuePath() });
         this.model.on('change', this.render);
       }
     },
@@ -30,12 +30,16 @@
       return this.widget.get("http_proxy_url" + this.number);
     },
 
+    getValuePath: function() {
+      return this.widget.get("value_path" + this.number);
+    },
+
     getSource: function() {
       return this.widget.get("source" + this.number);
     },
 
     getValue: function() {
-      var result = this.model.get('value') || 0;
+      var result = this.model.resolveValue();
       if (result % 1 === 0) {
         return result;
       } else {

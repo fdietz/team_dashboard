@@ -17,20 +17,34 @@ describe("Widget Editor View", function() {
 
     // TODO: remove global stuff
     $.Sources = {
-      getDefaultTarget: function() {
-        return "demo";
+      "boolean": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getDatapoints: function() {
-        return [];
+      "number": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getBoolean: function() {
-        return ["demo"];
+      "datapoints": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getNumber: function() {
-        return ["demo"];
+      "counter": {
+        "demo": {
+          available: true,
+          name: "demo"
+        }
       },
-      getCounter: function() {
-        return "demo";
+      "datapoints_targets": {
+        "demo": {
+          name: "demo"
+        }
       }
     };
 
@@ -47,7 +61,6 @@ describe("Widget Editor View", function() {
   it("saves model", function() {
     this.view.render();
     spyOn($, "ajax").andCallFake(function(options) {
-      console.log(options)
       expect(options.type).toEqual("PUT");
       expect(options.url).toEqual("/api/dashboards/1/widgets/1");
       options.success({});

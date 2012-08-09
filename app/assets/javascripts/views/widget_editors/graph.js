@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.WidgetEditors.Graph = Backbone.View.extend({
@@ -11,7 +11,7 @@
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
 
       // TODO: why is graph.js setting the source of metrics collection?
-      collections.metrics.source = this.model.get('source') || $.Sources.getDefaultTarget();
+      collections.datapointsTargets.source = this.model.get('source') || $.Sources.datapoints_targets[0];
     },
 
     render: function() {
@@ -40,12 +40,6 @@
 
     getValue: function() {
       return this.form.getValue();
-    },
-
-    getSources: function() {
-      var sources = $.Sources.getDatapoints();
-      sources.unshift("");
-      return sources;
     },
 
     getUpdateIntervalOptions: function() {
@@ -109,7 +103,14 @@
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
-        source: { title: "Source", type: 'Select', options: this.getSources(), validators: ["required"] },
+        source: {
+          title: "Source",
+          type: 'Select',
+          options: function(callback) {
+            callback(helpers.FormBuilder.options($.Sources.datapoints));
+          },
+          validators: ["required"]
+        },
         http_proxy_url: {
           title: "Proxy URL",
           type: "Text",
@@ -118,7 +119,7 @@
           }]
         },
         targets: { title: "Targets", type: 'Text', validators: [ function checkTargets(value, formValues) {
-            if ((formValues.source === "demo" || formValues.source === "graphite") && value.length === 0) { return err; }
+            if (formValues.source !== "http_proxy" && value.length === 0) { return err; }
           }
         ]}
       };
@@ -133,25 +134,29 @@
       var options = { suppressErrors: true },
           that    = this;
 
-      if (source === "demo" || source === "graphite") {
+      if (source === "http_proxy") {
+        this.$targetInputField.hide();
+        this.$httpProxyUrlField.show();
+      } else if (source.length === 0) {
+        this.$targetInputField.hide();
+        this.$httpProxyUrlField.hide();
+      } else {
         this.$httpProxyUrlField.hide();
         this.$targetInputField.show();
-        if (collections.metrics.source !== source) {
+        if (collections.datapointsTargets.source !== source) {
           this.$targetInput.val("");
         }
 
-        collections.metrics.source = source;
-        collections.metrics.fetch(options)
-        .done(function() {
-          that.$targetInput.select2({ tags: collections.metrics.autocomplete_names(), width: "17em" });
-        })
-        .error(this.showConnectionError);
-      } else if (source !== "demo" && source !== "graphite") {
-        this.$targetInputField.hide();
-        this.$httpProxyUrlField.show();
-      } else {
-        this.$targetInputField.hide();
-        this.$httpProxyUrlField.hide();
+        if ( $.Sources.datapoints[source].supports_target_browsing === true) {
+          collections.datapointsTargets.source = source;
+          collections.datapointsTargets.fetch(options)
+          .done(function() {
+            that.$targetInput.select2({ tags: collections.datapointsTargets.autocomplete_names(), width: "17em" });
+          })
+          .error(this.showConnectionError);
+        } else {
+          that.$targetInput.select2("destroy");
+        }
       }
     },
 
@@ -166,4 +171,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

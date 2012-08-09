@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.WidgetEditors.Boolean = Backbone.View.extend({
@@ -21,11 +21,14 @@
       var value  = this.$(event.target).val(),
           id     = this.$(event.target).attr("id"),
           number = id.charAt(id.length-1),
-          el     = this.$(".field-http_proxy_url"+number);
+          el1    = this.getValuePathFieldEl(number),
+          el2    = this.getHttpProxyFieldEl(number);
       if (value !== "demo" && value !== "graphite") {
-        el.slideDown();
+        el1.slideDown();
+        el2.slideDown();
       } else {
-        el.slideUp();
+        el1.slideUp();
+        el2.slideUp();
       }
     },
 
@@ -36,18 +39,20 @@
       });
       this.$el.html(this.form.render().el);
 
-      this.updateHttpProxyFieldVisibility(1);
-      this.updateHttpProxyFieldVisibility(2);
-      this.updateHttpProxyFieldVisibility(3);
+      this.updateHttpProxyVisibility(1);
+      this.updateHttpProxyVisibility(2);
+      this.updateHttpProxyVisibility(3);
 
       return this;
     },
 
-    updateHttpProxyFieldVisibility: function(number) {
+    updateHttpProxyVisibility: function(number) {
       if (this.getSourceEl(number).val() !== "demo" && this.getSourceEl(number).val() !== "graphite") {
         this.getHttpProxyFieldEl(number).show();
+        this.getValuePathFieldEl(number).show();
       } else {
         this.getHttpProxyFieldEl(number).hide();
+        this.getValuePathFieldEl(number).hide();
       }
     },
 
@@ -59,14 +64,12 @@
       return this.$(".field-http_proxy_url"+number);
     },
 
-    getValue: function() {
-      return this.form.getValue();
+    getValuePathFieldEl: function(number) {
+      return this.$(".field-value_path"+number);
     },
 
-    getSources: function() {
-      var sources = $.Sources.getBoolean();
-      sources.unshift("");
-      return sources;
+    getValue: function() {
+      return this.form.getValue();
     },
 
     getUpdateIntervalOptions: function() {
@@ -87,7 +90,10 @@
         result["source" + number] = {
           title: "Source " + number,
           type: 'Select',
-          options: that.getSources(),
+          options: function(callback) {
+            var ops = { emptyOption: number > 1 };
+            callback(helpers.FormBuilder.options($.Sources.boolean, ops));
+          },
           validators: [function requiredSource(value, formValues) {
             if (number === 1 && value.length === 0 ) { return err; }
           }]
@@ -98,6 +104,10 @@
           validators: [ function checkHttpProxyUrl(value, formValues) {
             if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
           }]
+        };
+        result["value_path" + number] = {
+          title: "Value Path " + number,
+          type: "Text"
         };
         result["label" + number] = { title: "Default Label " + number, type: 'Text' };
         return result;
@@ -120,4 +130,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

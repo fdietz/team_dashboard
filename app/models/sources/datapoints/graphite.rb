@@ -8,6 +8,14 @@ module Sources
         @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
       end
 
+      def available?
+        Rails.configuration.graphite_url.present?
+      end
+
+      def supports_target_browsing?
+        true
+      end
+
       def get(targets, from, to, options = {})
         JSON.parse(request_datapoints(targets, from, to))
       end

@@ -1,7 +1,7 @@
 module Sources
-  module Targets
-    class Demo < Sources::Targets::Base
-      def targets
+  module DatapointsTargets
+    class Demo < Sources::DatapointsTargets::Base
+      def get(options = {})
         targets = []
         targets << "demo.example1"
         targets << "demo.example2"

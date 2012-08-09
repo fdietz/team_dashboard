@@ -1,12 +1,12 @@
 (function ($, _, Backbone, collections, model) {
   "use strict";
 
-  collections.Metric = Backbone.Collection.extend({
+  collections.DatapointsTarget = Backbone.Collection.extend({
     model: model,
 
     initialize: function(options) {
       this.source = options.source;
-      
+
       this.isFetched = false;
       this.on('reset', this.onReset, this);
     },
@@ -27,9 +27,9 @@
     },
 
     url: function() {
-      var params = ['source=' + this.source];
-      return "/api/metrics?" + params.join('&');
+      var params = ['source=' + encodeURIComponent(this.source)];
+      return "/api/datapoints_targets?" + params.join('&');
     }
   });
 
-})($, _, Backbone, app.collections, app.models.Metric);
+})($, _, Backbone, app.collections, app.models.DatapointsTarget);

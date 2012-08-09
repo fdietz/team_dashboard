@@ -21,13 +21,17 @@
         if (this.model) {
           this.model.off();
         }
-        this.model = new models.Boolean({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl() });
+        this.model = new models.Boolean({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl(), value_path: this.getValuePath() });
         this.model.on('change', this.render);
       }
     },
 
     getHttpProxyUrl: function() {
       return this.widget.get("http_proxy_url" + this.number);
+    },
+
+    getValuePath: function() {
+      return this.widget.get("value_path" + this.number);
     },
 
     getSource: function() {
@@ -39,13 +43,8 @@
     },
 
     getValue: function() {
-      var value = null;
-      if (this.model) {
-        value = this.model.get('value');
-        return (typeof value === "undefined") ? true : value;
-      } else {
-        return true;
-      }
+      var result = this.model.resolveValue();
+      return result;
     },
 
     render: function() {

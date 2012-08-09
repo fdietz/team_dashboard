@@ -209,7 +209,7 @@ DEPENDENCIES
   newrelic_api
   nokogiri
   pingdom-client!
-  rails (~> 3.2.3)
+  rails (~> 3.2.5)
   rails-backbone
   rspec-rails (~> 2.0)
   sass-rails
