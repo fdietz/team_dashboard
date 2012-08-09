@@ -1,4 +1,4 @@
-(function($, _, Backbone, helpers) {
+(function($, _, Backbone, bootbox, helpers) {
   "use strict";
 
   var colorPalette = [
@@ -91,4 +91,7 @@
     }
   };
 
-})($, _, Backbone, app.helpers);
+  // make bootbox available in helper namespace
+  helpers.bootbox = bootbox;
+
+})($, _, Backbone, bootbox, app.helpers);

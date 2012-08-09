@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.Widget = Backbone.View.extend({
@@ -87,9 +87,14 @@
     },
 
     removeWidget: function(event) {
-      this.close();
-
-      var result = this.model.destroy();
+      var that = this;
+      helpers.bootbox.animate(false);
+      helpers.bootbox.confirm("Do you want to delete the <strong>" + this.model.get("name") + "</strong> widget?", "Cancel", "Delete", function(result) {
+        if (result) {
+          that.close();
+          that.model.destroy();
+        }
+      });
     },
 
     onClose: function() {
@@ -108,4 +113,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections, router) {
+(function ($, _, Backbone, views, models, collections, router, helpers) {
   "use strict";
 
   views.Dashboard = Backbone.View.extend({
@@ -54,8 +54,8 @@
     },
 
     removeDashboard: function() {
-      bootbox.animate(false);
-      bootbox.confirm("Do you want to delete this dashboard?", "Cancel", "Delete", _.bind(function(result) {
+      helpers.bootbox.animate(false);
+      helpers.bootbox.confirm("Do you want to delete this dashboard?", "Cancel", "Delete", _.bind(function(result) {
         if (result) {
           this.model.destroy({
             success: function(model, request) {
@@ -75,7 +75,7 @@
     showDialog: function(event) {
       var kind = $(event.target).data("widget-kind");
       var className = this.toTitleCase(kind);
-      console.log(kind, className)
+
       var model = new models.Widget({ dashboard_id: this.model.id, kind: kind });
       var editor = new views.WidgetEditors[className]({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model, widgetCollection: this.collection });
@@ -100,4 +100,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections, app.router);
+})($, _, Backbone, app.views, app.models, app.collections, app.router, app.helpers);
