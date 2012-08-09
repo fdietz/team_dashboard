@@ -1,10 +1,8 @@
 describe("Number Model", function() {
-  beforeEach(function() {
-    this.model = new window.app.models.Number({ source: "demo" });
-  });
 
   it("builds url for given source param", function() {
-    expect(this.model.url()).toEqual("/api/number?source=demo");
+    model = new window.app.models.Number({ source: "demo" });
+    expect(model.url()).toEqual("/api/number?source=demo");
   });
 
   describe("#resolveValue", function() {
@@ -17,10 +15,11 @@ describe("Number Model", function() {
         }
       };
 
-      this.model.populated = true;
-      this.model.attributes = input;
-      this.model.set("value_path", "parent.child.key");
-      expect(this.model.resolveValue()).toEqual("value");
+      model = new window.app.models.Number({ source: "http_proxy" });
+      model.populated = true;
+      model.attributes = input;
+      model.set("value_path", "parent.child.key");
+      expect(model.resolveValue()).toEqual("value");
     });
   });
 });

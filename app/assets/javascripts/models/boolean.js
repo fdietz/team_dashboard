@@ -15,7 +15,7 @@
 
     url: function() {
       var params = ['source=' + encodeURIComponent(this.source)];
-      if (this.http_proxy_url) {
+      if (this.source === "http_proxy" && this.http_proxy_url) {
         params.push("http_proxy_url=" + encodeURIComponent(this.http_proxy_url));
       }
       return "/api/boolean?" + params.join('&');
@@ -28,7 +28,7 @@
         return 0;
       }
 
-      if (path && path.length > 0) {
+      if (this.source === "http_proxy" && path && path.length > 0) {
         return this.resolvePath(path);
       } else {
         return this.get("value");
