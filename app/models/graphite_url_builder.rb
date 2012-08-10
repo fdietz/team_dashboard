@@ -9,9 +9,9 @@ class GraphiteUrlBuilder
   end
 
   def metrics_url
-    "#{@base_url}/datapoints_targets/index.json"
+    "#{@base_url}/metrics/index.json"
   end
-  
+
   def format(timestamp)
     time = Time.at(timestamp)
     time.strftime("%H:%M_%Y%m%d")
