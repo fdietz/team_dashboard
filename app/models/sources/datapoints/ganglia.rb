@@ -26,13 +26,13 @@ module Sources
       def request_datapoints(targets, from, to)
         result = []
         targets.each do |target|
-          uri = URI.parse(@url_builder.datapoints_url(target, from, to))
-          Rails.logger.debug("Requesting datapoints from #{uri} ...")
-          response = uri.read
+          url = @url_builder.datapoints_url(target, from, to)
+          Rails.logger.debug("Requesting datapoints from #{url} ...")
+          response = ::HttpProxy.request(url)
           if response == "null"
             result << []
           else
-            result << JSON.parse(response).first["datapoints"]
+            result << response.first["datapoints"]
           end
         end
         result
