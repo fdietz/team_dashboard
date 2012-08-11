@@ -224,7 +224,9 @@ Shows the current build status for a given project. It currently supports a demo
 
 
 ## HTTP Proxy Source
-As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
+As described in the data source plugin repository [documentation](https://github.com/fdietz/team_dashboard_plugins) you can easily add your own data source implementions.
+
+On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
 
 #### HTTP Proxy URL
 Since we want to support generic JSON documents as data source for various kinds of widgets we use a simple path notation to support selection of a single value. This path selection is currently supported in the Number and Boolean data source.
