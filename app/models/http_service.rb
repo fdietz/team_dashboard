@@ -18,6 +18,16 @@
 # SSL Configuration Documentation:
 #   https://github.com/technoweenie/faraday/wiki/Setting-up-SSL-certificates
 #
+# Changing the Faraday adapter:
+#   Create a config/initializer/faraday.rb file:
+#     Faraday.default_adapter = :typhoeus
+#
+# Faraday default middleware changes:
+#   Create set these explicitly in a config/initializer/faraday.rb file:
+#     HttpService.faraday_middleware = Proc.new do |conn|
+#       # your custom middleware here
+#     end
+#
 module HttpService
   extend self
 
