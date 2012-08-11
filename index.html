@@ -71,6 +71,8 @@
 It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>, <a href="http://ganglia.sourceforge.net/">Ganglia</a>, <a href="http://jenkins-ci.org/">Jenkins</a>, <a href="http://travis-ci.org/">Travis CI</a>, etc. and makes it really easy to add more input sources.
 </p>
 
+<p>The Team Dashboard Data Source <a href="https://github.com/fdietz/team_dashboard_plugins">Plugin Repository</a> contains contributed plugins and documentation on how to implement your own plugins.</p>
+
 <p>It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.</p>
 
 <p>Support via <a href="https://groups.google.com/forum/#!forum/team_dashboard">Team Dashboard Google Group</a></p>
@@ -300,152 +302,12 @@ It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>,
   </tr>
 </tbody></table>
 
-<h2>Data Sources</h2>
-
-<h3>Datapoints</h3>
-
-<p>The datapoints source supports data for rendering graphs and aggregated values. Following a minimal implementation.</p>
-
-<pre><code>class Example &lt; Sources::Datapoints::Base
-  def get(targets, from, to, options = {})
-    result = []
-    targets.each do |target|
-      # retrieve the actual data here
-      result &lt;&lt; { 'target' =&gt; "demo.example1", 'datapoints' =&gt; [[1, 123456], [7, 123466]] }
-    end
-    result
-  end
-
-  def available_targets(options = {})
-    ["demo.example1", "demo.example2"]
-  end
-
-  def supports_target_browsing?
-    true
-  end
-end
-</code></pre>
-
-<p>Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.</p>
-
-<p>For datapoints sources it makes sense to enable users to browse them easily. The widget editor dialog features an autosuggest textfield. it requires the <code>available<em>targets</em></code><em> method to return an array of strings. Additionally <code>supports</code></em><code>target_browsing?</code> should return true.</p>
-
-<h3>CI (Continous Integration Server)</h3>
-
-<p>The CI data source delivers build status results.</p>
-
-<pre><code>class Demo &lt; Sources::Ci::Base
-  def get(server_url, project, options = {})
-    {
-      :label             =&gt; "Demo name",
-      :last_build_time   =&gt; Time.now.iso8601,
-      :last_build_status =&gt; 0, # success
-      :current_status    =&gt; 1  # building
-    }
-  end
-end
-</code></pre>
-
-<h3>Number</h3>
-
-<p>The number data source supports a single integer value and an optional label.</p>
-
-<pre><code>class Example &lt; Sources::Number::Base
-  def get(options = {})
-    # retrieve actual data here
-    { :value =&gt; 115, :label =&gt; "example label" }
-  end
-end
-</code></pre>
-
-<h3>Boolean</h3>
-
-<p>The boolean data source supports a single boolean value and an optional label.</p>
-
-<pre><code>class Example &lt; Sources::Boolean::Base
-  def get(options = {})
-    # retrieve actual data here
-    { :value =&gt; true, :label =&gt; "example label" }
-  end
-end
-</code></pre>
-
-<h2>Create your own Data Source</h2>
-
-<p>Create a data source ruby file under app/models/sources. As long as it extends from the specific base class (for example Sources::Boolean::Base) it will be automatically available.</p>
-
-<h3>Global configuration for your data source</h3>
-
-<p>It some cases it makes sense to have a global configuration in the Rails app instead of a separate option as part of the widget configuration.</p>
-
-<p>Let's have a look at how its done for for the Graphite data source. There's an entry in application.rb.</p>
-
-<pre><code>module TeamDashboard
-  class Application &lt; Rails::Application
-    config.graphite_url = ENV['GRAPHITE_URL']
-  end
-end
-</code></pre>
-
-<p>Note that it is set to the environment variable GRAPHITE_URL, which makes it easy to set without changing the rails app directly. Additionally, this configuration can be set in the environment specific config files.</p>
-
-<p>The graphite data source now can easily access the configuration. In order to determine if the data source is configured correctly you have to implement the <code>available?</code> method:</p>
-
-<pre><code>class Graphite &lt; Sources::Datapoints::Base
-  def available?
-    Rails.configuration.graphite_url.present?
-  end
-end
-</code></pre>
-
-<p>Only if <code>available?</code> returns true will the data source be available in the widget editor.</p>
-
-<h2>HTTP Proxy Source</h2>
-
-<p>As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.</p>
-
-<h3>Datapoints</h3>
-
-<p>The datapoints source supports data for rendering graphs and aggregated values</p>
-
-<pre><code>[
-  {
-    "target" : "demo.example",
-    "datapoints" : [
-      [1,123456], [7,23466]
-    ]
-  },
-  {
-    "target" : "demo.example2",
-    "datapoints" : [
-      [-6,123456], [8,23466]
-    ]
-  }
-]
-</code></pre>
-
-<h3>Number</h3>
-
-<p>The number data source supports a single integer value and an optional label.</p>
-
-<pre><code>{
-  "value" : 8,
-  "label" : "This is an example label"
-}
-</code></pre>
-
-<h3>Boolean</h3>
-
-<p>The boolean data source supports a single boolean value and an optional label.</p>
-
-<pre><code>{
-  "value" : true,
-  "label" : "This is an example label"
-}
-</code></pre>
-
 <h2>Credits and Contributors</h2>
 <p>Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a <a href="http://www.xing.com">XING</a> Hackathon Project.</p>
+
+<ul>
+  <li><a href="https://github.com/luxflux">luxflux</a> (Raffael Schmid)</li>
+</ul>
 
 <h2>The MIT License</h2>
 
