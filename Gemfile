@@ -14,6 +14,7 @@ gem 'thin'
 gem 'foreman'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'multi_xml'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.0"

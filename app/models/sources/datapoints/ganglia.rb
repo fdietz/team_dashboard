@@ -7,7 +7,7 @@ module Sources
       def initialize
         @url_builder = GangliaUrlBuilder.new(Rails.configuration.ganglia_url)
       end
-      
+
       def available?
         Rails.configuration.ganglia_url.present?
       end
@@ -28,7 +28,7 @@ module Sources
         targets.each do |target|
           url = @url_builder.datapoints_url(target, from, to)
           Rails.logger.debug("Requesting datapoints from #{url} ...")
-          response = ::HttpProxy.request(url)
+          response = ::HttpService.request(url)
           if response == "null"
             result << []
           else

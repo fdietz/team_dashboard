@@ -18,7 +18,7 @@ module Sources
       def request_build_status(server_url, project)
         url = "#{server_url}/#{project}.json"
         Rails.logger.debug("Requesting from #{url} ...")
-        ::HttpProxy.request(url)
+        ::HttpService.request(url)
       end
 
       def status(status)

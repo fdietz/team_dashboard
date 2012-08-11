@@ -29,13 +29,13 @@ module Sources
       def request_datapoints(targets, from, to)
         url = @url_builder.datapoints_url(targets, from, to)
         Rails.logger.debug("Requesting datapoints from #{url} ...")
-        ::HttpProxy.request(url)
+        ::HttpService.request(url)
       end
 
       def request_available_targets
         url = @url_builder.metrics_url
         Rails.logger.debug("Requesting available targets from #{url} ...")
-        ::HttpProxy.request(url)
+        ::HttpService.request(url)
       end
     end
   end
