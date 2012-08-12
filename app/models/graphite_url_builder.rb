@@ -5,7 +5,7 @@ class GraphiteUrlBuilder
   end
 
   def datapoints_url(targets, from, to)
-    "#{@base_url}/render?#{target_params(targets)}&format=json&from=#{format(from)}&until=#{format(to)}"
+    "#{@base_url}/render?#{target_params(targets)}&format=json&from=#{CGI.escape(format(from))}&until=#{CGI.escape(format(to))}"
   end
 
   def metrics_url
