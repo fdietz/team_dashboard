@@ -25,11 +25,11 @@ describe GraphiteUrlBuilder do
     end
 
     it "contains from param" do
-      @url_builder.datapoints_url(@targets, @from, @to).should match("from=#{@url_builder.format(@from)}")
+      @url_builder.datapoints_url(@targets, @from, @to).should match("from=#{CGI.escape(@url_builder.format(@from))}")
     end
 
     it "contains until param" do
-      @url_builder.datapoints_url(@targets, @from, @to).should match("until=#{@url_builder.format(@to)}")
+      @url_builder.datapoints_url(@targets, @from, @to).should match("until=#{CGI.escape(@url_builder.format(@to))}")
     end
   end
 
