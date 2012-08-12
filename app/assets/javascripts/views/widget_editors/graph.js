@@ -150,11 +150,11 @@
           this.collection.source = source;
           this.collection.fetch(options)
           .done(function() {
-            that.$targetInput.select2({ tags: that.collection.autocomplete_names(), width: "17em" });
+            that.$targetInput.selectable({ source: that.collection.autocomplete_names() });
           })
           .error(this.showConnectionError);
         } else {
-          that.$targetInput.select2("destroy");
+          that.$targetInput.selectable("disable");
         }
       }
     },

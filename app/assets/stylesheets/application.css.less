@@ -20,7 +20,12 @@
  *= require_self
 */
 
+
+
+/****************** modal dialog ****************/
+
 @import "theme/variables";
+@import "twitter/bootstrap/mixins";
 
 select,
 textarea,
@@ -44,6 +49,39 @@ input[type="color"],
 
 .modal-body {
     max-height: 500px;
+}
+
+.selectable-list {
+  .border-radius(@inputBorderRadius);
+
+  background-color: #ccc;
+  padding: 1px;
+  margin-top: 5px;
+  margin-left: 0;
+  list-style: none;
+}
+
+.selectable-list > li {
+  color: @grayDark;
+  padding: 5px;
+  margin: 2px;
+  background-color: #ddd;
+  border: 1px #bbb solid;
+
+  .text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:block;
+    width: 90%;
+  }
+
+  .remove {
+    margin-top: -15px;
+    cursor: pointer;
+    display:block;
+    float: right;
+  }
 }
 
 /******************* dashboard *****************/

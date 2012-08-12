@@ -182,7 +182,7 @@
         if ($.Sources.datapoints[source].supports_target_browsing === true) {
           this.updateAutocompleteTargets(number);
         } else {
-          targetInput.select2("destroy");
+          targetInput.selectable("disable");
         }
       }
     },
@@ -194,7 +194,7 @@
       metrics.source = source;
       metrics.fetch(options)
         .done(_.bind(function() {
-          this["$targetInput" + number].select2({ tags: metrics.autocomplete_names(), width: "17em" });
+          this["$targetInput" + number].selectable({ source: metrics.autocomplete_names()  });
         }, this))
         .error(this.showConnectionError);
     },
