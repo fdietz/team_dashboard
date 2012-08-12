@@ -36,7 +36,14 @@
     },
 
     updateWidgetFail: function(xhr, status, statusText) {
-      var message = JSON.parse(xhr.responseText).message;
+      var message = null;
+      if (xhr.status === 0) {
+        message = "Could not connect to rails app";
+      } else if (xhr.responseText.length > 0){
+        message = JSON.parse(xhr.responseText).message;
+      } else {
+        message = statusText;
+      }
       this.triggerTimeout();
       this.$ajaxSpinner.hide();
       this.showLoadingError(message);
@@ -47,7 +54,7 @@
     },
 
     triggerTimeout: function() {
-      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 10000);
+      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000);
     },
 
     showLoadingError: function(message) {
