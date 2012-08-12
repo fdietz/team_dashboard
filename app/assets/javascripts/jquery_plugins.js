@@ -69,21 +69,27 @@
           $result.val(listValues);
         }
 
-        $input.keyup(function(event) {
-          if (event.keyCode == 13) {
+        function handleKeyboardAdd(event) {
+          if (event.keyCode == 13 && $input.val().length > 0) {
             addItem();
           }
-        });
+        }
 
-        $remove.live("click", function(event) {
-            var $li = $(event.currentTarget).closest("li");
-            $li.remove();
-            updateResult();
-        });
+        function handleRemove(event) {
+          var $li = $(event.currentTarget).closest("li");
+          $li.remove();
+          updateResult();
+        }
 
-        $add.on("click", function(event) {
-          addItem();
-        });
+        function handleButtonAdd(event) {
+          if ($input.val().length > 0) {
+            addItem();
+          }
+        }
+
+        $input.keyup(handleKeyboardAdd);
+        $result.parent().on("click", "li > .remove", handleRemove);
+        $add.on("click", handleButtonAdd);
 
       });
     },
