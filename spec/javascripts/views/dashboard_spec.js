@@ -2,6 +2,8 @@ describe("Dashboard View", function() {
 
   beforeEach(function() {
     this.model = new window.app.models.Dashboard({ name: "example 1", id: 1, layout: [1] });
+    window.app.helpers.datapointsTargetsPool = new window.app.helpers.DatapointsTargetsPool();
+
     this.collection = new window.app.collections.Widget([
       new window.app.models.Widget({ name: "widget 1", kind: "boolean", id: 1 })
     ]);

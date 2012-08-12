@@ -10,8 +10,11 @@
 
     initialize: function() {
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
-      this.metricsCollection1 = new collections.DatapointsTarget({ source: this.model.get("source1")});
-      this.metricsCollection2 = new collections.DatapointsTarget({ source: this.model.get("source2")});
+
+      this.collection = helpers.datapointsTargetsPool.get(this.model.get('source') || $.Sources.datapoints[0]);
+
+      this.metricsCollection1 = helpers.datapointsTargetsPool.get(this.model.get("source1"));
+      this.metricsCollection2 = helpers.datapointsTargetsPool.get(this.model.get("source2"));
     },
 
     validate: function() {
@@ -191,12 +194,16 @@
       var metrics = this["metricsCollection" + number],
           source  = this["$sourceSelect" + number].val(),
           options = { suppressErrors: true };
-      metrics.source = source;
-      metrics.fetch(options)
-        .done(_.bind(function() {
-          this["$targetInput" + number].selectable({ source: metrics.autocomplete_names()  });
-        }, this))
-        .error(this.showConnectionError);
+      metrics = helpers.datapointsTargetsPool.get(source);
+      if (metrics.populated === true) {
+        this["$targetInput" + number].selectable({ source: metrics.autocomplete_names() });
+      } else {
+        metrics.fetch(options)
+          .done(_.bind(function() {
+            this["$targetInput" + number].selectable({ source: metrics.autocomplete_names()  });
+          }, this))
+          .error(this.showConnectionError);
+      }
     },
 
     showConnectionError: function() {

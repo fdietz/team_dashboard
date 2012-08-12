@@ -1,4 +1,4 @@
-(function($, _, Backbone, bootbox, helpers) {
+(function($, _, Backbone, bootbox, collections, helpers) {
   "use strict";
 
   var colorPalette = [
@@ -94,4 +94,21 @@
   // make bootbox available in helper namespace
   helpers.bootbox = bootbox;
 
-})($, _, Backbone, bootbox, app.helpers);
+  // pool of datapoints targets collection
+  // TODO: fetch fresh collection here instead of Backbone View
+  helpers.DatapointsTargetsPool = function() {
+    this.pool = {};
+  };
+
+  helpers.DatapointsTargetsPool.prototype.get = function(source) {
+    var result = null;
+    if (this.pool[source]) {
+      result = this.pool[source];
+    } else {
+      result = this.pool[source] = new collections.DatapointsTarget({ source: source});
+    }
+
+    return result;
+  };
+
+})($, _, Backbone, bootbox, app.collections, app.helpers);

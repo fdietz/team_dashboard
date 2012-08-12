@@ -3,21 +3,15 @@
 
   collections.DatapointsTarget = Backbone.Collection.extend({
     model: model,
+    populated: false,
 
     initialize: function(options) {
       this.source = options.source;
-
-      this.isFetched = false;
-      this.on('reset', this.onReset, this);
     },
 
-    deferredFetch: function() {
-      this.deferred = this.fetch();
-      return this.deferred;
-    },
-
-    onReset: function() {
-      this.isFetched = true;
+    parse: function(response) {
+      this.populated = true;
+      return response;
     },
 
     autocomplete_names: function() {

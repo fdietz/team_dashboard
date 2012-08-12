@@ -15,6 +15,7 @@
 
   app.init = function() {
     app.collections.dashboards = new app.collections.Dashboard({});
+    app.helpers.datapointsTargetsPool = new app.helpers.DatapointsTargetsPool();
 
     app.router = new window.app.Router();
     try {
