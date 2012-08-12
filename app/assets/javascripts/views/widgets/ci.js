@@ -13,7 +13,7 @@
     },
 
     fetch: function() {
-      return this.model ? this.model.fetch() : null;
+      return this.model ? this.model.fetch({ suppressErrors: true }) : null;
     },
 
     updateModel: function() {
@@ -117,7 +117,6 @@
 
     update: function() {
       var that = this;
-      var options = { suppressErrors: true };
       var validModels = [];
       this.forEachChild(function(child) {
         validModels.push(child.fetch());

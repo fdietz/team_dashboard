@@ -35,10 +35,11 @@
       if (this.$content.find('.error')) this.renderWidget();
     },
 
-    updateWidgetFail: function() {
+    updateWidgetFail: function(xhr, status, statusText) {
+      var message = JSON.parse(xhr.responseText).message;
       this.triggerTimeout();
       this.$ajaxSpinner.hide();
-      this.showLoadingError();
+      this.showLoadingError(message);
     },
 
     clearTimeout: function() {
@@ -49,8 +50,8 @@
       this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 10000);
     },
 
-    showLoadingError: function() {
-      this.$content.html("<div class='error'><p>Error loading datapoints...</p></div>");
+    showLoadingError: function(message) {
+      this.$content.html("<div class='error'><p>Error loading datapoints: <strong>" + message + "</strong></p></div>");
     },
 
     toTitleCase: function(str) {

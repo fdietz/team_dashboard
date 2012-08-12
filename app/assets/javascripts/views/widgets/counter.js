@@ -13,11 +13,11 @@
     },
 
     fetchPrimaryModel: function() {
-      return this.primaryModel ? this.primaryModel.fetch() : null;
+      return this.primaryModel ? this.primaryModel.fetch({ suppressErrors: true }) : null;
     },
 
     fetchSecondaryModel: function() {
-      return this.secondaryModel ? this.secondaryModel.fetch() : null;
+      return this.secondaryModel ? this.secondaryModel.fetch({ suppressErrors: true }) : null;
     },
 
     updateModels: function() {
