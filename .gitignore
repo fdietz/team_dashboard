@@ -19,3 +19,4 @@
 .DS_Store
 
 .jhw-cache
+#/config/database.yml
