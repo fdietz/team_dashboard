@@ -36,10 +36,10 @@
         }
 
         function createControls() {
-          var input       = "<input class='selectable-input' type='text' size='16'></input>",
+          var input       = "<input class='selectable-input' type='text' size='16' placeholder='Enter target to add'></input>",
               button      = "<button class='btn add' type='button'>Add</button>",
               inputAppend = "<div class='input-append'>" + input + button + "</div>",
-              list        = "<ul class='selectable-list input-large'></ul>",
+              list        = "<ul class='selectable-list input-xlarge'></ul>",
               container   = "<div class='selectable-container'>" + inputAppend + list + "</div>";
           $container = $(container);
           $result.after($container);
