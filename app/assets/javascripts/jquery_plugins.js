@@ -24,6 +24,10 @@
 
         populate();
 
+        if ($result.val().length === 0) {
+          $list.hide();
+        }
+
         function cleanupControls() {
           $result.parent().find(".selectable-container").remove();
         }
@@ -49,6 +53,8 @@
         }
 
         function addItem() {
+          $list.show();
+
           var value = $input.val();
           addItemToList(value);
           updateResult();
@@ -67,6 +73,9 @@
               return $(n).clone().children().remove().end().text();
           }).get().join(",");
           $result.val(listValues);
+          if ($result.val().length === 0) {
+            $list.hide();
+          }
         }
 
         function handleKeyboardAdd(event) {
@@ -96,12 +105,14 @@
 
     disable : function() {
       var $result = $(this);
-
-      var $input = $(".selectable-input");
-      var $list  = $(".selectable-list");
-      $input.remove();
-      $list.remove();
       $result.show();
+      $result.parent().find(".selectable-container").remove();
+
+      // var $input = $(".selectable-input");
+      // var $list  = $(".selectable-list");
+      // $input.remove();
+      // $list.remove();
+
     }
   };
 

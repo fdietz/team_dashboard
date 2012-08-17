@@ -195,6 +195,7 @@
           source  = this["$sourceSelect" + number].val(),
           options = { suppressErrors: true };
       metrics = helpers.datapointsTargetsPool.get(source);
+      this["$targetInput" + number].selectable("disable");
       if (metrics.populated === true) {
         this["$targetInput" + number].selectable({ source: metrics.autocomplete_names() });
       } else {

@@ -148,6 +148,7 @@
 
         if ( $.Sources.datapoints[source].supports_target_browsing === true) {
           this.collection = helpers.datapointsTargetsPool.get(source);
+          that.$targetInput.selectable("disable");
           if (this.collection.populated === true) {
             that.$targetInput.selectable({ source: that.collection.autocomplete_names() });
           } else {
