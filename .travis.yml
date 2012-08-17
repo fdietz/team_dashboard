@@ -1,8 +1,8 @@
 language: ruby
 before_script:
-  - cp config/database.example.yml config/database.yml
   - mysql -e 'create database team_dashboard_test'
 script:
+  - cp config/database.example.yml config/database.yml
   - bundle exec rake db:test:prepare
 rvm:
   - 1.9.3
