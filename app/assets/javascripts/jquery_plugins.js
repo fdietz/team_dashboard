@@ -23,13 +23,16 @@
         $input.typeahead({ source: options.source });
 
         populate();
-
-        if ($result.val().length === 0) {
-          $list.hide();
-        }
+        hideListIfEmpty();
 
         function cleanupControls() {
           $result.parent().find(".selectable-container").remove();
+        }
+
+        function hideListIfEmpty() {
+          if ($result.val().length === 0) {
+            $list.hide();
+          }
         }
 
         function createControls() {
@@ -73,9 +76,7 @@
               return $(n).clone().children().remove().end().text();
           }).get().join(",");
           $result.val(listValues);
-          if ($result.val().length === 0) {
-            $list.hide();
-          }
+          hideListIfEmpty();
         }
 
         function handleKeyboardAdd(event) {
@@ -107,12 +108,6 @@
       var $result = $(this);
       $result.show();
       $result.parent().find(".selectable-container").remove();
-
-      // var $input = $(".selectable-input");
-      // var $list  = $(".selectable-list");
-      // $input.remove();
-      // $list.remove();
-
     }
   };
 
