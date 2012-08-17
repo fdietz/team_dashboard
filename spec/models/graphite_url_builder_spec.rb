@@ -26,7 +26,6 @@ describe GraphiteUrlBuilder do
 
     it "contains target param" do
       @params[:target].should == ["test1", "test2"]
-      # @url_builder.datapoints_url(@targets, @from, @to).should match("target=test1&target=test2")
     end
 
     it "contains from param" do
