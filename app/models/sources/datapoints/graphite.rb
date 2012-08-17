@@ -27,9 +27,9 @@ module Sources
       private
 
       def request_datapoints(targets, from, to)
-        url = @url_builder.datapoints_url(targets, from, to)
-        Rails.logger.debug("Requesting datapoints from #{url} ...")
-        ::HttpService.request(url)
+        hash = @url_builder.datapoints_url(targets, from, to)
+        Rails.logger.debug("Requesting datapoints from #{hash[:url]} with params #{hash[:params]} ...")
+        ::HttpService.request(hash[:url], :params => hash[:params])
       end
 
       def request_available_targets

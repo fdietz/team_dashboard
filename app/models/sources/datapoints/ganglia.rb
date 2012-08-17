@@ -26,9 +26,9 @@ module Sources
       def request_datapoints(targets, from, to)
         result = []
         targets.each do |target|
-          url = @url_builder.datapoints_url(target, from, to)
-          Rails.logger.debug("Requesting datapoints from #{url} ...")
-          response = ::HttpService.request(url)
+          hash = @url_builder.datapoints_url(target, from, to)
+          Rails.logger.debug("Requesting datapoints from #{hash[:url]} with params #{hash[:params]} ...")
+          response = ::HttpService.request(hash[:url], :params => hash[:params])
           if response == "null"
             result << []
           else

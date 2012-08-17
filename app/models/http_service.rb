@@ -40,6 +40,7 @@ module HttpService
 
     conn.response :json, :content_type => /\bjson$/
     conn.response :xml,  :content_type => /\bxml$/
+    conn.response :logger if Rails.env.development?
 
     conn.use FaradayMiddleware::ParseJson,       :content_type => 'application/json'
     conn.use FaradayMiddleware::FollowRedirects, :limit => 3
@@ -48,10 +49,26 @@ module HttpService
     conn.adapter Faraday.default_adapter
   end
 
+  # Initialize Faraday connection and execute request
+  #
+  # url     -  String or URI for request
+  # options -  faraday request options
+  #
+  # URL params can be passed as part of the url or using a params hash
+  # via options. Faraday will automaticall URL encode params.
+  #
+  # Array params will result in nested params: GET /foo?bar[]=baz&bar[]=qux
+  # instead of GET /foo?bar=baz&bar=qux.
+  # (see https://github.com/technoweenie/faraday/issues/78)
+  #
+  # Examples:
+  #  * HttpService.request("http://localhost/test?key=value")
+  #  * HttpService.request("http://localhost/test", :params => { :key => "value" })
+  #
   def request(url, options = {})
-    uri = URI.parse(url)
+    uri = url.is_a?(URI) ? url : URI.parse(url)
     connection = Faraday.new(uri, options, &(faraday_middleware || DEFAULT_MIDDLEWARE))
     connection.basic_auth(uri.user, uri.password) if uri.user && uri.password
-    connection.get(url).body
+    connection.get.body
   end
 end

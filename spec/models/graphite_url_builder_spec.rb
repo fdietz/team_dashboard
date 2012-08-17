@@ -6,7 +6,7 @@ describe GraphiteUrlBuilder do
     @url_builder = GraphiteUrlBuilder.new("http://localhost:3000")
     @targets = ['test1', 'test2']
     @from = 1.day.ago.to_i
-    @to = Time.now.to_i
+    @until = Time.now.to_i
   end
 
   describe "#format" do
@@ -16,20 +16,25 @@ describe GraphiteUrlBuilder do
   end
 
   describe "#datapoints_url" do
+    before do
+      @params = @url_builder.datapoints_url(@targets, @from, @until)[:params]
+    end
+
     it "contains json format param" do
-      @url_builder.datapoints_url(@targets, @from, @to).should match("format=json")
+      @params[:format].should == "json"
     end
 
     it "contains target param" do
-      @url_builder.datapoints_url(@targets, @from, @to).should match("target=test1&target=test2")
+      @params[:target].should == ["test1", "test2"]
+      # @url_builder.datapoints_url(@targets, @from, @to).should match("target=test1&target=test2")
     end
 
     it "contains from param" do
-      @url_builder.datapoints_url(@targets, @from, @to).should match("from=#{CGI.escape(@url_builder.format(@from))}")
+      @params[:from].should == @url_builder.format(@from)
     end
 
     it "contains until param" do
-      @url_builder.datapoints_url(@targets, @from, @to).should match("until=#{CGI.escape(@url_builder.format(@to))}")
+      @params[:until].should == @url_builder.format(@until)
     end
   end
 
