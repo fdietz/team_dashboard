@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections, helpers) {
+(function ($, _, Backbone, bootbox, views, models, collections, helpers) {
   "use strict";
 
   views.Widget = Backbone.View.extend({
@@ -6,11 +6,12 @@
     className: "widget",
 
     events: {
-      "click .widget-delete"   : "removeWidget"
+      "click .widget-delete"      : "removeWidget",
+      "click .error-more-details" : "showErrorMoreDetails"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail");
+      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails");
 
       this.model.on('change', this.render);
 
@@ -40,7 +41,9 @@
       if (xhr.status === 0) {
         message = "Could not connect to rails app";
       } else if (xhr.responseText.length > 0){
-        message = JSON.parse(xhr.responseText).message;
+        var responseText = JSON.parse(xhr.responseText);
+        message  = responseText.message;
+        this.errorResponse = responseText.response;
       } else {
         message = statusText;
       }
@@ -58,7 +61,16 @@
     },
 
     showLoadingError: function(message) {
-      this.$content.html("<div class='error'><p>Error loading datapoints: <strong>" + message + "</strong></p></div>");
+      var detailsStr  = "<p><a class='error-more-details' href='#''>More Details...</a></p>",
+          messageStr  = "<p>Error loading datapoints:</p><p><strong>" + message + "</strong></p>",
+          result      = null;
+
+      result = "<div class='error'>"+ messageStr;
+      if (this.errorResponse) {
+        result += detailsStr;
+      }
+      result += "</div>";
+      this.$content.html(result);
     },
 
     toTitleCase: function(str) {
@@ -105,6 +117,26 @@
       });
     },
 
+    createErrorTable: function(obj) {
+      var table = document.createElement('table');
+      var str = '<table class="table">';
+      str += '<tr><th>NAME</th><th>VALUE</th></tr>';
+      for (var prop in obj) {
+        str += '<tr><td>' + prop + '</td><td>' + obj[prop] + '</td></tr>';
+      }
+      str += '</table>';
+      return str;
+    },
+
+    showErrorMoreDetails: function(event) {
+      var url     = "<h3>URL:&#160;&#160;<strong>" + this.errorResponse.url + "</strong></h3>",
+          status = "<h3>Response Status:&#160;&#160;<strong>" + this.errorResponse.status + "</strong></h3>",
+          headers = "<h4>Headers:</h4></br>" + this.createErrorTable(this.errorResponse.headers),
+          text    = "<p>"+url+"</p><p>" + status + "</p><p>" + headers + "</p>";
+      bootbox.alert(text);
+      return false;
+    },
+
     onClose: function() {
       this.startPolling = false;
       this.model.off();
@@ -121,4 +153,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections, app.helpers);
+})($, _, Backbone, bootbox, app.views, app.models, app.collections, app.helpers);

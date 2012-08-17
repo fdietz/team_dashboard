@@ -44,7 +44,7 @@ module HttpService
 
     conn.use FaradayMiddleware::ParseJson,       :content_type => 'application/json'
     conn.use FaradayMiddleware::FollowRedirects, :limit => 3
-    conn.use Faraday::Response::RaiseError
+    conn.use HttpService::RaiseError
 
     conn.adapter Faraday.default_adapter
   end
@@ -71,4 +71,23 @@ module HttpService
     connection.basic_auth(uri.user, uri.password) if uri.user && uri.password
     connection.get.body
   end
+
+  # custom faraday middleware passes url along to simplify error reports
+  class RaiseError < Faraday::Response::Middleware
+    def on_complete(env)
+      case env[:status]
+      when 404
+        raise Faraday::Error::ResourceNotFound, response_values(env)
+      when 400...600
+        raise Faraday::Error::ClientError, response_values(env)
+      end
+    end
+
+    def response_values(env)
+      url = env[:url];
+      url = url.is_a?(URI) ? url.to_s : url
+      {:url => url, :status => env[:status], :headers => env[:response_headers], :body => env[:body]}
+    end
+  end
+
 end

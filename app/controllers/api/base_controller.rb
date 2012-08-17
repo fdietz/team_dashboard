@@ -21,13 +21,22 @@ module Api
     end
 
     def show_internal_server_error(e)
-      logger.error("Internal Server Error: #{e}")
-      respond_with({ :message => "Internal server error" }.to_json, :status => 500)
+      response  = e.response if e.respond_to?(:response)
+      logger.error(error_log_message(e))
+      error_hash = { :message   => "Internal server error: #{e}", :response  => response }
+      respond_with(error_hash.to_json, :status => 500)
     end
 
     def show_not_found_error(e)
       logger.error("Record not found: #{e}")
       render :json => { :message => "Record not found error" }, :status => :unprocessable_entity
+    end
+
+    private
+
+    def error_log_message(e)
+      backtrace = e.backtrace.join("\n")
+      error = "Internal Server Error: #{e.inspect} \n#{backtrace}"
     end
   end
 end
