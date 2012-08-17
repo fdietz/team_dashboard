@@ -11,7 +11,7 @@ describe GangliaUrlBuilder do
 
   describe "#format" do
     it "formats timestamp" do
-      @url_builder.format(1339705206).should eq("06/14/2012 22:20")
+      @url_builder.format(1339705206).should eq("06/14/2012 20:20")
     end
   end
 

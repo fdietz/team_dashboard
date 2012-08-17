@@ -14,7 +14,7 @@ class GraphiteUrlBuilder
   end
 
   def format(timestamp)
-    time = Time.at(timestamp)
+    time = Time.at(timestamp).utc
     time.strftime("%H:%M_%Y%m%d")
   end
 
