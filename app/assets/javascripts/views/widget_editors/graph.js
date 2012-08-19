@@ -8,7 +8,7 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "sourceChanged", "showConnectionError");
+      _.bindAll(this, "render", "sourceChanged", "showConnectionError", "showBrowseDialog");
 
       this.collection = helpers.datapointsTargetsPool.get(this.model.get('source') || $.Sources.datapoints[0]);
     },
@@ -150,11 +150,11 @@
           this.collection = helpers.datapointsTargetsPool.get(source);
           that.$targetInput.selectable("disable");
           if (this.collection.populated === true) {
-            that.$targetInput.selectable({ source: that.collection.autocomplete_names() });
+            this.initTargetSelectable();
           } else {
             this.collection.fetch()
             .done(function() {
-              that.$targetInput.selectable({ source: that.collection.autocomplete_names() });
+              that.initTargetSelectable();
             })
             .error(this.showConnectionError);
           }
@@ -162,6 +162,25 @@
           that.$targetInput.selectable("disable");
         }
       }
+    },
+
+    initTargetSelectable: function() {
+      this.$targetInput.selectable({
+        source:           this.collection.autocomplete_names(),
+        browseCallback :  this.showBrowseDialog
+      });
+    },
+
+    showBrowseDialog: function(event) {
+      var that = this,
+          browser = new views.TargetBrowser({ targets: this.collection.toJSON() });
+      browser.on("selectionChanged", function(selection) {
+        var currentTargets = that.$targetInput.val();
+        that.$targetInput.selectable("disable");
+        that.$targetInput.val(currentTargets + "," + selection);
+        that.initTargetSelectable();
+      });
+      this.$el.append(browser.render().el);
     },
 
     showConnectionError: function() {

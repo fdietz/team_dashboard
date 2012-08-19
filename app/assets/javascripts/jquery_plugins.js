@@ -18,7 +18,8 @@
         var $input     = $result.parent().find(".selectable-input"),
             $list      = $result.parent().find(".selectable-list"),
             $remove    = $result.parent().find(".remove"),
-            $add       = $result.parent().find(".add");
+            $add       = $result.parent().find(".add"),
+            $browse    = $result.parent().find(".browse");
 
         $input.typeahead({ source: options.source });
 
@@ -36,11 +37,12 @@
         }
 
         function createControls() {
-          var input       = "<input class='selectable-input' type='text' size='16' placeholder='Enter target to add'></input>",
-              button      = "<button class='btn add' type='button'>Add</button>",
-              inputAppend = "<div class='input-append'>" + input + button + "</div>",
-              list        = "<ul class='selectable-list input-xlarge'></ul>",
-              container   = "<div class='selectable-container'>" + inputAppend + list + "</div>";
+          var input        = "<input class='selectable-input' type='text' size='16' placeholder='Enter target to add'></input>",
+              browseButton = "<button class='btn browse' type='button'><i class='icon-search icon-white'></i></button>",
+              addButton    = "<button class='btn add' type='button'><i class='icon-plus icon-white'></i></button>",
+              inputAppend  = "<div class='input-append'>" + input + browseButton + "</div>",
+              list         = "<ul class='selectable-list input-xlarge'></ul>",
+              container    = "<div class='selectable-container'>" + inputAppend + list + "</div>";
           $container = $(container);
           $result.after($container);
         }
@@ -97,9 +99,16 @@
           }
         }
 
+        function handleButtonBrowse(event) {
+          if (options.browseCallback) {
+            options.browseCallback(event);
+          }
+        }
+
         $input.keyup(handleKeyboardAdd);
         $result.parent().on("click", "li > .remove", handleRemove);
         $add.on("click", handleButtonAdd);
+        $browse.on("click", handleButtonBrowse);
 
       });
     },

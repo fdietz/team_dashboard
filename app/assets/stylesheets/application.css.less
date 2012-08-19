@@ -64,10 +64,15 @@ input[type="color"],
 
 .selectable-list > li {
   color: @grayDark;
-  padding: 5px;
+  padding: 3px;
+  padding-left: 4px;
   margin: 2px;
-  background-color: #ddd;
+  background-color: #CCC;
   border: 1px #bbb solid;
+
+  &:hover {
+    background-color: #DDD;
+  }
 
   .text {
     white-space: nowrap;
@@ -83,6 +88,30 @@ input[type="color"],
     display:block;
     float: right;
   }
+}
+
+#filtered-list-container ul {
+  width: 528px;
+  height: 400px;
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+  cursor: pointer;
+
+  li:hover {
+    background-color: #DDD;
+  }
+
+  li.selected {
+    background-color: #EEE;
+  }
+
+  li > .text {
+    width: 100%;
+  }
+}
+
+.input-xxlarge {
+  width: 350px;
 }
 
 /******************* dashboard *****************/
