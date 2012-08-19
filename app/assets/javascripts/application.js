@@ -25,7 +25,7 @@
 //= require bootbox
 
 //= require d3.v2.min
-//= require rickshaw.min
+//= require rickshaw
 //= require moment.min
 //= require select2
 
