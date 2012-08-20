@@ -4,9 +4,10 @@
   views.TargetBrowser = Backbone.View.extend({
 
     events: {
-      "click .btn-primary"     : "save",
-      "click .cancel"          : "cancel",
-      "click .selectable-list" : "selectionChanged"
+      "click .btn-primary"        : "save",
+      "click .cancel"             : "cancel",
+      "click .selectable-list"    : "selectionChanged",
+      "dblclick .selectable-list" : "selectionChangedAndDone"
     },
 
     initialize: function(options) {
@@ -44,6 +45,14 @@
       var target = $(event.target).closest("li");
       target.parent().find(".selected").removeClass("selected");
       target.addClass("selected");
+      return false;
+    },
+
+    selectionChangedAndDone: function(event) {
+      var target = $(event.target).closest("li");
+      target.parent().find(".selected").removeClass("selected");
+      target.addClass("selected");
+      this.save();
       return false;
     },
 
