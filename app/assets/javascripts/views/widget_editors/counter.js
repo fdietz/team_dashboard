@@ -193,18 +193,40 @@
     updateAutocompleteTargets: function(number) {
       var metrics = this["metricsCollection" + number],
           source  = this["$sourceSelect" + number].val(),
-          options = { suppressErrors: true };
+          options = { suppressErrors: true },
+          that    = this;
       metrics = helpers.datapointsTargetsPool.get(source);
       this["$targetInput" + number].selectable("disable");
       if (metrics.populated === true) {
-        this["$targetInput" + number].selectable({ source: metrics.autocomplete_names() });
+        this.initTargetSelectable(number, metrics);
       } else {
         metrics.fetch(options)
-          .done(_.bind(function() {
-            this["$targetInput" + number].selectable({ source: metrics.autocomplete_names()  });
-          }, this))
+          .done(function() {
+            that.initTargetSelectable(number, metrics);
+          })
           .error(this.showConnectionError);
       }
+    },
+
+    initTargetSelectable: function(number, collection) {
+      var that = this;
+      this["$targetInput" + number].selectable({
+        source:           collection.autocomplete_names(),
+        browseCallback :  function(event) {
+          var browser = new views.TargetBrowser({ targets: collection.toJSON() });
+
+          browser.on("selectionChanged", function(selection) {
+            var $input         = that["$targetInput" + number],
+                currentTargets = $input.val(),
+                source         = that["$sourceSelect" + number].val();
+            $input.selectable("disable");
+            $input.val(currentTargets + "," + selection);
+            that.initTargetSelectable(number, helpers.datapointsTargetsPool.get(source));
+          });
+
+          that.$el.append(browser.render().el);
+        }
+      });
     },
 
     showConnectionError: function() {
@@ -215,7 +237,6 @@
       this.$flash.slideDown();
       window.setTimeout(function() { that.$flash.fadeOut(); }, 10000);
     }
-
 
   });
 
