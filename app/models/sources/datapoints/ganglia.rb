@@ -1,15 +1,18 @@
+require 'xml'
 require 'open-uri'
 
 module Sources
   module Datapoints
     class Ganglia < Sources::Datapoints::Base
 
+      PORT = 8649
+
       def initialize
-        @url_builder = GangliaUrlBuilder.new(Rails.configuration.ganglia_url)
+        @url_builder = GangliaUrlBuilder.new(Rails.configuration.ganglia_web_url)
       end
 
       def available?
-        Rails.configuration.ganglia_url.present?
+        Rails.configuration.ganglia_web_url.present? && Rails.configuration.ganglia_host.present?
       end
 
       def get(targets, from, to, options = {})
@@ -21,7 +24,38 @@ module Sources
         result
       end
 
+      def available_targets(options = {})
+        request_available_targets
+      end
+
+      def supports_target_browsing?
+        true
+      end
+
       private
+
+      
+      def request_available_targets
+        Rails.logger.debug("Requesting available targets from #{Rails.configuration.ganglia_host}:#{PORT} ...")
+        client = TCPSocket.open(Rails.configuration.ganglia_host, PORT)
+        result = ""
+        while line = client.gets
+          result << line.chop
+        end
+        client.close
+        
+        targets = []
+        source = XML::Parser.string(result)
+        content = source.parse
+        hosts = content.root.find('//CLUSTER/HOST')
+        cluster = content.root.find_first('//CLUSTER').attributes['NAME']
+        hosts.each do |host|
+          host.find('./METRIC').each do |metric|
+            targets << "#{host.attributes['NAME']}@#{cluster}(#{metric.attributes['NAME']})"
+          end
+        end
+        targets
+      end
 
       def request_datapoints(targets, from, to)
         result = []

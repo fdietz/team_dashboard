@@ -90,6 +90,7 @@ GEM
     libv8 (3.3.10.4)
     libwebsocket (0.1.3)
       addressable
+    libxml-ruby (2.3.3)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -192,6 +193,7 @@ DEPENDENCIES
   jquery-rails
   less-rails
   less-rails-bootstrap
+  libxml-ruby
   mocha
   multi_xml
   mysql2

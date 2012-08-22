@@ -50,7 +50,7 @@ For example:
 
 Ganglia is now supported too, it uses the same configuration mechanism
 
-    GANGLIA_URL=http://localhost:8080 rails s
+    GANGLIA_WEB_URL=http://localhost:8080 GANGLIA_HOST=localhost rails s
 
 # Dashboard Widgets
 
