@@ -25,7 +25,8 @@ module Sources
       end
 
       def available_targets(options = {})
-        request_available_targets
+        xml = request_available_targets
+        parse_targets(xml)
       end
 
       def supports_target_browsing?
@@ -34,18 +35,9 @@ module Sources
 
       private
 
-      
-      def request_available_targets
-        Rails.logger.debug("Requesting available targets from #{Rails.configuration.ganglia_host}:#{PORT} ...")
-        client = TCPSocket.open(Rails.configuration.ganglia_host, PORT)
-        result = ""
-        while line = client.gets
-          result << line.chop
-        end
-        client.close
-        
+      def parse_targets(xml)
         targets = []
-        source = XML::Parser.string(result)
+        source = XML::Parser.string(xml)
         content = source.parse
         hosts = content.root.find('//CLUSTER/HOST')
         cluster = content.root.find_first('//CLUSTER').attributes['NAME']
@@ -55,6 +47,17 @@ module Sources
           end
         end
         targets
+      end
+
+      def request_available_targets
+        Rails.logger.debug("Requesting available targets from #{Rails.configuration.ganglia_host}:#{PORT} ...")
+        client = TCPSocket.open(Rails.configuration.ganglia_host, PORT)
+        result = ""
+        while line = client.gets
+          result << line.chop
+        end
+        client.close
+        result
       end
 
       def request_datapoints(targets, from, to)
