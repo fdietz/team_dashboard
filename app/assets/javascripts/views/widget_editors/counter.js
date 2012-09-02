@@ -37,10 +37,8 @@
       this.$targetInput2            = this.$('input#targets2');
       this.$targetInputField1       = this.$('.field-targets1');
       this.$aggregateFunctionField1 = this.$('.field-aggregate_function1');
-      this.$httpProxyUrlField1      = this.$(".field-http_proxy_url1");
       this.$targetInputField2       = this.$('.field-targets2');
       this.$aggregateFunctionField2 = this.$('.field-aggregate_function2');
-      this.$httpProxyUrlField2      = this.$(".field-http_proxy_url2");
 
       this.updateSourceFormControls(1, this.$sourceSelect1.val());
       this.updateSourceFormControls(2, this.$sourceSelect2.val());
@@ -105,18 +103,11 @@
             if (number === 1 && value.length === 0 ) { return err; }
           }]
         };
-        result["http_proxy_url" + number] = {
-          title: "Proxy URL " + number,
-          type: "Text",
-          validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
-          }]
-        };
         result["targets" + number] = {
           title: "Targets " + number,
           type: 'Text',
           validators: [ function(value, formValues) {
-            if (formValues["source" + number].length > 0 && formValues.source1 !== "http_proxy" && value.length === 0) { return err; }
+            if (value.length === 0 && formValues["source"+number].lenght > 0) { return err; }
           }]
         };
         result["aggregate_function" + number] = {
@@ -156,8 +147,7 @@
     },
 
     updateSourceFormControls: function(number, source) {
-      var httpProxyUrlField      = this["$httpProxyUrlField" + number],
-          targetInputField       = this["$targetInputField" + number],
+      var targetInputField       = this["$targetInputField" + number],
           aggregateFunctionField = this["$aggregateFunctionField" + number],
           targetInput            = this["$targetInput" + number],
           metrics                = this["metricsCollection" + number];
@@ -166,18 +156,8 @@
         return (source === "demo" || source === "graphite");
       };
 
-      if (source === "http_proxy") {
-        httpProxyUrlField.show();
-        targetInputField.hide();
-        aggregateFunctionField.hide();
-      } else if (source.length === 0) {
-        httpProxyUrlField.hide();
-        targetInputField.hide();
-        aggregateFunctionField.hide();
+      if (source.length === 0) {
       } else {
-        httpProxyUrlField.hide();
-        targetInputField.show();
-        aggregateFunctionField.show();
         if (metrics.source !== source) {
           targetInput.val("");
         }

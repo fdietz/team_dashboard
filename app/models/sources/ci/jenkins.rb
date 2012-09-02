@@ -4,6 +4,13 @@ module Sources
   module Ci
     class Jenkins < Sources::Ci::Base
 
+      def fields
+        [
+          { :name => "server_url", :title => "Server Url", :mandatory => true },
+          { :name => "project", :title => "Project", :mandatory => true },
+        ]
+      end
+
       # Returns ruby hash:
       def get(server_url, project, options = {})
         result = request_build_status(server_url, project)

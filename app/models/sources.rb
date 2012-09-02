@@ -30,7 +30,8 @@ module Sources
     {
       "name"                     => name,
       "available"                => plugin.available?,
-      "supports_target_browsing" => plugin.supports_target_browsing?
+      "supports_target_browsing" => plugin.supports_target_browsing?,
+      "fields"                   => plugin.fields
     }
   end
 

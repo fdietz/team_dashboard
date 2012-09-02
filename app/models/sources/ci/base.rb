@@ -10,6 +10,10 @@ module Sources
         false
       end
 
+      def fields
+        []
+      end
+
       # Returns ruby hash:
       # * label                 optional label
       # * last_build_time       time of last build

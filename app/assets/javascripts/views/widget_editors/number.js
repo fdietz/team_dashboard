@@ -10,7 +10,7 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "sourceChanged", "render");
+      _.bindAll(this, "sourceChanged", "render", "toggleFields", "updateFieldVisibility");
     },
 
     validate: function() {
@@ -20,16 +20,9 @@
     sourceChanged: function(event) {
       var value  = this.$(event.target).val(),
           id     = this.$(event.target).attr("id"),
-          number = id.charAt(id.length-1),
-          el1    = this.getValuePathFieldEl(number),
-          el2    = this.getHttpProxyFieldEl(number);
-      if (value === "http_proxy") {
-        el1.slideDown();
-        el2.slideDown();
-      } else {
-        el1.slideUp();
-        el2.slideUp();
-      }
+          number = id.charAt(id.length-1);
+
+      this.updateFieldVisibility(number);
     },
 
     render: function() {
@@ -39,33 +32,42 @@
       });
       this.$el.html(this.form.render().el);
 
-      this.updateHttpProxyVisibility(1);
-      this.updateHttpProxyVisibility(2);
-      this.updateHttpProxyVisibility(3);
+      this.updateFieldVisibility(1);
+      this.updateFieldVisibility(2);
+      this.updateFieldVisibility(3);
 
       return this;
     },
 
-    updateHttpProxyVisibility: function(number) {
-      if (this.getSourceEl(number).val() === "http_proxy") {
-        this.getHttpProxyFieldEl(number).show();
-        this.getValuePathFieldEl(number).show();
+    updateFieldVisibility: function(number) {
+      var that   = this,
+          source = this.getSourceEl(number).val();
+
+      if (source.length === 0) {
+        _.each($.Sources.number, function(plugin) {
+          that.toggleFields(plugin, number, false);
+        });
       } else {
-        this.getHttpProxyFieldEl(number).hide();
-        this.getValuePathFieldEl(number).hide();
+        _.each($.Sources.number, function(plugin) {
+          that.toggleFields(plugin, number, plugin.name === source);
+        });
       }
+    },
+
+    toggleFields: function(plugin, number, show) {
+      var that = this;
+      _.each(plugin.fields, function(field) {
+        var el = that.$(".field-"+ plugin.name + "-" + field.name + number);
+        if (show === true) {
+          el.show();
+        } else {
+          el.hide();
+        }
+      });
     },
 
     getSourceEl: function(number) {
       return this.$("select#source"+number);
-    },
-
-    getHttpProxyFieldEl: function(number) {
-      return this.$(".field-http_proxy_url"+number);
-    },
-
-    getValuePathFieldEl: function(number) {
-      return this.$(".field-value_path"+number);
     },
 
     getValue: function() {
@@ -98,17 +100,22 @@
             if (number === 1 && value.length === 0 ) { return err; }
           }]
         };
-        result["http_proxy_url" + number] = {
-          title: "Proxy URL " + number,
-          type: "Text",
-          validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
-          }]
-        };
-        result["value_path" + number] = {
-          title: "Value Path " + number,
-          type: "Text"
-        };
+
+        // add extra fields as defined in source plugin
+        _.each($.Sources.number, function(plugin) {
+          _.each(plugin.fields, function(field) {
+            result[plugin.name + "-" + field.name + number] = {
+              title: field.title + " " + number,
+              type: "Text"
+            };
+            if (field.mandatory === true) {
+              result[plugin.name + "-" + field.name + number].validators = [ function check(value, formValues) {
+                if (formValues["source" + number] === plugin.name && value.length === 0) { return err; }
+              }];
+            }
+          });
+        });
+
         result["label" + number] = { title: "Default Label " + number, type: 'Text' };
         return result;
       };
