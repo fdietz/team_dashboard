@@ -63,7 +63,7 @@ All widgets have a name, time interval in which to update themselves and a data 
 ### Graph Widget
 The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/) and the http proxy source.
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
 
 #### Configuration
 <table>
@@ -104,8 +104,7 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
 ### Counter Widget
 Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/) and the http proxy source.
-
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
 
 #### Configuration
 <table>
