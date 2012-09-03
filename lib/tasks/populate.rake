@@ -21,13 +21,13 @@ task :populate => :environment do
     }
   )
   d2.widgets.create!(:name => "Number", :kind => 'number', :settings => {
-    :source1 => 'http_proxy', :label1 => "Build duration", :http_proxy_url1 => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", :value_path1 => "duration",
+    :source1 => 'http_proxy', :label1 => "Build duration", "http_proxy-http_proxy_url1" => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", "http_proxy-value_path1" => "duration",
     :source2 => 'demo', :label2 => "Errors per day",
     :source3 => 'demo', :label3 => "Errors per minute"
     }
   )
   d2.widgets.create!(:name => "Boolean", :kind => 'boolean', :source2 => 'demo', :settings => {
-    :source1 => 'http_proxy', :label1 => "Jenkins Status", :http_proxy_url1 => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", :value_path1 => "building",
+    :source1 => 'http_proxy', :label1 => "Jenkins Status", "http_proxy-http_proxy_url1" => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", "http_proxy-value_path1" => "building",
     :source2 => 'demo', :label2 => "DB Health",
     :source3 => 'demo', :label3 => "App Status"
     }
@@ -36,8 +36,8 @@ task :populate => :environment do
 
   d3 = Dashboard.create!(:name => "Example 3 (Jenkins and Travis CI Builds)")
   d3.widgets.create!(:name => "Jenkins/Travis CI", :kind => 'ci', :settings => {
-    :source1 => 'jenkins', :server_url1 => "http://ci.jenkins-ci.org/", :project1 => 'infra_plugin_changes_report',
-    :source2 => 'travis', :server_url2 => "http://travis-ci.org", :project2 => 'travis-ci/travis-ci'
+    :source1 => 'jenkins', "jenkins-server_url1" => "http://ci.jenkins-ci.org/", "jenkins-project1" => 'infra_plugin_changes_report',
+    :source2 => 'travis', "travis-server_url2" => "http://travis-ci.org", "travis-project2" => 'travis-ci/travis-ci'
     }
   )
 end
