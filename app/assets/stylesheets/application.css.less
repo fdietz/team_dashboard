@@ -54,11 +54,10 @@ input[type="color"],
 .selectable-list {
   .border-radius(@inputBorderRadius);
 
-  width: 220px;
+  // width: 220px;
   background-color: #ccc;
   padding: 1px;
-  margin-top: 5px;
-  margin-left: 0;
+  margin: 5px 0 0 0;
   list-style: none;
 }
 
@@ -79,20 +78,21 @@ input[type="color"],
     overflow: hidden;
     text-overflow: ellipsis;
     display:block;
-    width: 90%;
+    width: 80%;
   }
 
-  .remove {
-    margin-top: -15px;
+  .actions {
+    margin-top: -18px;
     cursor: pointer;
     display:block;
     float: right;
   }
+
 }
 
 #filtered-list-container ul {
-  width: 528px;
-  height: 400px;
+  // width: 528px;
+  height: 300px;
   overflow: -moz-scrollbars-vertical;
   overflow-y: scroll;
   cursor: pointer;
@@ -112,6 +112,13 @@ input[type="color"],
 
 .input-xxlarge {
   width: 350px;
+}
+
+#function-help {
+  overflow: hidden;
+  word-wrap:break-word;
+
+  margin-top: 4em;
 }
 
 /******************* dashboard *****************/

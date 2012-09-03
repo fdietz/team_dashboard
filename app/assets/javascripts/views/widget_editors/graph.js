@@ -8,7 +8,7 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "sourceChanged", "showConnectionError", "showBrowseDialog");
+      _.bindAll(this, "render", "sourceChanged", "showConnectionError", "showBrowseDialog", "showFunctionDialog");
 
       this.collection = helpers.datapointsTargetsPool.get(this.model.get('source') || $.Sources.datapoints[0]);
     },
@@ -149,11 +149,24 @@
       }
     },
 
+
     initTargetSelectable: function() {
       this.$targetInput.selectable({
         source:           this.collection.autocomplete_names(),
-        browseCallback :  this.showBrowseDialog
+        browseCallback:   this.showBrowseDialog,
+        editCallback:     this.showFunctionDialog
       });
+    },
+
+    showFunctionDialog: function(target, event) {
+      var that = this,
+          dialog = new views.FunctionEditor({ target: target, collection: this.collection });
+
+      dialog.on("inputChanged", function(newValue) {
+        that.$targetInput.selectable("update", target, newValue);
+      });
+
+      this.$el.append(dialog.render().el);
     },
 
     showBrowseDialog: function(event) {

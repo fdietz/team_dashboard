@@ -16,6 +16,7 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'multi_xml'
 gem 'libxml-ruby'
+gem 'nokogiri'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
