@@ -44,10 +44,12 @@
           source = this.getSourceEl(number).val();
 
       if (source.length === 0) {
+        this.$(".field-label"+number).hide();
         _.each($.Sources.boolean, function(plugin) {
           that.toggleFields(plugin, number, false);
         });
       } else {
+        this.$(".field-label"+number).show();
         _.each($.Sources.boolean, function(plugin) {
           that.toggleFields(plugin, number, plugin.name === source);
         });

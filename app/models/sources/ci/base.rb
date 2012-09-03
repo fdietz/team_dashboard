@@ -21,7 +21,7 @@ module Sources
       #                         Integer value: 0 (success), 1 (failure), -1 (else)
       # * current_status        current status
       #                         Integer value: 1 (building), -1 (else)
-      def get(server_url, project, options = {})
+      def get(options = {})
       end
 
     end

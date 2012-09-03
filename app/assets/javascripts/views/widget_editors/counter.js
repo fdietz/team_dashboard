@@ -107,7 +107,7 @@
           title: "Targets " + number,
           type: 'Text',
           validators: [ function(value, formValues) {
-            if (value.length === 0 && formValues["source"+number].lenght > 0) { return err; }
+            if (value.length === 0 && formValues["source"+number].length > 0) { return err; }
           }]
         };
         result["aggregate_function" + number] = {
@@ -152,12 +152,13 @@
           targetInput            = this["$targetInput" + number],
           metrics                = this["metricsCollection" + number];
 
-      var sourceSupportsTarget   = function() {
-        return (source === "demo" || source === "graphite");
-      };
-
       if (source.length === 0) {
+        targetInputField.hide();
+        aggregateFunctionField.hide();
       } else {
+        targetInputField.show();
+        aggregateFunctionField.show();
+
         if (metrics.source !== source) {
           targetInput.val("");
         }

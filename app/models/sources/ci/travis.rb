@@ -12,8 +12,9 @@ module Sources
       end
 
       # Returns ruby hash:
-      def get(server_url, project, options = {})
-        result = request_build_status(server_url, project)
+      def get(options = {})
+        fields = options.fetch(:fields)
+        result = request_build_status(fields.fetch(:server_url), fields.fetch(:project))
         {
           :label             => result["slug"],
           :last_build_time   => result["last_build_finished_at"],

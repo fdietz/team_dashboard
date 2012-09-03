@@ -3,14 +3,26 @@
 
   models.Ci = Backbone.Model.extend({
     initialize: function(options) {
-      this.source     = options.source;
-      this.server_url = options.server_url;
-      this.project    = options.project;
+      console.log(options)
+      this.source = options.source;
+      this.fields = options.fields;
     },
 
     url: function() {
-      var params = ['source=' + encodeURIComponent(this.source), 'server_url=' + encodeURIComponent(this.server_url), 'project=' + encodeURIComponent(this.project)];
+      var params = ['source=' + encodeURIComponent(this.source)];
+      params = params.concat(this.fieldsParams());
+
       return "/api/ci?" + params.join('&');
+    },
+
+    fieldsParams: function() {
+      var params = [];
+
+      _.each(this.fields, function(value, key, list) {
+        params.push("fields[" + key + "]=" + encodeURIComponent(value));
+      });
+
+      return params;
     }
   });
 
