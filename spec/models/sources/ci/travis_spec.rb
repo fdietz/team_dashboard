@@ -13,7 +13,7 @@ describe Sources::Ci::Travis do
       time = Time.now
       input = { "slug" => "name", "last_build_finished_at" => time.iso8601, "last_build_status" => 0, "last_build_finished_at" => time.iso8601 }
       @ci.expects(:request_build_status).with(@server_url, @project).returns(input)
-      result = @ci.get(@server_url, @project)
+      result = @ci.get(:fields => { :server_url => @server_url, :project => @project })
       result[:label].should == "name"
       result[:last_build_time] == time
       result[:last_build_status] == 0
