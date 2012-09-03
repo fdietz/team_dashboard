@@ -149,13 +149,17 @@
       }
     },
 
-
     initTargetSelectable: function() {
-      this.$targetInput.selectable({
+      var options = {
         source:           this.collection.autocomplete_names(),
-        browseCallback:   this.showBrowseDialog,
-        editCallback:     this.showFunctionDialog
-      });
+        browseCallback:   this.showBrowseDialog
+      };
+
+      if ($.Sources.datapoints[this.$sourceSelect.val()].supports_functions === true) {
+        _.extend(options, { editCallback: this.showFunctionDialog });
+      }
+
+      this.$targetInput.selectable(options);
     },
 
     showFunctionDialog: function(target, event) {

@@ -191,7 +191,7 @@
 
     initTargetSelectable: function(number, collection) {
       var that = this;
-      this["$targetInput" + number].selectable({
+      var options = {
         source:           collection.autocomplete_names(),
         browseCallback :  function(event) {
           var browser = new views.TargetBrowser({ targets: collection.toJSON() });
@@ -207,7 +207,24 @@
 
           that.$el.append(browser.render().el);
         }
-      });
+      };
+
+      if ($.Sources.datapoints[that["$sourceSelect" + number].val()].supports_functions === true) {
+        _.extend(options, {
+          editCallback: function(target, event) {
+            var dialog = new views.FunctionEditor({ target: target, collection: collection });
+
+            dialog.on("inputChanged", function(newValue) {
+              var $input = that["$targetInput" + number];
+              $input.selectable("update", target, newValue);
+            });
+
+            that.$el.append(dialog.render().el);
+          }
+        });
+      }
+
+      this["$targetInput" + number].selectable(options);
     },
 
     showConnectionError: function() {

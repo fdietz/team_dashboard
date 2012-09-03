@@ -16,6 +16,10 @@ module Sources
         true
       end
 
+      def supports_functions?
+        true
+      end
+
       def get(targets, from, to, options = {})
         request_datapoints(targets, from, to)
       end

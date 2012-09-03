@@ -10,6 +10,10 @@ module Sources
         false
       end
 
+      def supports_functions?
+        false
+      end
+
       def fields
         []
       end
