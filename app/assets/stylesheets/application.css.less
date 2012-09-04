@@ -47,8 +47,11 @@ input[type="color"],
   color: @grayDark;
 }
 
-.modal-body {
-    max-height: 500px;
+.modal .modal-body {
+  // using height: 500px; would make them all the same size
+  max-height: 500px;
+
+  overflow-y: auto;
 }
 
 // in form selectable-list has same fixed width as select control
