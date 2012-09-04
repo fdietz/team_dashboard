@@ -26,7 +26,7 @@
 
         var options = { source: this.getSource() };
         var fields = {};
-        var plugin = _.find($.Sources.number, function(plugin) {
+        var plugin = _.find($.Sources.boolean, function(plugin) {
           return that.getSource() === plugin.name;
         });
 
