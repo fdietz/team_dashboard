@@ -1,5 +1,8 @@
 module Sources
   module Datapoints
+
+    class NotFoundError < StandardError; end
+    
     class Base
 
       def available?

@@ -7,6 +7,7 @@ module Api
     rescue_from ActiveRecord::RecordNotFound, :with => :show_not_found_error
     rescue_from Timeout::Error, :with => :show_timeout_error
     rescue_from Errno::ECONNREFUSED, Errno::EHOSTUNREACH, :with => :show_connection_error
+    rescue_from "Sources::Datapoints::NotFoundError", :with => :show_no_datapoints_available_error
 
     protected
 
@@ -30,6 +31,10 @@ module Api
     def show_not_found_error(e)
       logger.error("Record not found: #{e}")
       render :json => { :message => "Record not found error" }, :status => :unprocessable_entity
+    end
+
+    def show_no_datapoints_available_error(e)
+      respond_with({ :message => "No datapoints available for query params" }.to_json, :status => 500)
     end
 
     private

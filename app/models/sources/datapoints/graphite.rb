@@ -21,7 +21,9 @@ module Sources
       end
 
       def get(targets, from, to, options = {})
-        request_datapoints(targets, from, to)
+        result = request_datapoints(targets, from, to)
+        raise Sources::Datapoints::NotFoundError if result.empty?
+        result
       end
 
       def available_targets(options = {})

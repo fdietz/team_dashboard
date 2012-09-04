@@ -22,6 +22,7 @@ module Sources
         targets.each_with_index do |target, index|
           result << { "target" => target, "datapoints" => ganglia_datapoints[index] }
         end
+        raise Sources::Datapoints::NotFoundError if result.empty?
         result
       end
 
