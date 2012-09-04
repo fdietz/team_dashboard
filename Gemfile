@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '~> 3.2.5'
 
 gem 'jquery-rails'
-gem 'less-rails'
-gem 'less-rails-bootstrap'
+gem 'less-rails', '~> 2.2'
+gem 'less-rails-bootstrap', '~> 2.1'
 gem "rails-backbone"
 gem "handlebars_assets"
 
