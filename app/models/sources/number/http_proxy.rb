@@ -15,6 +15,7 @@ module Sources
         if value_path.present?
           result = { :value => resolve_value(response_body, value_path) }
           result.merge!(:response_body => response_body) if options[:include_response_body].to_s == "true"
+          result
         else
           response_body
         end
