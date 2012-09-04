@@ -13,7 +13,8 @@ module Sources
         response_body = ::HttpService.request(options.fetch(:fields).fetch(:http_proxy_url))
         value_path = options.fetch(:fields)[:value_path];
         if value_path.present?
-          { :value => resolve_value(response_body, value_path) }
+          result = { :value => resolve_value(response_body, value_path) }
+          result.merge!(:response_body => response_body) if options[:include_response_body].to_s == "true"
         else
           response_body
         end
