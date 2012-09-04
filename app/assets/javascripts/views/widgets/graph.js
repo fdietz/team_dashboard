@@ -41,8 +41,7 @@
         targets: this.model.get('targets'),
         source: this.model.get('source'),
         from: this.from(),
-        to: this.to(),
-        http_proxy_url: this.model.get("http_proxy_url")
+        to: this.to()
       });
     },
 
