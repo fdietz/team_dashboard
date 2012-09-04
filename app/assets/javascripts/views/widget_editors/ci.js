@@ -74,15 +74,6 @@
       return this.form.getValue();
     },
 
-    getUpdateIntervalOptions: function() {
-      return [
-        { val: 10, label: '10 sec' },
-        { val: 600, label: '1 min' },
-        { val: 6000, label: '10 min' },
-        { val: 36000, label: '1 hour' }
-      ];
-    },
-
     getSchema: function() {
       var that = this;
       var err = { type: 'required', message: 'Required' };
@@ -123,7 +114,7 @@
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
-          options: this.getUpdateIntervalOptions()
+          options: helpers.FormDefaults.getUpdateIntervalOptions()
         }
       };
 
