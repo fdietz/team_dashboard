@@ -16,6 +16,11 @@ namespace :graphite do
       result << { :name => name, :description => description, :example => example }
     end
 
+    REJECTS = %w(alias aliasByMetric aliasByNode cactiStyle legendValue 
+      color alpha lineWidth dashed stacked secondYAxis)
+
+    result.reject! { |function| REJECTS.include?(function[:name]) }
+
     file = Rails.root.join("app/assets/javascripts/graphite_functions.js")
     puts "Writing to #{file}"
 
