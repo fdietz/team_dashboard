@@ -40,36 +40,6 @@
       return this.form.getValue();
     },
 
-    getUpdateIntervalOptions: function() {
-      return [
-        { val: 10, label: '10 sec' },
-        { val: 600, label: '1 min' },
-        { val: 6000, label: '10 min' },
-        { val: 36000, label: '1 hour' }
-      ];
-    },
-
-    getPeriodOptions: function() {
-      return [
-        { val: "30-minutes", label: "Last 30 minutes" },
-        { val: "60-minutes", label: "Last 60 minutes" },
-        { val: "3-hours", label: "Last 3 hours" },
-        { val: "12-hours", label: "Last 12 hours" },
-        { val: "24-hours", label: "Last 24 hours" },
-        { val: "3-days", label: "Last 3 days" },
-        { val: "7-days", label: "Last 7 days" },
-        { val: "4-weeks", label: "Last 4 weeks" }
-      ];
-    },
-
-    getAggregateOptions: function() {
-      return [
-        { val: "sum", label: 'Sum' },
-        { val: "average", label: 'Average' },
-        { val: "delta", label: 'Delta' }
-      ];
-    },
-
     getSizeOptions: function() {
       return [
         { val: 1, label: '1 Column' },
@@ -92,12 +62,12 @@
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
-          options: this.getUpdateIntervalOptions()
+          options: helpers.FormDefaults.getUpdateIntervalOptions()
         },
         range: {
           title: 'Period',
           type: 'Select',
-          options: this.getPeriodOptions()
+          options: helpers.FormDefaults.getPeriodOptions()
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
