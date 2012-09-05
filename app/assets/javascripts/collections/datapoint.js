@@ -10,7 +10,6 @@
         this.to             = options.to;
         this.source         = options.source;
         this.targetsArray   = (this.targets || "").split(';');
-        this.http_proxy_url = options.http_proxy_url;
 
         this.isFetched = false;
         this.bind('reset', this.onReset, this);
