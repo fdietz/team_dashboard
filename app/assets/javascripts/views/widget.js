@@ -43,7 +43,12 @@
       } else if (xhr.responseText.length > 0){
         var responseText = JSON.parse(xhr.responseText);
         message  = responseText.message;
-        this.errorResponse = responseText.response;
+        var match = /.*AssertionError.*/.exec(message);
+        if (match) {
+          message = "Graphite " + match[0];
+        } else {
+          this.errorResponse = responseText.response;
+        }
       } else {
         message = statusText;
       }
