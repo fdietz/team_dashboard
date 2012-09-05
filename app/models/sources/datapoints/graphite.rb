@@ -35,7 +35,30 @@ module Sources
       def request_datapoints(targets, from, to)
         hash = @url_builder.datapoints_url(targets, from, to)
         Rails.logger.debug("Requesting datapoints from #{hash[:url]} with params #{hash[:params]} ...")
-        ::HttpService.request(hash[:url], :params => hash[:params])
+
+        #
+        # temporary using net/http directly until array param encoding is handled correctly
+        # (https://github.com/technoweenie/faraday/issues/78 and https://github.com/technoweenie/faraday/pull/186)
+        #
+        # ::HttpService.request(hash[:url], :params => hash[:params])
+        #
+        
+        url = build_query(hash)
+        Rails.logger.debug("Requesting url: #{url}")
+
+        uri = URI.parse(url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request.basic_auth(CGI.unescape(uri.user), CGI.unescape(uri.password)) if uri.user && uri.password
+        response = http.request(request)
+
+        JSON.parse(response.body)
+      end
+
+      def build_query(hash)
+        targets = hash[:params][:target].reject(&:blank?).map { |t| "target=#{t}" }
+        query = ["from=#{CGI.escape(hash[:params][:from])}", "until=#{CGI.escape(hash[:params][:until])}", "format=json"] + targets
+        "#{hash[:url]}?#{query.join('&')}"
       end
 
       def request_available_targets

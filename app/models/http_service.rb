@@ -59,7 +59,7 @@ module HttpService
   #
   # Array params will result in nested params: GET /foo?bar[]=baz&bar[]=qux
   # instead of GET /foo?bar=baz&bar=qux.
-  # (see https://github.com/technoweenie/faraday/issues/78)
+  # (see https://github.com/technoweenie/faraday/issues/78 and https://github.com/technoweenie/faraday/pull/186)
   #
   # Examples:
   #  * HttpService.request("http://localhost/test?key=value")
