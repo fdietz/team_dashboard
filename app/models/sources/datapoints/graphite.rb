@@ -1,4 +1,4 @@
-require 'open-uri'
+require "net/http"
 
 module Sources
   module Datapoints
@@ -56,7 +56,7 @@ module Sources
       end
 
       def build_query(hash)
-        targets = hash[:params][:target].reject(&:blank?).map { |t| "target=#{t}" }
+        targets = hash[:params][:target].reject(&:blank?).map { |t| "target=#{CGI.escape(t)}" }
         query = ["from=#{CGI.escape(hash[:params][:from])}", "until=#{CGI.escape(hash[:params][:until])}", "format=json"] + targets
         "#{hash[:url]}?#{query.join('&')}"
       end
