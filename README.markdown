@@ -91,7 +91,7 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
     <td>Targets</td>
     <td>
       <p>
-        In case of Graphite you can pass a comma-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
+        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
       </p>
       <p>
         In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
@@ -128,7 +128,7 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
     <td>Targets</td>
     <td>
       <p>
-        In case of Graphite you can pass a comma-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
+        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
       </p>
       <p>
         In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
