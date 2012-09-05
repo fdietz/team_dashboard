@@ -1,10 +1,21 @@
 describe("Ci Widget View", function() {
 
+  beforeEach(function() {
+    // TODO: remove global stuff
+    $.Sources = {
+      "ci":{
+        "demo":{"name":"demo","fields":[]},
+        "jenkins":{"name":"jenkins","fields":[{"name":"server_url","title":"ServerUrl","mandatory":true},{"name":"project","title":"Project","mandatory":true}]},
+        "travis":{"name":"travis","fields":[{"name":"server_url","title":"ServerUrl","mandatory":true},{"name":"project","title":"Project","mandatory":true}]}
+      }
+    };
+  });
+
   describe("render", function() {
     beforeEach(function() {
       this.model = new window.app.models.Widget({
         name: "widget 1", kind: 'ci', id: 1,
-        source1: "travis", "travis-source_url1": "http://travis-ci.org", "travis-project1": "bla1"
+        source1: "travis", "travis-server_url1": "http://travis-ci.org", "travis-project1": "bla1"
       });
 
       this.view = new window.app.views.widgets.Ci({ model: this.model });

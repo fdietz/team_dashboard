@@ -3,7 +3,6 @@
 
   models.Ci = Backbone.Model.extend({
     initialize: function(options) {
-      console.log(options)
       this.source = options.source;
       this.fields = options.fields;
     },

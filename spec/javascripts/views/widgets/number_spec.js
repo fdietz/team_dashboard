@@ -38,7 +38,7 @@ describe("Number Widget View", function() {
     it("fetches model again and updates view", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
-        expect(options.url).toEqual("/api/number?source=demo1");
+        expect(options.url).toEqual("/api/number?source=demo1&include_response_body=false");
         options.success({ value: 700 });
       });
 

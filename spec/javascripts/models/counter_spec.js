@@ -1,7 +1,7 @@
 describe("Counter Model", function() {
   describe("buildTargetsParams", function() {
     it("builds url params for given targets", function() {
-      graph = new window.app.models.Counter({ targets: "a,b" });
+      graph = new window.app.models.Counter({ targets: "a;b" });
       expect(graph.buildTargetsParams()).toEqual("targets[]=a&targets[]=b");
     });
   });
@@ -15,7 +15,7 @@ describe("Counter Model", function() {
 
   describe("url", function() {
     it("builds url for given time and target params", function() {
-      graph = new window.app.models.Counter({ targets: "a,b", from: 123, to: 456, source: "demo", aggregate_function: "sum" });
+      graph = new window.app.models.Counter({ targets: "a;b", from: 123, to: 456, source: "demo", aggregate_function: "sum" });
       expect(graph.url()).toEqual("/api/counter?targets[]=a&targets[]=b&from=123&to=456&source=demo&aggregate_function=sum");
     });
   });
