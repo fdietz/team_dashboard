@@ -48,7 +48,7 @@
         }
 
         function populate() {
-          var values = $result.val().split(",");
+          var values = $result.val().split(";");
           $list.empty();
           $.each(values, function(i, n) {
             if (n.length > 0) {
@@ -86,7 +86,7 @@
         function updateResult() {
           var listValues = $list.find("li>span.text").map(function(i, n) {
               return $(n).clone().children().remove().end().text();
-          }).get().join(",");
+          }).get().join(";");
           $result.val(listValues);
           hideListIfEmpty();
         }
@@ -149,7 +149,7 @@
       var index = _.indexOf(listValues, before);
       listValues[index] = after;
 
-      $result.val(listValues.join(','));
+      $result.val(listValues.join(';'));
 
       var $li = $list.find("li:nth-child("+(index+1)+")");
       $li.find("span.text").text(after);
