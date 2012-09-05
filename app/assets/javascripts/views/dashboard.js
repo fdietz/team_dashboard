@@ -14,7 +14,6 @@
       _.bindAll(this, "render", "removeDashboard", "editWidget", "redraw");
 
       this.model.on('change', this.render);
-      this.model.on("widget:changed", this.widgetChanged);
     },
 
     editWidget: function(event) {
@@ -55,7 +54,7 @@
       var that = this;
       this.$("h2#dashboard-name").editable(
         this.$('#dashboard-editable'), function(value) {
-          that.model.save({ name: value});
+          that.model.save({ name: value, layout: that.widgetsContainer.currentLayout() });
         }
       );
     },

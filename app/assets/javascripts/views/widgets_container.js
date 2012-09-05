@@ -26,7 +26,7 @@
         forcePlaceholderSize: true, forceHelperSize: true, revert: 300, delay: 100, opacity: 0.8, handle: '.portlet-header',
         tolerance: 'pointer',
         stop: function (e,ui) {
-          that._saveLayout();
+          that.saveLayout();
         },
         start: function (event, block) {
           // set placeholder size to the widget size
@@ -51,7 +51,7 @@
       }, this));
     },
 
-    _currentLayout: function() {
+    currentLayout: function() {
       var ids = [];
       this.$('.widget').each(function(index) {
         ids.push($(this).attr('data-widget-id'));
@@ -59,8 +59,8 @@
       return ids;
     },
 
-    _saveLayout: function() {
-      this.model.save({ layout: this._currentLayout() });
+    saveLayout: function() {
+      this.model.save({ layout: this.currentLayout() });
     },
 
     appendNewWidget: function(widget) {
