@@ -46,9 +46,8 @@
         var match = /.*AssertionError.*/.exec(message);
         if (match) {
           message = "Graphite " + match[0];
-        } else {
-          this.errorResponse = responseText.response;
         }
+        this.errorResponse = responseText.response;
       } else {
         message = statusText;
       }
