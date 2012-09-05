@@ -7,7 +7,7 @@ module Api
     end
 
     def index
-      dashboards = Dashboard.all
+      dashboards = Dashboard.order("NAME ASC").all
       respond_with dashboards
     end
 
