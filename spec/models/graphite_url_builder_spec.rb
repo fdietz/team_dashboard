@@ -11,7 +11,7 @@ describe GraphiteUrlBuilder do
 
   describe "#format" do
     it "formats timestamp" do
-      @url_builder.format(1339705206).should eq("20:20_20120614")
+      @url_builder.format(1339705206).should eq("22:20_20120614")
     end
   end
 
