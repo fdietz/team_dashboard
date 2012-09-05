@@ -149,7 +149,7 @@
       browser.on("selectionChanged", function(selection) {
         var currentTargets = that.$targetInput.val();
         that.$targetInput.selectable("disable");
-        that.$targetInput.val(currentTargets + "," + selection);
+        that.$targetInput.val(currentTargets + ";" + selection);
         that.initTargetSelectable();
       });
       this.$el.append(browser.render().el);

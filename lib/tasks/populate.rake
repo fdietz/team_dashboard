@@ -11,8 +11,8 @@ task :populate => :environment do
 
   d1 = Dashboard.create!(:name => "Example 1 (Graph Widgets)")
   d1.widgets.create!(:name => "Single Target Line Graph", :targets => target1, :size => 1, :source => 'demo')
-  d1.widgets.create!(:name => "Two Targets Line Graph", :targets => [target1, target2].join(','), :size => 2, :source => 'demo')
-  d1.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(','), :size => 3, :source => 'demo', :graph_type => 'stack')
+  d1.widgets.create!(:name => "Two Targets Line Graph", :targets => [target1, target2].join(';'), :size => 2, :source => 'demo')
+  d1.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(';'), :size => 3, :source => 'demo', :graph_type => 'stack')
 
   d2 = Dashboard.create!(:name => "Example 2 (Counters, Numbers, Boolean and Graph Widgets)")
   d2.widgets.create!(:name => "Counter", :kind => 'counter', :settings => {
@@ -32,7 +32,7 @@ task :populate => :environment do
     :source3 => 'demo', :label3 => "App Status"
     }
   )
-  d2.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(','), :size => 3, :source => 'demo', :graph_type => 'stack')
+  d2.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(';'), :size => 3, :source => 'demo', :graph_type => 'stack')
 
   d3 = Dashboard.create!(:name => "Example 3 (Jenkins and Travis CI Builds)")
   d3.widgets.create!(:name => "Jenkins/Travis CI", :kind => 'ci', :settings => {

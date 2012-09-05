@@ -7,7 +7,7 @@
       this.from = options.from;
       this.to = options.to;
       this.source = options.source;
-      this.targetsArray = (this.targets || "").split(',');
+      this.targetsArray = (this.targets || "").split(';');
       this.aggregate_function = options.aggregate_function;
     },
 
