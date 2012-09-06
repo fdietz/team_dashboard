@@ -28,7 +28,7 @@ class GangliaUrlBuilder
   end
 
   def format(timestamp)
-    time = Time.at(timestamp).utc
+    time = Time.at(timestamp)
     time.strftime("%m/%d/%Y %H:%M")
   end
 
