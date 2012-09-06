@@ -51,6 +51,7 @@
     getGraphTypeOptions: function() {
       return [
         { val: 'line', label: 'Line Graph' },
+        { val: 'area', label: 'Area Graph' },
         { val: 'stack', label: 'Stacked Graph' }
       ];
     },
