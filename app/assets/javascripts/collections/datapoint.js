@@ -20,7 +20,11 @@
       },
 
       buildTargetsParams: function() {
-        return _.map(this.targetsArray, function(target) {
+        // filter out blanks TODO: check why this happens in the first place
+        var result = _.reject(this.targetsArray, function(e) {
+          return e.length === 0;
+        });
+        return _.map(result, function(target) {
           return "targets[]=" + encodeURIComponent(target);
         }).join('&');
       },
