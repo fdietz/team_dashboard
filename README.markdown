@@ -305,7 +305,6 @@ Example Response:
         7
       ]
       name: Example 2 (Counters, Numbers, Boolean and Graph Widgets)
-      time: null
       updated_at: 2012-09-05T08:38:10Z
     }
 
@@ -351,7 +350,7 @@ Example Response:
       range: 30-minutes
       size: 1
       source: demo
-      targets: ;demo.example1
+      targets: demo.example1
       update_interval: 10
       updated_at: 2012-09-05T11:44:34Z
       graph_type: line
@@ -370,7 +369,7 @@ Deletes specific widget
 
 Example:
 
-    curl -X DELETE http://localhost:3000/api/dashboards/8/widgets/1
+    curl -X DELETE http://localhost:3000/api/dashboards/1/widgets/1
 
 ## Credits & Contributors
 
