@@ -52,11 +52,18 @@
 
     _setup_editable_header: function() {
       var that = this;
-      this.$("h2#dashboard-name").editable(
-        this.$('#dashboard-editable'), function(value) {
-          that.model.save({ name: value, layout: that.widgetsContainer.currentLayout() });
+      this.$("h2#dashboard-name").on("keydown", function(event) {
+        var esc  = event.which == 27,
+            nl   = event.which == 13,
+            $el  = $(event.target);
+
+        if (esc) {
+          $el.blur();
+        } else if (nl) {
+          $el.blur();
+          that.model.save({ name: $el.text(), layout: that.widgetsContainer.currentLayout() });
         }
-      );
+      });
     },
 
     removeDashboard: function() {
