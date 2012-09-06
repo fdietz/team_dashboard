@@ -53,6 +53,23 @@ module Sources
         response = http.request(request)
 
         JSON.parse(response.body)
+      rescue JSON::ParserError => e
+        Rails.logger.error("Graphite JSON::ParserError: #{e}")
+        raise Sources::Datapoints::Error.new, extract_error(response.body)
+      end
+
+      def extract_error(body)
+        match = body[/.*(Assertion|Type|Key)Error.*/]
+        case match
+        when /Assertion/
+          "Graphite #{match}"
+        when /Type/
+          "Graphite #{match}"
+        when /Key/
+          "Graphite #{match}\nCheck if you have a typo in a function name or other syntax error"
+        else
+          match
+        end
       end
 
       def build_query(hash)

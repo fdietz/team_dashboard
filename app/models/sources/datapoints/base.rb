@@ -1,7 +1,8 @@
 module Sources
   module Datapoints
 
-    class NotFoundError < StandardError; end
+    class Error < StandardError; end
+    class NotFoundError < Error; end
     
     class Base
 
