@@ -52,7 +52,7 @@
 
     _setup_editable_header: function() {
       var that = this;
-      this.$("h2#dashboard-name").on("keydown", function(event) {
+      this.$("h2#heading").on("keydown", function(event) {
         var esc  = event.which == 27,
             nl   = event.which == 13,
             $el  = $(event.target);
