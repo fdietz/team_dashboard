@@ -51,10 +51,6 @@
       return this.model.get('aggregate_function' + this.number);
     },
 
-    getHttpProxyUrl: function() {
-      return this.model.get("http_proxy_url" + this.number);
-    },
-
     updatePrimaryModel: function() {
       if (this.primaryModel) {
         this.primaryModel.off();
@@ -65,8 +61,7 @@
         source: this.getSource(),
         aggregate_function: this.getAggregateFunction(),
         from: this.from(),
-        to: this.to(),
-        http_proxy_url: this.getHttpProxyUrl()
+        to: this.to()
       });
 
       this.primaryModel.on('change', this.render);
@@ -78,13 +73,11 @@
       }
 
       this.secondaryModel = new models.Counter({
-        time: this.model.get('time'),
         targets: this.getTargets(),
         source: this.getSource(),
         aggregate_function: this.getAggregateFunction(),
         from: this.previousFrom(),
-        to: this.from(),
-        http_proxy_url: this.getHttpProxyUrl()
+        to: this.from()
       });
     },
 
