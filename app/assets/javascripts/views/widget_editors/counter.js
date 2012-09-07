@@ -179,7 +179,7 @@
                 currentTargets = $input.val(),
                 source         = that["$sourceSelect" + number].val();
             $input.selectable("disable");
-            $input.val(currentTargets + "," + selection);
+            $input.val(currentTargets + ";" + selection);
             that.initTargetSelectable(number, helpers.datapointsTargetsPool.get(source));
           });
 
