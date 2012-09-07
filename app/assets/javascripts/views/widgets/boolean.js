@@ -36,6 +36,7 @@
           });
         }
 
+
         this.model = new models.Boolean(_.extend(options, { fields: fields } ));
         this.model.on('change', this.render);
       }
@@ -55,8 +56,8 @@
     },
 
     render: function() {
-      if (this.model) {
-        this.$el.html(JST['templates/widgets/boolean/subview']({ label: this.getLabel() }));
+      if (this.model && this.model.isPopulated()) {
+        this.$el.html(window.JST['templates/widgets/boolean/subview']({ label: this.getLabel() }));
 
         this.$value = this.$('.boolean-value');
         this.$value.toggleClass('green', this.getValue() === true);

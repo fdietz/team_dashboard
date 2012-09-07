@@ -113,7 +113,7 @@
     },
 
     render: function() {
-      if (this.primaryModel && this.secondaryModel) {
+      if (this.primaryModel && this.primaryModel.isPopulated() && this.secondaryModel && this.secondaryModel.isPopulated()) {
         var value = this.value();
         var secondaryValue = this.secondaryValue();
         this.$el.html(JST['templates/widgets/counter/subview']({

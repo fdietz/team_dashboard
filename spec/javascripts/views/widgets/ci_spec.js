@@ -1,16 +1,5 @@
 describe("Ci Widget View", function() {
 
-  beforeEach(function() {
-    // TODO: remove global stuff
-    $.Sources = {
-      "ci":{
-        "demo":{"name":"demo","fields":[]},
-        "jenkins":{"name":"jenkins","fields":[{"name":"server_url","title":"ServerUrl","mandatory":true},{"name":"project","title":"Project","mandatory":true}]},
-        "travis":{"name":"travis","fields":[{"name":"server_url","title":"ServerUrl","mandatory":true},{"name":"project","title":"Project","mandatory":true}]}
-      }
-    };
-  });
-
   describe("render", function() {
     beforeEach(function() {
       this.model = new window.app.models.Widget({
@@ -24,8 +13,7 @@ describe("Ci Widget View", function() {
     it("renders default html correctly", function() {
       this.view.render();
       var firstRow = this.view.$(".triple-row:nth-child(1)");
-      expect(firstRow.find(".ci-value")).toExist();
-      expect(firstRow.find(".label")).toExist();
+      expect(firstRow).toExist();
     });
   });
 

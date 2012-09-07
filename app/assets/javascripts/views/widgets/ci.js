@@ -72,7 +72,7 @@
     },
 
     render: function() {
-      if (this.model) {
+      if (this.model && this.model.isPopulated()) {
         this.$el.html(JST['templates/widgets/ci/subview']({ label: this.getLabel(), currentStatus: this.getCurrentStatus() }));
 
         this.$value = this.$('.ci-value');

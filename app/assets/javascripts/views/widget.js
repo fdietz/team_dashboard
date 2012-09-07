@@ -56,8 +56,8 @@
       if (this.timerId) clearTimeout(this.timerId);
     },
 
-    triggerTimeout: function() {
-      this.timerId = setTimeout(this.updateWidget, this.model.get('update_interval') * 1000);
+    triggerTimeout: function(interval) {
+      this.timerId = setTimeout(this.updateWidget, interval || this.model.get('update_interval') * 1000);
     },
 
     showLoadingError: function(message) {
@@ -101,7 +101,7 @@
       this.$content = this.$('.portlet-content');
 
       this.createWidget();
-      this.updateWidget();
+      this.triggerTimeout(1);
 
       return this;
     },

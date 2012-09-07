@@ -58,7 +58,7 @@
     },
 
     render: function() {
-      if (this.model) {
+      if (this.model && this.model.isPopulated()) {
         this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue(), label: this.getLabel() }));
 
         this.$value = this.$('.number-value');
