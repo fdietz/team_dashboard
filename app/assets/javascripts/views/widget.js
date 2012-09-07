@@ -3,7 +3,7 @@
 
   views.Widget = Backbone.View.extend({
     tagName: "div",
-    className: "widget",
+    className: "widget portlet well well-small ui-widget ui-widget-content ui-corner-all",
 
     events: {
       "click .widget-delete"      : "removeWidget",
@@ -60,19 +60,6 @@
       this.timerId = setTimeout(this.updateWidget, interval || this.model.get('update_interval') * 1000);
     },
 
-    showLoadingError: function(message) {
-      var detailsStr  = "<p><a class='error-more-details' href='#''>More Details...</a></p>",
-          messageStr  = "<p>Error loading datapoints:</p><p><strong>" + message + "</strong></p>",
-          result      = null;
-
-      result = "<div class='error'>"+ messageStr;
-      if (this.errorResponse) {
-        result += detailsStr;
-      }
-      result += "</div>";
-      this.$content.html(result);
-    },
-
     toTitleCase: function(str) {
       return str.replace(/(?:^|\s)\w/g, function(match) {
           return match.toUpperCase();
@@ -93,8 +80,7 @@
       this.$el.html(JST['templates/widget/show']({ widget: this.model.toJSON() }));
 
       this.$el
-        .addClass("portlet well well-small ui-widget ui-widget-content ui-corner-all")
-        .attr("id", "widget-span-" + this.model.get('size') || 1)
+        .attr("id", "widget-span-" + this.model.get('size'))
         .attr("data-widget-id", this.model.get("id"));
 
       this.$ajaxSpinner = this.$('.ajax-spinner');
@@ -117,23 +103,20 @@
       });
     },
 
-    createErrorTable: function(obj) {
-      var table = document.createElement('table');
-      var str = '<table class="table">';
-      str += '<tr><th>NAME</th><th>VALUE</th></tr>';
-      for (var prop in obj) {
-        str += '<tr><td>' + prop + '</td><td>' + obj[prop] + '</td></tr>';
-      }
-      str += '</table>';
-      return str;
+    showLoadingError: function(message) {
+      var html = JST['templates/widget/loading_error']({ message: message, errorResponse: this.errorResponse });
+      this.$content.html(html);
     },
 
     showErrorMoreDetails: function(event) {
-      var url     = "<h3>URL:&#160;&#160;<strong>" + this.errorResponse.url + "</strong></h3>",
-          status = "<h3>Response Status:&#160;&#160;<strong>" + this.errorResponse.status + "</strong></h3>",
-          headers = "<h4>Headers:</h4></br>" + this.createErrorTable(this.errorResponse.headers),
-          text    = "<p>"+url+"</p><p>" + status + "</p><p>" + headers + "</p>";
-      bootbox.alert(text);
+      var headers = [];
+      for (var prop in this.errorResponse.headers) {
+        headers.push({ name: prop, value: this.errorResponse.headers[prop]});
+      }
+
+      var html = JST['templates/widget/request_error_dialog']({ url: this.errorResponse.url, status: this.errorResponse.status, headers: headers });
+      bootbox.alert(html);
+
       return false;
     },
 
