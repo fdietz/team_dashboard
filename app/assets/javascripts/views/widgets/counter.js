@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections, TimeSelector){
+(function ($, _, Backbone, views, models){
   "use strict";
 
   var CounterSubview = Backbone.View.extend({
@@ -7,108 +7,31 @@
 
     initialize: function(options) {
       _.bindAll(this, "render");
-
+      this.widgetModel = options.widgetModel;
       this.number = options.number;
-      this.updateModels();
-    },
 
-    fetchPrimaryModel: function() {
-      return this.primaryModel ? this.primaryModel.fetch({ suppressErrors: true }) : null;
-    },
-
-    fetchSecondaryModel: function() {
-      return this.secondaryModel ? this.secondaryModel.fetch({ suppressErrors: true }) : null;
-    },
-
-    updateModels: function() {
-      if (this.getSource() && this.getTargets()) {
-        this.updatePrimaryModel();
-        this.updateSecondaryModel();
-      }
-    },
-
-    from: function() {
-      return TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
-    },
-
-    previousFrom: function() {
-      return TimeSelector.getPreviousFrom(new Date().getTime(), this.model.get('range'));
-    },
-
-    to: function() {
-      return TimeSelector.getCurrent();
-    },
-
-    getSource: function() {
-      return this.model.get('source' + this.number);
-    },
-
-    getTargets: function() {
-      return this.model.get('targets' + this.number);
-    },
-
-    getAggregateFunction: function() {
-      return this.model.get('aggregate_function' + this.number);
-    },
-
-    updatePrimaryModel: function() {
-      if (this.primaryModel) {
-        this.primaryModel.off();
-      }
-
-      this.primaryModel = new models.Counter({
-        targets: this.getTargets(),
-        source: this.getSource(),
-        aggregate_function: this.getAggregateFunction(),
-        from: this.from(),
-        to: this.to()
+      this.model = new models.CounterDelegate({
+        range : this.widgetModel.get("range"),
+        targets: this.widgetModel.get('targets' + this.number),
+        source:  this.widgetModel.get('source' + this.number),
+        aggregate_function: this.widgetModel.get('aggregate_function' + this.number)
       });
 
-      this.primaryModel.on('change', this.render);
+      this.model.on('change', this.render);
     },
 
-    updateSecondaryModel: function() {
-      if (this.secondaryModel) {
-        this.secondaryModel.off();
-      }
-
-      this.secondaryModel = new models.Counter({
-        targets: this.getTargets(),
-        source: this.getSource(),
-        aggregate_function: this.getAggregateFunction(),
-        from: this.previousFrom(),
-        to: this.from()
-      });
+    fetchModel: function() {
+      return this.model.fetchAll({ suppressErrors: true });
     },
 
-    value: function() {
-      var result = this.primaryModel.get('value') || 0;
-      if (result % 1 === 0) {
-        return result;
-      } else {
-        return result.toFixed(2);
-      }
-    },
-
-    secondaryValue: function() {
-      var y1 = this.primaryModel.get('value');
-      var y2 = this.secondaryModel.get('value');
-      if (y1 && y2) {
-        var result = ((y1 - y2) / y2) * 100;
-        if ( result % 1 === 0) {
-          return result;
-        } else {
-          return result.toFixed(2);
-        }
-      } else {
-        return 0;
-      }
+    updateModel: function() {
+      this.model.updateAll();
     },
 
     render: function() {
-      if (this.primaryModel && this.primaryModel.isPopulated() && this.secondaryModel && this.secondaryModel.isPopulated()) {
-        var value = this.value();
-        var secondaryValue = this.secondaryValue();
+      if (this.model && this.model.isPopulated()) {
+        var value = this.model.value();
+        var secondaryValue = this.model.secondaryValue();
         this.$el.html(JST['templates/widgets/counter/subview']({
           value: value,
           secondaryValue: secondaryValue
@@ -142,9 +65,8 @@
     },
 
     onClose: function() {
-      this.model.off();
-      if (this.primaryModel) this.primaryModel.off();
-      if (this.secondaryModel) this.secondaryModel.off();
+      this.widgetModel.off();
+      if (this.model) this.model.off();
     }
 
   });
@@ -159,28 +81,31 @@
 
     widgetChanged: function() {
       this.forEachChild(function(child) {
-        child.updateModels();
+        child.updateModel();
       });
       this.render();
     },
 
     render: function() {
-      this.counter1 = new CounterSubview({ model: this.model, number: 1 });
-      this.addChildView(this.counter1);
-      this.counter2 = new CounterSubview({ model: this.model, number: 2 });
-      this.addChildView(this.counter2);
+      if (this.model.get("source1")) {
+        this.counter1 = new CounterSubview({ widgetModel: this.model, number: 1 });
+        this.addChildView(this.counter1);
+      }
+
+      if (this.model.get("source2")) {
+        this.counter2 = new CounterSubview({ widgetModel: this.model, number: 2 });
+        this.addChildView(this.counter2);
+      }
 
       return this;
     },
 
     update: function() {
       var that = this;
-      var options = { suppressErrors: true };
 
       var validModels = [];
       this.forEachChild(function(child) {
-        validModels.push(child.fetchPrimaryModel());
-        validModels.push(child.fetchSecondaryModel());
+        validModels.push(child.fetchModel());
       });
 
       return $.when.apply(null, validModels);
@@ -188,9 +113,13 @@
 
     onClose: function() {
       this.model.off();
-      this.counter1.close();
-      this.counter2.close();
+      if (this.counter1) {
+        this.counter1.close();
+      }
+      if (this.counter2) {
+        this.counter2.close();
+      }
     }
   });
 
-})($, _, Backbone, app.views, app.models, app.collections, app.helpers.TimeSelector);
+})($, _, Backbone, app.views, app.models);

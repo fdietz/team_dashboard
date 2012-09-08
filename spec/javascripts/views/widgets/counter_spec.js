@@ -3,9 +3,9 @@ describe("Counter Widget View", function() {
   describe("render", function() {
     beforeEach(function() {
       this.model = new window.app.models.Widget({
-        name: "widget 1", kind: 'counter', id: 1, source: "demo1", range: "30-minutes",
-        targets1: "demo1", aggregate_function1: "sum",
-        targets2: "demo2", aggregate_function2: "sum"
+        name: "widget 1", kind: 'counter', id: 1, range: "30-minutes",
+        source1: "demo", targets1: "demo1", aggregate_function1: "sum",
+        source2: "demo", targets2: "demo2", aggregate_function2: "sum"
       });
 
       this.view = new window.app.views.widgets.Counter({ model: this.model });
