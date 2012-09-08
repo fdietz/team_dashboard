@@ -32,24 +32,32 @@
     updateWidgetDone: function() {
       this.triggerTimeout();
       this.$ajaxSpinner.fadeOut('slow');
-      // TODO clean up
-      if (this.$content.find('.error')) this.renderWidget();
+
+      this.renderWidget();
     },
 
     updateWidgetFail: function(xhr, status, statusText) {
-      var message = null;
-      if (xhr.status === 0) {
-        message = "Could not connect to rails app";
-      } else if (xhr.responseText.length > 0){
-        var responseText = JSON.parse(xhr.responseText);
-        message  = responseText.message;
-        this.errorResponse = responseText.response;
-      } else {
-        message = statusText;
-      }
+      this.previousStateWasError = true;
+
+      this.parseError(xhr, statusText);
       this.triggerTimeout();
       this.$ajaxSpinner.hide();
-      this.showLoadingError(message);
+      this.renderLoadingError();
+    },
+
+    parseError: function(xhr, statusText) {
+      this.message = null;
+      this.errorResponse = null;
+
+      if (xhr.status === 0) {
+        this.message = "Could not connect to rails app";
+      } else if (xhr.responseText.length > 0){
+        var responseText = JSON.parse(xhr.responseText);
+        this.message  = responseText.message;
+        this.errorResponse = responseText.response;
+      } else {
+        this.message = statusText;
+      }
     },
 
     clearTimeout: function() {
@@ -69,11 +77,21 @@
     createWidget: function() {
       var className = this.toTitleCase(this.model.get('kind'));
       this.widget = new views.widgets[className]({ model: this.model });
-      this.$content.html(this.widget.render().el);
+      this.$widgetContent.html(this.widget.render().el);
     },
 
     renderWidget: function() {
-      this.$content.html(this.widget.el);
+      if (this.previousStateWasError) {
+        this.$errorContent.hide();
+        this.$widgetContent.show();
+      }
+    },
+
+    renderLoadingError: function() {
+      var html = JST['templates/widget/loading_error']({ message: this.message, errorResponse: this.errorResponse });
+      this.$widgetContent.hide();
+      this.$errorContent.html(html);
+      this.$errorContent.show();
     },
 
     render: function() {
@@ -84,9 +102,11 @@
         .attr("data-widget-id", this.model.get("id"));
 
       this.$ajaxSpinner = this.$('.ajax-spinner');
-      this.$content = this.$('.portlet-content');
+      this.$widgetContent = this.$(".widget-content");
+      this.$errorContent = this.$(".error-content");
 
       this.createWidget();
+
       this.triggerTimeout(1);
 
       return this;
@@ -101,11 +121,6 @@
           that.model.destroy();
         }
       });
-    },
-
-    showLoadingError: function(message) {
-      var html = JST['templates/widget/loading_error']({ message: message, errorResponse: this.errorResponse });
-      this.$content.html(html);
     },
 
     showErrorMoreDetails: function(event) {
