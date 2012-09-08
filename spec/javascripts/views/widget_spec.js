@@ -11,4 +11,11 @@ describe("Widget View", function() {
     expect(this.view.$(".portlet-content")).toExist();
   });
 
+  it("should disable edit and delete buttons if dashboard is locked", function() {
+    this.view.render();
+    this.dashboard.set("locked", true);
+    expect(this.view.$(".widget-delete")).not.toBeVisible();
+    expect(this.view.$(".widget-edit")).not.toBeVisible();
+  });
+
 });

@@ -23,6 +23,7 @@
       this.dashboard.on("change:locked", this.toggledLock);
     },
 
+    // TODO: consider creating a separate Backbone View and just render that on change:locked event
     toggledLock: function() {
       if (this.dashboard.isLocked()) {
         this.$widgetDeleteButton.hide();

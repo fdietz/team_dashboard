@@ -57,4 +57,15 @@ describe("Dashboard View", function() {
     });
   });
 
+  describe("Toolbar", function() {
+    it("should disable all buttons if locked", function() {
+      this.model.set("locked", true);
+      this.view.render();
+      expect(this.view.$("#heading")).not.toHaveAttr("contenteditable");
+      expect(this.view.$(".dashboard-delete")).toBeDisabled();
+      expect(this.view.$(".dropdown-toggle")).toHaveAttr("disabled");
+      expect(this.view.$(".dashboard-toggle-lock")).toHaveClass("active");
+    });
+  });
+
 });
