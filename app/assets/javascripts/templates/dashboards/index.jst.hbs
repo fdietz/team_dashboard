@@ -18,7 +18,7 @@
   <tbody>
     {{#each dashboards}}
       <tr>
-        <td><a href="/dashboards/{{id}}">{{name}}</a></td>
+        <td><a href="/dashboards/{{id}}">{{name}}</a> {{#if locked}}<i title="Dashboard is locked" class="icon-lock icon-white"></i>{{/if}}</td>
         <td>{{dateFormat updated_at}}</td>
         <td>{{dateFormat created_at}}</td>
       </tr>

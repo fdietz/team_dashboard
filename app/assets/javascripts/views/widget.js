@@ -11,7 +11,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails");
+      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails", "toggledLock");
 
       this.model.on('change', this.render);
 
@@ -19,6 +19,18 @@
       this.dialogEl = options.dialogEl;
 
       this.startPolling = true;
+
+      this.dashboard.on("change:locked", this.toggledLock);
+    },
+
+    toggledLock: function() {
+      if (this.dashboard.isLocked()) {
+        this.$widgetDeleteButton.hide();
+        this.$widgetEditButton.hide();
+      } else {
+        this.$widgetDeleteButton.show();
+        this.$widgetEditButton.show();
+      }
     },
 
     updateWidget: function() {
@@ -104,6 +116,10 @@
       this.$ajaxSpinner = this.$('.ajax-spinner');
       this.$widgetContent = this.$(".widget-content");
       this.$errorContent = this.$(".error-content");
+      this.$widgetDeleteButton = this.$(".widget-delete");
+      this.$widgetEditButton = this.$(".widget-edit");
+
+      this.toggledLock();
 
       this.createWidget();
 

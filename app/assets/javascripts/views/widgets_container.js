@@ -4,10 +4,20 @@
   views.WidgetsContainer = Backbone.CompositeView.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "_appendAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget");
+      _.bindAll(this, "render", "_appendAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "toggledLock");
 
       this.collection.on('add', this.appendNewWidget);
       this.collection.on('remove', this.removeWidget);
+
+      this.model.on("change:locked", this.toggledLock);
+    },
+
+    toggledLock: function() {
+      if (this.model.isLocked()) {
+        this.$el.sortable("disable");
+      } else {
+        this.setupSortableWidgets();
+      }
     },
 
     render: function() {
@@ -16,6 +26,8 @@
       // TODO: do we need this
       this.closeChildren();
       this._appendAllWidgets();
+
+      this.toggledLock();
 
       return this;
     },

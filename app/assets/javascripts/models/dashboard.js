@@ -12,6 +12,14 @@
       if ( _.indexOf(this.get('layout'), widgetId) === -1) {
         this.get('layout').push(widgetId);
       }
+    },
+
+    isLocked: function() {
+      return this.get("locked") === true;
+    },
+
+    toggleLock: function() {
+      this.save({ locked: !this.get("locked") });
     }
 
   });

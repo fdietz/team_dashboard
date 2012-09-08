@@ -1,53 +1,38 @@
 (function ($, _, Backbone, views, models, collections, router, helpers) {
   "use strict";
 
-  views.Dashboard = Backbone.View.extend({
+  var Toolbar = Backbone.View.extend({
+
     events: {
-      "click button.dashboard-delete"      : "removeDashboard",
-
-      "click .add-actions"                 : "showDialog",
-
-      "click .widget-edit"                 : "editWidget"
+      "click button.dashboard-toggle-lock" : "toggleLock"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "removeDashboard", "editWidget", "redraw");
-
-      this.model.on('change', this.render);
+      _.bindAll(this, "render", "toggleLock");
+      this.model.on('change:locked', this.render);
     },
 
-    editWidget: function(event) {
-      var widgetId = $(event.currentTarget).data("widget-id");
-      var model = this.collection.get(widgetId);
-
-      var className = this.toTitleCase(model.get('kind'));
-      var editor = new views.WidgetEditors[className]({ model: model });
-      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model });
-      var dialogElement = this.$('#widget-dialog');
-      dialogElement.html(dialog.render().el);
+    toggleLock: function() {
+      this.model.toggleLock();
       return false;
     },
 
     render: function() {
-      var that = this;
-
-      this.$el.html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
-
-      this._setup_editable_header();
-
-      this.$container = this.$("#widget-container");
-      this.widgetsContainer = new views.WidgetsContainer({ el: this.$container, model: this.model, collection: this.collection });
-      this.widgetsContainer.render();
-
-      // redraw the dashboard each hour (issue #12)
-      this.timerId = setTimeout(this.redraw, 1000*60*60);
-
+      this.$el.html(JST["templates/dashboards/toolbar"]({ model: this.model.toJSON() }));
       return this;
+    }
+
+  });
+
+  views.Dashboard = Backbone.View.extend({
+    events: {
+      "click .widget-edit"                 : "editWidget",
+      "click .add-actions"                 : "showDialog",
+      "click button.dashboard-delete"      : "removeDashboard"
     },
 
-    redraw: function() {
-      if (this.timerId) clearTimeout(this.timerId);
-      window.location.href = "/dashboards/"+this.model.get("id");
+    initialize: function(options) {
+      _.bindAll(this, "render", "editWidget", "redraw", "removeDashboard");
     },
 
     _setup_editable_header: function() {
@@ -77,6 +62,43 @@
           });
         }
       }, this));
+    },
+
+    editWidget: function(event) {
+      var widgetId = $(event.currentTarget).data("widget-id");
+      var model = this.collection.get(widgetId);
+
+      var className = this.toTitleCase(model.get('kind'));
+      var editor = new views.WidgetEditors[className]({ model: model });
+      var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model });
+      var dialogElement = this.$('#widget-dialog');
+      dialogElement.html(dialog.render().el);
+      return false;
+    },
+
+    render: function() {
+      var that = this;
+
+      this.$el.html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
+
+      this.toolbar = new Toolbar({ model: this.model });
+      this.$("#toolbar").html(this.toolbar.render().el);
+
+      this._setup_editable_header();
+
+      this.$container = this.$("#widget-container");
+      this.widgetsContainer = new views.WidgetsContainer({ el: this.$container, model: this.model, collection: this.collection });
+      this.widgetsContainer.render();
+
+      // redraw the dashboard each hour (issue #12)
+      this.timerId = setTimeout(this.redraw, 1000*60*60);
+
+      return this;
+    },
+
+    redraw: function() {
+      if (this.timerId) clearTimeout(this.timerId);
+      window.location.href = "/dashboards/"+this.model.get("id");
     },
 
     toTitleCase: function(str) {
