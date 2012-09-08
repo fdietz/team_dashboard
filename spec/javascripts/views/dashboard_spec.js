@@ -8,35 +8,6 @@ describe("Dashboard View", function() {
       new window.app.models.Widget({ name: "widget 1", kind: "boolean", id: 1 })
     ]);
     this.view = new window.app.views.Dashboard({ model: this.model, collection: this.collection });
-
-    // TODO: remove global stuff
-    $.Sources = {
-      "boolean": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "number": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "datapoints": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "counter": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      }
-    };
-
   });
 
   it("renders html correctly", function() {
