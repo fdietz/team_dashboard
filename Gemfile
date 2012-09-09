@@ -21,7 +21,9 @@ group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "jasmine"
-  gem "jasmine-headless-webkit"
+  gem "jasminerice"
+  gem "guard-jasmine"
+  gem "rb-fsevent", "~> 0.9.1"
   gem "mocha", :require => false
 end
 

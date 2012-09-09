@@ -136,4 +136,8 @@
     return result;
   };
 
+  helpers.DatapointsTargetsPool.prototype.set = function(source, collection) {
+    this.pool[source] = collection;
+  };
+
 })($, _, Backbone, bootbox, app.collections, app.helpers);

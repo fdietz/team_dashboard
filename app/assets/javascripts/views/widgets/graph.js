@@ -92,10 +92,15 @@
       this.$graph.empty();
       this.$yAxis.empty();
 
+      var width = this.$graph.parent().width();
+      if (width > 300) {
+        width = width - 80;
+      }
+
       this.graph = new Rickshaw.Graph({
         element: this.$graph.get(0),
         renderer: this.model.get("graph_type") || "line",
-        width: this.$graph.parent().width()-80,
+        width: width,
         series: datapoints
       });
       this.graph.render();
