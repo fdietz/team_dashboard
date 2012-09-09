@@ -19,7 +19,7 @@
     },
 
     toggleLock: function() {
-      this.save({ locked: !this.get("locked") });
+      return this.save({ locked: !this.get("locked") });
     }
 
   });

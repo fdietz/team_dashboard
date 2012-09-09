@@ -6,12 +6,12 @@
     className: "widget portlet well well-small ui-widget ui-widget-content ui-corner-all",
 
     events: {
-      "click .widget-delete"      : "removeWidget",
-      "click .error-more-details" : "showErrorMoreDetails"
+      "click .error-more-details" : "showErrorMoreDetails",
+      "click .widget-delete"      : "removeWidget"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails", "toggledLock");
+      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails", "toggledLock", "removeWidget");
 
       this.model.on('change', this.render);
 
@@ -21,6 +21,19 @@
       this.startPolling = true;
 
       this.dashboard.on("change:locked", this.toggledLock);
+    },
+
+    removeWidget: function(event) {
+      var that = this;
+
+      helpers.bootbox.animate(false);
+      helpers.bootbox.confirm("Do you want to delete the <strong>" + this.model.get("name") + "</strong> widget?", "Cancel", "Delete", function(result) {
+        if (result) {
+          that.close();
+          that.model.destroy();
+          that.dashboard.trigger("change:layout");
+        }
+      });
     },
 
     // TODO: consider creating a separate Backbone View and just render that on change:locked event
@@ -127,17 +140,6 @@
       this.triggerTimeout(1);
 
       return this;
-    },
-
-    removeWidget: function(event) {
-      var that = this;
-      helpers.bootbox.animate(false);
-      helpers.bootbox.confirm("Do you want to delete the <strong>" + this.model.get("name") + "</strong> widget?", "Cancel", "Delete", function(result) {
-        if (result) {
-          that.close();
-          that.model.destroy();
-        }
-      });
     },
 
     showErrorMoreDetails: function(event) {

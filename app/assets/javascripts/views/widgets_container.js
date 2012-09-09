@@ -1,15 +1,16 @@
-(function ($, _, Backbone, views, models, collections) {
+(function ($, _, Backbone, views, models, collections, helpers) {
   "use strict";
 
   views.WidgetsContainer = Backbone.CompositeView.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "_appendAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "toggledLock");
+      _.bindAll(this, "render", "_appendAllWidgets", "widgetChanged", "appendNewWidget", "removeWidget", "toggledLock", "saveLayout");
 
       this.collection.on('add', this.appendNewWidget);
       this.collection.on('remove', this.removeWidget);
 
       this.model.on("change:locked", this.toggledLock);
+      this.model.on("change:layout", this.saveLayout);
     },
 
     toggledLock: function() {
@@ -72,14 +73,16 @@
     },
 
     saveLayout: function() {
-      this.model.save({ layout: this.currentLayout() });
+      this.model.save({ layout: this.currentLayout() }, { silent: true });
     },
 
     appendNewWidget: function(widget) {
       this._appendWidget(widget);
+      this.saveLayout();
     },
 
     removeWidget: function(widget) {
+      this.saveLayout();
     },
 
     widgetChanged: function(widget) {
@@ -91,4 +94,4 @@
 
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

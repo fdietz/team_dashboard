@@ -46,7 +46,7 @@
           $el.blur();
         } else if (nl) {
           $el.blur();
-          that.model.save({ name: $el.text(), layout: that.widgetsContainer.currentLayout() });
+          that.model.save({ name: $el.text() });
         }
       });
     },
