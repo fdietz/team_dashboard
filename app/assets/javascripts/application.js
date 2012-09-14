@@ -26,6 +26,7 @@
 
 //= require d3.v2.min
 //= require rickshaw
+//= require flotr2
 //= require moment.min
 //= require select2
 //= require list.min

@@ -16,7 +16,7 @@
     '#00A388'
   ].reverse();
 
-  views.widgets.Graph = Backbone.View.extend({
+  views.widgets.RickshawGraph = Backbone.View.extend({
 
     initialize: function(options) {
       _.bindAll(this, "render", "update", "renderGraph", "updateValues", "widgetChanged");
@@ -80,7 +80,7 @@
     },
 
     render: function() {
-      this.$el.html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
+      this.$el.html(JST['templates/widgets/graph/rickshaw_show']({ time: this.model.get('time') }));
 
       this.$graph = this.$('.graph');
       this.$yAxis = this.$('.y-axis');

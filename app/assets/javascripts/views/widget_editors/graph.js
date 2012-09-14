@@ -72,6 +72,7 @@
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
+        // display_legend: { title: "Display Legend", type: "Checkbox" },
         source: {
           title: "Source",
           type: 'Select',

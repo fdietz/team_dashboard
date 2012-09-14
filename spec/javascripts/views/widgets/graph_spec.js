@@ -5,7 +5,7 @@ describe("Graph Widget View", function() {
       this.model = new window.app.models.Widget({
         name: "widget 1", kind: 'graph', id: 1, source: "demo", targets: "demo", range: "30-minutes"
       });
-      this.view = new window.app.views.widgets.Graph({ model: this.model });
+      this.view = new window.app.views.widgets.RickshawGraph({ model: this.model });
     });
 
     it("renders default html correctly", function() {
@@ -20,7 +20,7 @@ describe("Graph Widget View", function() {
       this.model = new window.app.models.Widget({
         name: "widget 1", kind: 'graph', id: 1, source: "demo", targets: "demo", range: "30-minutes"
       });
-      this.view = new window.app.views.widgets.Graph({ model: this.model });
+      this.view = new window.app.views.widgets.RickshawGraph({ model: this.model });
     });
 
     it("fetches model again and updates view", function() {

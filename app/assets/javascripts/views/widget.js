@@ -102,6 +102,12 @@
 
     createWidget: function() {
       var className = this.toTitleCase(this.model.get('kind'));
+      // temporary hardcode graph renderer
+      if (className === "Graph") {
+        // className = "RickshawGraph";
+        className = "Flotr2Graph";
+      }
+
       this.widget = new views.widgets[className]({ model: this.model });
       this.$widgetContent.html(this.widget.render().el);
     },
