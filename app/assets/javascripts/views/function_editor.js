@@ -49,7 +49,7 @@
     addTarget: function() {
       var that = this;
 
-      var browser = new views.TargetBrowser({ targets: this.collection.toJSON() });
+      var browser = new views.TargetBrowser({ collection: this.collection });
       browser.on("selectionChanged", function(selection) {
         that.$functionEditor.insertAtCaret(selection);
       });
