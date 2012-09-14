@@ -106,15 +106,7 @@
         if ( $.Sources.datapoints[source].supports_target_browsing === true) {
           this.collection = helpers.datapointsTargetsPool.get(source);
           that.$targetInput.selectable("disable");
-          if (this.collection.populated === true) {
-            this.initTargetSelectable();
-          } else {
-            this.collection.fetch()
-            .done(function() {
-              that.initTargetSelectable();
-            })
-            .error(this.showConnectionError);
-          }
+          this.initTargetSelectable();
         } else {
           that.$targetInput.selectable("disable");
         }
@@ -123,7 +115,6 @@
 
     initTargetSelectable: function() {
       var options = {
-        source:           this.collection.autocomplete_names(),
         browseCallback:   this.showBrowseDialog
       };
 
@@ -147,7 +138,7 @@
 
     showBrowseDialog: function(event) {
       var that = this,
-          browser = new views.TargetBrowser({ targets: this.collection.toJSON() });
+          browser = new views.TargetBrowser({ collection: this.collection });
       browser.on("selectionChanged", function(selection) {
         var currentTargets = that.$targetInput.val();
         that.$targetInput.selectable("disable");

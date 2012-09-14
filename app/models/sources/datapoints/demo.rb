@@ -5,7 +5,7 @@ module Sources
       def supports_target_browsing?
         true
       end
-      
+
       def get(targets, from, to, options = {})
         to = to || Time.now.to_i
         datapoints = []

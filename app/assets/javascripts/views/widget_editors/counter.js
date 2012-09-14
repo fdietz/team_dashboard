@@ -156,23 +156,14 @@
           that    = this;
       metrics = helpers.datapointsTargetsPool.get(source);
       this["$targetInput" + number].selectable("disable");
-      if (metrics.populated === true) {
-        this.initTargetSelectable(number, metrics);
-      } else {
-        metrics.fetch(options)
-          .done(function() {
-            that.initTargetSelectable(number, metrics);
-          })
-          .error(this.showConnectionError);
-      }
+      this.initTargetSelectable(number, metrics);
     },
 
     initTargetSelectable: function(number, collection) {
       var that = this;
       var options = {
-        source:           collection.autocomplete_names(),
         browseCallback :  function(event) {
-          var browser = new views.TargetBrowser({ targets: collection.toJSON() });
+          var browser = new views.TargetBrowser({ collection: collection });
 
           browser.on("selectionChanged", function(selection) {
             var $input         = that["$targetInput" + number],

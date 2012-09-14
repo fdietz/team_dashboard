@@ -11,8 +11,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "save", "cancel", "selectionChanged");
-      this.targets = options.targets;
+      _.bindAll(this, "render", "save", "cancel", "selectionChanged", "displayList");
     },
 
     render: function() {
@@ -20,13 +19,9 @@
 
       this.$el.html(JST['templates/widget/browse']({}));
       this.$modal = this.$el.find('.modal');
-      this.$list = this.$el.find("#filtered-list-container");
-
-      var options = {
-          item: "<li class='f'><span class='name text'></span></li>",
-          page: 200
-      };
-      this.list = new List(this.$list[0], options, this.targets);
+      this.$listContainer = this.$el.find("#filtered-list-container");
+      this.$list = this.$("#list");
+      this.$ajaxSpinner = this.$el.find(".ajax-spinner");
 
       this.$modal.on("shown", function() {
         that.$el.find("#filter").focus();
@@ -38,7 +33,25 @@
         backdrop: 'static'
       });
 
+      if (this.collection.populated === true) {
+        this.targets = this.collection.toJSON();
+        this.displayList();
+      } else {
+        this.collection.fetch().done(this.displayList);
+      }
+
       return this;
+    },
+
+    displayList: function() {
+      this.targets = this.collection.toJSON();
+      var options = {
+          item: "<li class='f'><span class='name text'></span></li>",
+          page: 200
+      };
+      this.$ajaxSpinner.hide();
+      this.$listContainer.show();
+      this.list = new List(this.$listContainer[0], options, this.targets);
     },
 
     selectionChanged: function(event) {

@@ -21,8 +21,6 @@
             // $add       = $result.parent().find(".add"),
             $browse    = $result.parent().find(".browse");
 
-        $input.typeahead({ source: options.source });
-
         populate();
         hideListIfEmpty();
 
