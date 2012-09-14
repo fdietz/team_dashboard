@@ -79,9 +79,9 @@
       function suffixFormatter(val, axis) {
         val = parseInt(val, 10);
         if (val > 1000000)
-          return (val/1000000).toFixed(axis.tickDecimals) + " MB";
+          return (val/1000000).toFixed(axis.tickDecimals) + "T";
         else if (val > 1000)
-          return (val/1000).toFixed(axis.tickDecimals) + " kB";
+          return (val/1000).toFixed(axis.tickDecimals) + "K";
         else
           return val.toFixed(axis.tickDecimals);
       }
