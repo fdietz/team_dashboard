@@ -49,6 +49,11 @@
           that.model.save({ name: $el.text() });
         }
       });
+      this.$("h2#heading").blur(function(event) {
+        var $el  = $(event.target);
+        that.model.save({ name: $el.text() });
+      });
+
     },
 
     removeDashboard: function() {
