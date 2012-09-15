@@ -163,12 +163,6 @@
     updateValues: function() {
       var datapoints = this.transformDatapoints();
       this.renderGraph(datapoints);
-      // if (datapoints.hasData === true && this.graph) {
-      //   this.updateGraphSeries(datapoints);
-      //   this.graph.render();
-      // } else {
-      //   this.renderGraph(datapoints);
-      // }
     },
 
     onClose: function() {
