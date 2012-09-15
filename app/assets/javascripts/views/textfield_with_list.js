@@ -160,7 +160,6 @@
     },
 
     onClose: function() {
-      console.log("onClose")
       this.$originalInput.show();
     }
 
