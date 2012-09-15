@@ -1,4 +1,4 @@
-(function($, _, Backbone, bootbox, collections, helpers) {
+(function($, _, Backbone, bootbox, List, collections, helpers) {
   "use strict";
 
   var colorPalette = [
@@ -140,4 +140,4 @@
     this.pool[source] = collection;
   };
 
-})($, _, Backbone, bootbox, app.collections, app.helpers);
+})($, _, Backbone, bootbox, List, app.collections, app.helpers);

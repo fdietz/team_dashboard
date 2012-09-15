@@ -94,43 +94,36 @@
     },
 
     updateSourceFormControls: function(source) {
-      var options = { suppressErrors: true },
-          that    = this;
+      if (this.textfieldWithList) this.textfieldWithList.close();
 
-      if (source.length === 0) {
-      } else {
-        if (this.collection.source !== source) {
-          this.$targetInput.val("");
-        }
-
-        if ( $.Sources.datapoints[source].supports_target_browsing === true) {
-          this.collection = helpers.datapointsTargetsPool.get(source);
-          that.$targetInput.selectable("disable");
-          this.initTargetSelectable();
-        } else {
-          that.$targetInput.selectable("disable");
-        }
+      if ( $.Sources.datapoints[source].supports_target_browsing === true) {
+        this.collection = helpers.datapointsTargetsPool.get(source);
+        this.initTextfieldWithList();
       }
     },
 
-    initTargetSelectable: function() {
+    initTextfieldWithList: function() {
       var options = {
-        browseCallback:   this.showBrowseDialog
+        originalInput: this.$targetInput,
+        browseCallback: this.showBrowseDialog,
+        editCallback: this._supportsGraphiteFunctions() ? this.showFunctionDialog : null
       };
 
-      if ($.Sources.datapoints[this.$sourceSelect.val()].supports_functions === true) {
-        _.extend(options, { editCallback: this.showFunctionDialog });
-      }
-
-      this.$targetInput.selectable(options);
+      if (this.textfieldWithList) this.textfieldWithList.close();
+      this.textfieldWithList = new views.TextfieldWithList(options);
+      this.$targetInput.after(this.textfieldWithList.render().el);
     },
 
-    showFunctionDialog: function(target, event) {
-      var that = this,
-          dialog = new views.FunctionEditor({ target: target, collection: this.collection });
+    _supportsGraphiteFunctions: function() {
+      return $.Sources.datapoints[this.$sourceSelect.val()].supports_functions === true;
+    },
 
-      dialog.on("inputChanged", function(newValue) {
-        that.$targetInput.selectable("update", target, newValue);
+    showFunctionDialog: function(currentTarget, event) {
+      var that = this,
+          dialog = new views.FunctionEditor({ target: currentTarget, collection: this.collection });
+
+      dialog.on("inputChanged", function(newTarget) {
+        that.textfieldWithList.update(currentTarget, newTarget);
       });
 
       this.$el.append(dialog.render().el);
@@ -139,11 +132,8 @@
     showBrowseDialog: function(event) {
       var that = this,
           browser = new views.TargetBrowser({ collection: this.collection });
-      browser.on("selectionChanged", function(selection) {
-        var currentTargets = that.$targetInput.val();
-        that.$targetInput.selectable("disable");
-        that.$targetInput.val(currentTargets + ";" + selection);
-        that.initTargetSelectable();
+      browser.on("selectionChanged", function(newTarget) {
+        that.textfieldWithList.add(newTarget);
       });
       this.$el.append(browser.render().el);
     },

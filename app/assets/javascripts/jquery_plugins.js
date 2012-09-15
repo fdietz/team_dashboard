@@ -1,168 +1,169 @@
 (function($, _) {
   "use strict";
 
-  var selectableMethods = {
-    init : function(options) {
-      var defaults = {};
-      options = $.extend(defaults, options);
 
-      return this.each(function() {
-        var $result = $(this);
-        var $container = null;
+  // var selectableMethods = {
+  //   init : function(options) {
+  //     var defaults = {};
+  //     options = $.extend(defaults, options);
 
-        $result.hide();
+  //     var $result = $(this);
+  //     var $container = null;
+  //     var list = null;
 
-        cleanupControls();
-        createControls();
+  //     $result.hide();
 
-        var $input     = $result.parent().find(".selectable-input"),
-            $list      = $result.parent().find(".selectable-list"),
-            $remove    = $result.parent().find(".remove"),
-            // $add       = $result.parent().find(".add"),
-            $browse    = $result.parent().find(".browse");
+  //     cleanupControls();
+  //     createControls();
 
-        populate();
-        hideListIfEmpty();
+  //     var $input     = $result.parent().find(".selectable-input"),
+  //         $list      = $result.parent().find(".selectable-list"),
+  //         $remove    = $result.parent().find(".remove"),
+  //         // $add       = $result.parent().find(".add"),
+  //         $browse    = $result.parent().find(".browse");
 
-        function cleanupControls() {
-          $result.parent().find(".selectable-container").remove();
-        }
+  //     populate();
+  //     hideListIfEmpty();
 
-        function hideListIfEmpty() {
-          if ($result.val().length === 0) {
-            $list.hide();
-          }
-        }
+  //     function cleanupControls() {
+  //       $result.parent().find(".selectable-container").remove();
+  //     }
 
-        function createControls() {
-          var input        = "<input class='selectable-input' type='text' size='16' placeholder='Enter target to add'></input>",
-              browseButton = "<button class='btn browse' type='button'><i class='icon-search icon-white'></i></button>",
-              addButton    = "<button class='btn add' type='button'><i class='icon-plus icon-white'></i></button>",
-              inputAppend  = "<div class='input-append'>" + input + browseButton + "</div>",
-              list         = "<ul class='selectable-list input-large'></ul>",
-              container    = "<div class='selectable-container'>" + inputAppend + list + "</div>";
-          $container = $(container);
-          $result.after($container);
-        }
+  //     function hideListIfEmpty() {
+  //       if ($result.val().length === 0) {
+  //         $list.hide();
+  //       }
+  //     }
 
-        function populate() {
-          var values = $result.val().split(";");
-          $list.empty();
-          $.each(values, function(i, n) {
-            if (n.length > 0) {
-              addItemToList($.trim(n));
-            }
-          });
-        }
+  //     function createControls() {
+  //       var input        = "<input class='selectable-input' type='text' size='16' placeholder='Enter target to add'></input>",
+  //           browseButton = "<button class='btn browse' type='button'><i class='icon-search icon-white'></i></button>",
+  //           addButton    = "<button class='btn add' type='button'><i class='icon-plus icon-white'></i></button>",
+  //           inputAppend  = "<div class='input-append'>" + input + browseButton + "</div>",
+  //           list         = "<ul class='selectable-list input-large list'></ul>",
+  //           container    = "<div class='selectable-container'>" + inputAppend + list + "</div>";
+  //       $container = $(container);
+  //       $result.after($container);
+  //     }
 
-        function addItem() {
-          $list.show();
+  //     function populate() {
+  //       var values = $result.val().split(";");
+  //       values = _.map(values, function(value) {
+  //         return { name: value };
+  //       });
+  //       var listOptions = {
+  //         item: template()
+  //       };
 
-          var value = $input.val();
-          addItemToList(value);
-          updateResult();
-          $input.val("");
-        }
+  //       list = new List($container[0], listOptions, values);
+  //     }
 
-        function addItemToList(value) {
-          var iconEdit = "<span class='edit icon-wrench'></span>",
-              iconRemove = "<span class='remove icon-remove'></span>",
-              icons, text, li = null;
+  //     function addItem() {
+  //       $list.show();
 
-          icons = "<span class='actions'>";
-          if (options.editCallback) {
-            icons += iconEdit;
-          }
-          icons += iconRemove + "</span>";
+  //       var value = $input.val();
+  //       list.add({ name: value});
+  //       updateResult();
+  //       $input.val("");
+  //     }
 
-          text  = "<span class='text'>"+ value + "</span>",
-          li    = "<li title="+ value + ">"+ text + icons +"</li>";
+  //     function template() {
+  //       var iconEdit = "<span class='edit icon-wrench'></span>",
+  //           iconRemove = "<span class='remove icon-remove'></span>",
+  //           icons, text, li = null;
 
-          $list.append($(li));
-        }
+  //       icons = "<span class='actions'>";
+  //       if (options.editCallback) {
+  //         icons += iconEdit;
+  //       }
+  //       icons += iconRemove + "</span>";
 
-        function updateResult() {
-          var listValues = $list.find("li>span.text").map(function(i, n) {
-              return $(n).clone().children().remove().end().text();
-          }).get().join(";");
-          $result.val(listValues);
-          hideListIfEmpty();
-        }
+  //       text  = "<span class='text name'></span>",
+  //       li    = "<li>"+ text + icons +"</li>";
 
-        function handleKeyboardAdd(event) {
-          if (event.keyCode == 13 && $input.val().length > 0) {
-            addItem();
-          }
-        }
+  //       return li;
+  //     }
 
-        function handleRemove(event) {
-          var $li = $(event.currentTarget).closest("li");
-          $li.remove();
-          updateResult();
-        }
+  //     function updateResult() {
+  //       var listValues = _.map(list.items, function(el) {
+  //           return el.values().name;
+  //       }).join(";");
+  //       $result.val(listValues);
+  //       hideListIfEmpty();
+  //     }
 
-        function handleEdit(event) {
-          var $li = $(event.currentTarget).closest("li");
-          if (options.editCallback) {
-            options.editCallback($li.text(), event);
-          }
-        }
+  //     function handleKeyboardAdd(event) {
+  //       if (event.keyCode == 13 && $input.val().length > 0) {
+  //         addItem();
+  //       }
+  //     }
 
-        function handleButtonAdd(event) {
-          if ($input.val().length > 0) {
-            addItem();
-          }
-        }
+  //     function handleRemove(event) {
+  //       var selectedValue = $(event.currentTarget).closest("li").find(".name").text();
+  //       list.remove("name", selectedValue);
+  //       updateResult();
+  //     }
 
-        function handleButtonBrowse(event) {
-          if (options.browseCallback) {
-            options.browseCallback(event);
-          }
-        }
+  //     function handleEdit(event) {
+  //       var selectedValue = $(event.currentTarget).closest("li").find(".name").text();
+  //       if (options.editCallback) {
+  //         options.editCallback(selectedValue, event);
+  //       }
+  //     }
 
-        $input.keyup(handleKeyboardAdd);
-        $result.parent().on("click", "li > .actions .remove", handleRemove);
-        $result.parent().on("click", "li > .actions .edit", handleEdit);
-        // $add.on("click", handleButtonAdd);
-        $browse.on("click", handleButtonBrowse);
+  //     function handleButtonAdd(event) {
+  //       if ($input.val().length > 0) {
+  //         addItem();
+  //       }
+  //     }
 
-      });
-    },
+  //     function handleButtonBrowse(event) {
+  //       if (options.browseCallback) {
+  //         options.browseCallback(event);
+  //       }
+  //     }
 
-    disable : function() {
-      var $result = $(this);
-      $result.show();
-      $result.parent().find(".selectable-container").remove();
-    },
+  //     $input.keyup(handleKeyboardAdd);
+  //     $result.parent().on("click", "li > .actions .remove", handleRemove);
+  //     $result.parent().on("click", "li > .actions .edit", handleEdit);
+  //     // $add.on("click", handleButtonAdd);
+  //     $browse.on("click", handleButtonBrowse);
+  //   },
 
-    // update selected list entry
-    update: function(before, after) {
-      var $result = $(this);
-      var $list   = $result.parent().find(".selectable-list");
+  //   disable : function() {
+  //     var $result = $(this);
+  //     $result.show();
+  //     $result.parent().find(".selectable-container").remove();
+  //   },
 
-      var listValues = $list.find("li>span.text").map(function(i, n) {
-          return $(n).clone().children().remove().end().text();
-      }).get();
+  //   // update selected list entry
+  //   update: function(before, after) {
+  //     var $result = $(this);
+  //     var $list   = $result.parent().find(".selectable-list");
 
-      var index = _.indexOf(listValues, before);
-      listValues[index] = after;
+  //     var listValues = $list.find("li>span.text").map(function(i, n) {
+  //         return $(n).clone().children().remove().end().text();
+  //     }).get();
 
-      $result.val(listValues.join(';'));
+  //     var index = _.indexOf(listValues, before);
+  //     listValues[index] = after;
 
-      var $li = $list.find("li:nth-child("+(index+1)+")");
-      $li.find("span.text").text(after);
-    }
-  };
+  //     $result.val(listValues.join(';'));
 
-  $.fn.selectable = function(method) {
-    if ( selectableMethods[method] ) {
-      return selectableMethods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    } else if ( typeof method === 'object' || ! method ) {
-      return selectableMethods.init.apply( this, arguments );
-    } else {
-      $.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
-    }
-  };
+  //     var $li = $list.find("li:nth-child("+(index+1)+")");
+  //     $li.find("span.text").text(after);
+  //   }
+  // };
+
+  // $.fn.selectable = function(method) {
+  //   if ( selectableMethods[method] ) {
+  //     return selectableMethods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+  //   } else if ( typeof method === 'object' || ! method ) {
+  //     return selectableMethods.init.apply( this, arguments );
+  //   } else {
+  //     $.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
+  //   }
+  // };
 
   $.fn.insertAtCaret = function(myValue) {
     return this.each(function(i) {

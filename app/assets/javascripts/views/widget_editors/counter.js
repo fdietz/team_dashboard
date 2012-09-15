@@ -128,7 +128,7 @@
       var targetInputField       = this["$targetInputField" + number],
           aggregateFunctionField = this["$aggregateFunctionField" + number],
           targetInput            = this["$targetInput" + number],
-          metrics                = this["metricsCollection" + number];
+          textfieldWithList      = this["textfieldWithList"+number];
 
       if (source.length === 0) {
         targetInputField.hide();
@@ -137,63 +137,50 @@
         targetInputField.show();
         aggregateFunctionField.show();
 
-        if (metrics.source !== source) {
-          targetInput.val("");
-        }
-
-        if ($.Sources.datapoints[source].supports_target_browsing === true) {
-          this.updateAutocompleteTargets(number);
-        } else {
-          targetInput.selectable("disable");
-        }
+        if (textfieldWithList) textfieldWithList.close();
+        if (this._supportsTargetBrowsing(source)) this.initTextfieldWithList(targetInput, number, source);
       }
     },
 
-    updateAutocompleteTargets: function(number) {
-      var metrics = this["metricsCollection" + number],
-          source  = this["$sourceSelect" + number].val(),
-          options = { suppressErrors: true },
-          that    = this;
-      metrics = helpers.datapointsTargetsPool.get(source);
-      this["$targetInput" + number].selectable("disable");
-      this.initTargetSelectable(number, metrics);
+    _supportsTargetBrowsing: function(source) {
+      return $.Sources.datapoints[source].supports_target_browsing === true;
     },
 
-    initTargetSelectable: function(number, collection) {
+    _supportsGraphiteFunctions: function(source) {
+      return $.Sources.datapoints[source].supports_functions === true;
+    },
+
+    initTextfieldWithList: function(targetInputField, number, source) {
       var that = this;
+      var textfieldWithList = this["textfieldWithList"+number];
+      var collection        = helpers.datapointsTargetsPool.get(source);
+
       var options = {
-        browseCallback :  function(event) {
+        originalInput  : targetInputField,
+        browseCallback : function(event) {
           var browser = new views.TargetBrowser({ collection: collection });
-
-          browser.on("selectionChanged", function(selection) {
-            var $input         = that["$targetInput" + number],
-                currentTargets = $input.val(),
-                source         = that["$sourceSelect" + number].val();
-            $input.selectable("disable");
-            $input.val(currentTargets + ";" + selection);
-            that.initTargetSelectable(number, helpers.datapointsTargetsPool.get(source));
+          browser.on("selectionChanged", function(newTarget) {
+            textfieldWithList.add(newTarget);
           });
-
           that.$el.append(browser.render().el);
         }
       };
 
-      if ($.Sources.datapoints[that["$sourceSelect" + number].val()].supports_functions === true) {
+      if (this._supportsGraphiteFunctions(source)) {
         _.extend(options, {
-          editCallback: function(target, event) {
-            var dialog = new views.FunctionEditor({ target: target, collection: collection });
-
-            dialog.on("inputChanged", function(newValue) {
-              var $input = that["$targetInput" + number];
-              $input.selectable("update", target, newValue);
+          editCallback: function(currentTarget, event) {
+            var dialog = new views.FunctionEditor({ target: currentTarget, collection: collection });
+            dialog.on("inputChanged", function(newTarget) {
+              textfieldWithList.update(currentTarget, newTarget);
             });
-
             that.$el.append(dialog.render().el);
           }
         });
       }
 
-      this["$targetInput" + number].selectable(options);
+      if (textfieldWithList) textfieldWithList.close();
+      textfieldWithList = this["textfieldWithList"+number] = new views.TextfieldWithList(options);
+      targetInputField.after(textfieldWithList.render().el);
     },
 
     showConnectionError: function() {
