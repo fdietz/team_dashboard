@@ -110,7 +110,7 @@
       }
 
       var options = {
-        shadowSize: 10,
+        shadowSize: 1,
         grid: {
           outline: "",
           verticalLines: false,
