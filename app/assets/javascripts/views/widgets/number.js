@@ -44,36 +44,63 @@
       return this.widget.get("source" + this.number);
     },
 
-    getValue: function() {
-      var result = this.model.get("value") || 0;
-      if (result % 1 === 0) {
-        return result;
+    suffixFormatter: function(val) {
+      if (val > 1000000) {
+        val = val/1000000;
+        return val.toFixed(1) + "T";
+      } else if (val > 1000) {
+        val = val/1000;
+        return val.toFixed(1) + "K";
       } else {
-        return result.toFixed(2);
+        val = val % 1 === 0 ? val.toString() : val.toFixed(1);
+        return val;
       }
+    },
+
+    getValue: function() {
+      return this.model.get("value") || 0;
+    },
+
+    getValueAsString: function(value) {
+      return this.suffixFormatter(value);
     },
 
     getLabel: function() {
       return this.model.get("label") || this.widget.get('label'+this.number);
     },
 
+    getColor: function() {
+      return this.model.get("color");
+    },
+
     render: function() {
       if (this.model && this.model.isPopulated()) {
-        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue(), label: this.getLabel() }));
+        var value = this.getValue();
+        var stringValue = this.getValueAsString(value);
+
+        this.$el.html(JST['templates/widgets/number/subview']({ value: stringValue, label: this.getLabel() }));
 
         this.$value = this.$('.number-value');
-        this.$value.toggleClass('color-up', this.getValue() > 0);
-        this.$value.toggleClass('color-down', this.getValue() < 0);
-        this.updateValueSizeClass();
+        this.updateColorClass(value);
+        this.updateValueSizeClass(stringValue);
       }
 
       return this;
     },
 
-    updateValueSizeClass: function(){
-      var str = this.getValue().toString().length;
-      this.$value.toggleClass("value-size-medium", str <= 5);
-      this.$value.toggleClass("value-size-small", str > 5);
+    updateColorClass: function(value) {
+      var color = this.getColor();
+      if (color) {
+        this.$value.css("color", color);
+      } else {
+        this.$value.toggleClass('color-up', value > 0);
+        this.$value.toggleClass('color-down', value < 0);
+      }
+    },
+
+    updateValueSizeClass: function(stringValue) {
+      this.$value.toggleClass("value-size-medium", stringValue.length <= 5);
+      this.$value.toggleClass("value-size-small", stringValue.length > 5);
     },
 
     onClose: function() {
