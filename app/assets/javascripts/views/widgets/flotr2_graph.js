@@ -1,4 +1,4 @@
-(function ($, _, Backbone, Rickshaw, moment, views, collections, ColorFactory, TimeSelector){
+(function ($, _, Backbone, Rickshaw, moment, views, collections, ColorFactory, helpers){
   "use strict";
 
   views.widgets.Flotr2Graph = Backbone.View.extend({
@@ -14,11 +14,11 @@
     },
 
     from: function() {
-      return TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+      return helpers.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
     },
 
     to: function() {
-      return TimeSelector.getCurrent();
+      return helpers.TimeSelector.getCurrent();
     },
 
     updateCollection: function() {
@@ -90,13 +90,7 @@
       this.$graph.height(300-20);
 
       function suffixFormatter(val, axis) {
-        val = parseInt(val, 10);
-        if (val > 1000000)
-          return (val/1000000).toFixed(axis.tickDecimals) + "T";
-        else if (val > 1000)
-          return (val/1000).toFixed(axis.tickDecimals) + "K";
-        else
-          return val.toFixed(axis.tickDecimals);
+        return helpers.suffixFormatter(val, axis.tickDecimals);
       }
 
       function timeUnit(range) {
@@ -184,4 +178,4 @@
 
   });
 
-})($, _, Backbone, Rickshaw, moment, app.views, app.collections, app.helpers.ColorFactory, app.helpers.TimeSelector);
+})($, _, Backbone, Rickshaw, moment, app.views, app.collections, app.helpers.ColorFactory, app.helpers);

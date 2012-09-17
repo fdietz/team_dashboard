@@ -140,4 +140,21 @@
     this.pool[source] = collection;
   };
 
+  // as defined by http://en.wikipedia.org/wiki/Metric_prefix
+  helpers.suffixFormatter = function(val, digits) {
+    if (val > 1000000000) {
+      val = val/1000000000;
+      return val.toFixed(digits) + "F";
+    } else if (val > 1000000) {
+      val = val/1000000;
+      return val.toFixed(digits) + "M";
+    } else if (val > 1000) {
+      val = val/1000;
+      return val.toFixed(digits) + "k";
+    } else {
+      val = val % 1 === 0 ? val.toString() : val.toFixed(digits);
+      return val;
+    }
+  };
+
 })($, _, Backbone, bootbox, List, app.collections, app.helpers);

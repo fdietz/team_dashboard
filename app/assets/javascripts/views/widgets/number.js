@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections){
+(function ($, _, Backbone, views, models, collections, helpers){
   "use strict";
 
   var NumberSubview = Backbone.View.extend({
@@ -44,25 +44,12 @@
       return this.widget.get("source" + this.number);
     },
 
-    suffixFormatter: function(val) {
-      if (val > 1000000) {
-        val = val/1000000;
-        return val.toFixed(1) + "T";
-      } else if (val > 1000) {
-        val = val/1000;
-        return val.toFixed(1) + "K";
-      } else {
-        val = val % 1 === 0 ? val.toString() : val.toFixed(1);
-        return val;
-      }
-    },
-
     getValue: function() {
       return this.model.get("value") || 0;
     },
 
     getValueAsString: function(value) {
-      return this.suffixFormatter(value);
+      return helpers.suffixFormatter(value, 1);
     },
 
     getLabel: function() {
@@ -156,4 +143,4 @@
     }
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);
