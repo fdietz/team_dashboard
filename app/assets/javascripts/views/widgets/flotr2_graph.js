@@ -35,6 +35,19 @@
       this.render();
     },
 
+    linesType: function() {
+      switch(this.model.get("graph_type")) {
+        case "area":
+          return true;
+        case "stacked":
+          return true;
+        case "line":
+          return false;
+        default:
+          return false;
+      }
+    },
+
     transformDatapoints: function() {
       var that = this;
       var series = this.collection.toJSON();
@@ -50,7 +63,7 @@
           }
           model.color = color;
         }
-        model.lines = { fill: that.model.get("graph_type") === "line" ? false : true };
+        model.lines = { fill: that.linesType() };
         model.label = model.target;
         model.data = _.map(model.datapoints, function(dp) {
           return [dp[1], dp[0]];
