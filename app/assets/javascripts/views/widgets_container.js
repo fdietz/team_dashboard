@@ -57,7 +57,14 @@
     },
 
     _appendAllWidgets: function() {
+      var that = this;
       var layoutIds = this.model.get('layout');
+      if (layoutIds.length === 0) {
+        this.collection.each(function(w) {
+          layoutIds.push(w.id);
+        });
+      }
+
       _.each(layoutIds, _.bind(function(id, index) {
         var model = this.collection.get(id);
         if (model) this._appendWidget(model);
