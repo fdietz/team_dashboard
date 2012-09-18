@@ -48,6 +48,7 @@ module Sources
 
         uri = URI.parse(url)
         http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true if uri.port != 80
         request = Net::HTTP::Get.new(uri.request_uri)
         request.basic_auth(CGI.unescape(uri.user), CGI.unescape(uri.password)) if uri.user && uri.password
         response = http.request(request)
