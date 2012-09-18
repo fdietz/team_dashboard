@@ -93,24 +93,23 @@
         return helpers.suffixFormatter(val, axis.tickDecimals);
       }
 
-      function timeUnit(range) {
+      function timeUnit(range, size) {
         switch(range) {
         case "30-minutes":
-          return { timeFormat: "%H:%M" };
         case "60-minutes":
-          return { timeFormat: "%H:%M" };
         case "3-hours":
-          return { timeFormat: "%H:%M" };
         case "12-hours":
-          return { timeFormat: "%H:%M" };
         case "24-hours":
           return { timeFormat: "%H:%M" };
         case "3-days":
-          return { timeFormat: "%m-%d %H:%M" };
         case "7-days":
-          return { timeFormat: "%m-%d %H:%M" };
         case "4-weeks":
-          return { timeFormat: "%m-%d %H:%M" };
+          if (size === 1) {
+            return { timeFormat: "%m-%d" };
+          } else {
+            return { timeFormat: "%m-%d %H:%M" };
+          }
+          break;
         default:
           throw "unknown rangeString: " + range;
         }
@@ -128,7 +127,7 @@
           mode: "time",
           timeMode: "local",
           timeUnit: 'second'
-        }, timeUnit(this.model.get('range'))),
+        }, timeUnit(this.model.get('range'), parseInt(this.model.get('size'), 10))),
         yaxis: {
           tickFormatter: suffixFormatter
         },
