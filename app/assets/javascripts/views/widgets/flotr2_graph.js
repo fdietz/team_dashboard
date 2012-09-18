@@ -63,7 +63,7 @@
           }
           model.color = color;
         }
-        model.lines = { fill: that.linesType() };
+        model.lines = { fill: that.linesType(), lineWidth: 1 };
         model.label = model.target;
         model.data = _.map(model.datapoints, function(dp) {
           return [dp[1], dp[0]];
