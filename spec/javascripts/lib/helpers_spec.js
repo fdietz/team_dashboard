@@ -6,15 +6,19 @@ describe("Helpers Model", function() {
     });
 
     it("return number and k if > 1000", function() {
-      expect(window.app.helpers.suffixFormatter(1090, 1)).toEqual("1.1k");
+      expect(window.app.helpers.suffixFormatter(1090, 1)).toEqual("1k");
     });
 
     it("return number and k if > 1000000", function() {
-      expect(window.app.helpers.suffixFormatter(1000090, 1)).toEqual("1.0M");
+      expect(window.app.helpers.suffixFormatter(1000090, 1)).toEqual("1M");
     });
 
     it("return number and k if > 1000000000", function() {
-      expect(window.app.helpers.suffixFormatter(1000000090, 1)).toEqual("1.0F");
+      expect(window.app.helpers.suffixFormatter(1000000090, 1)).toEqual("1F");
+    });
+
+    it("return number with 2 fixed points if < 1", function() {
+      expect(window.app.helpers.suffixFormatter(0.009, 1)).toEqual("0.01");
     });
   });
 

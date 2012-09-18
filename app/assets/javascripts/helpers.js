@@ -142,15 +142,15 @@
 
   // as defined by http://en.wikipedia.org/wiki/Metric_prefix
   helpers.suffixFormatter = function(val, digits) {
+    val = parseFloat(val);
     if (val > 1000000000) {
-      val = val/1000000000;
-      return val.toFixed(digits) + "F";
+      return Math.round(val/1000000000) + "F";
     } else if (val > 1000000) {
-      val = val/1000000;
-      return val.toFixed(digits) + "M";
+      return Math.round(val/1000000) + "M";
     } else if (val > 1000) {
-      val = val/1000;
-      return val.toFixed(digits) + "k";
+      return Math.round(val/1000) + "k";
+    } else if (val < 1.0) {
+      return parseFloat(Math.round(val * 100) / 100).toFixed(2);
     } else {
       val = val % 1 === 0 ? val.toString() : val.toFixed(digits);
       return val;
