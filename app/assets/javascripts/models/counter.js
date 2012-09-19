@@ -1,4 +1,4 @@
-(function ($, _, Backbone, models, TimeSelector) {
+(function ($, _, Backbone, models, helpers) {
   "use strict";
 
   models.Counter = Backbone.Model.extend({
@@ -95,24 +95,20 @@
     },
 
     from: function() {
-      return TimeSelector.getFrom(new Date().getTime(), this.range);
+      return helpers.TimeSelector.getFrom(new Date().getTime(), this.range);
     },
 
     previousFrom: function() {
-      return TimeSelector.getPreviousFrom(new Date().getTime(), this.range);
+      return helpers.TimeSelector.getPreviousFrom(new Date().getTime(), this.range);
     },
 
     to: function() {
-      return TimeSelector.getCurrent();
+      return helpers.TimeSelector.getCurrent();
     },
 
     value: function() {
       var result = this.primaryModel.get('value') || 0;
-      if (result % 1 === 0) {
-        return result;
-      } else {
-        return result.toFixed(2);
-      }
+      return helpers.suffixFormatter(result, 1);
     },
 
     secondaryValue: function() {
@@ -137,4 +133,4 @@
 
   });
 
-})($, _, Backbone, app.models, app.helpers.TimeSelector);
+})($, _, Backbone, app.models, app.helpers);
