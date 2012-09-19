@@ -24,6 +24,26 @@ module Sources
 
       def get(targets, from, to, options = {})
       end
+
+      protected
+
+      @@cache = {}
+
+      def cached_get(key)
+        return yield if Rails.env.test?
+        
+        time = Time.now.to_i
+        if entry = @@cache[key]
+          if entry[:time] > 5.minutes.ago.to_i
+            Rails.logger.info("Sources::Datapoints - CACHE HIT for #{key}")
+            return entry[:value]
+          end
+        end
+
+        value = yield
+        @@cache[key] = { :time => time, :value => value }
+        value
+      end
     end
   end
 end

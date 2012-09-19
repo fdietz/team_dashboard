@@ -17,4 +17,20 @@ describe Sources::Datapoints::Graphite do
       result.should eq(input)
     end
   end
+
+  describe "#available_targets" do
+    it "searches for given pattern" do
+      input = %w(adam ada zebra)
+      @graphite.expects(:request_available_targets).returns(input)
+      result = @graphite.available_targets(:pattern => "ada")
+      result.size.should == 2
+    end
+
+    it "limits returned targets" do
+      input = %w(adam ada zebra)
+      @graphite.expects(:request_available_targets).returns(input)
+      result = @graphite.available_targets(:pattern => "ada", :limit => 1)
+      result.size.should == 1
+    end
+  end
 end

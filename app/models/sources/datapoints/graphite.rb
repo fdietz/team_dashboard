@@ -27,7 +27,15 @@ module Sources
       end
 
       def available_targets(options = {})
-        request_available_targets
+        pattern = options[:pattern]
+        limit   = (options[:limit] || 200).to_i
+
+        cached_result = cached_get("graphite") do
+          request_available_targets
+        end
+
+        result = pattern.present? ? cached_result.reject { |target| target !~ /#{pattern}/ }  : cached_result
+        result.slice(0, limit)
       end
 
       private
@@ -42,7 +50,7 @@ module Sources
         #
         # ::HttpService.request(hash[:url], :params => hash[:params])
         #
-        
+
         url = build_query(hash)
         Rails.logger.debug("Requesting url: #{url}")
 

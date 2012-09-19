@@ -27,8 +27,15 @@ module Sources
       end
 
       def available_targets(options = {})
-        xml = request_available_targets
-        parse_targets(xml)
+        pattern = options[:pattern] || ""
+        limit   = (options[:limit] || 200).to_i
+
+        cached_result = cached_get("ganglia") do
+          parse_targets(request_available_targets)
+        end
+        
+        result = pattern.present? ? cached_result.reject { |target| target !~ /#{pattern}/ }  : cached_result
+        result.slice(0, limit)
       end
 
       def supports_target_browsing?

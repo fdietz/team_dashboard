@@ -4,9 +4,11 @@
   collections.DatapointsTarget = Backbone.Collection.extend({
     model: model,
     populated: false,
+    limit: 200,
 
     initialize: function(options) {
       this.source = options.source;
+      this.pattern = options.pattern || "";
     },
 
     parse: function(response) {
@@ -21,7 +23,7 @@
     },
 
     url: function() {
-      var params = ['source=' + encodeURIComponent(this.source)];
+      var params = ['source=' + encodeURIComponent(this.source), 'pattern=' + this.pattern, 'limit=' + this.limit];
       return "/api/datapoints_targets?" + params.join('&');
     }
   });

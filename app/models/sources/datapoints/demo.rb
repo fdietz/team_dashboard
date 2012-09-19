@@ -16,6 +16,9 @@ module Sources
       end
 
       def available_targets(options = {})
+        pattern = options[:pattern] || ""
+        limit = options[:limit] || 200
+
         targets = []
         targets << "demo.example1"
         targets << "demo.example2"

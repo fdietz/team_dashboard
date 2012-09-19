@@ -7,24 +7,38 @@
       "click .btn-primary"        : "save",
       "click .cancel"             : "cancel",
       "click .selectable-list"    : "selectionChanged",
-      "dblclick .selectable-list" : "selectionChangedAndDone"
+      "dblclick .selectable-list" : "selectionChangedAndDone",
+      "click .search"             : "search",
+      "keyup #filter"             : "searchByKeyboard"
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "save", "cancel", "selectionChanged", "displayList");
+      _.bindAll(this, "render", "save", "cancel", "selectionChanged", "displayList", "search", "searchByKeyboard");
     },
 
     render: function() {
       var that = this;
 
       this.$el.html(JST['templates/widget/browse']({}));
-      this.$modal = this.$el.find('.modal');
-      this.$listContainer = this.$el.find("#filtered-list-container");
-      this.$list = this.$("#list");
-      this.$ajaxSpinner = this.$el.find(".ajax-spinner");
 
+      this.$listContainer = this.$("#filtered-list-container");
+      this.$list = this.$("#list");
+      this.$ajaxSpinner = this.$(".ajax-spinner");
+      this.$patternInput = this.$("#filter");
+      this.$searchButton = this.$(".search");
+      this.toggleSearch(false);
+      this.displayList();
+
+      this.$modal = this.$('.modal');
       this.$modal.on("shown", function() {
-        that.$el.find("#filter").focus();
+        that.$("#filter").focus();
+
+        if (that.collection.populated === true) {
+          that.displayList();
+        } else {
+          that.search();
+        }
+
       });
 
       this.$modal.modal({
@@ -33,25 +47,17 @@
         backdrop: 'static'
       });
 
-      if (this.collection.populated === true) {
-        this.targets = this.collection.toJSON();
-        this.displayList();
-      } else {
-        this.collection.fetch().done(this.displayList);
-      }
-
       return this;
     },
 
     displayList: function() {
-      this.targets = this.collection.toJSON();
       var options = {
           item: "<li class='f'><span class='name text'></span></li>",
           page: 200
       };
       this.$ajaxSpinner.hide();
-      this.$listContainer.show();
-      this.list = new List(this.$listContainer[0], options, this.targets);
+      this.$list.show();
+      this.list = new List(this.$listContainer[0], options, this.collection.toJSON());
     },
 
     selectionChanged: function(event) {
@@ -79,6 +85,34 @@
     cancel: function() {
       this.$modal.modal("hide");
       return false;
+    },
+
+    searchByKeyboard: function(event) {
+      if (event.keyCode == 13 && this.$patternInput.val().length > 0) this.search();
+      return false;
+    },
+
+    search: function(event) {
+      var that = this;
+      this.collection.pattern = this.$patternInput.val();
+      that.toggleSearch(true);
+      this.collection.fetch().done(function() {
+        that.toggleSearch(false);
+        that.displayList();
+      });
+      return false;
+    },
+
+    toggleSearch: function(searchRunning) {
+      if (searchRunning === true) {
+        this.$searchButton.attr("disable", "disable");
+        this.$ajaxSpinner.show();
+        this.$list.hide();
+      } else {
+        this.$searchButton.removeAttr("disable");
+        this.$ajaxSpinner.hide();
+        this.$list.show();
+      }
     },
 
     onClose: function() {
