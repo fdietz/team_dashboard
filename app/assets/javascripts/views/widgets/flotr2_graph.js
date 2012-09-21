@@ -85,6 +85,7 @@
     },
 
     renderGraph: function(datapoints) {
+      var that = this;
       var width = this.$graph.parent().width();
       this.$graph.width(width);
       this.$graph.height(300-20);
@@ -116,7 +117,7 @@
       }
 
       function legendLabelFormatter(fn, series) {
-        return ""+fn;
+        return fn;
       }
 
       var options = {
@@ -125,7 +126,8 @@
           outline: "",
           verticalLines: false,
           horizontalLines: false,
-          labelMargin: 10
+          labelMargin: 10,
+          hoverable: true
         },
         xaxis: _.extend({
           mode: "time",
@@ -161,6 +163,39 @@
         datapoints,
         options
       );
+
+      this.$legend = this.$('.flotr-legend');
+      this.$legendBackground = this.$('.flotr-legend-bg');
+      this.legendVisible = true;
+
+      function showLegend() {
+        if (that.legendVisible) return;
+
+        that.$legend.show();
+        that.$legendBackground.show();
+        that.legendVisible = true;
+      }
+
+      function hideLegend(options) {
+        if (!that.legendVisible) return;
+
+        that.$legend.hide();
+        that.$legendBackground.hide();
+        that.legendVisible = false;
+      }
+
+      hideLegend();
+
+      this.$graph.on('mousemove', function (event, pos, item) {
+        var parentOffset = $(this).parent().offset();
+        var relX = event.pageX - parentOffset.left;
+        var relY = event.pageY - parentOffset.top;
+
+        var hit = relX > that.graph.canvasWidth-100 && relX < that.graph.canvasWidth-2 && relY > 2 && relY < 100;
+        var action = hit ? showLegend : hideLegend;
+        action.call();
+        return false;
+      });
     },
 
     update: function(callback) {
