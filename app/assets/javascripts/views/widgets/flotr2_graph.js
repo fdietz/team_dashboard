@@ -115,6 +115,10 @@
         }
       }
 
+      function legendLabelFormatter(fn, series) {
+        return ""+fn;
+      }
+
       var options = {
         shadowSize: 1,
         grid: {
@@ -132,8 +136,9 @@
           tickFormatter: suffixFormatter
         },
         legend: {
-          show: this.model.get("display_legend") || false,
+          show: true, //this.model.get("display_legend") || false,
           labelBoxBorderColor: null,
+          labelFormatter: legendLabelFormatter,
           position: "ne"
         },
         mouse: {
