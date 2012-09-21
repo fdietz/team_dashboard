@@ -15,6 +15,9 @@ module Sources
       def get(options = {})
         fields = options.fetch(:fields)
         result = request_build_status(fields.fetch(:server_url), fields.fetch(:project))
+        # older jenkins version don't return application/json as Content-Type, 
+        # we need to parse it explicitly
+        result = JSON.parse(result) rescue result
         {
           :label             => result["fullDisplayName"],
           :last_build_time   => result["lastBuildTime"],
