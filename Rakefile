@@ -5,3 +5,5 @@
 require File.expand_path('../config/application', __FILE__)
 
 TeamDashboard::Application.load_tasks
+
+task :default => %w[spec jasmine:ci]
