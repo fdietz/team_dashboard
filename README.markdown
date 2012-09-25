@@ -37,6 +37,16 @@ There is an initial "Demo" source and sample dashboards provided. Generate these
 Start the Rails server:
 
     rails s
+    
+### Running the build
+
+If you want to run the tests locally, you will need to install PhantomJS
+
+    brew update && brew install phantomjs
+
+Run the unit tests (ruby & js)
+
+    rake
 
 ## Configuration
 
