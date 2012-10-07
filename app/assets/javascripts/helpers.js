@@ -144,7 +144,7 @@
   helpers.suffixFormatter = function(val, digits) {
     val = parseFloat(val);
     if (val > 1000000000) {
-      return Math.round(val/1000000000) + "F";
+      return Math.round(val/1000000000) + "G";
     } else if (val > 1000000) {
       return Math.round(val/1000000) + "M";
     } else if (val > 1000) {
