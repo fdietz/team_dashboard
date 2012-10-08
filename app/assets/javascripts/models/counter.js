@@ -95,15 +95,15 @@
     },
 
     from: function() {
-      return helpers.TimeSelector.getFrom(new Date().getTime(), this.range);
+      return helpers.TimeSelector.getFrom(this.range);
     },
 
     previousFrom: function() {
-      return helpers.TimeSelector.getPreviousFrom(new Date().getTime(), this.range);
+      return helpers.TimeSelector.getPreviousFrom(this.range);
     },
 
     to: function() {
-      return helpers.TimeSelector.getCurrent();
+      return helpers.TimeSelector.getCurrent(this.range);
     },
 
     value: function() {

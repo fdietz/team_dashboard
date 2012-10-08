@@ -24,18 +24,32 @@
   };
 
   helpers.TimeSelector = {
-    getFrom: function(time, rangeString) {
-      var range = this.getRange(rangeString);
-      return Math.round((time - range) / 1000);
+    getFrom: function(rangeString) {
+      var date = new Date();
+      if (rangeString === 'today') {
+        date.setHours(0,0,0,0);
+        return Math.round(date.getTime() / 1000);
+      } else {
+        var range = this.getRange(rangeString);
+        return Math.round( (date.getTime() - range) / 1000);
+      }
     },
 
-    getPreviousFrom: function(time, rangeString) {
-      var range = this.getRange(rangeString) * 2;
-      return Math.round((time - range) / 1000);
+    getPreviousFrom: function(rangeString) {
+      var date = new Date();
+      if (rangeString === 'today') {
+        date.setHours(0,0,0,0);
+        return Math.round(date.getTime() / 1000);
+      } else {
+        var range = this.getRange(rangeString) * 2;
+        return Math.round( (date.getTime() - range) / 1000);
+      }
     },
 
-    getCurrent: function() {
-      return Math.round((new Date()).getTime() / 1000);
+    getCurrent: function(rangeString) {
+      var date = new Date();
+      if (rangeString === 'today') date.setHours(23, 59, 59, 0);
+      return Math.round(date.getTime() / 1000);
     },
 
     getRange: function(rangeString) {
@@ -54,6 +68,7 @@
           range = 60*60*12;
           break;
         case "24-hours":
+        case "today":
           range = 60*60*24;
           break;
         case "3-days":
@@ -109,6 +124,7 @@
         { val: "3-hours", label: "Last 3 hours" },
         { val: "12-hours", label: "Last 12 hours" },
         { val: "24-hours", label: "Last 24 hours" },
+        { val: "today", label: "Today" },
         { val: "3-days", label: "Last 3 days" },
         { val: "7-days", label: "Last 7 days" },
         { val: "4-weeks", label: "Last 4 weeks" }

@@ -14,11 +14,11 @@
     },
 
     from: function() {
-      return helpers.TimeSelector.getFrom(new Date().getTime(), this.model.get('range'));
+      return helpers.TimeSelector.getFrom(this.model.get('range'));
     },
 
     to: function() {
-      return helpers.TimeSelector.getCurrent();
+      return helpers.TimeSelector.getCurrent(this.model.get('range'));
     },
 
     updateCollection: function() {
@@ -100,6 +100,7 @@
         case "3-hours":
         case "12-hours":
         case "24-hours":
+        case "today":
           return { timeFormat: "%H:%M" };
         case "3-days":
         case "7-days":

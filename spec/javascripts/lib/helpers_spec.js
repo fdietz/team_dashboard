@@ -22,4 +22,56 @@ describe("Helpers Model", function() {
     });
   });
 
+  describe("TimeSelector", function() {
+
+    describe("getFrom", function() {
+      it("returns timestamp for 30-minutes", function() {
+        expect(window.app.helpers.TimeSelector.getFrom("30-minutes")).toEqual(Math.round( (new Date().getTime() - 60*30*1000) / 1000));
+      });
+
+      it("returns timestamp for 12-hours", function() {
+        expect(window.app.helpers.TimeSelector.getFrom("12-hours")).toEqual(Math.round( (new Date().getTime() - 60*60*12*1000) / 1000));
+      });
+
+      it("returns timestamp for today", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("today")).toEqual(Math.round(date.getTime() / 1000));
+      });
+    });
+
+    describe("getPreviousFrom", function() {
+      it("returns timestamp for 30-minutes", function() {
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("30-minutes")).toEqual(Math.round( (new Date().getTime() - 2*60*30*1000) / 1000));
+      });
+
+      it("returns timestamp for 12-hours", function() {
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("12-hours")).toEqual(Math.round( (new Date().getTime() - 2*60*60*12*1000) / 1000));
+      });
+
+      it("returns timestamp for today", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("today")).toEqual(Math.round(date.getTime() / 1000));
+      });
+    });
+
+    describe("getCurrent", function() {
+      it("returns timestamp for 30-minutes", function() {
+        expect(window.app.helpers.TimeSelector.getCurrent("30-minutes")).toEqual(Math.round(new Date().getTime() / 1000));
+      });
+
+      it("returns timestamp for 12-hours", function() {
+        expect(window.app.helpers.TimeSelector.getCurrent("12-hours")).toEqual(Math.round(new Date().getTime() / 1000));
+      });
+
+      it("returns timestamp for today", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("today")).toEqual(Math.round(date.getTime() / 1000));
+      });
+    });
+
+  });
+
 });
