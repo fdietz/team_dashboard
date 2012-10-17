@@ -11,13 +11,15 @@ describe Sources::Ci::Jenkins do
   describe "#get" do
     it "returns a hash" do
       time = Time.now
-      input = { "fullDisplayName" => "name", "lastBuildTime" => time.iso8601, "result" => "SUCCESS", "building" => "SLEEPING" }
+      input = { "fullDisplayName" => "name", "lastBuildTime" => time.iso8601, "result" => "SUCCESS", "building" => false }
       @ci.expects(:request_build_status).with(@server_url, @project).returns(input)
       result = @ci.get(:fields => { :server_url => @server_url, :project => @project })
-      result[:label].should == "name"
-      result[:last_build_time] == time
-      result[:last_build_status] == 0
-      result[:current_status] == 0
+      result.should == {
+        :label             => "name",
+        :last_build_time   => time.iso8601.to_s,
+        :last_build_status => 0,
+        :current_status    => 0,
+      }
     end
   end
 
