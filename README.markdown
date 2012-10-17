@@ -388,6 +388,7 @@ Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the f
 * [luxflux](https://github.com/luxflux) (Raffael Schmid)
 * [frankmt](https://github.com/frankmt) (Francisco Trindade)
 * [leejones](https://github.com/leejones) (Lee Jones)
+* [rngtng](https://github.com/rngtng) (Tobias Bielohlawek)
 
 ## The MIT License
 
