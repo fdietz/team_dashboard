@@ -11,11 +11,11 @@ describe Sources::Ci::Jenkins do
   describe "#get" do
     it "returns a hash" do
       time = Time.now
-      input = { "fullDisplayName" => "name", "lastBuildTime" => time.iso8601, "result" => "SUCCESS", "building" => false }
-      @ci.expects(:request_build_status).with(@server_url, @project).returns(input)
+      input = { "Projects" => { "Project" => [{"name" => @project, "lastBuildTime" => time.iso8601, "lastBuildStatus" => "SUCCESS", "activity" => "SLEEPING" }]}}
+      @ci.expects(:request_build_status).with(@server_url).returns(input)
       result = @ci.get(:fields => { :server_url => @server_url, :project => @project })
       result.should == {
-        :label             => "name",
+        :label             => @project,
         :last_build_time   => time.iso8601.to_s,
         :last_build_status => 0,
         :current_status    => 0,
@@ -23,27 +23,20 @@ describe Sources::Ci::Jenkins do
     end
   end
 
-  describe "#status" do
-    it "returns 0 for sleeping status" do
-      @ci.status("SUCCESS").should == 0
-    end
-
-    it "returns 1 for building status" do
-      @ci.status("FAILURE").should == 1
-    end
-
-    it "returns -1 otherwise" do
-      @ci.status("BLA").should == -1
+  describe "#request_build_status" do
+    it "calls HttpService" do
+      ::HttpService.expects(:request).with("#{@server_url}/cc.xml")
+      @ci.request_build_status(@server_url)
     end
   end
 
   describe "#current_status" do
     it "returns 0 for sleeping status" do
-      @ci.current_status(false).should == 0
+      @ci.current_status('sleeping').should == 0
     end
 
     it "returns 1 for building status" do
-      @ci.current_status(true).should == 1
+      @ci.current_status('building').should == 1
     end
 
     it "returns -1 otherwise" do
