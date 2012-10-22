@@ -1,35 +1,52 @@
+=begin
+    Pingdom Datasource Plug-in
+    Version: 1.0
+    Date: 22.10.2012
+    Implemented by Dragan Mileski
+    e-mail: dragan.mileski@gmail.com
+=end
+
+
 module Sources
     module Boolean
         class PingdomPlugin < Sources::Boolean::Base
-            
+
+            def available?
+                Rails.configuration.pingdom_username.present? && Rails.configuration.pingdom_password.present?
+            end
+
             def fields
                 [
-                { :name => "pingdom_username", :title => "Pingdom username", :mandatory => true },
-                { :name => "pingdom_password", :title => "Pingdom password", :mandatory => true },
-                { :name => "check_name", :title => "Check name", :mandatory => true}
+                    { :name => "check_name", :title => "Check name", :mandatory => true}
                 ]
             end
-            
+
             def get(options = {})
-                pingdom_username = options.fetch(:fields)[:pingdom_username]
-                pingdom_password = options.fetch(:fields)[:pingdom_password]
+                pingdom_username = Rails.configuration.pingdom_username
+                pingdom_password = Rails.configuration.pingdom_password
                 check_name = options.fetch(:fields)[:check_name]
-                if pingdom_username.present? && pingdom_password.present?
+
+                check_state = false #It will show false unless the conditions below are fulfilled and the blocks set "check_state" variable to TRUE
+
+                url = "https://#{CGI.escape(pingdom_username)}:#{pingdom_password}@api.pingdom.com/api/2.0/checks"
+
+                response = ::HttpService.request(url, :headers => { 'App-Key' => '9ucbwe7se1uf61l59h2s0zm6ogjzpd7v'} )
                     
-                    state = false
-                    
-                    puts "********************************** Enters the Pingdom settings **********************************"
-                    auth = {:username => pingdom_username, :password => pingdom_password }
-                    response = Pingdom.get("https://api.pingdom.com/api/2.0/checks", :basic_auth => auth)
-                    
-                    response["checks"].each do |item|
-                        if (item["name"].eql? check_name) && (item["status"].eql? "up")
-                            puts "The check is fine and the page is UP!!!"
-                            state = true
-                        end
+                response["checks"].each do |item|
+                    if (item["name"].eql? check_name) && (item["status"].eql? "down")
+                        puts "The check_name exists and the page is Down!"
+                    elsif (item["name"].eql? check_name) && (item["status"].eql? "up")
+                        puts "The check_name exists and the page is UP!"
+                        check_state = true
+                    else
+                        puts ""
+                        puts '********************** ERROR **********************'
+                        puts "THE CHECK_NAME YOU ENTERED IS PROBABLY INCORRECT!!!"
+                        reise Sources::Booleans::NotFoundError
                     end
                 end
-                result = { :value => state }
+
+                result = { :value => check_state }
             end
         end
     end
