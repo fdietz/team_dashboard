@@ -33,17 +33,24 @@ module Sources
                 response = ::HttpService.request(url, :headers => { 'App-Key' => '9ucbwe7se1uf61l59h2s0zm6ogjzpd7v'} )
                     
                 response["checks"].each do |item|
-                    if (item["name"].eql? check_name) && (item["status"].eql? "down")
-                        puts "The check_name exists and the page is Down!"
-                    elsif (item["name"].eql? check_name) && (item["status"].eql? "up")
-                        puts "The check_name exists and the page is UP!"
-                        check_state = true
-                    else
+                    
+                    if item["name"].eql? check_name
+                        case item["status"]
+                            when "up"
+                            check_state = true
+                            else
+                            puts ""
+                            puts '********************** WARNING **********************'
+                            puts "SOMETHING IS WRONG WITH YOUR PINGDOM CHECK. PLEASE CHECK YOUR PINGDOM ACCOUNT!!!"
+                            reise Sources::Booleans::NotFoundError
+                        end
+                        else
                         puts ""
                         puts '********************** ERROR **********************'
                         puts "THE CHECK_NAME YOU ENTERED IS PROBABLY INCORRECT!!!"
                         reise Sources::Booleans::NotFoundError
                     end
+                    
                 end
 
                 result = { :value => check_state }
