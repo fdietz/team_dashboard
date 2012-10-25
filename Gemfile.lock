@@ -74,6 +74,9 @@ GEM
       sprockets (>= 2.0.3)
       tilt
     hike (1.2.1)
+    httparty (0.9.0)
+      multi_json (~> 1.0)
+      multi_xml
     i18n (0.6.1)
     jasmine (1.2.1)
       jasmine-core (>= 1.2.0)
@@ -199,6 +202,7 @@ DEPENDENCIES
   foreman
   guard-jasmine
   handlebars_assets (~> 0.6.4)
+  httparty
   jasmine
   jasminerice
   jquery-rails (~> 2.1.2)

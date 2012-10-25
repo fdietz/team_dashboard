@@ -185,7 +185,7 @@ It currently supports a demo data source and a http proxy data source.
 ### Boolean Widget
 Shows the current boolean value provided by the data source and an label. The widget supports up to three values. Use it to show for example the success of a Jenkins build.
 
-It currently supports a demo data source and a http proxy data source.
+It currently supports a demo data source, http proxy data source and a pingdom data source.
 
 #### Configuration
 <table>

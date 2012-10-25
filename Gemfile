@@ -10,6 +10,9 @@ gem "handlebars_assets", "~> 0.6.4"
 
 gem "mysql2", "~> 0.3.11"
 
+#added for the pingdom data source
+gem "httparty"
+
 gem "thin", "~> 1.4.1"
 gem "foreman"
 gem "faraday", "~> 0.8.4"
