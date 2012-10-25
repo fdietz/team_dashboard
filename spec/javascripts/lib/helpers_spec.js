@@ -30,13 +30,49 @@ describe("Helpers Model", function() {
       });
 
       it("returns timestamp for 12-hours", function() {
-        expect(window.app.helpers.TimeSelector.getFrom("12-hours")).toEqual(Math.round( (new Date().getTime() - 60*60*12*1000) / 1000));
+        expect(window.app.helpers.TimeSelector.getFrom("12-hours")).toEqual(Math.round( (new Date().getTime() - 3600*12*1000) / 1000));
       });
 
       it("returns timestamp for today", function() {
         var date = new Date();
         date.setHours(0,0,0,0);
         expect(window.app.helpers.TimeSelector.getFrom("today")).toEqual(Math.round(date.getTime() / 1000));
+      });
+
+      it("returns timestamp for this week", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("this-week")).toEqual(Math.round( (date.getTime() - 3600*24*7*1000)/1000));
+      });
+
+      it("returns timestamp for previous week", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("previous-week")).toEqual(Math.round( (date.getTime() - 3600*24*7*2*1000)/1000));
+      });
+
+      it("returns timestamp for this month", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("this-month")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*1000)/1000));
+      });
+
+      it("returns timestamp for previous month", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("previous-month")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*2*1000)/1000));
+      });
+
+      it("returns timestamp for this year", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("this-year")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*12*1000)/1000));
+      });
+
+      it("returns timestamp for previous year", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getFrom("previous-year")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*24*1000)/1000));
       });
     });
 
@@ -54,6 +90,42 @@ describe("Helpers Model", function() {
         date.setHours(0,0,0,0);
         expect(window.app.helpers.TimeSelector.getPreviousFrom("today")).toEqual(Math.round(date.getTime() / 1000));
       });
+
+      it("returns timestamp for this week", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("this-week")).toEqual(Math.round( (date.getTime() - 3600*24*7*2*1000)/1000));
+      });
+
+      it("returns timestamp for previous week", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("previous-week")).toEqual(Math.round( (date.getTime() - 3600*24*7*2*2*1000)/1000));
+      });
+
+      it("returns timestamp for this month", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("this-month")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*2*1000)/1000));
+      });
+
+      it("returns timestamp for previous month", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("previous-month")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*2*2*1000)/1000));
+      });
+
+      it("returns timestamp for this year", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("this-year")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*12*2*1000)/1000));
+      });
+
+      it("returns timestamp for previous year", function() {
+        var date = new Date();
+        date.setHours(0,0,0,0);
+        expect(window.app.helpers.TimeSelector.getPreviousFrom("previous-year")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*24*2*1000)/1000));
+      });
     });
 
     describe("getCurrent", function() {
@@ -69,6 +141,48 @@ describe("Helpers Model", function() {
         var date = new Date();
         date.setHours(23, 59, 59, 0);
         expect(window.app.helpers.TimeSelector.getCurrent("today")).toEqual(Math.round(date.getTime() / 1000));
+      });
+
+      it("returns timestamp for yesterday", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("yesterday")).toEqual(Math.round( (date.getTime() - 3600*24*1000)/1000));
+      });
+
+      it("returns timestamp for this week", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("this-week")).toEqual(Math.round(date.getTime()/1000));
+      });
+
+      it("returns timestamp for previous week", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("previous-week")).toEqual(Math.round( (date.getTime() - 3600*24*7*1000)/1000));
+      });
+
+      it("returns timestamp for this month", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("this-month")).toEqual(Math.round(date.getTime()/1000));
+      });
+
+      it("returns timestamp for previous month", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("previous-month")).toEqual(Math.round( (date.getTime() - 3600*24*7*4*1000)/1000));
+      });
+
+      it("returns timestamp for this year", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("this-year")).toEqual(Math.round(date.getTime()/1000));
+      });
+
+      it("returns timestamp for previous year", function() {
+        var date = new Date();
+        date.setHours(23, 59, 59, 0);
+        expect(window.app.helpers.TimeSelector.getCurrent("previous-year")).toEqual(Math.round( (date.getTime() - 3600*24*7*2*24*1000)/1000));
       });
     });
 

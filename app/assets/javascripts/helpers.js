@@ -26,33 +26,74 @@
   helpers.TimeSelector = {
     getFrom: function(rangeString) {
       var date = new Date();
-      if (rangeString === 'today') {
-        date.setHours(0,0,0,0);
-        return Math.round(date.getTime() / 1000);
-      } else {
-        var range = this.getRange(rangeString);
-        return Math.round( (date.getTime() - range) / 1000);
-      }
+      if (this.isDayBoundary(rangeString)) date.setHours(0,0,0,0);
+
+      return Math.round( (date.getTime() - this.getRange(rangeString)) / 1000);
     },
 
     getPreviousFrom: function(rangeString) {
       var date = new Date();
-      if (rangeString === 'today') {
-        date.setHours(0,0,0,0);
-        return Math.round(date.getTime() / 1000);
-      } else {
-        var range = this.getRange(rangeString) * 2;
-        return Math.round( (date.getTime() - range) / 1000);
-      }
+      if (this.isDayBoundary(rangeString)) date.setHours(0,0,0,0);
+
+      return Math.round( (date.getTime() - this.getRange(rangeString) * 2) / 1000);
     },
 
     getCurrent: function(rangeString) {
       var date = new Date();
-      if (rangeString === 'today') date.setHours(23, 59, 59, 0);
-      return Math.round(date.getTime() / 1000);
+      if (this.isDayBoundary(rangeString)) date.setHours(23, 59, 59, 0);
+      if (this.isPreviousBoundary(rangeString)) {
+        var range = this.getRange(rangeString);
+        if (rangeString !== "yesterday") range = range / 2;
+        return Math.round( (date.getTime() - range) / 1000);
+      } else {
+        return Math.round(date.getTime() / 1000);
+      }
+    },
+
+    isDayBoundary: function(rangeString) {
+      var ranges = ["today", "yesterday", "this-week", "previous-week", "this-month", "previous-month", "this-year", "previous-year"];
+      return _.contains(ranges, rangeString);
+    },
+
+    isPreviousBoundary: function(rangeString) {
+      var ranges = ["yesterday", "previous-week", "previous-month", "previous-year"];
+      return _.contains(ranges, rangeString);
     },
 
     getRange: function(rangeString) {
+      var range = null;
+      switch(rangeString) {
+        case "today":
+          range = 1;
+          break;
+        case "yesterday":
+          range = this.getIntRangeFromString("24-hours");
+          break;
+        case "this-week":
+          range = this.getIntRangeFromString("7-days");
+          break;
+        case "previous-week":
+          range = this.getIntRangeFromString("7-days") * 2;
+          break;
+        case "this-month":
+          range = this.getIntRangeFromString("4-weeks");
+          break;
+        case "previous-month":
+          range = this.getIntRangeFromString("4-weeks") * 2;
+          break;
+        case "this-year":
+          range = this.getIntRangeFromString("4-weeks") * 12;
+          break;
+        case "previous-year":
+          range = this.getIntRangeFromString("4-weeks") * 12 * 2;
+          break;
+        default:
+          range = this.getIntRangeFromString(rangeString);
+      }
+      return range;
+    },
+
+    getIntRangeFromString: function(rangeString) {
       var range = null;
       switch(rangeString) {
         case "30-minutes":
@@ -62,23 +103,24 @@
           range = 60*60;
           break;
         case "3-hours":
-          range = 60*60*3;
+          range = 3600*3;
           break;
         case "12-hours":
-          range = 60*60*12;
+          range = 3600*12;
           break;
         case "24-hours":
         case "today":
-          range = 60*60*24;
+          range = 3600*24;
           break;
         case "3-days":
-          range = 60*60*24*3;
+          range = 3600*24*3;
           break;
         case "7-days":
-          range = 60*60*24*7;
+          range = 3600*24*7;
           break;
         case "4-weeks":
-          range = 60*60*24*7*4;
+        case "this-month":
+          range = 3600*24*7*4;
           break;
         default:
           throw "Unknown rangeString: " + rangeString;
@@ -125,9 +167,16 @@
         { val: "12-hours", label: "Last 12 hours" },
         { val: "24-hours", label: "Last 24 hours" },
         { val: "today", label: "Today" },
+        { val: "yesterday", label: "Yesterday" },
         { val: "3-days", label: "Last 3 days" },
         { val: "7-days", label: "Last 7 days" },
-        { val: "4-weeks", label: "Last 4 weeks" }
+        { val: "this-week", label: "This Week" },
+        { val: "previous-week", label: "Previous Week" },
+        { val: "4-weeks", label: "Last 4 weeks" },
+        { val: "this-month", label: "This Month" },
+        { val: "previous-month", label: "Previous Month" },
+        { val: "this-year", label: "This Year" },
+        { val: "previous-year", label: "Previous Year" }
       ];
     }
   };

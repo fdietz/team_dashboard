@@ -101,16 +101,25 @@
         case "12-hours":
         case "24-hours":
         case "today":
+        case "yesterday":
           return { timeFormat: "%H:%M" };
         case "3-days":
-        case "7-days":
-        case "4-weeks":
           if (size === 1) {
             return { timeFormat: "%m-%d" };
           } else {
             return { timeFormat: "%m-%d %H:%M" };
           }
           break;
+        case "7-days":
+        case "this-week":
+        case "previous-week":
+        case "4-weeks":
+        case "this-month":
+        case "previous-month":
+          return { timeFormat: "%m-%d" };
+        case "this-year":
+        case "previous-year":
+          return { timeFormat: "%m-%y" };
         default:
           throw "unknown rangeString: " + range;
         }
