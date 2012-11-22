@@ -1,0 +1,11 @@
+language: ruby
+before_script:
+  - mysql -e 'create database team_dashboard_test'
+script:
+  - cp config/database.example.yml config/database.yml
+  - RAILS_ENV=test bundle exec rake db:migrate
+  - bundle exec rake db:test:prepare
+  - bundle exec rspec
+after_script: 'bundle exec guard-jasmine'
+rvm:
+  - 1.9.3

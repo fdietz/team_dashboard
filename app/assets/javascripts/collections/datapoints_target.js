@@ -3,21 +3,17 @@
 
   collections.DatapointsTarget = Backbone.Collection.extend({
     model: model,
+    populated: false,
+    limit: 200,
 
     initialize: function(options) {
       this.source = options.source;
-
-      this.isFetched = false;
-      this.on('reset', this.onReset, this);
+      this.pattern = options.pattern || "";
     },
 
-    deferredFetch: function() {
-      this.deferred = this.fetch();
-      return this.deferred;
-    },
-
-    onReset: function() {
-      this.isFetched = true;
+    parse: function(response) {
+      this.populated = true;
+      return response;
     },
 
     autocomplete_names: function() {
@@ -27,7 +23,7 @@
     },
 
     url: function() {
-      var params = ['source=' + encodeURIComponent(this.source)];
+      var params = ['source=' + encodeURIComponent(this.source), 'pattern=' + this.pattern, 'limit=' + this.limit];
       return "/api/datapoints_targets?" + params.join('&');
     }
   });

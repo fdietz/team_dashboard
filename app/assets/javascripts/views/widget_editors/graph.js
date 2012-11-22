@@ -8,10 +8,9 @@
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "sourceChanged", "showConnectionError");
+      _.bindAll(this, "render", "sourceChanged", "showConnectionError", "showBrowseDialog", "showFunctionDialog");
 
-      // TODO: why is graph.js setting the source of metrics collection?
-      collections.datapointsTargets.source = this.model.get('source') || $.Sources.datapoints_targets[0];
+      this.collection = helpers.datapointsTargetsPool.get(this.model.get('source') || $.Sources.datapoints[0]);
     },
 
     render: function() {
@@ -27,7 +26,6 @@
       this.$targetInput       = this.$('input#targets');
       this.$targetInputField  = this.$('.field-targets');
       this.$sourceSelect      = this.$('select#source');
-      this.$httpProxyUrlField = this.$(".field-http_proxy_url");
 
       this.updateSourceFormControls(this.$sourceSelect.val());
 
@@ -42,36 +40,6 @@
       return this.form.getValue();
     },
 
-    getUpdateIntervalOptions: function() {
-      return [
-        { val: 10, label: '10 sec' },
-        { val: 600, label: '1 min' },
-        { val: 6000, label: '10 min' },
-        { val: 36000, label: '1 hour' }
-      ];
-    },
-
-    getPeriodOptions: function() {
-      return [
-        { val: "30-minutes", label: "Last 30 minutes" },
-        { val: "60-minutes", label: "Last 60 minutes" },
-        { val: "3-hours", label: "Last 3 hours" },
-        { val: "12-hours", label: "Last 12 hours" },
-        { val: "24-hours", label: "Last 24 hours" },
-        { val: "3-days", label: "Last 3 days" },
-        { val: "7-days", label: "Last 7 days" },
-        { val: "4-weeks", label: "Last 4 weeks" }
-      ];
-    },
-
-    getAggregateOptions: function() {
-      return [
-        { val: "sum", label: 'Sum' },
-        { val: "average", label: 'Average' },
-        { val: "delta", label: 'Delta' }
-      ];
-    },
-
     getSizeOptions: function() {
       return [
         { val: 1, label: '1 Column' },
@@ -83,6 +51,7 @@
     getGraphTypeOptions: function() {
       return [
         { val: 'line', label: 'Line Graph' },
+        { val: 'area', label: 'Area Graph' },
         { val: 'stack', label: 'Stacked Graph' }
       ];
     },
@@ -94,15 +63,16 @@
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
-          options: this.getUpdateIntervalOptions()
+          options: helpers.FormDefaults.getUpdateIntervalOptions()
         },
         range: {
           title: 'Period',
           type: 'Select',
-          options: this.getPeriodOptions()
+          options: helpers.FormDefaults.getPeriodOptions()
         },
         size: { title: "Size", type: 'Select', options: this.getSizeOptions() },
         graph_type: { title: "Graph Type", type: "Select", options: this.getGraphTypeOptions() },
+        // display_legend: { title: "Display Legend", type: "Checkbox" },
         source: {
           title: "Source",
           type: 'Select',
@@ -111,15 +81,8 @@
           },
           validators: ["required"]
         },
-        http_proxy_url: {
-          title: "Proxy URL",
-          type: "Text",
-          validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues.source === "http_proxy" && value.length === 0) { return err; }
-          }]
-        },
         targets: { title: "Targets", type: 'Text', validators: [ function checkTargets(value, formValues) {
-            if (formValues.source !== "http_proxy" && value.length === 0) { return err; }
+            if (value.length === 0) { return err; }
           }
         ]}
       };
@@ -131,33 +94,48 @@
     },
 
     updateSourceFormControls: function(source) {
-      var options = { suppressErrors: true },
-          that    = this;
+      if (this.textfieldWithList) this.textfieldWithList.close();
 
-      if (source === "http_proxy") {
-        this.$targetInputField.hide();
-        this.$httpProxyUrlField.show();
-      } else if (source.length === 0) {
-        this.$targetInputField.hide();
-        this.$httpProxyUrlField.hide();
-      } else {
-        this.$httpProxyUrlField.hide();
-        this.$targetInputField.show();
-        if (collections.datapointsTargets.source !== source) {
-          this.$targetInput.val("");
-        }
-
-        if ( $.Sources.datapoints[source].supports_target_browsing === true) {
-          collections.datapointsTargets.source = source;
-          collections.datapointsTargets.fetch(options)
-          .done(function() {
-            that.$targetInput.select2({ tags: collections.datapointsTargets.autocomplete_names(), width: "17em" });
-          })
-          .error(this.showConnectionError);
-        } else {
-          that.$targetInput.select2("destroy");
-        }
+      if ( $.Sources.datapoints[source].supports_target_browsing === true) {
+        this.collection = helpers.datapointsTargetsPool.get(source);
+        this.initTextfieldWithList();
       }
+    },
+
+    initTextfieldWithList: function() {
+      var options = {
+        originalInput: this.$targetInput,
+        browseCallback: this.showBrowseDialog,
+        editCallback: this._supportsGraphiteFunctions() ? this.showFunctionDialog : null
+      };
+
+      if (this.textfieldWithList) this.textfieldWithList.close();
+      this.textfieldWithList = new views.TextfieldWithList(options);
+      this.$targetInput.after(this.textfieldWithList.render().el);
+    },
+
+    _supportsGraphiteFunctions: function() {
+      return $.Sources.datapoints[this.$sourceSelect.val()].supports_functions === true;
+    },
+
+    showFunctionDialog: function(currentTarget, event) {
+      var that = this,
+          dialog = new views.FunctionEditor({ target: currentTarget, collection: this.collection });
+
+      dialog.on("inputChanged", function(newTarget) {
+        that.textfieldWithList.update(currentTarget, newTarget);
+      });
+
+      this.$el.append(dialog.render().el);
+    },
+
+    showBrowseDialog: function(event) {
+      var that = this,
+          browser = new views.TargetBrowser({ collection: this.collection });
+      browser.on("selectionChanged", function(newTarget) {
+        that.textfieldWithList.add(newTarget);
+      });
+      this.$el.append(browser.render().el);
     },
 
     showConnectionError: function() {

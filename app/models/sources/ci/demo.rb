@@ -5,7 +5,7 @@ module Sources
     class Demo < Sources::Ci::Base
 
       # Returns ruby hash:
-      def get(server_url, project, options = {})
+      def get(options = {})
         {
           :label             => "Demo name",
           :last_build_time   => Time.now,

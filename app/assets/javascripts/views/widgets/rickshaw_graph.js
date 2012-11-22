@@ -16,10 +16,10 @@
     '#00A388'
   ].reverse();
 
-  views.widgets.Graph = Backbone.View.extend({
+  views.widgets.RickshawGraph = Backbone.View.extend({
 
     initialize: function(options) {
-      _.bindAll(this, "render", "update", "renderGraph", "showEmptyDatasetNotice", "updateValues", "widgetChanged");
+      _.bindAll(this, "render", "update", "renderGraph", "updateValues", "widgetChanged");
 
       this.updateCollection();
 
@@ -41,8 +41,7 @@
         targets: this.model.get('targets'),
         source: this.model.get('source'),
         from: this.from(),
-        to: this.to(),
-        http_proxy_url: this.model.get("http_proxy_url")
+        to: this.to()
       });
     },
 
@@ -81,7 +80,7 @@
     },
 
     render: function() {
-      this.$el.html(JST['templates/widgets/graph/show']({ time: this.model.get('time') }));
+      this.$el.html(JST['templates/widgets/graph/rickshaw_show']({ time: this.model.get('time') }));
 
       this.$graph = this.$('.graph');
       this.$yAxis = this.$('.y-axis');
@@ -93,10 +92,15 @@
       this.$graph.empty();
       this.$yAxis.empty();
 
+      var width = this.$graph.parent().width();
+      if (width > 300) {
+        width = width - 80;
+      }
+
       this.graph = new Rickshaw.Graph({
         element: this.$graph.get(0),
         renderer: this.model.get("graph_type") || "line",
-        width: this.$graph.parent().width()-80,
+        width: width,
         series: datapoints
       });
       this.graph.render();
@@ -135,17 +139,24 @@
       return $.when(this.collection.fetch(options)).done(this.updateValues);
     },
 
-    updateValues: function() {
-      var datapoints = this.transformDatapoints();
-      if (datapoints.hasData === true) {
-        this.renderGraph(datapoints);
-      } else {
-        // this.showEmptyDatasetNotice();
-      }
+    updateGraphSeries: function(datapoints) {
+      var that = this;
+      this.graph.series = datapoints;
+      this.graph.series.active = function() {
+        return that.graph.series.filter(function(s) {
+          return !s.disabled;
+        });
+      };
     },
 
-    showEmptyDatasetNotice: function() {
-      this.$el.html("<p class='empty-data'>No data available.</p>");
+    updateValues: function() {
+      var datapoints = this.transformDatapoints();
+      if (datapoints.hasData === true && this.graph) {
+        this.updateGraphSeries(datapoints);
+        this.graph.render();
+      } else {
+        this.renderGraph(datapoints);
+      }
     },
 
     onClose: function() {

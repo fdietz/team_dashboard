@@ -63,10 +63,10 @@ describe Api::DashboardsController do
       @dashboard = FactoryGirl.create(:dashboard)
     end
 
-    it "should respond with status 204 on success" do
+    it "should respond with status 200 on success" do
       @request.env['RAW_POST_DATA'] = @dashboard.to_json
       post :update, :id => @dashboard.id, :format => :json
-      @response.code.should eq("204")
+      @response.code.should eq("200")
     end
 
     it "should update widget" do
@@ -74,6 +74,13 @@ describe Api::DashboardsController do
       @request.env['RAW_POST_DATA'] = @dashboard.to_json
       post :update, :id => @dashboard.id, :format => :json
       @dashboard.reload.name.should == "new name"
+    end
+
+    it "should return dashboard json representation on success" do
+      @dashboard.name = "new name"
+      @request.env['RAW_POST_DATA'] = @dashboard.to_json
+      post :update, :id => @dashboard.id, :format => :json
+      JSON.parse(@response.body)["name"].should == "new name"
     end
 
     it "should return json error response on failure" do

@@ -4,8 +4,8 @@ describe Api::DatapointsTargetsController do
   describe "#index" do
     it "responds successfully using the selected plugin" do
       plugin = mock('mock')
-      plugin.expects(:get).returns(['test1', 'test2'])
-      Sources.expects(:datapoints_targets_plugin).with('demo').returns(plugin)
+      plugin.expects(:available_targets).returns(['test1', 'test2'])
+      Sources.expects(:datapoints_plugin).with('demo').returns(plugin)
       get :index, :source => 'demo', :format => :json
 
       assert_response :success

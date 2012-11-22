@@ -10,8 +10,11 @@
 
     initialize: function() {
       _.bindAll(this, "render", "sourceChanged", "showConnectionError");
-      this.metricsCollection1 = new collections.DatapointsTarget({ source: this.model.get("source1")});
-      this.metricsCollection2 = new collections.DatapointsTarget({ source: this.model.get("source2")});
+
+      this.collection = helpers.datapointsTargetsPool.get(this.model.get('source') || $.Sources.datapoints[0]);
+
+      this.metricsCollection1 = helpers.datapointsTargetsPool.get(this.model.get("source1"));
+      this.metricsCollection2 = helpers.datapointsTargetsPool.get(this.model.get("source2"));
     },
 
     validate: function() {
@@ -34,10 +37,8 @@
       this.$targetInput2            = this.$('input#targets2');
       this.$targetInputField1       = this.$('.field-targets1');
       this.$aggregateFunctionField1 = this.$('.field-aggregate_function1');
-      this.$httpProxyUrlField1      = this.$(".field-http_proxy_url1");
       this.$targetInputField2       = this.$('.field-targets2');
       this.$aggregateFunctionField2 = this.$('.field-aggregate_function2');
-      this.$httpProxyUrlField2      = this.$(".field-http_proxy_url2");
 
       this.updateSourceFormControls(1, this.$sourceSelect1.val());
       this.updateSourceFormControls(2, this.$sourceSelect2.val());
@@ -53,28 +54,6 @@
       var sources = $.Sources.getDatapoints();
       sources.unshift("");
       return sources;
-    },
-
-    getUpdateIntervalOptions: function() {
-      return [
-        { val: 10, label: '10 sec' },
-        { val: 600, label: '1 min' },
-        { val: 6000, label: '10 min' },
-        { val: 36000, label: '1 hour' }
-      ];
-    },
-
-    getPeriodOptions: function() {
-      return [
-        { val: "30-minutes", label: "Last 30 minutes" },
-        { val: "60-minutes", label: "Last 60 minutes" },
-        { val: "3-hours", label: "Last 3 hours" },
-        { val: "12-hours", label: "Last 12 hours" },
-        { val: "24-hours", label: "Last 24 hours" },
-        { val: "3-days", label: "Last 3 days" },
-        { val: "7-days", label: "Last 7 days" },
-        { val: "4-weeks", label: "Last 4 weeks" }
-      ];
     },
 
     getAggregateOptions: function() {
@@ -102,18 +81,11 @@
             if (number === 1 && value.length === 0 ) { return err; }
           }]
         };
-        result["http_proxy_url" + number] = {
-          title: "Proxy URL " + number,
-          type: "Text",
-          validators: [ function checkHttpProxyUrl(value, formValues) {
-            if (formValues["source" + number] === "http_proxy" && value.length === 0) { return err; }
-          }]
-        };
         result["targets" + number] = {
           title: "Targets " + number,
           type: 'Text',
           validators: [ function(value, formValues) {
-            if (formValues["source" + number].length > 0 && formValues.source1 !== "http_proxy" && value.length === 0) { return err; }
+            if (value.length === 0 && formValues["source"+number].length > 0) { return err; }
           }]
         };
         result["aggregate_function" + number] = {
@@ -129,12 +101,12 @@
         update_interval:  {
           title: 'Update Interval',
           type: 'Select',
-          options: this.getUpdateIntervalOptions()
+          options: helpers.FormDefaults.getUpdateIntervalOptions()
         },
         range: {
           title: 'Period',
           type: 'Select',
-          options: this.getPeriodOptions()
+          options: helpers.FormDefaults.getPeriodOptions()
         }
       };
 
@@ -153,50 +125,62 @@
     },
 
     updateSourceFormControls: function(number, source) {
-      var httpProxyUrlField      = this["$httpProxyUrlField" + number],
-          targetInputField       = this["$targetInputField" + number],
+      var targetInputField       = this["$targetInputField" + number],
           aggregateFunctionField = this["$aggregateFunctionField" + number],
           targetInput            = this["$targetInput" + number],
-          metrics                = this["metricsCollection" + number];
+          textfieldWithList      = this["textfieldWithList"+number];
 
-      var sourceSupportsTarget   = function() {
-        return (source === "demo" || source === "graphite");
-      };
-
-      if (source === "http_proxy") {
-        httpProxyUrlField.show();
-        targetInputField.hide();
-        aggregateFunctionField.hide();
-      } else if (source.length === 0) {
-        httpProxyUrlField.hide();
+      if (source.length === 0) {
         targetInputField.hide();
         aggregateFunctionField.hide();
       } else {
-        httpProxyUrlField.hide();
         targetInputField.show();
         aggregateFunctionField.show();
-        if (metrics.source !== source) {
-          targetInput.val("");
-        }
 
-        if ($.Sources.datapoints[source].supports_target_browsing === true) {
-          this.updateAutocompleteTargets(number);
-        } else {
-          targetInput.select2("destroy");
-        }
+        if (textfieldWithList) textfieldWithList.close();
+        if (this._supportsTargetBrowsing(source)) this.initTextfieldWithList(targetInput, number, source);
       }
     },
 
-    updateAutocompleteTargets: function(number) {
-      var metrics = this["metricsCollection" + number],
-          source  = this["$sourceSelect" + number].val(),
-          options = { suppressErrors: true };
-      metrics.source = source;
-      metrics.fetch(options)
-        .done(_.bind(function() {
-          this["$targetInput" + number].select2({ tags: metrics.autocomplete_names(), width: "17em" });
-        }, this))
-        .error(this.showConnectionError);
+    _supportsTargetBrowsing: function(source) {
+      return $.Sources.datapoints[source].supports_target_browsing === true;
+    },
+
+    _supportsGraphiteFunctions: function(source) {
+      return $.Sources.datapoints[source].supports_functions === true;
+    },
+
+    initTextfieldWithList: function(targetInputField, number, source) {
+      var that = this;
+      var textfieldWithList = this["textfieldWithList"+number];
+      var collection        = helpers.datapointsTargetsPool.get(source);
+
+      var options = {
+        originalInput  : targetInputField,
+        browseCallback : function(event) {
+          var browser = new views.TargetBrowser({ collection: collection });
+          browser.on("selectionChanged", function(newTarget) {
+            textfieldWithList.add(newTarget);
+          });
+          that.$el.append(browser.render().el);
+        }
+      };
+
+      if (this._supportsGraphiteFunctions(source)) {
+        _.extend(options, {
+          editCallback: function(currentTarget, event) {
+            var dialog = new views.FunctionEditor({ target: currentTarget, collection: collection });
+            dialog.on("inputChanged", function(newTarget) {
+              textfieldWithList.update(currentTarget, newTarget);
+            });
+            that.$el.append(dialog.render().el);
+          }
+        });
+      }
+
+      if (textfieldWithList) textfieldWithList.close();
+      textfieldWithList = this["textfieldWithList"+number] = new views.TextfieldWithList(options);
+      targetInputField.after(textfieldWithList.render().el);
     },
 
     showConnectionError: function() {
@@ -207,7 +191,6 @@
       this.$flash.slideDown();
       window.setTimeout(function() { that.$flash.fadeOut(); }, 10000);
     }
-
 
   });
 

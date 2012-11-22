@@ -1,34 +1,38 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rails', '~> 3.2.5'
+gem "rails", "~> 3.2.8"
 
-gem 'jquery-rails'
-gem 'less-rails'
-gem 'less-rails-bootstrap'
-gem "rails-backbone"
-gem "handlebars_assets"
-gem "nokogiri"
-gem "newrelic_api"
-gem "pingdom-client", :git => "git://github.com/rubymaverick/pingdom-client.git"
+gem "jquery-rails", "~> 2.1.2"
+gem "less-rails", "~> 2.2.3"
+gem "less-rails-bootstrap", "~> 2.1.1"
+gem "rails-backbone", "~> 0.7.2"
+gem "handlebars_assets", "~> 0.6.4"
 
-gem 'mysql2'
+gem "mysql2", "~> 0.3.11"
 
-gem 'thin'
-gem 'foreman'
+gem "thin", "~> 1.4.1"
+gem "foreman"
+gem "faraday", "~> 0.8.4"
+gem "faraday_middleware", "~> 0.8.8"
+gem "multi_xml", "~> 0.5.1"
+gem "libxml-ruby", "~> 2.3.3"
+gem "nokogiri", "~> 1.5.5"
 
 group :test, :development do
-  gem "rspec-rails", "~> 2.0"
-  gem 'factory_girl_rails'
-  gem 'jasmine'
-  gem 'jasmine-headless-webkit'
-  gem 'mocha', :require => false
+  gem "rspec-rails"
+  gem "factory_girl_rails"
+  gem "jasmine"
+  gem "jasminerice"
+  gem "guard-jasmine"
+  gem "rb-fsevent", "~> 0.9.1"
+  gem "mocha", :require => false
 end
 
 group :assets do
-  gem 'sass-rails'
+  gem "sass-rails", "~> 3.2.5"
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer'
+  gem "therubyracer", "~> 0.10.2"
 
-  gem 'uglifier', '>= 1.0.3'
+  gem "uglifier", ">= 1.0.3"
 end

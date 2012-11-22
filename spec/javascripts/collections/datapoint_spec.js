@@ -1,8 +1,8 @@
-describe("Graph Collection", function() {
+describe("Datapoint Collection", function() {
 
   describe("buildTargetsParams", function() {
     it("builds url params for given targets", function() {
-      graph = new window.app.collections.Datapoint({ targets: "a,b" });
+      graph = new window.app.collections.Datapoint({ targets: "a;b" });
       expect(graph.buildTargetsParams()).toEqual("targets[]=a&targets[]=b");
     });
   });
@@ -16,7 +16,7 @@ describe("Graph Collection", function() {
 
   describe("url", function() {
     it("builds url for given time and target params", function() {
-      graph = new window.app.collections.Datapoint({ targets: "a,b", from: 123, to: 456, source: "demo" });
+      graph = new window.app.collections.Datapoint({ targets: "a;b", from: 123, to: 456, source: "demo" });
       expect(graph.url()).toEqual("/api/datapoints?targets[]=a&targets[]=b&from=123&to=456&source=demo");
     });
   });

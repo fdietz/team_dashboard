@@ -10,6 +10,14 @@ module Sources
         false
       end
 
+      def supports_functions?
+        false
+      end
+      
+      def fields
+        []
+      end
+
       # Returns ruby hash:
       #  * value (boolean) mandatory
       #  * label (string) optional

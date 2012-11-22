@@ -13,25 +13,33 @@
     },
 
     fetch: function() {
-      return this.model ? this.model.fetch() : null;
+      return this.model ? this.model.fetch({ suppressErrors: true }) : null;
     },
 
     updateModel: function() {
+      var that = this;
+
       if (this.getSource()) {
         if (this.model) {
           this.model.off();
         }
-        this.model = new models.Boolean({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl(), value_path: this.getValuePath() });
+
+        var options = { source: this.getSource() };
+        var fields = {};
+        var plugin = _.find($.Sources.boolean, function(plugin) {
+          return that.getSource() === plugin.name;
+        });
+
+        if (plugin) {
+          _.each(plugin.fields, function(field) {
+            fields[field.name] = that.widget.get(plugin.name + "-" + field.name + that.number);
+          });
+        }
+
+
+        this.model = new models.Boolean(_.extend(options, { fields: fields } ));
         this.model.on('change', this.render);
       }
-    },
-
-    getHttpProxyUrl: function() {
-      return this.widget.get("http_proxy_url" + this.number);
-    },
-
-    getValuePath: function() {
-      return this.widget.get("value_path" + this.number);
     },
 
     getSource: function() {
@@ -43,13 +51,13 @@
     },
 
     getValue: function() {
-      var result = this.model.resolveValue();
+      var result = this.model.get("value") || false;
       return result;
     },
 
     render: function() {
-      if (this.model) {
-        this.$el.html(JST['templates/widgets/boolean/subview']({ label: this.getLabel() }));
+      if (this.model && this.model.isPopulated()) {
+        this.$el.html(window.JST['templates/widgets/boolean/subview']({ label: this.getLabel() }));
 
         this.$value = this.$('.boolean-value');
         this.$value.toggleClass('green', this.getValue() === true);
@@ -99,7 +107,6 @@
 
     update: function() {
       var that = this;
-      var options = { suppressErrors: true };
       var validModels = [];
       this.forEachChild(function(child) {
         validModels.push(child.fetch());

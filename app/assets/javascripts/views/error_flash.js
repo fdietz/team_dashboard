@@ -1,7 +1,7 @@
 (function ($, _, Backbone, views){
   "use strict";
 
-  views.Errors = Backbone.View.extend({
+  views.ErrorFlash = Backbone.View.extend({
     events: {
       'click .reload': "reload"
     },
@@ -16,7 +16,7 @@
     },
 
     render: function() {
-      this.$el.html(JST['templates/errors/show']({ message: this.message }));
+      this.$el.html(window.JST['templates/errors/show']({ message: this.message }));
 
       var that = this;
       this.$('#alert').bind('closed', function () {

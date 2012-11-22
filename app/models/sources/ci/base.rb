@@ -10,6 +10,14 @@ module Sources
         false
       end
 
+      def supports_functions?
+        false
+      end
+      
+      def fields
+        []
+      end
+
       # Returns ruby hash:
       # * label                 optional label
       # * last_build_time       time of last build
@@ -17,7 +25,7 @@ module Sources
       #                         Integer value: 0 (success), 1 (failure), -1 (else)
       # * current_status        current status
       #                         Integer value: 1 (building), -1 (else)
-      def get(server_url, project, options = {})
+      def get(options = {})
       end
 
     end

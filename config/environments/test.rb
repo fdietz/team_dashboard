@@ -31,4 +31,7 @@ TeamDashboard::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Expands the lines which load the assets
+  config.assets.debug = true
 end

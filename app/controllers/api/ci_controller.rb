@@ -3,7 +3,7 @@ module Api
 
     def show
       plugin = Sources.ci_plugin(params[:source])
-      result = plugin.get(params.delete(:server_url), params.delete(:project), params)
+      result = plugin.get(params)
       if result
         respond_with(result.to_json)
       else

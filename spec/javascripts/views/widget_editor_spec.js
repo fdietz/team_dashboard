@@ -14,40 +14,6 @@ describe("Widget Editor View", function() {
       dashboard: this.dashboardView,
       widgetCollection: this.widgetCollection
     });
-
-    // TODO: remove global stuff
-    $.Sources = {
-      "boolean": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "number": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "datapoints": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "counter": {
-        "demo": {
-          available: true,
-          name: "demo"
-        }
-      },
-      "datapoints_targets": {
-        "demo": {
-          name: "demo"
-        }
-      }
-    };
-
   });
 
   it("renders html correctly", function() {

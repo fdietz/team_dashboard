@@ -49,12 +49,10 @@
         this.$modal.modal("hide");
         var formResult = this.editor.getValue();
         if (this.model.isNew()) {
-          this.model.set(formResult, { silent: true });
-          this.widgetCollection.create(this.model);
+          this.model.set(formResult);
+          this.widgetCollection.create(this.model, { wait: true });
         } else {
-          this.model.save(formResult, { success: function() {
-            that.dashboard.trigger("widget:changed", that.model);
-          }});
+          this.model.save(formResult);
         }
       }
 

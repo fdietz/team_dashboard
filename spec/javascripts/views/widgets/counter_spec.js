@@ -3,31 +3,22 @@ describe("Counter Widget View", function() {
   describe("render", function() {
     beforeEach(function() {
       this.model = new window.app.models.Widget({
-        name: "widget 1", kind: 'counter', id: 1, source: "demo1", range: "30-minutes",
-        targets1: "demo1", aggregate_function1: "sum",
-        targets2: "demo2", aggregate_function2: "sum"
+        name: "widget 1", kind: 'counter', id: 1, range: "30-minutes",
+        source1: "demo", targets1: "demo1", aggregate_function1: "sum",
+        source2: "demo", targets2: "demo2", aggregate_function2: "sum"
       });
 
       this.view = new window.app.views.widgets.Counter({ model: this.model });
     });
 
-    // it("renders default html correctly", function() {
-    //   this.view.render();
-    //   var firstRow = this.view.$(".double-row:first-child");
-    //   var firstSecondaryValueContainer = firstRow.find(".secondary-value-container");
-    //   var secondRow = this.view.$(".double-row:nth-child(2)");
-    //   var secondSecondaryValueContainer = firstRow.find(".secondary-value-container");
+    it("renders default html correctly", function() {
+      this.view.render();
+      var firstRow = this.view.$(".double-row:first-child");
+      var secondRow = this.view.$(".double-row:nth-child(2)");
 
-    //   expect(firstRow.find(".value")).toHaveText("0");
-    //   expect(firstSecondaryValueContainer).toHaveClass("color-down");
-    //   expect(firstSecondaryValueContainer.find(".arrow-down")).toExist();
-    //   expect(firstSecondaryValueContainer.find(".secondary-value")).toHaveText(0);
-
-    //   expect(secondRow.find(".value")).toHaveText("0");
-    //   expect(secondSecondaryValueContainer).toHaveClass("color-down");
-    //   expect(secondSecondaryValueContainer.find(".arrow-down")).toExist();
-    //   expect(secondSecondaryValueContainer.find(".secondary-value")).toHaveText(0);
-    // });
+      expect(firstRow).toExist();
+      expect(secondRow).toExist();
+    });
   });
 
   describe("update", function() {

@@ -1,10 +1,12 @@
 # Team Dashboard
 
-Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshot](https://github.com/fdietz/team_dashboard/raw/master/gh-pages/screenshot.png)). It is build to be shown on a big screen in your team's space.
+Team Dashboard lets you visualize your team's metrics all in one place (see [Screenshots](http://fdietz.github.com/team_dashboard/)). It is build to be shown on a big screen in your team's space.
 
 [Heroku hosted Demo](http://team-dashboard.herokuapp.com/)
 
-It has built-in support for [Graphite](http://graphite.wikidot.com/) and makes it really easy to add more input sources.
+It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), etc. and makes it really easy to add more input sources.
+
+The Team Dashboard Data Source [Plugin Repository](https://github.com/fdietz/team_dashboard_plugins) contains contributed plugins and documentation on how to implement your own plugins.
 
 It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.
 
@@ -36,17 +38,29 @@ Start the Rails server:
 
     rails s
 
+### Running the build
+
+If you want to run the tests locally, you will need to install PhantomJS
+
+    brew update && brew install phantomjs
+
+Run the unit tests (ruby & js)
+
+    rake
+
 ## Configuration
 
 You have to configure the MySQL database in config/database.yml.
 
 Graphite is the first input source Team Dashboard supports. Use the environment variable GRAPHITE_URL or change the rails configuration (see application.rb and environment specific files) directly.
 
-    GRAPHITE_URL=http://mygraphiteserver
-
 For example:
 
     GRAPHITE_URL=http://localhost:8080 rails s
+
+Ganglia is now supported too, it uses the same configuration mechanism
+
+    GANGLIA_WEB_URL=http://localhost:8080 GANGLIA_HOST=localhost rails s
 
 # Dashboard Widgets
 
@@ -59,7 +73,7 @@ All widgets have a name, time interval in which to update themselves and a data 
 ### Graph Widget
 The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and the http proxy source.
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
 
 #### Configuration
 <table>
@@ -81,18 +95,26 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
   </tr>
   <tr>
     <td>Data Source</td>
-    <td>Only "demo" and "graphite" currently supported.</td>
+    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
   </tr>
   <tr>
     <td>Targets</td>
-    <td>Comma-separated targets. Also supports wildcards (example: visits.server.*).</td>
+    <td>
+      <p>
+        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
+      </p>
+      <p>
+        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
+        </br><code>hostname@cluster(metric-name)</code>
+      </p>
+    </td>
   </tr>
 </table>
 
 ### Counter Widget
 Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and the http proxy source.
+It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
 
 #### Configuration
 <table>
@@ -110,15 +132,23 @@ It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com
   </tr>
   <tr>
     <td>Data Source</td>
-    <td>Only "demo" and "graphite" currently supported.</td>
+    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
   </tr>
   <tr>
     <td>Targets</td>
-    <td>Comma-separated targets. Also supports wildcards (example: visits.server.*).</td>
+    <td>
+      <p>
+        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
+      </p>
+      <p>
+        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
+        </br><code>hostname@cluster(metric-name)</code>
+      </p>
+    </td>
   </tr>
   <tr>
     <td>Aggregate Function</td>
-    <td>The values of the selected period are aggregated using selected function. Supports sum, average and delta.</td>
+    <td>The values of the selected period are aggregated using selected function. Supports <code>sum</code>, <code>average</code> and <code>delta</code>.</td>
   </tr>
 </table>
 
@@ -147,7 +177,7 @@ It currently supports a demo data source and a http proxy data source.
   </tr>
   <tr>
     <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
+    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
   </tr>
   <tr>
 </table>
@@ -177,7 +207,7 @@ It currently supports a demo data source and a http proxy data source.
   </tr>
   <tr>
     <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: parent.child.nestedChild.value)</td>
+    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
   </tr>
   <tr>
 </table>
@@ -193,72 +223,19 @@ Shows the current build status for a given project. It currently supports a demo
   </tr>
   <tr>
     <td>Server URL</td>
-    <td>For Travis CI this would be for example http://travis-ci.org/ for Jenkins for example http://ci.jenkins-ci.org/</td>
+    <td>For Travis CI this would be for example <code>http://travis-ci.org</code> for Jenkins for example <code>http://ci.jenkins-ci.org</code></td>
   </tr>
   <tr>
     <td>Project</td>
-    <td>Name of Jenkins Job (example: infra_plugin_changes_report) or Travis CI Slug (example: travis-ci/travis-ci)</td>
+    <td>Name of Jenkins Job (example: <code>infra_plugin_changes_report</code>) or Travis CI Slug (example: <code>travis-ci/travis-ci</code>)</td>
   </tr>
 </table>
 
-## Data Sources
-
-### Datapoints
-The datapoints source supports data for rendering graphs and aggregated values. Following a minimal implementation.
-
-    class Example < Sources::Datapoints::Base
-      def get(targets, from, to, options = {})
-        result = []
-        targets.each do |target|
-          # retrieve the actual data here
-          result << { 'target' => "demo.example1", 'datapoints' => [[1, 123456], [7, 123466]] }
-        end
-        result
-      end
-    end
-
-Note the datapoints array consists of pairs of number values (y-value and timestamp for the x-value of the graph). This is similar to how Graphite or Ganglia structure their json data for graph data.
-
-### CI (Continous Integration Server)
-The CI data source delivers build status results.
-
-    class Demo < Sources::Ci::Base
-      def get(server_url, project, options = {})
-        {
-          :label             => "Demo name",
-          :last_build_time   => Time.now.iso8601,
-          :last_build_status => 0, # success
-          :current_status    => 1  # building
-        }
-      end
-    end
-
-### Number
-The number data source supports a single integer value and an optional label.
-
-    class Example < Sources::Number::Base
-      def get(options = {})
-        # retrieve actual data here
-        { :value => 115, :label => "example label" }
-      end
-    end
-
-### Boolean
-The boolean data source supports a single boolean value and an optional label.
-
-    class Example < Sources::Boolean::Base
-      def get(options = {})
-        # retrieve actual data here
-        { :value => true, :label => "example label" }
-      end
-    end
-
-## Create your own Data Source
-
-Create a data source ruby file under app/models/sources. As long as it extends from the specific base class (for example Sources::Boolean::Base) it will be automatically available.
 
 ## HTTP Proxy Source
-As described above you can easily add your own data source implementions. On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
+As described in the data source plugin repository [documentation](https://github.com/fdietz/team_dashboard_plugins) you can easily add your own data source implementions.
+
+On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
 
 #### HTTP Proxy URL
 Since we want to support generic JSON documents as data source for various kinds of widgets we use a simple path notation to support selection of a single value. This path selection is currently supported in the Number and Boolean data source.
@@ -307,9 +284,111 @@ The boolean data source supports a single boolean value and an optional label.
       "label" : "This is an example label"
     }
 
+## Team Dashboard's own REST API
+Of course there's a REST API for accessing the dashboard and widget configuration.
+
+### Dashboard
+
+#### GET /api/dashboards
+Retrieve list of all dashboards
+
+Example:
+
+    curl -H "Accept: application/json" http://localhost:3000/api/dashboards
+
+#### GET /api/dashboards/id
+Retrieve details of specific dashboard
+
+Example URL:
+
+    curl -H "Accept: application/json" http://localhost:3000/api/dashboards/1
+
+Example Response:
+
+    {
+      created_at: 2012-09-05T08:38:09Z
+      id: 2
+      layout: [
+        4
+        5
+        6
+        7
+      ]
+      name: Example 2 (Counters, Numbers, Boolean and Graph Widgets)
+      updated_at: 2012-09-05T08:38:10Z
+    }
+
+#### POST /api/dashboards
+Creates a new dashboard.
+
+Example:
+
+  curl -v -H "Content-type: application/json" -X POST -d '{ "name": "test" }' http://localhost:3000/api/dashboards
+
+#### DELETE /api/dashboards/id
+Deletes a specific dashboard
+
+Example:
+
+  curl -X DELETE http://localhost:3000/api/dashboards/1
+
+### Widget
+
+
+#### GET /api/dashboards/id/widgets
+Retrieve list of all widgets for specific dashboards
+
+Example:
+
+    curl -H "Accept: application/json" http://localhost:3000/api/dashboards/1/widgets
+
+#### GET /api/dashboards/id/widgets/id
+Retrieve details of specific widgets for specific dashboards
+
+Example:
+
+    curl -H "Accept: application/json" http://localhost:3000/api/dashboards/1/widgets/1
+
+Example Response:
+
+    {
+      created_at: 2012-09-05T11:44:34Z
+      dashboard_id: 1
+      id: 9
+      kind: graph
+      name: Undefined name
+      range: 30-minutes
+      size: 1
+      source: demo
+      targets: demo.example1
+      update_interval: 10
+      updated_at: 2012-09-05T11:44:34Z
+      graph_type: line
+    }
+
+#### POST /api/dashboards/id/widgets
+Creates widget for specific dashboard
+
+Example:
+
+    curl -v -H "Content-type: application/json" -X POST -d '{ "name": "test", "source": "demo" }' http://localhost:3000/api/dashboards/1/widgets
+
+
+#### DELETE /api/dashboards/id/widgets/id
+Deletes specific widget
+
+Example:
+
+    curl -X DELETE http://localhost:3000/api/dashboards/1/widgets/1
+
 ## Credits & Contributors
 
 Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
+
+* [luxflux](https://github.com/luxflux) (Raffael Schmid)
+* [frankmt](https://github.com/frankmt) (Francisco Trindade)
+* [leejones](https://github.com/leejones) (Lee Jones)
+* [rngtng](https://github.com/rngtng) (Tobias Bielohlawek)
 
 ## The MIT License
 

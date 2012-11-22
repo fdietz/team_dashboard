@@ -4,9 +4,17 @@ module Sources
   module Ci
     class Travis < Sources::Ci::Base
 
+      def fields
+        [
+          { :name => "server_url", :title => "Server Url", :mandatory => true },
+          { :name => "project", :title => "Project", :mandatory => true },
+        ]
+      end
+
       # Returns ruby hash:
-      def get(server_url, project, options = {})
-        result = request_build_status(server_url, project)
+      def get(options = {})
+        fields = options.fetch(:fields)
+        result = request_build_status(fields.fetch(:server_url), fields.fetch(:project))
         {
           :label             => result["slug"],
           :last_build_time   => result["last_build_finished_at"],
@@ -16,10 +24,9 @@ module Sources
       end
 
       def request_build_status(server_url, project)
-        request_url = "#{server_url}/#{project}.json"
-        uri = URI.parse(request_url)
-        Rails.logger.debug("Requesting from #{uri} ...")
-        JSON.parse(uri.read)
+        url = "#{server_url}/#{project}.json"
+        Rails.logger.debug("Requesting from #{url} ...")
+        ::HttpService.request(url)
       end
 
       def status(status)

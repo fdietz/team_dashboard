@@ -5,3 +5,12 @@
 require File.expand_path('../config/application', __FILE__)
 
 TeamDashboard::Application.load_tasks
+
+unless Rails.env.production?
+  require 'guard/jasmine/task'
+
+  Guard::JasmineTask.new
+  Guard::JasmineTask.new(:jasmine_no_server, '-s none')
+
+  task :default => %w[spec guard:jasmine]
+end

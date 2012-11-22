@@ -4,22 +4,36 @@ module Sources
   module Ci
     class Jenkins < Sources::Ci::Base
 
-      # Returns ruby hash:
-      def get(server_url, project, options = {})
-        result = request_build_status(server_url, project)
-        {
-          :label             => result["fullDisplayName"],
-          :last_build_time   => result["lastBuildTime"],
-          :last_build_status => status(result["result"]),
-          :current_status    => current_status(result["building"])
-        }
+      def fields
+        [
+          { :name => "server_url", :title => "Server Url", :mandatory => true },
+          { :name => "project", :title => "Project", :mandatory => true },
+        ]
       end
 
-      def request_build_status(server_url, project)
-        request_url = "#{server_url}/job/#{project}/lastBuild/api/json"
-        uri = URI.parse(request_url)
-        Rails.logger.debug("Requesting from #{uri} ...")
-        JSON.parse(uri.read)
+      # Returns ruby hash:
+      def get(options = {})
+        fields = options.fetch(:fields)
+        project = fields.fetch(:project)
+        result  = request_build_status(fields.fetch(:server_url))
+        result = XML::Parser.string(result).parse rescue result
+
+        result["Projects"]["Project"].each do |data|
+          if data['name'] == project
+            return {
+              :label             => data["name"],
+              :last_build_time   => Time.parse(data["lastBuildTime"]),
+              :last_build_status => status(data["lastBuildStatus"]),
+              :current_status    => current_status(data["activity"])
+            }
+          end
+        end
+      end
+
+      def request_build_status(server_url)
+        url = "#{server_url}/cc.xml"
+        Rails.logger.debug("Requesting from #{url} ...")
+        ::HttpService.request(url)
       end
 
       def status(status)
@@ -33,9 +47,15 @@ module Sources
         end
       end
 
-      def current_status(building)
-        return -1 if building.nil?
-        building  ? 1 : 0
+      def current_status(status)
+        case status
+        when /sleeping/i
+          0
+        when /building/i
+          1
+        else
+          -1
+        end
       end
 
     end

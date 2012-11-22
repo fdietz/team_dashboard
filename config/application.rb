@@ -4,7 +4,6 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "active_record/railtie"
-require "rails/test_unit/railtie"
 require "sprockets/railtie"
 
 if defined?(Bundler)
@@ -51,7 +50,8 @@ module TeamDashboard
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.graphite_url = ENV['GRAPHITE_URL']
-    config.ganglia_url  = ENV['GANGLIA_URL']
+    config.graphite_url     = ENV['GRAPHITE_URL']
+    config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']
+    config.ganglia_host     = ENV['GANGLIA_HOST']
   end
 end

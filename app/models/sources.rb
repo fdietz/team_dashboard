@@ -3,7 +3,7 @@ module Sources
 
   class UnknownPluginError < StandardError; end
 
-  TYPES = %w(boolean datapoints number datapoints_targets ci)
+  TYPES = %w(boolean datapoints number ci)
 
   TYPES.each do |type|
     define_method("#{type}_plugin") do |name|
@@ -30,7 +30,9 @@ module Sources
     {
       "name"                     => name,
       "available"                => plugin.available?,
-      "supports_target_browsing" => plugin.supports_target_browsing?
+      "supports_target_browsing" => plugin.supports_target_browsing?,
+      "supports_functions"       => plugin.supports_functions?,
+      "fields"                   => plugin.fields
     }
   end
 

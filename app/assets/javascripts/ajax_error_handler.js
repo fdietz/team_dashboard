@@ -14,7 +14,7 @@
     } else if (500 <= xhr.status <= 600) {
       message = "There was an error on the server.";
     }
-    var errorsView = new views.Errors({ message: message });
+    var errorsView = new views.ErrorFlash({ message: message });
     $('#flash').html(errorsView.render().el);
     window.setTimeout(function() { $('#flash').fadeOut(); }, 10000);
   });

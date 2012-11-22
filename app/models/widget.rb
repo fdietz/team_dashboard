@@ -8,9 +8,6 @@ class Widget < ActiveRecord::Base
 
   after_initialize :set_defaults
 
-  after_create :add_to_dashboard_layout
-  after_destroy :remove_from_dashboard_layout
-
   attr_accessible :name, :kind, :size, :source, :targets, :range, :update_interval, :dashboard_id, :dashboard, :settings
 
   class << self
@@ -35,16 +32,6 @@ class Widget < ActiveRecord::Base
   end
 
   protected
-
-  def add_to_dashboard_layout
-    self.dashboard.layout << self.id
-    self.dashboard.save!
-  end
-
-  def remove_from_dashboard_layout
-    self.dashboard.layout = self.dashboard.layout.reject { |e| e == self.id  }
-    self.dashboard.save!
-  end
 
   def set_defaults
     self.size = 1 unless self.size

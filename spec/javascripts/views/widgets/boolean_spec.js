@@ -17,12 +17,9 @@ describe("Boolean Widget View", function() {
       var firstRow = this.view.$(".triple-row:nth-child(1)");
       var secondRow = this.view.$(".triple-row:nth-child(2)");
       var thirdRow = this.view.$(".triple-row:nth-child(3)");
-      expect(firstRow.find(".boolean-value")).toExist();
-      expect(firstRow.find(".label")).toExist();
-      expect(secondRow.find(".boolean-value")).toExist();
-      expect(secondRow.find(".label")).toExist();
-      expect(thirdRow.find(".boolean-value")).toExist();
-      expect(thirdRow.find(".label")).toExist();
+      expect(firstRow).toExist();
+      expect(secondRow).toExist();
+      expect(thirdRow).toExist();
     });
   });
 
@@ -38,7 +35,7 @@ describe("Boolean Widget View", function() {
     it("fetches model again and updates view with red status", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
-        expect(options.url).toEqual("/api/boolean?source=demo1");
+        expect(options.url).toEqual("/api/boolean?source=demo1&include_response_body=false");
         options.success({ value: false });
       });
 
@@ -50,7 +47,7 @@ describe("Boolean Widget View", function() {
     it("fetches model again and updates view with green status", function() {
       this.view.render();
       spyOn($, "ajax").andCallFake(function(options) {
-        expect(options.url).toEqual("/api/boolean?source=demo1");
+        expect(options.url).toEqual("/api/boolean?source=demo1&include_response_body=false");
         options.success({ value: true });
       });
 

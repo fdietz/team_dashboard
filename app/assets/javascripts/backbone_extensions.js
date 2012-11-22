@@ -13,6 +13,25 @@
     if (this.collection) this.collection.off();
   };
 
+  // populated attribute
+  Backbone.Model.prototype.populated = false;
+  Backbone.Model.prototype.isPopulated = function() {
+    return this.populated === true;
+  };
+  Backbone.Model.prototype.parse = function(response) {
+    this.populated = true;
+    return response;
+  };
+
+  Backbone.Collection.prototype.populated = false;
+  Backbone.Collection.prototype.isPopulated = function() {
+    return this.populated === true;
+  };
+  Backbone.Collection.prototype.parse = function(response) {
+    this.populated = true;
+    return response;
+  };
+
   Backbone.CompositeView = Backbone.View.extend({
 
     constructor: function(){

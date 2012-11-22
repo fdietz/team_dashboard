@@ -13,29 +13,36 @@
     },
 
     fetch: function() {
-      return this.model ? this.model.fetch() : null;
+      return this.model ? this.model.fetch({ suppressErrors: true }) : null;
     },
 
     updateModel: function() {
+      var that = this;
+
       if (this.getSource()) {
         if (this.model) {
           this.model.off();
         }
-        this.model = new models.Ci({ source: this.getSource(), server_url: this.getServerUrl(), project: this.getProject() });
+
+        var options = { source: this.getSource() };
+        var fields = {};
+        var plugin = _.find($.Sources.ci, function(plugin) {
+          return that.getSource() === plugin.name;
+        });
+
+        if (plugin) {
+          _.each(plugin.fields, function(field) {
+            fields[field.name] = that.widget.get(plugin.name + "-" + field.name + that.number);
+          });
+        }
+
+        this.model = new models.Ci(_.extend(options, { fields: fields } ));
         this.model.on('change', this.render);
       }
     },
 
     getSource: function() {
       return this.widget.get("source" + this.number);
-    },
-
-    getServerUrl: function() {
-      return this.widget.get("server_url" + this.number);
-    },
-
-    getProject: function() {
-      return this.widget.get("project" + this.number);
     },
 
     getLabel: function() {
@@ -65,7 +72,7 @@
     },
 
     render: function() {
-      if (this.model) {
+      if (this.model && this.model.isPopulated()) {
         this.$el.html(JST['templates/widgets/ci/subview']({ label: this.getLabel(), currentStatus: this.getCurrentStatus() }));
 
         this.$value = this.$('.ci-value');
@@ -117,7 +124,6 @@
 
     update: function() {
       var that = this;
-      var options = { suppressErrors: true };
       var validModels = [];
       this.forEachChild(function(child) {
         validModels.push(child.fetch());

@@ -8,25 +8,6 @@ describe("WidgetContainer View", function() {
       new window.app.models.Widget({ name: "widget 2", kind: 'boolean', id: 2, dashboard_id: 1 })
     ]);
     this.view = new window.app.views.WidgetsContainer({ el: this.el, model: this.model, collection: this.collection });
-
-    // TODO: remove global stuff
-    $.Sources = {
-      getDefaultTarget: function() {
-        return "demo";
-      },
-      getDatapoints: function() {
-        return [];
-      },
-      getBoolean: function() {
-        return ["demo"];
-      },
-      getNumber: function() {
-        return ["demo"];
-      },
-      getCounter: function() {
-        return "demo";
-      }
-    };
   });
 
   it("renders html correctly", function() {
@@ -41,20 +22,6 @@ describe("WidgetContainer View", function() {
     expect(this.view.$(".portlet-header")).toExist();
     expect(this.view.$(".portlet-header .widget-delete")).toExist();
     expect(this.view.$(".portlet-header .widget-edit")).toExist();
-  });
-
-  it("removes widget from view correctly", function() {
-    this.view.render();
-    spyOn($, "ajax").andCallFake(function(options) {
-      expect(options.type).toEqual("DELETE");
-      expect(options.url).toEqual("/api/dashboards/1/widgets/2");
-      options.success({});
-    });
-
-    this.view.$(".widget:nth-child(2) .portlet-header .widget-delete").trigger("click");
-
-    expect(this.view.$(".widget:nth-child(1)")).toExist();
-    expect(this.view.$(".widget:nth-child(2)")).not.toExist();
   });
 
 });

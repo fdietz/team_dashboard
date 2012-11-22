@@ -7,7 +7,7 @@ module Api
     end
 
     def index
-      dashboards = Dashboard.all
+      dashboards = Dashboard.order("NAME ASC").all
       respond_with dashboards
     end
 
@@ -25,7 +25,7 @@ module Api
       dashboard = Dashboard.find(params[:id])
       input = JSON.parse(request.body.read.to_s)
       if dashboard.update_attributes(input.slice(*Dashboard.accessible_attributes))
-        head :no_content
+        render :json => dashboard
       else
         render :json => dashboard.errors, :status => :unprocessable_entity
       end

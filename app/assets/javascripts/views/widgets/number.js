@@ -1,4 +1,4 @@
-(function ($, _, Backbone, views, models, collections){
+(function ($, _, Backbone, views, models, collections, helpers){
   "use strict";
 
   var NumberSubview = Backbone.View.extend({
@@ -13,25 +13,31 @@
     },
 
     fetch: function() {
-      return this.model ? this.model.fetch() : null;
+      return this.model ? this.model.fetch({ suppressErrors: true }) : null;
     },
 
     updateModel: function() {
+      var that = this;
+
       if (this.getSource()) {
         if (this.model) {
           this.model.off();
         }
-        this.model = new models.Number({ source: this.getSource(), http_proxy_url: this.getHttpProxyUrl(), value_path: this.getValuePath() });
+        var options = { source: this.getSource() };
+        var fields = {};
+        var plugin = _.find($.Sources.number, function(plugin) {
+          return that.getSource() === plugin.name;
+        });
+
+        if (plugin) {
+          _.each(plugin.fields, function(field) {
+            fields[field.name] = that.widget.get(plugin.name + "-" + field.name + that.number);
+          });
+        }
+
+        this.model = new models.Number(_.extend(options, { fields: fields } ));
         this.model.on('change', this.render);
       }
-    },
-
-    getHttpProxyUrl: function() {
-      return this.widget.get("http_proxy_url" + this.number);
-    },
-
-    getValuePath: function() {
-      return this.widget.get("value_path" + this.number);
     },
 
     getSource: function() {
@@ -39,35 +45,49 @@
     },
 
     getValue: function() {
-      var result = this.model.resolveValue();
-      if (result % 1 === 0) {
-        return result;
-      } else {
-        return result.toFixed(2);
-      }
+      return this.model.get("value") || 0;
+    },
+
+    getValueAsString: function(value) {
+      return helpers.suffixFormatter(value, 1);
     },
 
     getLabel: function() {
       return this.model.get("label") || this.widget.get('label'+this.number);
     },
 
+    getColor: function() {
+      return this.model.get("color");
+    },
+
     render: function() {
-      if (this.model) {
-        this.$el.html(JST['templates/widgets/number/subview']({ value: this.getValue(), label: this.getLabel() }));
+      if (this.model && this.model.isPopulated()) {
+        var value = this.getValue();
+        var stringValue = this.getValueAsString(value);
+
+        this.$el.html(JST['templates/widgets/number/subview']({ value: stringValue, label: this.getLabel() }));
 
         this.$value = this.$('.number-value');
-        this.$value.toggleClass('color-up', this.getValue() > 0);
-        this.$value.toggleClass('color-down', this.getValue() < 0);
-        this.updateValueSizeClass();
+        this.updateColorClass(value);
+        this.updateValueSizeClass(stringValue);
       }
 
       return this;
     },
 
-    updateValueSizeClass: function(){
-      var str = this.getValue().toString().length;
-      this.$value.toggleClass("value-size-medium", str <= 5);
-      this.$value.toggleClass("value-size-small", str > 5);
+    updateColorClass: function(value) {
+      var color = this.getColor();
+      if (color) {
+        this.$value.css("color", color);
+      } else {
+        this.$value.toggleClass('color-up', value > 0);
+        this.$value.toggleClass('color-down', value < 0);
+      }
+    },
+
+    updateValueSizeClass: function(stringValue) {
+      this.$value.toggleClass("value-size-medium", stringValue.length <= 5);
+      this.$value.toggleClass("value-size-small", stringValue.length > 5);
     },
 
     onClose: function() {
@@ -110,7 +130,6 @@
 
     update: function() {
       var that = this;
-      var options = { suppressErrors: true };
       var validModels = [];
       this.forEachChild(function(child) {
         validModels.push(child.fetch());
@@ -124,4 +143,4 @@
     }
   });
 
-})($, _, Backbone, app.views, app.models, app.collections);
+})($, _, Backbone, app.views, app.models, app.collections, app.helpers);

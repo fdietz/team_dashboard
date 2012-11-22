@@ -1,7 +1,7 @@
 /**
  * Include this file _after_ the main backbone-forms file to override the default templates.
  * You only need to include templates you want to override.
- * 
+ *
  * Requirements when customising templates:
  * - Each template must have one 'parent' element tag.
  * - "data-type" attributes are required.
@@ -10,7 +10,7 @@
 ;(function() {
   var Form = Backbone.Form;
 
-    
+
   //TWITTER BOOTSTRAP TEMPLATES
   //Requires Bootstrap 2.x
   Form.setTemplates({
@@ -83,7 +83,7 @@
       </div>\
     '
   }, {
-  
+
     //CLASSNAMES
     error: 'error' //Set on the field tag when validation fails
   });
