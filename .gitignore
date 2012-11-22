@@ -19,5 +19,5 @@
 .DS_Store
 
 .jhw-cache
-
+.rake_tasks
 /config/database.yml
