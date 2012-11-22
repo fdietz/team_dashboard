@@ -3,11 +3,19 @@ module Sources
 
     class Pingdom < Sources::Number::Base
 
+      def fields
+        [
+          { :name => "user", :title => "User name", :mandatory => true },
+          { :name => "password", :title => "Password", :mandatory => true },
+          { :name => "key", :title => "Key", :mandatory => true},
+          { :name => "check", :title => "Check Name", :mandatory => true}
+        ]
+      end
+
       def get(options = {})
-        user,pass,key,check = options.fetch(:http_proxy_url).split(':')
-        client = ::Pingdom::Client.new :key => key, :username => user, :password => pass
-        check = client.checks.find { |c| c.name == check }
-        { :value => (check.status == 'up') }
+        fields = options.fetch(:fields)
+        connection = SimplePingdomInterface.new(fields.fetch(:user), fields.fetch(:password), fields.fetch(:key), fields.fetch(:check))
+        { :value => connection.status }
       end
 
     end
