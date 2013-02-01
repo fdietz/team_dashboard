@@ -17,6 +17,7 @@ TeamDashboard::Application.routes.draw do
   # copy of backbone routes render the initial layout for first request
   match "dashboards"     => "layout#index"
   match "dashboards/:id" => "layout#index"
+  match "dashboards/:id/fullscreen" => "layout#index"
   match "about"          => "layout#index"
 
   root :to => 'layout#index'

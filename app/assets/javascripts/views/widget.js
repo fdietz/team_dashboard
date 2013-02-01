@@ -11,7 +11,7 @@
     },
 
     initialize: function(options) {
-      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails", "toggledLock", "removeWidget");
+      _.bindAll(this, "render", "updateWidget", "renderWidget", "updateWidgetDone", "updateWidgetFail", "showErrorMoreDetails", "toggledFullscreen", "removeWidget");
 
       this.model.on('change', this.render);
 
@@ -20,7 +20,7 @@
 
       this.startPolling = true;
 
-      this.dashboard.on("change:locked", this.toggledLock);
+      this.dashboard.on("change:fullscreen", this.toggledFullscreen);
     },
 
     removeWidget: function(event) {
@@ -36,9 +36,9 @@
       });
     },
 
-    // TODO: consider creating a separate Backbone View and just render that on change:locked event
-    toggledLock: function() {
-      if (this.dashboard.isLocked()) {
+    // TODO: consider creating a separate Backbone View and just render that on change:fullscreen event
+    toggledFullscreen: function() {
+      if (this.dashboard.isFullscreen()) {
         this.$widgetDeleteButton.hide();
         this.$widgetEditButton.hide();
       } else {
@@ -139,7 +139,7 @@
       this.$widgetDeleteButton = this.$(".widget-delete");
       this.$widgetEditButton = this.$(".widget-edit");
 
-      this.toggledLock();
+      this.toggledFullscreen();
 
       this.createWidget();
 

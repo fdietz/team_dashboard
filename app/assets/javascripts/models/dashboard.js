@@ -14,14 +14,9 @@
       }
     },
 
-    isLocked: function() {
-      return this.get("locked") === true;
-    },
-
-    toggleLock: function() {
-      return this.save({ locked: !this.get("locked") });
+    isFullscreen: function() {
+      return this.get("fullscreen") === true;
     }
-
   });
 
 })($, _, Backbone, app.models);

@@ -1,10 +1,10 @@
 <div class="btn-toolbar" >
   <div class="btn-group">
-    <h2 {{#unless model.locked}}contenteditable{{/unless}} title="Click to edit title" id='heading' style="display:inline">{{model.name}}</h2>
+    <h2 contenteditable title="Click to edit title" id='heading' style="display:inline">{{model.name}}</h2>
   </div>
 
   <div class="btn-group pull-right">
-    <button class="btn btn-warning dashboard-delete" data-dashboard-id="{{id}}" {{#if model.locked}}disabled{{/if}}>
+    <button class="btn btn-warning dashboard-delete" data-dashboard-id="{{id}}">
       <i class="icon-trash icon-white"></i>
     </button>
   </div>
@@ -12,7 +12,7 @@
   <div class="btn-group pull-right">
 
     <div class="btn-group">
-      <a class="btn btn-success dropdown-toggle {{#if model.locked}}disabled{{/if}}" data-toggle="dropdown" href="#" {{#if model.locked}}disabled{{/if}}>
+      <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
         Add Widget...
         <span class="caret"></span>
       </a>
@@ -29,12 +29,8 @@
   </div>
 
   <div class="btn-group pull-right">
-    <button class="btn btn-primary dashboard-toggle-lock {{#if model.locked}}active{{/if}}" data-dashboard-id="{{id}}">
-      {{#if model.locked}}
-        <i class="icon-lock icon-white"></i> Unlock
-      {{else}}
-        <i class="icon-lock icon-white"></i> Lock
-      {{/if}}
+    <button class="btn btn-primary dashboard-full-screen" data-dashboard-id="{{id}}">
+      <i class="icon-fullscreen icon-white"></i> Fullscreen
     </button>
   </div>
 </div>

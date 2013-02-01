@@ -30,6 +30,7 @@
 //= require moment.min
 //= require select2
 //= require list.min
+//= require bigscreen.min
 //= require jquery.timeago
 //= require jquery.timeago.en-short
 

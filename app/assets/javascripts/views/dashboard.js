@@ -2,19 +2,8 @@
   "use strict";
 
   var Toolbar = Backbone.View.extend({
-
-    events: {
-      "click button.dashboard-toggle-lock" : "toggleLock"
-    },
-
     initialize: function(options) {
-      _.bindAll(this, "render", "toggleLock");
-      this.model.on('change:locked', this.render);
-    },
-
-    toggleLock: function() {
-      this.model.toggleLock();
-      return false;
+      _.bindAll(this, "render");
     },
 
     render: function() {
@@ -28,11 +17,17 @@
     events: {
       "click .widget-edit"                 : "editWidget",
       "click .add-actions"                 : "showDialog",
-      "click button.dashboard-delete"      : "removeDashboard"
+      "click button.dashboard-delete"      : "removeDashboard",
+      "click button.dashboard-full-screen" : "enableFullScreen"
     },
 
     initialize: function(options) {
       _.bindAll(this, "render", "editWidget", "redraw", "removeDashboard");
+      $('html').on('click', $.proxy(this.disableFullScreen, this));
+    },
+
+    remove: function() {
+      $('html').off('click');
     },
 
     _setup_editable_header: function() {
@@ -86,6 +81,8 @@
 
       this.$el.html(JST['templates/dashboards/show']({ dashboard: this.model.toJSON() }));
 
+      if (this.model.get('fullscreen')) { this.enableFullScreen(); }
+
       this.toolbar = new Toolbar({ model: this.model });
       this.$("#toolbar").html(this.toolbar.render().el);
 
@@ -103,7 +100,7 @@
 
     redraw: function() {
       if (this.timerId) clearTimeout(this.timerId);
-      window.location.href = "/dashboards/"+this.model.get("id");
+      window.location.href = this.currentURL();
     },
 
     toCamelCase: function(str) {
@@ -123,13 +120,61 @@
       return false;
     },
 
+    enableFullScreen: function(clickEvent) {
+      if (typeof clickEvent !== 'undefined') {
+        // When called from click handler, animate transitions, update model, and update router fragment
+        $('.navbar-static-top').trigger('fullscreen:enable', 'fast');
+        this.$('#toolbar').slideUp('fast');
+        this.model.set({ fullscreen: true });
+        this.updateFragment();
+      } else {
+        // When called on page load, hide instantly, and no need to update model or fragment
+        $('.navbar-static-top').trigger('fullscreen:enable', 0);
+        this.$('#toolbar').hide();
+      }
+
+      // Show 'click to hide' notification
+      this.showFullscreenNotification();
+
+      // Trigger native full screen if supported.
+      if (BigScreen.enabled) { BigScreen.request(document.body); }
+
+      return false;
+    },
+
+    disableFullScreen: function() {
+      if (this.model.get('fullscreen')) {
+        this.model.set({ fullscreen: false });
+        $('.navbar-static-top').trigger('fullscreen:disable');
+        this.$('#toolbar').slideDown('fast');
+        this.updateFragment();
+      }
+    },
+
+    showFullscreenNotification: function() {
+      var el = $('#fullScreenNotification');
+      el.modal('show');
+      var hideTimer = setTimeout(function(){ el.modal('hide'); }, 1800);
+      el.on('hide', function() { clearTimeout(hideTimer); });
+    },
+
+    updateFragment: function(){
+      var fragment = this.currentFragment();
+      if (Backbone.history.fragment != fragment) {
+        app.router.navigate(fragment, {replace: true, trigger: false});
+      }
+    },
+
+    currentFragment: function(){
+      return "/dashboards/" + this.model.get("id") + (this.model.get('fullscreen') ? '/fullscreen' : '');
+    },
+
     onClose: function() {
       this.widgetsContainer.close();
 
       this.model.off();
       this.collection.off();
     }
-
   });
 
 })($, _, Backbone, app.views, app.models, app.collections, app.router, app.helpers);
