@@ -4,17 +4,30 @@
   var Toolbar = Backbone.View.extend({
 
     events: {
-      "click button.dashboard-toggle-lock" : "toggleLock"
+      "click button.dashboard-toggle-lock" : "toggleLock",
+      "click button.dashboard-full-screen" : "hideToolbar"
     },
 
     initialize: function(options) {
       _.bindAll(this, "render", "toggleLock");
       this.model.on('change:locked', this.render);
+      $('html').on('click', $.proxy(this.restoreToolbar, this));
     },
 
     toggleLock: function() {
       this.model.toggleLock();
       return false;
+    },
+
+    hideToolbar: function() {
+      $('.navbar-fixed-top').fadeOut();
+      $('#toolbar').slideUp();
+      return false;
+    },
+
+    restoreToolbar: function() {
+      $('.navbar-fixed-top').fadeIn();
+      $('#toolbar').slideDown();
     },
 
     render: function() {
