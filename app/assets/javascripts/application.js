@@ -30,6 +30,8 @@
 //= require moment.min
 //= require select2
 //= require list.min
+//= require jquery.timeago
+//= require jquery.timeago.en-short
 
 //= require backbone_extensions
 //= require app

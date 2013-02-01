@@ -97,7 +97,7 @@
     toCamelCase: function(str) {
       return str.replace(/(?:^|[\s_])\w/g, function(match) {
           return match.toUpperCase();
-      }).replace(/[\s_]/,'');
+      }).replace(/\s|_/g,'');
     },
 
     createWidget: function() {
