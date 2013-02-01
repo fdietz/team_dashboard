@@ -94,14 +94,14 @@
       this.timerId = setTimeout(this.updateWidget, interval || this.model.get('update_interval') * 1000);
     },
 
-    toTitleCase: function(str) {
-      return str.replace(/(?:^|\s)\w/g, function(match) {
+    toCamelCase: function(str) {
+      return str.replace(/(?:^|[\s_])\w/g, function(match) {
           return match.toUpperCase();
-      });
+      }).replace(/[\s_]/,'');
     },
 
     createWidget: function() {
-      var className = this.toTitleCase(this.model.get('kind'));
+      var className = this.toCamelCase(this.model.get('kind'));
       // temporary hardcode graph renderer
       if (className === "Graph") {
         // className = "RickshawGraph";
