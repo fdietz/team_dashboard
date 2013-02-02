@@ -61,5 +61,17 @@ describe("Ci Widget View", function() {
       var firstRow = this.view.$(".triple-row:nth-child(1)");
       expect(firstRow.find(".ci-value")).toHaveClass("gray");
     });
+
+    it("updates view with building status", function() {
+      this.view.render();
+      spyOn($, "ajax").andCallFake(function(options) {
+        expect(options.url).toEqual("/api/ci?source=travis&fields[server_url]=http%3A%2F%2Ftravis-ci.org&fields[project]=bla1");
+        options.success({ last_build_status: 0, current_status: 1 });
+      });
+
+      this.view.update();
+      var firstRow = this.view.$(".triple-row:nth-child(1)");
+      expect(firstRow.find(".ci-value")).toHaveClass("building");
+    });
   });
 });

@@ -79,6 +79,7 @@
         this.$value.toggleClass('green', this.getValue() === 0);
         this.$value.toggleClass('red', this.getValue() === 1);
         this.$value.toggleClass('gray', this.getValue() === -1);
+        this.$value.toggleClass('building', this.model.get("current_status") === 1);
       }
 
       return this;
