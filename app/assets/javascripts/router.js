@@ -4,10 +4,11 @@
   app.Router = Backbone.Router.extend({
 
     routes: {
-      "":                       "dashboardsIndex",
-      "dashboards":             "dashboardsIndex",
-      "dashboards/:id":         "dashboardsShow",
-      "about":                  "aboutShow"
+      "":                          "dashboardsIndex",
+      "dashboards":                "dashboardsIndex",
+      "dashboards/:id":            "dashboardsShow",
+      "dashboards/:id/fullscreen": "dashboardsShow",
+      "about":                     "aboutShow"
     },
 
     initialize: function(options) {
@@ -56,8 +57,13 @@
 
     dashboardsShow: function(id) {
       var that = this;
-      var model = new app.models.Dashboard({ id: id });
+      var fullscreen = !!Backbone.history.fragment.match(/fullscreen/);
+      var model = new app.models.Dashboard({ id: id, fullscreen: fullscreen });
       var collection = new app.collections.Widget({ dashboard_id:model.id });
+
+      // If fullscreen, hide navbar before waiting for model to load.
+      if (fullscreen) { $('.navbar-fixed-top').hide(); }
+
       $.when(model.fetch(), collection.fetch()).done(function() {
         var dashboardView = new app.views.Dashboard({ model: model, collection: collection });
         that.showView(dashboardView);
