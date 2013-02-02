@@ -227,6 +227,14 @@ form .selectable-list {
     height: 40px;
     margin-top: 10px;
     margin-right: 20px;
+
+    &.building {
+      background-repeat: no-repeat;
+      background-position: 13px 4px;
+      &.red { background-image: image-url("spinner-red-bg.gif"); }
+      &.green { background-image: image-url("spinner-green-bg.gif"); }
+      &.gray { background-image: image-url("spinner-gray-bg.gif"); }
+    }
   }
 
   .number-value {
