@@ -9,8 +9,8 @@ module Sources
         {
           :label             => "Demo name",
           :last_build_time   => Time.now,
-          :last_build_status => rand(2) == 1,
-          :current_status    => 1
+          :last_build_status => rand(2),
+          :current_status    => rand(2)
         }
       end
 
