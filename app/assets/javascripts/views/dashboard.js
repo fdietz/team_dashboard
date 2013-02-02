@@ -73,7 +73,7 @@
       var widgetId = $(event.currentTarget).data("widget-id");
       var model = this.collection.get(widgetId);
 
-      var className = this.toTitleCase(model.get('kind'));
+      var className = this.toCamelCase(model.get('kind'));
       var editor = new views.WidgetEditors[className]({ model: model });
       var dialog = new views.WidgetEditor({ editor: editor, model: model, dashboard: this.model });
       var dialogElement = this.$('#widget-dialog');
@@ -106,15 +106,15 @@
       window.location.href = "/dashboards/"+this.model.get("id");
     },
 
-    toTitleCase: function(str) {
-      return str.replace(/(?:^|\s)\w/g, function(match) {
+    toCamelCase: function(str) {
+      return str.replace(/(?:^|[\s_])\w/g, function(match) {
           return match.toUpperCase();
-      });
+      }).replace(/\s|_/g,'');
     },
 
     showDialog: function(event) {
       var kind = $(event.target).data("widget-kind");
-      var className = this.toTitleCase(kind);
+      var className = this.toCamelCase(kind);
 
       var model = new models.Widget({ dashboard_id: this.model.id, kind: kind });
       var editor = new views.WidgetEditors[className]({ model: model });
