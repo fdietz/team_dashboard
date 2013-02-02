@@ -4,7 +4,7 @@ Team Dashboard lets you visualize your team's metrics all in one place (see [Scr
 
 [Heroku hosted Demo](http://team-dashboard.herokuapp.com/)
 
-It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), etc. and makes it really easy to add more input sources.
+It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), [Errbit](https://github.com/errbit/errbit), etc. and makes it really easy to add more input sources.
 
 The Team Dashboard Data Source [Plugin Repository](https://github.com/fdietz/team_dashboard_plugins) contains contributed plugins and documentation on how to implement your own plugins.
 
@@ -231,6 +231,24 @@ Shows the current build status for a given project. It currently supports a demo
   </tr>
 </table>
 
+### Exception Tracker Widget
+Shows the number of unresolved errors in your exception tracker, and when the last error occurred. It currently supports a demo source, and [Errbit](https://github.com/errbit/errbit).
+
+#### Configuration
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Documentation</th>
+  </tr>
+  <tr>
+    <td>Server URL</td>
+    <td>For Errbit this would be for example: <code>http://errbit.example.com</code></td>
+  </tr>
+  <tr>
+    <td>API Key</td>
+    <td>API Key for registered application. Example for Errbit: <code>3139359fa87f81665add733ba173bbd4</code></td>
+  </tr>
+</table>
 
 ## HTTP Proxy Source
 As described in the data source plugin repository [documentation](https://github.com/fdietz/team_dashboard_plugins) you can easily add your own data source implementions.
@@ -389,6 +407,7 @@ Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the f
 * [frankmt](https://github.com/frankmt) (Francisco Trindade)
 * [leejones](https://github.com/leejones) (Lee Jones)
 * [rngtng](https://github.com/rngtng) (Tobias Bielohlawek)
+* [ndbroadbent](https://github.com/ndbroadbent) (Nathan Broadbent)
 
 ## The MIT License
 

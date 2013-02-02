@@ -8,6 +8,7 @@ TeamDashboard::Application.routes.draw do
     resource  :datapoints, :only => :show
     resource  :counter, :only => :show
     resource  :ci, :only => :show, :controller => "ci"
+    resource  :exception_tracker, :only => :show
     resource  :number, :only => :show
     resource  :boolean, :only => :show
     resources :datapoints_targets, :only => :index
