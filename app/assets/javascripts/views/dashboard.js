@@ -133,6 +133,12 @@
         this.$('#toolbar').hide();
       }
 
+      // Show 'click to hide' notification
+      this.showFullscreenNotification();
+
+      // Trigger native full screen if supported.
+      if (BigScreen.enabled) { BigScreen.request(document.body); }
+
       return false;
     },
 
@@ -143,6 +149,13 @@
         this.$('#toolbar').slideDown('fast');
         this.updateFragment();
       }
+    },
+
+    showFullscreenNotification: function() {
+      var el = $('#fullScreenNotification');
+      el.modal('show');
+      var hideTimer = setTimeout(function(){ el.modal('hide'); }, 1800);
+      el.on('hide', function() { clearTimeout(hideTimer); });
     },
 
     updateFragment: function(){
