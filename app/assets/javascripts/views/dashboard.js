@@ -123,16 +123,14 @@
     enableFullScreen: function(clickEvent) {
       if (typeof clickEvent !== 'undefined') {
         // When called from click handler, animate transitions, update model, and update router fragment
-        $('.navbar-fixed-top').fadeOut('fast');
+        $('.navbar-static-top').trigger('fullscreen:enable', 'fast');
         this.$('#toolbar').slideUp('fast');
-        $('body').animate({'padding-top': '25px'}, {duration: 'fast'});
         this.model.set({ fullscreen: true });
         this.updateFragment();
       } else {
         // When called on page load, hide instantly, and no need to update model or fragment
-        $('.navbar-fixed-top').hide();
+        $('.navbar-static-top').trigger('fullscreen:enable', 0);
         this.$('#toolbar').hide();
-        $('body').css('padding-top', '25px');
       }
 
       return false;
@@ -141,9 +139,8 @@
     disableFullScreen: function() {
       if (this.model.get('fullscreen')) {
         this.model.set({ fullscreen: false });
-        $('.navbar-fixed-top').fadeIn('fast');
-        $('#toolbar').slideDown('fast');
-        $('body').animate({'padding-top': '60px'}, {duration: 'fast'});
+        $('.navbar-static-top').trigger('fullscreen:disable');
+        this.$('#toolbar').slideDown('fast');
         this.updateFragment();
       }
     },

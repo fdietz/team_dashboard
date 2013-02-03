@@ -12,6 +12,12 @@
     },
 
     initialize: function(options) {
+      $('.navbar-static-top').on('fullscreen:enable', function(e, duration){
+        $(this).slideUp(duration);
+      });
+      $('.navbar-static-top').on('fullscreen:disable', function(e){
+        $(this).slideDown('fast');
+      });
     },
 
     showView: function(view) {
@@ -62,7 +68,9 @@
       var collection = new app.collections.Widget({ dashboard_id:model.id });
 
       // If fullscreen, hide navbar before waiting for model to load.
-      if (fullscreen) { $('.navbar-fixed-top').hide(); }
+      if (fullscreen) {
+        $('.navbar-static-top').trigger('fullscreen:enable', 0);
+      }
 
       $.when(model.fetch(), collection.fetch()).done(function() {
         var dashboardView = new app.views.Dashboard({ model: model, collection: collection });
