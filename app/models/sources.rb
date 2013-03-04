@@ -23,6 +23,10 @@ module Sources
     result
   end
 
+  def custom_fields(type)
+    sources[type] || []
+  end
+
   protected
 
   def source_properties(type, name)

@@ -1,5 +1,7 @@
 TeamDashboard::Application.routes.draw do
 
+  mount Jasminerice::Engine => '/jasmine' if Rails.env.test?
+
   namespace :api do
     resources :dashboards do
       resources :widgets
@@ -14,7 +16,6 @@ TeamDashboard::Application.routes.draw do
     resources :datapoints_targets, :only => :index
   end
 
-  # copy of backbone routes render the initial layout for first request
   match "dashboards"     => "layout#index"
   match "dashboards/:id" => "layout#index"
   match "about"          => "layout#index"

@@ -1,0 +1,33 @@
+.boolean {
+
+  .boolean-value {
+    float: left;
+    width: 70px;
+    height: 60px;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+
+  .label {
+    margin-top: 20px;
+    font-size: 22px;
+    line-height: 22px;
+
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+
+    background: 0;
+    color: #ccc;
+  }
+
+  .red {
+    background: #D26771;
+    border: 2px solid darken(#D26771, 8%);
+  }
+
+  .green {
+    background: #8ec15c;
+    border: 2px solid darken(#8ec15a, 10%);
+  }
+
+}

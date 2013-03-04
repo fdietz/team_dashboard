@@ -1,0 +1,36 @@
+app.directive("number", function(NumberModel, SuffixFormatter) {
+
+  var linkFn = function(scope, element, attrs, WidgetCtrl) {
+
+    function calculatePercentage(value, previousValue) {
+      console.log("previous", previousValue, "value", value);
+      return ((value - previousValue) / value) * 100;
+    }
+
+    function onSuccess(data) {
+      scope.data = data;
+      scope.data.label = scope.data.label || scope.widget.label;
+
+      scope.data.stringValue = scope.widget.use_metric_suffix ? SuffixFormatter.format(scope.data.value, 1) : scope.data.value.toString();
+
+      var previousData = WidgetCtrl.getMemorizedData();
+      if (previousData) {
+        scope.data.secondaryValue = calculatePercentage(scope.data.value, previousData.value);
+        scope.data.arrow = scope.data.secondaryValue > 0 ? "arrow-up" : "arrow-down";
+        scope.data.color = scope.data.secondaryValue > 0 ? "color-up" : "color-down";
+      }
+    }
+
+    function update() {
+      return NumberModel.getData(scope.widget).success(onSuccess);
+    }
+
+    WidgetCtrl.init(update);
+  };
+
+  return {
+    require: "^widget",
+    templateUrl: "<%= asset_path('templates/widgets/number/show.html') %>",
+    link: linkFn
+  };
+});

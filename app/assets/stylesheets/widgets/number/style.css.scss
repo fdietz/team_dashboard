@@ -1,0 +1,35 @@
+.number {
+
+  .secondary-value-container {
+    margin-top: 10px;
+  }
+
+  .secondary-value {
+    font-size: 22px;
+    margin-left: 5px;
+
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+  }
+
+  .arrow-up, .arrow-down {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #8ec15c;
+  }
+
+  .arrow-down {
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #D26771;
+  }
+
+}

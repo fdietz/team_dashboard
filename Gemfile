@@ -2,11 +2,14 @@ source "https://rubygems.org"
 
 gem "rails", "~> 3.2.11"
 
-gem "jquery-rails", "~> 2.1.2"
-gem "less-rails", "~> 2.2.3"
-gem "less-rails-bootstrap", "~> 2.1.1"
-gem "rails-backbone", "~> 0.7.2"
-gem "handlebars_assets", "~> 0.6.4"
+gem "jquery-rails", "~> 2.2.1"
+gem "less-rails", "~> 2.2.6"
+gem "less-rails-bootstrap", "~> 2.3.0"
+
+# gem "rails-backbone", "~> 0.7.2"
+# gem "handlebars_assets", "~> 0.6.4"
+
+gem 'angular-rails'
 
 gem "mysql2", "~> 0.3.11"
 

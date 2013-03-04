@@ -1,74 +1,74 @@
-describe("Dashboard View", function() {
+// describe("Dashboard View", function() {
 
-  beforeEach(function() {
-    this.model = new window.app.models.Dashboard({ name: "example 1", id: 1, layout: [1] });
-    window.app.helpers.datapointsTargetsPool = new window.app.helpers.DatapointsTargetsPool();
-    var collection = new window.app.collections.DatapointsTarget({ source: "demo" });
-    collection.populated = true;
-    window.app.helpers.datapointsTargetsPool.set("demo", collection);
+//   beforeEach(function() {
+//     this.model = new window.app.models.Dashboard({ name: "example 1", id: 1, layout: [1] });
+//     window.app.helpers.datapointsTargetsPool = new window.app.helpers.DatapointsTargetsPool();
+//     var collection = new window.app.collections.DatapointsTarget({ source: "demo" });
+//     collection.populated = true;
+//     window.app.helpers.datapointsTargetsPool.set("demo", collection);
 
-    this.collection = new window.app.collections.Widget([
-      new window.app.models.Widget({ name: "widget 1", kind: "boolean", id: 1 })
-    ]);
-    this.view = new window.app.views.Dashboard({ model: this.model, collection: this.collection });
-  });
+//     this.collection = new window.app.collections.Widget([
+//       new window.app.models.Widget({ name: "widget 1", kind: "boolean", id: 1 })
+//     ]);
+//     this.view = new window.app.views.Dashboard({ model: this.model, collection: this.collection });
+//   });
 
-  it("renders html correctly", function() {
-    this.view.render();
+//   it("renders html correctly", function() {
+//     this.view.render();
 
-    expect(this.view.$("#widget-container")).toExist();
-    expect(this.view.$("#widget-dialog")).toExist();
-  });
+//     expect(this.view.$("#widget-container")).toExist();
+//     expect(this.view.$("#widget-dialog")).toExist();
+//   });
 
-  describe("#addGraph", function() {
-    it("displays widget edit dialog", function() {
-      this.view.render();
-      this.view.$(".add-graph").trigger("click");
-      expect(this.view.$("#widget-dialog .modal-body form")).toExist();
-    });
-  });
+//   describe("#addGraph", function() {
+//     it("displays widget edit dialog", function() {
+//       this.view.render();
+//       this.view.$(".add-graph").trigger("click");
+//       expect(this.view.$("#widget-dialog .modal-body form")).toExist();
+//     });
+//   });
 
-  describe("#addBoolean", function() {
-    it("displays widget edit dialog", function() {
-      this.view.render();
-      this.view.$(".add-boolean").trigger("click");
-      expect(this.view.$("#widget-dialog .modal-body form")).toExist();
-    });
-  });
+//   describe("#addBoolean", function() {
+//     it("displays widget edit dialog", function() {
+//       this.view.render();
+//       this.view.$(".add-boolean").trigger("click");
+//       expect(this.view.$("#widget-dialog .modal-body form")).toExist();
+//     });
+//   });
 
-  describe("#addNumber", function() {
-    it("displays widget edit dialog", function() {
-      this.view.render();
-      this.view.$(".add-number").trigger("click");
-      expect(this.view.$("#widget-dialog .modal-body form")).toExist();
-    });
-  });
+//   describe("#addNumber", function() {
+//     it("displays widget edit dialog", function() {
+//       this.view.render();
+//       this.view.$(".add-number").trigger("click");
+//       expect(this.view.$("#widget-dialog .modal-body form")).toExist();
+//     });
+//   });
 
-  describe("#addCounter", function() {
-    it("displays widget edit dialog", function() {
-      this.view.render();
-      this.view.$(".add-counter").trigger("click");
-      expect(this.view.$("#widget-dialog .modal-body form")).toExist();
-    });
-  });
+//   describe("#addCounter", function() {
+//     it("displays widget edit dialog", function() {
+//       this.view.render();
+//       this.view.$(".add-counter").trigger("click");
+//       expect(this.view.$("#widget-dialog .modal-body form")).toExist();
+//     });
+//   });
 
-  describe("#editWidget", function() {
-    it("displays widget edit dialog", function() {
-      this.view.render();
-      this.view.$(".widget-edit").trigger("click");
-      expect(this.view.$("#widget-dialog .modal-body form")).toExist();
-    });
-  });
+//   describe("#editWidget", function() {
+//     it("displays widget edit dialog", function() {
+//       this.view.render();
+//       this.view.$(".widget-edit").trigger("click");
+//       expect(this.view.$("#widget-dialog .modal-body form")).toExist();
+//     });
+//   });
 
-  describe("Toolbar", function() {
-    it("should disable all buttons if locked", function() {
-      this.model.set("locked", true);
-      this.view.render();
-      expect(this.view.$("#heading")).not.toHaveAttr("contenteditable");
-      expect(this.view.$(".dashboard-delete")).toBeDisabled();
-      expect(this.view.$(".dropdown-toggle")).toHaveAttr("disabled");
-      expect(this.view.$(".dashboard-toggle-lock")).toHaveClass("active");
-    });
-  });
+//   describe("Toolbar", function() {
+//     it("should disable all buttons if locked", function() {
+//       this.model.set("locked", true);
+//       this.view.render();
+//       expect(this.view.$("#heading")).not.toHaveAttr("contenteditable");
+//       expect(this.view.$(".dashboard-delete")).toBeDisabled();
+//       expect(this.view.$(".dropdown-toggle")).toHaveAttr("disabled");
+//       expect(this.view.$(".dashboard-toggle-lock")).toHaveClass("active");
+//     });
+//   });
 
-});
+// });

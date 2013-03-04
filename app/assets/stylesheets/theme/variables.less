@@ -1,7 +1,5 @@
-//
+// Cyborg 2.3.0
 // Variables
-// Swatch: Cyborg
-// Version: 2.1.0
 // --------------------------------------------------
 
 
@@ -13,7 +11,7 @@
 // -------------------------
 @black:                 #000;
 @grayDarker:            #020202;
-@grayDark:              #282828;
+@grayDark:              #222;
 @gray:                  #999;
 @grayLight:             #ADAFAE;
 @grayLighter:           #eee;
@@ -60,13 +58,29 @@
 @headingsColor:         @white; // empty to use BS default, @textColor
 
 
+// Component sizing
+// -------------------------
+// Based on 14px font-size and 20px line-height
+
+@fontSizeLarge:         @baseFontSize * 1.25; // ~18px
+@fontSizeSmall:         @baseFontSize * 0.85; // ~12px
+@fontSizeMini:          @baseFontSize * 0.75; // ~11px
+
+@paddingLarge:          11px 19px; // 44px
+@paddingSmall:          2px 10px;  // 26px
+@paddingMini:           0px 6px;   // 22px
+
+@baseBorderRadius:      4px;
+@borderRadiusLarge:     6px;
+@borderRadiusSmall:     3px;
+
+
 // Tables
 // -------------------------
 @tableBackground:                   transparent; // overall background-color
 @tableBackgroundAccent:             rgba(100, 100, 100, 0.1); // for striping
 @tableBackgroundHover:              @grayDark; // for hover
-@tableBorder:                       #222; // table and cell border
-
+@tableBorder:                       @grayDark; // table and cell border
 
 // Buttons
 // -------------------------
@@ -97,29 +111,29 @@
 // -------------------------
 @inputBackground:               #ccc;
 @inputBorder:                   #bbb;
-@inputBorderRadius:             3px;
-@inputDisabledBackground:       @grayLighter;
+@inputBorderRadius:             @baseBorderRadius;
+@inputDisabledBackground:       #555;
 @formActionsBackground:         transparent;
+@inputHeight:                   @baseLineHeight + 10px; // base line-height + 8px vertical padding + 2px top/bottom border
+
 
 // Dropdowns
 // -------------------------
-@dropdownBackground:            @white;
+@dropdownBackground:            #131517;
 @dropdownBorder:                rgba(0,0,0,.2);
 @dropdownDividerTop:            transparent;
 @dropdownDividerBottom:         #222;
 
 @dropdownLinkColor:             @textColor;
-
 @dropdownLinkColorHover:        @white;
-@dropdownLinkBackgroundHover:   @linkColor;
+@dropdownLinkColorActive:       @white;
 
-@dropdownLinkColorActive:       @dropdownLinkColor;
 @dropdownLinkBackgroundActive:  @linkColor;
-
-
+@dropdownLinkBackgroundHover:   @linkColor;
 
 // COMPONENT VARIABLES
 // --------------------------------------------------
+
 
 // Z-index master list
 // -------------------------
@@ -135,8 +149,8 @@
 
 // Sprite icons path
 // -------------------------
-@iconSpritePath:          image-url("images/glyphicons-halflings.png");
-@iconWhiteSpritePath:     image-url("images/glyphicons-halflings-white.png");
+@iconSpritePath:          "../img/glyphicons-halflings.png";
+@iconWhiteSpritePath:     "../img/glyphicons-halflings-white.png";
 
 
 // Input placeholder text color
@@ -146,7 +160,12 @@
 
 // Hr border color
 // -------------------------
-@hrBorder:                @gray;
+@hrBorder:                @grayDark;
+
+
+// Horizontal forms & lists
+// -------------------------
+@horizontalComponentOffset:       180px;
 
 
 // Wells
@@ -157,10 +176,11 @@
 // Navbar
 // -------------------------
 @navbarCollapseWidth:             979px;
+@navbarCollapseDesktopWidth:      @navbarCollapseWidth + 1;
 
-@navbarHeight:                    40px;
-@navbarBackground:                @grayDarker;
+@navbarHeight:                    50px;
 @navbarBackgroundHighlight:       @grayDarker;
+@navbarBackground:                @grayDarker;
 @navbarBorder:                    darken(@navbarBackground, 12%);
 
 @navbarText:                      @grayLight;
@@ -177,11 +197,11 @@
 @navbarInverseBackgroundHighlight:       #252A30;
 @navbarInverseBorder:                    transparent;
 
-@navbarInverseText:                      @grayLighter;
-@navbarInverseLinkColor:                 @grayLighter;
+@navbarInverseText:                      @grayLight;
+@navbarInverseLinkColor:                 @grayLight;
 @navbarInverseLinkColorHover:            @white;
 @navbarInverseLinkColorActive:           @navbarInverseLinkColorHover;
-@navbarInverseLinkBackgroundHover:       @black;
+@navbarInverseLinkBackgroundHover:       #242A31;
 @navbarInverseLinkBackgroundActive:      @navbarInverseLinkBackgroundHover;
 
 @navbarInverseSearchBackground:          lighten(@navbarInverseBackground, 25%);
@@ -195,7 +215,7 @@
 // Pagination
 // -------------------------
 @paginationBackground:                @bodyBackground;
-@paginationBorder:                    #ddd;
+@paginationBorder:                    transparent;
 @paginationActiveBackground:          @blue;
 
 
@@ -228,14 +248,14 @@
 // Tooltips and popovers
 // -------------------------
 @tooltipColor:            #fff;
-@tooltipBackground:       #000;
+@tooltipBackground:       @heroUnitBackground;
 @tooltipArrowWidth:       5px;
 @tooltipArrowColor:       @tooltipBackground;
 
-@popoverBackground:       #fff;
+@popoverBackground:       @heroUnitBackground;
 @popoverArrowWidth:       10px;
-@popoverArrowColor:       #fff;
-@popoverTitleBackground:  darken(@popoverBackground, 3%);
+@popoverArrowColor:       @popoverBackground;
+@popoverTitleBackground:  @popoverBackground;
 
 // Special enhancement for popovers
 @popoverArrowOuterWidth:  @popoverArrowWidth + 1;

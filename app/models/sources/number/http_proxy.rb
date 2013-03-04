@@ -4,14 +4,14 @@ module Sources
 
       def fields
         [
-          { :name => "http_proxy_url", :title => "Proxy Url", :mandatory => true },
-          { :name => "value_path", :title => "Value Path" },
+          { :name => "proxy_url", :title => "Proxy Url", :mandatory => true },
+          { :name => "proxy_value_path", :title => "Value Path" },
         ]
       end
 
       def get(options = {})
-        response_body = ::HttpService.request(options.fetch(:fields).fetch(:http_proxy_url))
-        value_path = options.fetch(:fields)[:value_path];
+        response_body = ::HttpService.request(options.fetch(:fields).fetch(:proxy_url))
+        value_path = options.fetch(:fields)[:proxy_value_path];
         if value_path.present?
           result = { :value => resolve_value(response_body, value_path) }
           result.merge!(:response_body => response_body) if options[:include_response_body].to_s == "true"

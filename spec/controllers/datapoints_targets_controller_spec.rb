@@ -10,7 +10,7 @@ describe Api::DatapointsTargetsController do
 
       assert_response :success
       result = JSON.parse(@response.body)
-      result.should == [{ 'name' => 'test1' }, {'name' => 'test2' }]
+      result.should == ['test1', 'test2']
     end
   end
 end

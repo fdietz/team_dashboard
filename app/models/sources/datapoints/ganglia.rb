@@ -33,7 +33,7 @@ module Sources
         cached_result = cached_get("ganglia") do
           parse_targets(request_available_targets)
         end
-        
+
         result = pattern.present? ? cached_result.reject { |target| target !~ /#{pattern}/ }  : cached_result
         result.slice(0, limit)
       end
