@@ -4,7 +4,7 @@ module Api
 
     def index
       targets = Sources.datapoints_plugin(params[:source]).available_targets(params)
-      respond_with targets.inject([]) { |result, m| result << m  }.to_json
+      respond_with targets.to_json
     end
 
   end
