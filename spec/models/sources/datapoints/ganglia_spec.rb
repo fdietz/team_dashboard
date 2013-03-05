@@ -13,7 +13,7 @@ describe Sources::Datapoints::Ganglia do
     it "calls request_datapoints" do
       input = [[[1, 123]],[[1, 456]]]
       @source.expects(:request_datapoints).with(@targets, @from, @to).returns(input)
-      result = @source.get(@targets, @from, @to)
+      result = @source.get(:targets => @targets, :from => @from, :to => @to)
       result.first["target"].should == "test1"
       result.first["datapoints"].should == [[1, 123]]
       result.last["target"].should == "test2"

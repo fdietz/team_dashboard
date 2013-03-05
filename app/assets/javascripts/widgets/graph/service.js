@@ -16,7 +16,7 @@ app.factory("GraphModel", ["$http", "TimeSelector", function($http, TimeSelector
   }
 
   function getData(config) {
-    var url = "/api/datapoints?" + getTargetArrayParams(config.targets);
+    var url = "/api/data_sources/datapoints?" + getTargetArrayParams(config.targets);
     return $http.get(url, { params: getParams(config) });
   }
 

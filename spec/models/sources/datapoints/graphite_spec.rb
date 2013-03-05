@@ -13,7 +13,7 @@ describe Sources::Datapoints::Graphite do
     it "calls request_datapoints" do
       input = [{ 'target' => 'test1', 'datapoints' => [[1, 123]] }]
       @graphite.expects(:request_datapoints).with(@targets, @from, @to).returns(input)
-      result = @graphite.get(@targets, @from, @to)
+      result = @graphite.get(:targets => @targets, :from => @from, :to => @to)
       result.should eq(input)
     end
   end

@@ -7,13 +7,8 @@ TeamDashboard::Application.routes.draw do
       resources :widgets
     end
 
-    resource  :datapoints, :only => :show
-    resource  :counter, :only => :show
-    resource  :ci, :only => :show, :controller => "ci"
-    resource  :exception_tracker, :only => :show
-    resource  :number, :only => :show
-    resource  :boolean, :only => :show
     resources :datapoints_targets, :only => :index
+    match "data_sources/:kind" => "data_sources#index"
   end
 
   match "dashboards"     => "layout#index"

@@ -3,7 +3,7 @@ module Sources
 
     class Error < StandardError; end
     class NotFoundError < Error; end
-    
+
     class Base
 
       def available?
@@ -22,7 +22,7 @@ module Sources
         []
       end
 
-      def get(targets, from, to, options = {})
+      def get(options = {})
       end
 
       protected
@@ -31,7 +31,7 @@ module Sources
 
       def cached_get(key)
         return yield if Rails.env.test?
-        
+
         time = Time.now.to_i
         if entry = @@cache[key]
           if entry[:time] > 5.minutes.ago.to_i

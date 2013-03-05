@@ -18,7 +18,7 @@ app.factory("CiModel", ["$http", function($http) {
   }
 
   function getData(config) {
-    return $http.get("/api/ci?" + getFieldsParams(config), { params: getParams(config) });
+    return $http.get("/api/data_sources/ci?" + getFieldsParams(config), { params: getParams(config) });
   }
 
   return {

@@ -27,6 +27,13 @@ module Sources
     sources[type] || []
   end
 
+  def plugin_clazz(type, name)
+    raise ArgumentError, "source name param missing" if name.blank?
+    "Sources::#{type.camelize}::#{name.camelize}".constantize
+  rescue NameError => e
+    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}: #{e}"
+  end
+
   protected
 
   def source_properties(type, name)
@@ -43,13 +50,6 @@ module Sources
   def source_names(type)
     path = Rails.root.join("app/models/sources/#{type}")
     Dir["#{path}/*"].map { |f| File.basename(f, '.*') }.reject! { |name| name == "base" }
-  end
-
-  def plugin_clazz(type, name)
-    raise ArgumentError, "source name param missing" if name.blank?
-    "Sources::#{type.camelize}::#{name.camelize}".constantize
-  rescue NameError => e
-    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}: #{e}"
   end
 
 end

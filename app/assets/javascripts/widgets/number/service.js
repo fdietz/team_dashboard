@@ -18,7 +18,7 @@ app.factory("NumberModel", ["$http", function($http) {
   }
 
   function getData(config) {
-    return $http.get("/api/number?" + getFieldsParams(config), { params: getParams(config) });
+    return $http.get("/api/data_sources/number?" + getFieldsParams(config), { params: getParams(config) });
   }
 
   return {

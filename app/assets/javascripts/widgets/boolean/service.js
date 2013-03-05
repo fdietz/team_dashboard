@@ -18,7 +18,7 @@ app.factory("BooleanModel", ["$http", function($http) {
   }
 
   function getData(config) {
-    return $http.get("/api/boolean?" + getFieldsParams(config), { params: getParams(config) });
+    return $http.get("/api/data_sources/boolean?" + getFieldsParams(config), { params: getParams(config) });
   }
 
   return {

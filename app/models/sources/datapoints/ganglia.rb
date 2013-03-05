@@ -15,7 +15,12 @@ module Sources
         Rails.configuration.ganglia_web_url.present? && Rails.configuration.ganglia_host.present?
       end
 
-      def get(targets, from, to, options = {})
+      def get(options = {})
+        from    = (options[:from]).to_i
+        to      = (options[:to] || Time.now).to_i
+        targets = options[:targets]
+        source  = options[:source]
+
         targets = targets.reject(&:blank?)
         ganglia_datapoints = request_datapoints(targets, from, to)
         result = []

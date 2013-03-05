@@ -5,7 +5,7 @@ app.factory("ExceptionTrackerModel", ["$http", function($http) {
   }
 
   function getData(config) {
-    return $http.get("/api/exception_tracker", { params: getParams(config) });
+    return $http.get("/api/data_sources/exception_tracker", { params: getParams(config) });
   }
 
   return {

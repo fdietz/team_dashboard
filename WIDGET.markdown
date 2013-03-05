@@ -121,7 +121,7 @@ Using the Angular.js [$http](http://docs.angularjs.org/api/ng.$http) service we 
 We can cleanup our code a bit by introducing the concept of an Angular service which handles our "model" and requesting new data. Lets add a `service.js` file alongside our existing directive.
 
     app.factory("ExampleModel", function($http) {
-      return $http.get("/api/number", { params: { source: "demo" } });
+      return $http.get("/api/data_sources/number", { params: { source: "demo" } });
     });
 
 The service only focus is requesting new data. Now, let's use this service in our directive.

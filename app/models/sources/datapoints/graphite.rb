@@ -20,7 +20,12 @@ module Sources
         true
       end
 
-      def get(targets, from, to, options = {})
+      def get(options = {})
+        from    = (options[:from]).to_i
+        to      = (options[:to] || Time.now).to_i
+        targets = options[:targets]
+        source  = options[:source]
+
         result = request_datapoints(targets, from, to)
         raise Sources::Datapoints::NotFoundError if result.empty?
         result
