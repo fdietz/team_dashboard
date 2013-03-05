@@ -1,16 +1,22 @@
 module Sources
-   module Boolean
-      class Shell < Sources::Boolean::Base
-         def fields
-            [
-              { :name => "command", :title => "Shell Command", :mandatory => true }
-            ]
-          end
+  module Boolean
+    class Shell < Sources::Boolean::Base
 
-          def get(options = {})
-            exec_result = %x[ #{options.fetch(:fields).fetch(:command)} ]
-            return { :value => $?.exitstatus == 0 }
-          end
+      def fields
+        [ { :name => "command", :title => "Shell Command", :mandatory => true } ]
       end
-   end
+
+      def get(options = {})
+        cmd = options.fetch(:fields).fetch(:command)
+        { :value => execute_command(cmd) }
+      end
+
+      private
+
+      def execute_command(cmd)
+        system(cmd)
+      end
+
+    end
+  end
 end
