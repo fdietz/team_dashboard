@@ -1,8 +1,6 @@
 app.factory("CiModel", ["$http", function($http) {
 
   function getFieldsParams(config) {
-    if (!config.server_url || !config.project) return "";
-
     var input = {
       server_url: config.server_url,
       project: config.project

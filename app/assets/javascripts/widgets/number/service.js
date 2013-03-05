@@ -1,8 +1,6 @@
 app.factory("NumberModel", ["$http", function($http) {
 
   function getFieldsParams(config) {
-    if (!config.proxy_url || !config.proxy_value_path) return "";
-
     var input = {
       proxy_url: config.proxy_url,
       proxy_value_path: config.proxy_value_path
