@@ -50,7 +50,8 @@ module TeamDashboard
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # config.assets.paths << Rails.root.join('app', 'assets', 'widgets')
+    # change minification options to fix Angular.js dependency injection
+    config.assets.js_compressor = Sprockets::LazyCompressor.new { Uglifier.new(:mangle => false) }
 
     config.graphite_url     = ENV['GRAPHITE_URL']
     config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']
