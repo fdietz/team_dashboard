@@ -35,6 +35,9 @@ module Sources
         end
 
         result = pattern.present? ? cached_result.reject { |target| target !~ /#{pattern}/ }  : cached_result
+        # remove "." prefix in target name when used with graphite 0.9.10
+        result.each { |target| target.gsub!(/^\./, '') }
+
         result.slice(0, limit)
       end
 
