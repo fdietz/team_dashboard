@@ -1,4 +1,4 @@
-app.directive("example", function($http, ExampleModel) {
+app.directive("example", ["$http", "ExampleModel", function($http, ExampleModel) {
 
   function link(scope, element, attrs, WidgetCtrl) {
 
@@ -19,4 +19,4 @@ app.directive("example", function($http, ExampleModel) {
     templateUrl: "<%= asset_path('templates/widgets/example/show.html') %>",
     link: link
   };
-});
+}]);

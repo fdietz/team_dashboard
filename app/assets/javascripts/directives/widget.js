@@ -1,4 +1,4 @@
-app.directive("widget", function($compile) {
+app.directive("widget", ["$compile", function($compile) {
 
   // all widgets depend on this controller function
   var controllerFn = function($scope, $element, $attrs) {
@@ -80,4 +80,4 @@ app.directive("widget", function($compile) {
     controller: controllerFn,
     link: linkFn
   };
-});
+}]);

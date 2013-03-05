@@ -1,4 +1,4 @@
-app.controller("TargetsCtrl", function($scope, $timeout, dialog, $dialog) {
+app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", function($scope, $timeout, dialog, $dialog) {
 
   function prefillTargets() {
     if (dialog.targets) {
@@ -55,4 +55,4 @@ app.controller("TargetsCtrl", function($scope, $timeout, dialog, $dialog) {
   $scope.save = function() {
     dialog.close();
   };
-});
+}]);

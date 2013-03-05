@@ -1,4 +1,4 @@
-app.factory("Widget", function($resource) {
+app.factory("Widget", ["$resource", function($resource) {
   return $resource("/api/dashboards/:dashboard_id/widgets/:id", { id: "@id", dashboard_id: "@dashboard_id" },
     {
       'create':  { method: 'POST' },
@@ -8,4 +8,4 @@ app.factory("Widget", function($resource) {
       'destroy': { method: 'DELETE' }
     }
   );
-});
+}]);

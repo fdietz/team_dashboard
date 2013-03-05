@@ -1,4 +1,4 @@
-app.controller("BooleanCtrl", function($scope) {
+app.controller("BooleanCtrl", ["$scope", function($scope) {
 
   var defaults = {
     size_x: 1, size_y: 1,
@@ -9,4 +9,4 @@ app.controller("BooleanCtrl", function($scope) {
     _.extend($scope.widget, defaults);
   }
 
-});
+}]);

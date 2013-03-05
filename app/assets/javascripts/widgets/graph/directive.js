@@ -1,4 +1,4 @@
-app.directive("graph", function(FlotrGraphHelper, GraphModel) {
+app.directive("graph", ["FlotrGraphHelper", "GraphModel", function(FlotrGraphHelper, GraphModel) {
 
   var currentColors = [];
 
@@ -33,4 +33,4 @@ app.directive("graph", function(FlotrGraphHelper, GraphModel) {
     template: '<div class="graph-container"></div>',
     link: linkFn
   };
-});
+}]);

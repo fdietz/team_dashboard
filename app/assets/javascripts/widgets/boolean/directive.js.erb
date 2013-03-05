@@ -1,4 +1,4 @@
-app.directive("boolean", function(BooleanModel) {
+app.directive("boolean", ["BooleanModel", function(BooleanModel) {
 
   var linkFn = function(scope, element, attrs, WidgetCtrl) {
 
@@ -19,4 +19,4 @@ app.directive("boolean", function(BooleanModel) {
     templateUrl: "<%= asset_path('templates/widgets/boolean/show.html') %>",
     link: linkFn
   };
-});
+}]);

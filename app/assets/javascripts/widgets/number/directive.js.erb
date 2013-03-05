@@ -1,4 +1,4 @@
-app.directive("number", function(NumberModel, SuffixFormatter) {
+app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel, SuffixFormatter) {
 
   var linkFn = function(scope, element, attrs, WidgetCtrl) {
 
@@ -33,4 +33,4 @@ app.directive("number", function(NumberModel, SuffixFormatter) {
     templateUrl: "<%= asset_path('templates/widgets/number/show.html') %>",
     link: linkFn
   };
-});
+}]);

@@ -1,4 +1,4 @@
-app.factory("GraphModel", function($http, TimeSelector) {
+app.factory("GraphModel", ["$http", "TimeSelector", function($http, TimeSelector) {
 
   function getParams(config) {
     return {
@@ -23,4 +23,4 @@ app.factory("GraphModel", function($http, TimeSelector) {
   return {
     getData: getData
   };
-});
+}]);

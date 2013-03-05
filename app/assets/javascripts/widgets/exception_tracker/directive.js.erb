@@ -1,4 +1,4 @@
-app.directive("exceptionTracker", function(ExceptionTrackerModel) {
+app.directive("exceptionTracker", ["ExceptionTrackerModel", function(ExceptionTrackerModel) {
 
   var linkFn = function(scope, element, attrs, WidgetCtrl) {
 
@@ -21,4 +21,4 @@ app.directive("exceptionTracker", function(ExceptionTrackerModel) {
     templateUrl: "<%= asset_path('templates/widgets/exception_tracker/show.html') %>",
     link: linkFn
   };
-});
+}]);

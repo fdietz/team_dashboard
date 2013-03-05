@@ -1,4 +1,4 @@
-app.controller("DashboardIndexCtrl", function($scope, $location, Dashboard) {
+app.controller("DashboardIndexCtrl", ["$scope", "$location", "Dashboard", function($scope, $location, Dashboard) {
   $scope.dashboards = Dashboard.query();
 
   $scope.createDashboard = function() {
@@ -8,4 +8,4 @@ app.controller("DashboardIndexCtrl", function($scope, $location, Dashboard) {
     });
   };
 
-});
+}]);

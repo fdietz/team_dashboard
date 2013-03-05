@@ -1,4 +1,4 @@
-app.controller("DashboardShowCtrl", function($scope, $routeParams, $location, $dialog, $window, Dashboard, Widget) {
+app.controller("DashboardShowCtrl", ["$scope", "$routeParams", "$location", "$dialog", "$window", "Dashboard", "Widget", function($scope, $routeParams, $location, $dialog, $window, Dashboard, Widget) {
 
   $scope.dashboard = Dashboard.get({ id: $routeParams.id });
   $scope.widgets   = Widget.query({ dashboard_id: $routeParams.id });
@@ -94,4 +94,4 @@ app.controller("DashboardShowCtrl", function($scope, $routeParams, $location, $d
     saveDashboardChanges();
   };
 
-});
+}]);

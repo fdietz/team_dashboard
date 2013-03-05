@@ -1,4 +1,4 @@
-app.controller("ExampleCtrl", function($scope) {
+app.controller("ExampleCtrl", ["$scope", function($scope) {
 
   var defaults = {
     size_x: 1, size_y: 1,
@@ -9,4 +9,4 @@ app.controller("ExampleCtrl", function($scope) {
     _.extend($scope.widget, defaults);
   }
 
-});
+}]);

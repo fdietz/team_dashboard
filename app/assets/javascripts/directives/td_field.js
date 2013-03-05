@@ -1,4 +1,4 @@
-app.directive("tdField", function($compile) {
+app.directive("tdField", ["$compile", function($compile) {
   return {
     replace: true,
     transclude: true,
@@ -62,4 +62,4 @@ app.directive("tdField", function($compile) {
 
     }
   };
-});
+}]);

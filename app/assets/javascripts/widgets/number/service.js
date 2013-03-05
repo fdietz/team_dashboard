@@ -1,4 +1,4 @@
-app.factory("NumberModel", function($http) {
+app.factory("NumberModel", ["$http", function($http) {
 
   function getFieldsParams(config) {
     if (!config.proxy_url || !config.proxy_value_path) return "";
@@ -24,4 +24,4 @@ app.factory("NumberModel", function($http) {
   return {
     getData: getData
   };
-});
+}]);

@@ -1,4 +1,4 @@
-app.controller("GraphCtrl", function($scope, $dialog, EditorFormOptions, Sources) {
+app.controller("GraphCtrl", ["$scope", "$dialog", "EditorFormOptions", "Sources", function($scope, $dialog, EditorFormOptions, Sources) {
 
   var dialog = $dialog.dialog();
 
@@ -33,4 +33,4 @@ app.controller("GraphCtrl", function($scope, $dialog, EditorFormOptions, Sources
     }).join(";");
   }
 
-});
+}]);

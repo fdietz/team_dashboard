@@ -1,4 +1,4 @@
-app.controller("WidgetEditCtrl", function($scope, dialog, $dialog, Widget, EditorFormOptions, Sources) {
+app.controller("WidgetEditCtrl", ["$scope", "dialog", "$dialog", "Widget", "EditorFormOptions", "Sources", function($scope, dialog, $dialog, Widget, EditorFormOptions, Sources) {
 
   function initWidget() {
     var defaults = {
@@ -62,4 +62,4 @@ app.controller("WidgetEditCtrl", function($scope, dialog, $dialog, Widget, Edito
     dialog.close(false);
   };
 
-});
+}]);

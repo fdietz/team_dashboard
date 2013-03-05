@@ -1,4 +1,4 @@
-app.factory("CiModel", function($http) {
+app.factory("CiModel", ["$http", function($http) {
 
   function getFieldsParams(config) {
     if (!config.server_url || !config.project) return "";
@@ -24,4 +24,4 @@ app.factory("CiModel", function($http) {
   return {
     getData: getData
   };
-});
+}]);

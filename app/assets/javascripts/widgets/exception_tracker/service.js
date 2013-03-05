@@ -1,4 +1,4 @@
-app.factory("ExceptionTrackerModel", function($http) {
+app.factory("ExceptionTrackerModel", ["$http", function($http) {
 
   function getParams(config) {
     return { source: config.source, fields: config.fields };
@@ -11,4 +11,4 @@ app.factory("ExceptionTrackerModel", function($http) {
   return {
     getData: getData
   };
-});
+}]);

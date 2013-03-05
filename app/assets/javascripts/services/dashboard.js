@@ -1,4 +1,4 @@
-app.factory("Dashboard", function($resource) {
+app.factory("Dashboard", ["$resource", function($resource) {
   return $resource("/api/dashboards/:id", { id: "@id" },
   {
     'create':  { method: 'POST' },
@@ -7,4 +7,4 @@ app.factory("Dashboard", function($resource) {
     'update':  { method: 'PUT' },
     'destroy': { method: 'DELETE' }
   });
-});
+}]);

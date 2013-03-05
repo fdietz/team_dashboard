@@ -1,4 +1,4 @@
-app.directive("gridster", function(Widget) {
+app.directive("gridster", ["Widget", function(Widget) {
 
   function controllerFn($scope, $element, $attrs) {
     var gridster = null;
@@ -73,4 +73,4 @@ app.directive("gridster", function(Widget) {
       controller.init(element);
     }
   };
-});
+}]);

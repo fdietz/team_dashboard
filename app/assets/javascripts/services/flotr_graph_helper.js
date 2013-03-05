@@ -1,4 +1,4 @@
-app.factory("FlotrGraphHelper", function(ColorFactory, SuffixFormatter, $window) {
+app.factory("FlotrGraphHelper", ["ColorFactory", "SuffixFormatter", "$window", function(ColorFactory, SuffixFormatter, $window) {
 
   // TODO: refactor
   function timeUnit(range, size) {
@@ -124,4 +124,4 @@ app.factory("FlotrGraphHelper", function(ColorFactory, SuffixFormatter, $window)
     defaultOptions: defaultOptions,
     transformSeriesOfDatapoints: transformSeriesOfDatapoints
   };
-});
+}]);

@@ -1,6 +1,6 @@
 // usage example:
 //  <input type="text" td:autocomplete="searchUrl()" ng-model="myModel"/>
-app.directive("tdAutocomplete", function ($http) {
+app.directive("tdAutocomplete", ["$http", function ($http) {
   return {
     require: "ngModel",
     replace: true,
@@ -27,4 +27,4 @@ app.directive("tdAutocomplete", function ($http) {
       });
     }
   };
-});
+}]);

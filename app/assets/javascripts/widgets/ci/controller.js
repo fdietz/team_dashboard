@@ -1,4 +1,4 @@
-app.controller("CiCtrl", function($scope) {
+app.controller("CiCtrl", ["$scope", function($scope) {
 
   var defaults = {
     size_x: 1, size_y: 1,
@@ -9,4 +9,4 @@ app.controller("CiCtrl", function($scope) {
     _.extend($scope.widget, defaults);
   }
 
-});
+}]);
