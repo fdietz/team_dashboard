@@ -13,7 +13,7 @@ module Sources
       def supports_functions?
         false
       end
-      
+
       def fields
         []
       end
@@ -23,6 +23,7 @@ module Sources
       #  * label (string) optional
       def get(options = {})
       end
+
     end
   end
 end

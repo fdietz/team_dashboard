@@ -12,7 +12,7 @@ app.factory("ExceptionTrackerModel", ["$http", function($http) {
   }
 
   function getParams(config) {
-    return { source: config.source };
+    return { source: config.source, widget_id: config.id };
   }
 
   function getData(config) {

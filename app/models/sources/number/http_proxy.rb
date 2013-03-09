@@ -10,8 +10,10 @@ module Sources
       end
 
       def get(options = {})
-        response_body = ::HttpService.request(options.fetch(:fields).fetch(:proxy_url))
-        value_path = options.fetch(:fields)[:proxy_value_path];
+        widget        = Widget.find(options.fetch(:widget_id))
+        response_body = ::HttpService.request(widget.settings.fetch(:proxy_url))
+        value_path    = widget.settings.fetch(:proxy_value_path);
+
         if value_path.present?
           result = { :value => resolve_value(response_body, value_path) }
           result.merge!(:response_body => response_body) if options[:include_response_body].to_s == "true"

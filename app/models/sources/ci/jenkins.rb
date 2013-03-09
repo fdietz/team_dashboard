@@ -13,10 +13,11 @@ module Sources
 
       # Returns ruby hash:
       def get(options = {})
-        fields = options.fetch(:fields)
-        project = fields.fetch(:project)
-        result  = request_build_status(fields.fetch(:server_url))
-        result = XML::Parser.string(result).parse rescue result
+        widget     = Widget.find(options.fetch(:widget_id))
+        project    = widget.settings.fetch(:project)
+        server_url = widget.settings.fetch(:server_url)
+        result     = request_build_status(server_url)
+        result     = XML::Parser.string(result).parse rescue result
 
         result["Projects"]["Project"].each do |data|
           if data['name'] == project

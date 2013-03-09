@@ -4,7 +4,8 @@ app.factory("GraphModel", ["$http", "TimeSelector", function($http, TimeSelector
     return {
       from: TimeSelector.getFrom(config.range),
       to: TimeSelector.getCurrent(config.range),
-      source: config.source
+      source: config.source,
+      widget_id: config.id
     };
   }
 

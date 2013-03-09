@@ -7,7 +7,8 @@ module Sources
       end
 
       def get(options = {})
-        cmd = options.fetch(:fields).fetch(:command)
+        widget = Widget.find(options.fetch(:widget_id))
+        cmd    = widget.settings.fetch(:command)
         { :value => execute_command(cmd) }
       end
 

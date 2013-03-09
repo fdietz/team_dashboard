@@ -13,9 +13,11 @@ module Sources
 
       # Returns ruby hash:
       def get(options = {})
-        fields = options.fetch(:fields)
-        result = request_stats(fields.fetch(:server_url), fields.fetch(:api_key))
+        widget     = Widget.find(options.fetch(:widget_id))
+        server_url = widget.settings.fetch(:server_url);
+        api_key    = widget.settings.fetch(:api_key);
 
+        result     = request_stats(server_url, api_key)
         {
           :label             => result["name"],
           :last_error_time   => result["last_error_time"],
