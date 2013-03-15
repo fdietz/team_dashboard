@@ -4,15 +4,21 @@
     <title><%= content_for?(:title) ? yield(:title) : "Team Dashboard" %></title>
 
     <%= stylesheet_link_tag "application" %>
-    <%= javascript_include_tag "application" %>
 
     <%= csrf_meta_tag %>
 
     <%= yield(:head) %>
 
+    <!-- angular.js at the bottom, define "ng-cloak" css yourself  -->
+    <style type="text/css">
+      [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+          display: none !important;
+      }
+    </style>
+
   </head>
 
-  <body ng-controller="MainCtrl">
+  <body ng-controller="MainCtrl" ng-cloak>
 
     <div class="navbar navbar-static-top">
      <div class="navbar-inner">
@@ -35,11 +41,16 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-          <div id="flash"></div>
+        <div id="flash"></div>
+
+        <div ng-class="{ 'alert-show': !resolved }" class="alert alert-info" ng-cloak>
+          <%= image_tag('spinner2.gif') %> &nbsp;Loading
+        </div>
+
       </div>
       <div class="row-fluid">
         <div id="main" class="span12">
-          <ng-view></ng-view>
+          <ng-view ng-show="resolved" ng-cloak></ng-view>
         </div>
       </div>
     </div>
@@ -50,6 +61,8 @@
 
     <%= script_tag_for_all_templates %>
     <%= script_tag_for_all_custom_fields %>
+
+    <%= javascript_include_tag "application" %>
 
     <script>
       (function($) {

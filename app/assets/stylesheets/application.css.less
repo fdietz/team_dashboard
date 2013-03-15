@@ -18,8 +18,6 @@
 
  *= require_self
 
-
-
 */
 
 h2 {
@@ -31,6 +29,36 @@ h3 {
   font-size: 16px;
   line-height: 30px;
 }
+
+:-webkit-full-screen{
+  width: 100%;
+  height: 100%;
+}
+
+.navbar {
+  margin-bottom: 10px;
+}
+
+.alert {
+  position: absolute;
+
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+
+  text-align: center;
+
+  opacity: 0;
+
+  -webkit-transition: opacity 0.5s ease-in-out;
+     -moz-transition: opacity 1s ease-in-out;
+          transition: opacity 0.5s ease-in-out;
+}
+
+.alert-show {
+  opacity: 0.9;
+}
+
 
 /****************** modal dialog ****************/
 
@@ -78,11 +106,6 @@ textarea {
   max-height: 500px;
 
   overflow-y: auto;
-}
-
-:-webkit-full-screen{
-  width: 100%;
-  height: 100%;
 }
 
 // Show plain text centered on overlay

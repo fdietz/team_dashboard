@@ -1,7 +1,11 @@
-app.controller("DashboardShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", function($scope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget) {
+app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", function($scope, $rootScope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget) {
+
+  $rootScope.resolved = false;
 
   $scope.dashboard = Dashboard.get({ id: $routeParams.id });
-  $scope.widgets   = Widget.query({ dashboard_id: $routeParams.id });
+  $scope.widgets   = Widget.query({ dashboard_id: $routeParams.id }, function() {
+    $rootScope.resolved = true;
+  });
 
   // defined in application.html.erb
   $scope.available_widgets = $.available_widgets;
@@ -90,3 +94,30 @@ app.controller("DashboardShowCtrl", ["$scope", "$routeParams", "$location", "$ti
   };
 
 }]);
+
+// app.factory("DashboardShowResolver", function($q, $timeout, $routeParams, Dashboard, Widget) {
+
+//   var deferred = $q.defer();
+
+//   $timeout(function() {
+
+//     Dashboard.get({ id: $routeParams.id }, function() {
+//       Widget.query({ dashboard_id: $routeParams.id }, function() {
+//         deferred.resolve(successData);
+//       }, function() {
+//         deferred.reject();
+//       });
+//     }, function() {
+//       deferred.reject();
+//     });
+
+
+//   //   Dashboard.query(function(successData) {
+//   //     deferred.resolve(successData);
+//   //   }, function(errorData) {
+//   //     deferred.reject();
+//   //   });
+//   }, 2000);
+
+//   return deferred.promise;
+// });
