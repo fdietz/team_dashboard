@@ -1,4 +1,4 @@
-app.controller("DashboardShowCtrl", ["$scope", "$routeParams", "$location", "$dialog", "$window", "Dashboard", "Widget", function($scope, $routeParams, $location, $dialog, $window, Dashboard, Widget) {
+app.controller("DashboardShowCtrl", ["$scope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", function($scope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget) {
 
   $scope.dashboard = Dashboard.get({ id: $routeParams.id });
   $scope.widgets   = Widget.query({ dashboard_id: $routeParams.id });
@@ -39,11 +39,6 @@ app.controller("DashboardShowCtrl", ["$scope", "$routeParams", "$location", "$di
       }
     });
   }
-
-  $scope.toggleLock = function() {
-    $scope.dashboard.locked = !$scope.dashboard.locked;
-    saveDashboardChanges();
-  };
 
   $scope.addWidget = function(kind) {
     var dialog      = $dialog.dialog(),

@@ -28,6 +28,8 @@
 //= require jquery.timeago
 //= require jquery.timeago.en-short
 
+//= require bigscreen.min
+
 //= require angular
 //= require angular-resource.min
 //= require angular-sanitize.min
