@@ -103,6 +103,7 @@ Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the f
 * [rngtng](https://github.com/rngtng) (Tobias Bielohlawek)
 * [ndbroadbent](https://github.com/ndbroadbent) (Nathan Broadbent)
 * [DraganMileski](https://github.com/DraganMileski) (Dragan Mileski)
+* [averell23](https://github.com/averell23) (Daniel Hahn)
 * Marno Krahmer
 
 ## The MIT License
