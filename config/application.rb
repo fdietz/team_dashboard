@@ -56,5 +56,7 @@ module TeamDashboard
     config.graphite_url     = ENV['GRAPHITE_URL']
     config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']
     config.ganglia_host     = ENV['GANGLIA_HOST']
+    config.pingdom_username = ENV['PINGDOM_USERNAME']
+    config.pingdom_password = ENV['PINGDOM_PASSWORD']
   end
 end

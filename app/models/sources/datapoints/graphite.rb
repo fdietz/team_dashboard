@@ -1,5 +1,21 @@
 require "net/http"
 
+#
+# Configure the Graphite URL in application.rb:
+#   config.graphite_url = ENV['GRAPHITE_URL']
+#
+# or use and environment variable:
+#   GRAPHITE_URL=http://localhost:8080 rails s
+#
+# Target Selection:
+#   You can pass a semicolon-separated list of targets:
+#
+#   example: visits.server1; visits.server2).
+#
+#   It also supports wildcards:
+#
+#   example: visits.server.*).
+#
 module Sources
   module Datapoints
     class Graphite < Sources::Datapoints::Base

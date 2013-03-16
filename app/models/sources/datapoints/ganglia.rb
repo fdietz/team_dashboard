@@ -1,6 +1,20 @@
 require 'xml'
 require 'open-uri'
 
+#
+# Configure the Ganglia URL and host in application.rb:
+#   config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']
+#   config.ganglia_host     = ENV['GANGLIA_HOST']
+#
+# or use and environment variable:
+#   GANGLIA_WEB_URL=http://localhost:8080 rails s
+#
+# Target Selection:
+#   You need to know the cluster name, hostname and metric name. Usually its easy
+#   to obtain these from the graph url directly.
+#
+#   example: hostname@cluster(metric-name)
+#
 module Sources
   module Datapoints
     class Ganglia < Sources::Datapoints::Base

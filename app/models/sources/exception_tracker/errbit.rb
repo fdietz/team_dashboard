@@ -1,5 +1,9 @@
 require 'open-uri'
 
+# You must provide the server URL and API Key for your registered application.
+#
+# Example for Errbit: 3139359fa87f81665add733ba173bbd4
+#
 module Sources
   module ExceptionTracker
     class Errbit < Sources::ExceptionTracker::Base
