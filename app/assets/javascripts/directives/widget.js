@@ -1,11 +1,15 @@
-app.directive("widget", ["$compile", function($compile) {
+app.directive("widget", ["$compile", "$timeout", "$rootScope", function($compile, $timeout, $rootScope) {
 
   // all widgets depend on this controller function
   var controllerFn = function($scope, $element, $attrs) {
     var previousData = null;
 
     function initFn(updateFn) {
-      var timerId  = null;
+      var timer = null;
+
+      $rootScope.$on('$routeChangeSuccess', function(ngEvent, route) {
+        if (timer) $timeout.cancel(timer);
+      });
 
       function onError(response) {
         $scope.showError = true;
@@ -25,8 +29,7 @@ app.directive("widget", ["$compile", function($compile) {
       function updateTimer() {
         $scope.widget.enableSpinner = false;
 
-        if (timerId) clearTimeout(timerId);
-        timerId = setTimeout(startTimer, $scope.widget.update_interval * 1000);
+        timer = $timeout(startTimer, $scope.widget.update_interval * 1000);
       }
 
       function startTimer() {
