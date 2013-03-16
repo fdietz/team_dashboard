@@ -20,12 +20,11 @@ module ApplicationHelper
     files = Dir[templates_dir + "**/*.html"].reject {|fn| File.directory?(fn) }
     files += Dir[templates_dir + "**/*.html.erb"].reject {|fn| File.directory?(fn) }
 
-    puts files
     files.map do |file|
-      id = "/assets/templates/#{Pathname(file).relative_path_from(templates_dir)}".gsub(".erb", "")
+      id = "templates-#{normalize_template_name(Pathname(file).relative_path_from(templates_dir))}"
       <<-EOF
       <script type="text/ng-template" id="#{id}">
-        #{render :file => file, :formats => [:html]}
+        #{render :file => normalized_filename(file), :formats => [:html], :handlers => :erb}
       </script>
       EOF
     end.join("\n").html_safe
@@ -33,13 +32,21 @@ module ApplicationHelper
 
   def script_tag_for_all_custom_fields
     Widget.list_available.map do |widget|
-      id = "templates/custom_fields/#{widget}"
+      id = "templates-custom_fields-#{widget}"
       <<-EOF
       <script type="text/ng-template" id="#{id}">
-        #{render :text => control_groups(widget), :formats => [:html]}
+        #{render :text => control_groups(widget), :formats => [:html], :handlers => :erb}
       </script>
       EOF
     end.join("\n").html_safe
+  end
+
+  def normalized_filename(file)
+    file.to_s.gsub(".html", "").gsub(".erb", "")
+  end
+
+  def normalize_template_name(name)
+    normalized_filename(name.to_s).gsub("/", "-")
   end
 
   def control_group(key, field)

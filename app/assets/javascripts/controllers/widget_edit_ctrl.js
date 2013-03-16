@@ -1,4 +1,4 @@
-app.controller("WidgetEditCtrl", ["$scope", "dialog", "$dialog", "Widget", "EditorFormOptions", "Sources", function($scope, dialog, $dialog, Widget, EditorFormOptions, Sources) {
+app.controller("WidgetEditCtrl", ["$scope", "$compile", "dialog", "$dialog", "Widget", "EditorFormOptions", "Sources", function($scope, $compile, dialog, $dialog, Widget, EditorFormOptions, Sources) {
 
   function initWidget() {
     var defaults = {
@@ -14,8 +14,9 @@ app.controller("WidgetEditCtrl", ["$scope", "dialog", "$dialog", "Widget", "Edit
       widget = new Widget(defaults);
     }
 
-    $scope.templateUrl = dialog.editTemplateUrl;
-    $scope.customFieldsTemplateUrl = dialog.customFieldsTemplateUrl;
+    $scope.template = dialog.editTemplate;
+    $scope.customFieldsTemplate = dialog.customFieldsTemplate;
+
     return widget;
   }
 

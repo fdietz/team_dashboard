@@ -50,8 +50,8 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
 
     dialog.kind      = kind;
     dialog.dashboard = $scope.dashboard;
-    dialog.editTemplateUrl = "<%= asset_path('templates/widgets') %>" + "/" + kind + "/edit.html";
-    dialog.customFieldsTemplateUrl = "templates/custom_fields/" + kind;
+    dialog.editTemplate = $("#templates-widgets-" + kind + "-edit").html();
+    dialog.customFieldsTemplate = $("#templates-custom_fields-" + kind).html();
 
     dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
       if (result) $scope.widgets.push(dialog.$scope.widget);
@@ -65,8 +65,8 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
     dialog.kind      = widget.kind;
     dialog.widget    = widget;
     dialog.dashboard = $scope.dashboard;
-    dialog.editTemplateUrl = "<%= asset_path('templates/widgets') %>" + "/" + widget.kind + "/edit.html";
-    dialog.customFieldsTemplateUrl = "templates/custom_fields/" + widget.kind;
+    dialog.editTemplate = $("#templates-widgets-" + widget.kind + "-edit").html();
+    dialog.customFieldsTemplate = $("#templates-custom_fields-" + widget.kind).html();
 
     dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
       if (result) replaceWidget(widget.id, dialog.$scope.widget);
@@ -94,30 +94,3 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   };
 
 }]);
-
-// app.factory("DashboardShowResolver", function($q, $timeout, $routeParams, Dashboard, Widget) {
-
-//   var deferred = $q.defer();
-
-//   $timeout(function() {
-
-//     Dashboard.get({ id: $routeParams.id }, function() {
-//       Widget.query({ dashboard_id: $routeParams.id }, function() {
-//         deferred.resolve(successData);
-//       }, function() {
-//         deferred.reject();
-//       });
-//     }, function() {
-//       deferred.reject();
-//     });
-
-
-//   //   Dashboard.query(function(successData) {
-//   //     deferred.resolve(successData);
-//   //   }, function(errorData) {
-//   //     deferred.reject();
-//   //   });
-//   }, 2000);
-
-//   return deferred.promise;
-// });
