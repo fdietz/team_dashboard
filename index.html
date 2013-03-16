@@ -67,13 +67,9 @@
 
 <p><a href="http://team-dashboard.herokuapp.com/">Heroku hosted Demo</a></p>
 
-<p>
-It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>, <a href="http://ganglia.sourceforge.net/">Ganglia</a>, <a href="http://jenkins-ci.org/">Jenkins</a>, <a href="http://travis-ci.org/">Travis CI</a>, etc. and makes it really easy to add more input sources.
-</p>
+<p>It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>, <a href="http://ganglia.sourceforge.net/">Ganglia</a>, <a href="http://jenkins-ci.org/">Jenkins</a>, <a href="http://travis-ci.org/">Travis CI</a>, <a href="https://github.com/errbit/errbit">Errbit</a>, <a href="http://newrelic.com/">New Relic</a>, <a href="https://www.pingdom.com/">Pingdom</a> and more and makes it really easy to add more data sources.</p>
 
-<p>The Team Dashboard Data Source <a href="https://github.com/fdietz/team_dashboard_plugins">Plugin Repository</a> contains contributed plugins and documentation on how to implement your own plugins.</p>
-
-<p>It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.</p>
+<p>It is implemented as a Rails app and uses ActiveRecord to store your custom dashboards configuration.</p>
 
 <p>Support via <a href="https://groups.google.com/forum/#!forum/team_dashboard">Team Dashboard Google Group</a></p>
 
@@ -89,7 +85,7 @@ It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>,
 <pre><code>bundle install
 </code></pre>
 
-<p>Create a database.yml from the example config:</p>
+<p>Create a database.yml from the example config (using MySQL):</p>
 
 <pre><code>cp config/database.example.yml config/database.yml
 </code></pre>
@@ -109,19 +105,33 @@ It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>,
 <pre><code>rails s
 </code></pre>
 
+<h3>Running the build</h3>
+
+<p>If you want to run the tests locally, you will need to install PhantomJS</p>
+
+<pre><code>brew update &amp;&amp; brew install phantomjs
+</code></pre>
+
+<p>Run the unit tests (ruby &amp; js)</p>
+
+<pre><code>rake
+</code></pre>
+
 <h2>Configuration</h2>
 
-<p>You have to configure the MySQL database in config/database.yml.</p>
+<p>System-wide configuration settings are done in either <code>application.rb</code> or with an environment variable.</p>
 
-<p>Graphite is the first input source Team Dashboard supports. Use the environment variable GRAPHITE_URL or change the rails configuration (see application.rb and environment specific files) directly.</p>
+<p>For example when configuring <code>graphite</code> you can see the configuration settings in application.rb:</p>
 
-<p>For example:</p>
+<pre><code>config.graphite_url = ENV['GRAPHITE_URL']
+</code></pre>
 
-<pre><code>GRAPHITE_URL=http://localhost:8080 rails s</code></pre>
+<p>You can either change the configuration there or set the environment variable when starting the rails app:</p>
 
-<p>Ganglia is now supported too, it uses the same configuration mechanism</p>
+<pre><code>GRAPHITE_URL=http://localhost:8080 rails s
+</code></pre>
 
-<pre><code>GANGLIA_WEB_URL=http://localhost:8080 GANGLIA_HOST=localhost rails s</code></pre>
+<p>All data sources reside in <code>app/models/sources</code> and provide source code documentation with further details.</p>
 
 <h1>Dashboard Widgets</h1>
 
@@ -129,184 +139,52 @@ It has built-in support for <a href="http://graphite.wikidot.com/">Graphite</a>,
 
 <p>All widgets have a name, time interval in which to update themselves and a data source as a common configuration.</p>
 
+<p>You can easily add your own data source plugins (<a href="SOURCE_PLUGINS.markdown">Data Source Plugins Developer Guide</a>) and implement custom widgets (<a href="WIDGETS.markdown">Widget Developer Guide</a>).</p>
+
 <h2>Available Widgets</h2>
 
 <h3>Graph Widget</h3>
 
-<p>The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.</p>
+<p>The graph widget shows a time series line or area graph. Use it to show number of visits on your web page or number of currently online users and follow-up on trends.</p>
 
-<p>It currently supports a Demo data source, <a href="http://graphite.wikidot.com/">Graphite</a>, <a href="http://ganglia.sourceforge.net/">Ganglia</a> and the http proxy source.</p>
-
-<h4>Configuration</h4>
-
-<table>
-  <tbody><tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Size</td>
-    <td>Number of Columns (Possible Values: 1, 2 or 3)</td>
-  </tr>
-  <tr>
-    <td>Graph Type</td>
-    <td>Either a line or stacked graph.</td>
-  </tr>
-  <tr>
-    <td>Data Source</td>
-    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
-  </tr>
-  <tr>
-    <td>Targets</td>
-    <td>
-      <p>
-        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
-      </p>
-      <p>
-        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
-        <br><code>hostname@cluster(metric-name)</code>
-      </p>
-    </td>
-  </tr>
-</tbody></table>
-
-<h3>Counter Widget</h3>
-
-<p>Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.</p>
-
-<p>It currently supports a Demo data source, <a href="http://graphite.wikidot.com/">Graphite</a>, <a href="http://ganglia.sourceforge.net/">Ganglia</a> and the http proxy source.</p>
-
-<h4>Configuration</h4>
-
-<table>
-  <tbody><tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Size</td>
-    <td>Number of Columns (Possible Values: 1, 2 or 3)</td>
-  </tr>
-  <tr>
-    <td>Data Source</td>
-    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
-  </tr>
-  <tr>
-    <td>Targets</td>
-    <td>
-      <p>
-        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
-      </p>
-      <p>
-        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
-        <br><code>hostname@cluster(metric-name)</code>
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <td>Aggregate Function</td>
-    <td>The values of the selected period are aggregated using selected function. Supports <code>sum</code>, <code>average</code> and <code>delta</code>.</td>
-  </tr>
-</tbody></table>
+<p>It currently supports <a href="http://graphite.wikidot.com/">Graphite</a> and <a href="http://ganglia.sourceforge.net/">Ganglia</a>.</p>
 
 <h3>Number Widget</h3>
 
-<p>Shows the current integer value provided by the data source and a label. The widget supports up to three values. Use it to show for the example the number of errors on specific system.</p>
+<p>Shows the current integer value provided by the data source, the percentage of change compared to the previous value and an optional label. Use it to show for the example the number of errors on specific systems or the number of users.</p>
 
-<p>It currently supports a demo data source and a http proxy data source.</p>
-
-<h4>Configuration</h4>
-
-<table>
-  <tbody><tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Label</td>
-    <td>Label for this value</td>
-  </tr>
-  <tr>
-    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
-    <td>HTTP URL should return a JSON structure as described below</td>
-  </tr>
-  <tr>
-    <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
-  </tr>
-  <tr>
-</tr></tbody></table>
+<p>It currently supports a <a href="http://newrelic.com/">New Relic</a>, <a href="http://hockeyapp.net/">Hockey App</a> and a http proxy data source.</p>
 
 <h3>Boolean Widget</h3>
 
-<p>Shows the current boolean value provided by the data source and an label. The widget supports up to three values. Use it to show for example the success of a Jenkins build.</p>
+<p>Shows the current boolean value provided by the data source and an optional label. Use it to show for example the success of a Jenkins build or the health status of a system.</p>
 
-<p>It currently supports a demo data source and a http proxy data source.</p>
-
-<h4>Configuration</h4>
-
-<table>
-  <tbody><tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Label</td>
-    <td>Label for this value</td>
-  </tr>
-  <tr>
-    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
-    <td>HTTP URL should return a JSON structure as described below</td>
-  </tr>
-  <tr>
-    <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
-  </tr>
-  <tr>
-</tr></tbody></table>
+<p>It currently supports <a href="https://www.pingdom.com/">Pingdom</a>, arbitrary shell commands and a http proxy data source.</p>
 
 <h3>CI (Continous Integration Server) Widget</h3>
 
-<p>Shows the current build status for a given project. It currently supports a demo source, Jenkins and Travis CI.</p>
+<p>Shows the current build status for a given project.</p>
 
-<h4>Configuration</h4>
+<p>It currently supports <a href="http://jenkins-ci.org/">Jenkins</a> and <a href="https://travis-ci.org/">Travis CI</a>.</p>
 
-<table>
-  <tbody><tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Server URL</td>
-    <td>For Travis CI this would be for example <code>http://travis-ci.org</code> for Jenkins for example <code>http://ci.jenkins-ci.org</code></td>
-  </tr>
-  <tr>
-    <td>Project</td>
-    <td>Name of Jenkins Job (example: <code>infra_plugin_changes_report</code>) or Travis CI Slug (example: <code>travis-ci/travis-ci</code>)</td>
-  </tr>
-</tbody></table>
+<h3>Exception Tracker Widget</h3>
 
-<h2>Credits and Contributors</h2>
+<p>Shows the number of unresolved errors in your exception tracker, and when the last error occurred. It currently supports <a href="https://github.com/errbit/errbit">Errbit</a>.</p>
+
+<h2>Credits &amp; Contributors</h2>
+
 <p>Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a <a href="http://www.xing.com">XING</a> Hackathon Project.</p>
 
 <ul>
-  <li><a href="https://github.com/luxflux">luxflux</a> (Raffael Schmid)</li>
+<li><a href="https://github.com/luxflux">luxflux</a> (Raffael Schmid)</li>
+<li><a href="https://github.com/frankmt">frankmt</a> (Francisco Trindade)</li>
+<li><a href="https://github.com/leejones">leejones</a> (Lee Jones)</li>
+<li><a href="https://github.com/rngtng">rngtng</a> (Tobias Bielohlawek)</li>
+<li><a href="https://github.com/ndbroadbent">ndbroadbent</a> (Nathan Broadbent)</li>
+<li><a href="https://github.com/DraganMileski">DraganMileski</a> (Dragan Mileski)</li>
+<li><a href="https://github.com/averell23">averell23</a> (Daniel Hahn)</li>
+<li><a href="https://github.com/martintsch">martintsch</a> (Martin Tschischauskas)</li>
+<li>Marno Krahmer</li>
 </ul>
 
 <h2>The MIT License</h2>
