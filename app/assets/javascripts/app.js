@@ -5,7 +5,7 @@ app.config(function($routeProvider, $locationProvider) {
   $routeProvider
     .when("/dashboards", { template: $('#templates-dashboards-index').html(), controller: "DashboardIndexCtrl" })
     .when("/dashboards/:id", { template: $('#templates-dashboards-show').html(), controller: "DashboardShowCtrl" })
-    .when("/about", { template: $('#templates-abouts-show').html() })
+    .when("/about", { template: $('#templates-abouts-show').html(), controller: "AboutCtrl" })
     .otherwise({ redirectTo: "/dashboards" });
 });
 
