@@ -36,7 +36,7 @@ module Sources
 
                 Rails.logger.debug("The value is #{rand_value} and the label is #{label}")
 
-                {:value => rand_value ,:label =>"DemoCheck: RandomCheck<br/>DemoMessage: #{label}<br/><br/>"*4 }
+                {:value => rand_value ,:label =>"DemoClient:RandomClient<br/>DemoCheck: RandomCheck<br/>DemoMessage: #{label}<br/><br/>"*4 }
             end
 
         end

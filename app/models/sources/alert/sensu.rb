@@ -14,7 +14,6 @@ module Sources
       end
 
       def get(options = {})
-        widget = Widget.find(options.fetch(:widget_id))
 
         #defining some global variables that will be used to store filtered data
         sensu_filtered_events = Array.new
@@ -25,6 +24,7 @@ module Sources
         sensu_events = Rails.configuration.sensu_events.to_s + "/events"
         sensu_events_response = ::HttpService.request(sensu_events)
 
+        widget = Widget.find(options.fetch(:widget_id))
         sensu_client_filter = widget.settings.fetch(:sensu_clients)
         sensu_client_filter = sensu_client_filter.to_s
 
@@ -139,7 +139,7 @@ module Sources
         all_messages = ""
         for i in 0..max-1
           values_array.insert(0, sensu_filtered_events[i]["status"])
-          all_messages = all_messages + "CLIENT: #{sensu_filtered_events[i]["client"]}\nCHECK: #{sensu_filtered_events[i]["check"]}\nMESSAGE: #{sensu_filtered_events[i]["output"]}\n"
+          all_messages = all_messages + "CLIENT: #{sensu_filtered_events[i]["client"]}<br/>CHECK: #{sensu_filtered_events[i]["check"]}<br/>MESSAGE: #{sensu_filtered_events[i]["output"]}<br/>"
         end
                 
         case !values_array.empty?

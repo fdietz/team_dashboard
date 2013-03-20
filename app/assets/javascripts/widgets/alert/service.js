@@ -1,27 +1,14 @@
-app.factory("AlertModel", function($http) {
-
-  function getFieldsParams(config) {
-    if (!config.proxy_url || !config.proxy_value_path) return "";
-
-    var input = {
-      proxy_url: config.proxy_url,
-      proxy_value_path: config.proxy_value_path
-    };
-
-    return _.map(input, function(value, key) {
-      return "fields[" + key + "]=" + encodeURIComponent(value);
-    }).join("&");
-  }
+app.factory("AlertModel", ["$http", function($http) {
 
   function getParams(config) {
-    return { source: config.source };
+    return { source: config.source, widget_id: config.id };
   }
 
   function getData(config) {
-    return $http.get("/api/alert?" + getFieldsParams(config), { params: getParams(config) });
+    return $http.get("/api/data_sources/alert", { params: getParams(config) });
   }
 
   return {
     getData: getData
   };
-});
+}]);

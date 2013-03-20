@@ -1,8 +1,7 @@
-app.controller("AlertCtrl", function($scope) {
+app.controller("AlertCtrl", ["$scope", function($scope) {
 
     var defaults = {
-        size_x: 2,
-        size_y: 1,
+        size_x: 2,size_y: 1,
         update_interval: 10
     };
 
@@ -10,4 +9,4 @@ app.controller("AlertCtrl", function($scope) {
         _.extend($scope.widget, defaults);
     }
 
-});
+}]);
