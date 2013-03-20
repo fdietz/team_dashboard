@@ -4,7 +4,7 @@ Team Dashboard lets you visualize your team's metrics all in one place (see [Scr
 
 [Heroku hosted Demo](http://team-dashboard.herokuapp.com/)
 
-It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), [Errbit](https://github.com/errbit/errbit), [New Relic](http://newrelic.com/), [Pingdom](https://www.pingdom.com/) and more and makes it really easy to add more data sources.
+It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), [Errbit](https://github.com/errbit/errbit), [New Relic](http://newrelic.com/), [Pingdom](https://www.pingdom.com/), [Sensu](https://github.com/sensu) and more and makes it really easy to add more data sources.
 
 It is implemented as a Rails app and uses ActiveRecord to store your custom dashboards configuration.
 
@@ -84,6 +84,11 @@ It currently supports a [New Relic](http://newrelic.com/), [Hockey App](http://h
 Shows the current boolean value provided by the data source and an optional label. Use it to show for example the success of a Jenkins build or the health status of a system.
 
 It currently supports [Pingdom](https://www.pingdom.com/), arbitrary shell commands and a http proxy data source.
+
+### Alert Widget
+It is similar to the Boolean Widget. It is designed to show the alerts of your system. The idea behind was introducing a possibility for linking the dashboard with the Sensu monitoring framework and displaying the alerts and the respective messages.
+
+It currently supports [Sensu](https://github.com/sensu).
 
 ### CI (Continous Integration Server) Widget
 Shows the current build status for a given project.
