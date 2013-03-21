@@ -15,12 +15,12 @@ module Sources
 
       def get(options = {})
         widget                = Widget.find(options.fetch(:widget_id))
-        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks)
         sensu_client_filter   = widget.settings.fetch(:sensu_clients)
+        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks)
         
         #defining some global variables that will be used to store filtered data
-        sensu_filtered_events = Array.new
-        ignored_check_filtered_events = Array.new
+        sensu_filtered_events = []
+        ignored_check_filtered_events = []
         message = "Unknown Subsystem Status!"
         value = 500
 
@@ -31,16 +31,16 @@ module Sources
         sensu_ignored_checks = sensu_ignored_checks.to_s
 
         #If both fields have data
-        if (!sensu_client_filter.blank? && !sensu_ignored_checks.blank?)
+        if (!sensu_client_filter.empty? && !sensu_ignored_checks.empty?)
 
           #Here we will keep the clients for filtering, if any...
           clients_array = sensu_client_filter.split(',')
           #Here we will keep the ignored checks for filtering, if any...
-          ignored_checks_array = sensu_ignored_checks.split(',').map {
+          ignored_checks_array = sensu_ignored_checks.split(',').map do
             |clietnt_check|
             client_name, check = clietnt_check.split(":")
             {:client_name => client_name, :check => check }
-          }
+          end
     
           #Here we do the filtering by client for every event
           sensu_events_response.each do |event|
@@ -102,11 +102,12 @@ module Sources
         elsif (!sensu_ignored_checks.eql?(""))
 
           #Here we will keep the ignored checks for filtering, if any...
-          ignored_checks_array = sensu_ignored_checks.split(',').map {
+          ignored_checks_array = sensu_ignored_checks.split(',').map do
             |clietnt_check|
             client_name, check = clietnt_check.split(":")
             {:client_name => client_name, :check => check }
-          }
+          end
+          
           if (sensu_events_response.empty?)
             Rails.logger.debug("**********************Sensu data source WARNING **********************")
             Rails.logger.debug("The list of sensu events is empty please check your sensu configuration!")
@@ -133,7 +134,7 @@ module Sources
         end
 
         #Keep all output values in the arrays bellow
-        values_array = Array.new
+        values_array = []
         max = sensu_filtered_events.size
         all_messages = ""
         for i in 0..max-1
