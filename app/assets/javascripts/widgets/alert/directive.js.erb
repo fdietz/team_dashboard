@@ -6,7 +6,7 @@ app.directive("alert", ["$window", "AlertModel",  function($window, AlertModel){
       var messages = scope.data.label;
       var bootboxMessages = messages.replace(/\n/g, '<br />');
       $window.bootbox.animate(false);
-      $window.bootbox.alert(bootboxMessages);
+      $window.bootbox.alert("<h2>"+bootboxMessages+"</h2>");
     }
 
     function onSuccess(data) {

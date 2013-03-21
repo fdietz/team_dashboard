@@ -19,8 +19,8 @@ module Sources
       end
 
       # Returns ruby hash:
-      #  * value (boolean) mandatory
-      #  * label (string) optional
+      #  * value (green,orange,red,blue) mandatory
+      #  * label (alert string) mandatory
       def get(options = {})
       end
       
