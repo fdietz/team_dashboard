@@ -14,7 +14,10 @@ module Sources
       end
 
       def get(options = {})
-
+        widget                = Widget.find(options.fetch(:widget_id))
+        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks)
+        sensu_client_filter   = widget.settings.fetch(:sensu_clients)
+        
         #defining some global variables that will be used to store filtered data
         sensu_filtered_events = Array.new
         ignored_check_filtered_events = Array.new
@@ -23,12 +26,8 @@ module Sources
 
         sensu_events = Rails.configuration.sensu_events.to_s + "/events"
         sensu_events_response = ::HttpService.request(sensu_events)
-
-        widget = Widget.find(options.fetch(:widget_id))
-        sensu_client_filter = widget.settings.fetch(:sensu_clients)
+        
         sensu_client_filter = sensu_client_filter.to_s
-
-        sensu_ignored_checks = widget.settings.fetch(:ignored_checks)
         sensu_ignored_checks = sensu_ignored_checks.to_s
 
         #If both fields have data

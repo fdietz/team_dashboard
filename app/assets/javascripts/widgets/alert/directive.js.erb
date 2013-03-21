@@ -1,4 +1,4 @@
-app.directive("alert", function(AlertModel, $window) {
+app.directive("alert", ["$window", "AlertModel",  function($window, AlertModel){
 
   var linkFn = function(scope, element, attrs, WidgetCtrl) {
 
@@ -11,7 +11,7 @@ app.directive("alert", function(AlertModel, $window) {
 
     function onSuccess(data) {
       scope.data = data;
-      scope.data.label = scope.data.label;
+      scope.data.label = scope.data.label
     }
 
     function update() {
@@ -26,4 +26,4 @@ app.directive("alert", function(AlertModel, $window) {
     templateUrl: "<%= asset_path('templates/widgets/alert/show.html') %>",
     link: linkFn
   };
-});
+}]);
