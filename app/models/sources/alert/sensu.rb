@@ -2,6 +2,9 @@ module Sources
   module Alert
     class Sensu < Sources::Alert::Base
 
+      #Define SensuConfiguration exception class
+      class SensuWrongConfigurationError < Exception; end
+
       def available?
         Rails.configuration.sensu_events.present?
       end
@@ -21,20 +24,23 @@ module Sources
         #defining some global variables that will be used to store filtered data
         sensu_filtered_events = []
         ignored_check_filtered_events = []
+
+        #Initial values for the alert system
         message = "Unknown Subsystem Status!"
         value = 500
 
-        sensu_events = Rails.configuration.sensu_events.to_s + "/events"
-        sensu_events_response = ::HttpService.request(sensu_events)
+        sensu_events_url = Rails.configuration.sensu_events.to_s + "/events"
+        sensu_events_response = ::HttpService.request(sensu_events_url)
         
         sensu_client_filter = sensu_client_filter.to_s
         sensu_ignored_checks = sensu_ignored_checks.to_s
 
         #If both fields have data
-        if (!sensu_client_filter.empty? && !sensu_ignored_checks.empty?)
+        if (sensu_client_and_check_filters_filled?(sensu_client_filter,sensu_ignored_checks))
 
           #Here we will keep the clients for filtering, if any...
           clients_array = sensu_client_filter.split(',')
+
           #Here we will keep the ignored checks for filtering, if any...
           ignored_checks_array = sensu_ignored_checks.split(',').map do
             |clietnt_check|
@@ -46,31 +52,27 @@ module Sources
           sensu_events_response.each do |event|
             clients_array.each do |client|
               if (event["client"].eql?(client))
-                sensu_filtered_events.insert(0, event)
+                sensu_filtered_events.push(event)
                 break
               end
             end
           end
 
           if (sensu_filtered_events.empty?)
-            Rails.logger.debug("**********************Sensu data source WARNING **********************")
-            Rails.logger.debug("The client filters that you entered doesnt exist in the sensu event list")
-            Rails.logger.debug("Please check your spelling, or their existance in your sensu checks list")
+            raise SensuWrongConfigurationError.new("WARNING: The client filters that you entered doesn't exist in the sensu event list!")
             return
           else
             sensu_filtered_events.each do |event|
               ignored_checks_array.each do |ignored_check|
-                if (event["client"].eql?(ignored_check[:client_name]) && event["check"].eql?(ignored_check[:check]))
+                if (the_check_that_you_try_to_ignore_exists?(event,ignored_check))
                   Rails.logger.debug("Sensu: Check: #{ignored_check[:check]} from Client: #{ignored_check[:client_name]} ignorred\n")
                 else
-                  ignored_check_filtered_events.insert(0, event)
+                  ignored_check_filtered_events.push(event)
                 end
               end
             end
             if (sensu_filtered_events.size == ignored_check_filtered_events.size)
-              Rails.logger.debug("**********************Sensu data source WARNING **********************")
-              Rails.logger.debug("Your check ignorance didnt give any result. Please check your spelling")
-              Rails.logger.debug("The format should be: client_name1:check_name1,client_name2:check_name2,...")
+              raise SensuWrongConfigurationError.new("WARNING: Your check ignorance didnt give any result. Please check your spelling! The format should be: client_name1:check_name1, ...")
             end
             sensu_filtered_events = ignored_check_filtered_events
           end
@@ -85,16 +87,14 @@ module Sources
           sensu_events_response.each do |event|
             clients_array.each do |client|
               if (event["client"].eql?(client))
-                sensu_filtered_events.insert(0, event)
+                sensu_filtered_events.push(event)
                 break
               end
             end
           end
 
           if (sensu_filtered_events.empty?)
-            Rails.logger.debug("**********************Sensu data source WARNING **********************")
-            Rails.logger.debug("The client filters that you entered doesnt exist in the sensu event list")
-            Rails.logger.debug("Please check your spelling, or their existance in your sensu checks list")
+            raise SensuWrongConfigurationError.new("WARNING: The client filters that you entered doesnt exist in the sensu event list!")
             return
           end
                     
@@ -109,23 +109,20 @@ module Sources
           end
           
           if (sensu_events_response.empty?)
-            Rails.logger.debug("**********************Sensu data source WARNING **********************")
-            Rails.logger.debug("The list of sensu events is empty please check your sensu configuration!")
+            raise SensuWrongConfigurationError.new("WARNING: The list of sensu events is empty please check your sensu configuration!")
             return
           else
             sensu_events_response.each do |event|
               ignored_checks_array.each do |ignored_check|
-                if (event["client"].eql?(ignored_check[:client_name]) && event["check"].eql?(ignored_check[:check]))
+                if (the_check_that_you_try_to_ignore_exists?(event,ignored_check))
                   Rails.logger.debug("Sensu: Check: #{ignored_check[:check]} from Client: #{ignored_check[:client_name]} ignorred\n")
                 else
-                  ignored_check_filtered_events.insert(0, event)
+                  ignored_check_filtered_events.push(event)
                 end
               end
             end
             if (sensu_events_response.size == ignored_check_filtered_events.size)
-              Rails.logger.debug("**********************Sensu data source WARNING **********************")
-              Rails.logger.debug("Your check ignorance didnt give any result. Please check your spelling")
-              Rails.logger.debug("The format should be: client_name1:check_name1,client_name2:check_name2,...")
+              raise SensuWrongConfigurationError.new("WARNING: Your check ignorance didnt give any result. Please check your spelling! The format should be: client_name1:check_name1, ...")
             end
             sensu_filtered_events = ignored_check_filtered_events
           end
@@ -138,7 +135,7 @@ module Sources
         max = sensu_filtered_events.size
         all_messages = ""
         for i in 0..max-1
-          values_array.insert(0, sensu_filtered_events[i]["status"])
+          values_array.push(sensu_filtered_events[i]["status"])
           all_messages = all_messages + "CLIENT: #{sensu_filtered_events[i]["client"]}<br/>CHECK: #{sensu_filtered_events[i]["check"]}<br/>MESSAGE: #{sensu_filtered_events[i]["output"]}<br/>"
         end
                 
@@ -156,6 +153,15 @@ module Sources
                 
         {:value => value , :label => all_messages }
       end
+
+      def sensu_client_and_check_filters_filled?(sensu_client_filter,sensu_ignored_checks)
+        (!sensu_client_filter.empty? && !sensu_ignored_checks.empty?)
+      end
+
+      def the_check_that_you_try_to_ignore_exists?(event,ignored_check)
+        (event["client"].eql?(ignored_check[:client_name]) && event["check"].eql?(ignored_check[:check]))
+      end
+      
     end
   end
 end
