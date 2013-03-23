@@ -7,11 +7,11 @@ app.directive("alert", ["$window", "AlertModel",  function($window, AlertModel){
       var bootboxMessages = messages.replace(/\n/g, '<br />');
       $window.bootbox.animate(false);
       $window.bootbox.alert("<h2>"+bootboxMessages+"</h2>");
-    }
+    };
 
     function onSuccess(data) {
       scope.data = data;
-      scope.data.label = scope.data.label
+      scope.data.label = scope.data.label;
     }
 
     function update() {
