@@ -3,7 +3,7 @@ app.directive("widget", ["$compile", function($compile) {
   var linkFn = function(scope, element, attrs, gridsterController) {
     gridsterController.add(element, scope.widget);
 
-    // TODO: check why we need to add this element dynamically
+    // TODO: cleanup, an attribute can't be created in the template with expression
     var elm = element.find(".widget-content");
     elm.append('<div ' + scope.widget.kind.replace("_", "-") + ' />');
     $compile(elm)(scope);
