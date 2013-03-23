@@ -33,6 +33,8 @@
 //= require angular
 //= require angular-resource
 //= require angular-sanitize
+//= require angular-ui/module
+//= require angular-ui/jq
 //= require angular-ui/bootstrap/modal
 //= require angular-ui/bootstrap/dialog
 //= require angular-ui/bootstrap/transitions
