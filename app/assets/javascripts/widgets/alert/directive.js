@@ -18,12 +18,11 @@ app.directive("alert", ["$window", "AlertModel",  function($window, AlertModel){
       return AlertModel.getData(scope.widget).success(onSuccess);
     }
 
-    WidgetCtrl.init(update);
+    scope.init(update);
   };
 
   return {
-    require: "^widget",
-    templateUrl: "<%= asset_path('templates/widgets/alert/show.html') %>",
+    template: $("#templates-widgets-alert-show").html(),
     link: linkFn
   };
 }]);

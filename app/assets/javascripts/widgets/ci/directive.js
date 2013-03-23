@@ -38,12 +38,11 @@ app.directive("ci", ["CiModel", function(CiModel) {
       return CiModel.getData(scope.widget).success(onSuccess);
     }
 
-    WidgetCtrl.init(update);
+    scope.init(update);
   };
 
   return {
-    require: "^widget",
-    templateUrl: "<%= asset_path('templates/widgets/ci/show.html') %>",
+    template: $("#templates-widgets-ci-show").html(),
     link: linkFn
   };
 }]);

@@ -1,6 +1,6 @@
 app.directive("boolean", ["BooleanModel", function(BooleanModel) {
 
-  var linkFn = function(scope, element, attrs, WidgetCtrl) {
+  var linkFn = function(scope, element, attrs) {
 
     function onSuccess(data) {
       scope.data = data;
@@ -11,12 +11,11 @@ app.directive("boolean", ["BooleanModel", function(BooleanModel) {
       return BooleanModel.getData(scope.widget).success(onSuccess);
     }
 
-    WidgetCtrl.init(update);
+    scope.init(update);
   };
 
   return {
-    require: "^widget",
-    templateUrl: "<%= asset_path('templates/widgets/boolean/show.html') %>",
+    template: $("#templates-widgets-boolean-show").html(),
     link: linkFn
   };
 }]);

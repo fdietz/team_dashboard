@@ -1,6 +1,6 @@
 app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel, SuffixFormatter) {
 
-  var linkFn = function(scope, element, attrs, WidgetCtrl) {
+  var linkFn = function(scope, element, attrs) {
 
     function calculatePercentage(value, previousValue) {
       console.log("previous", previousValue, "value", value);
@@ -13,7 +13,7 @@ app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel,
 
       scope.data.stringValue = scope.widget.use_metric_suffix ? SuffixFormatter.format(scope.data.value, 1) : scope.data.value.toString();
 
-      var previousData = WidgetCtrl.getMemorizedData();
+      var previousData = scope.previousData;
       if (previousData) {
         scope.data.secondaryValue = calculatePercentage(scope.data.value, previousData.value);
         scope.data.arrow = scope.data.secondaryValue > 0 ? "arrow-up" : "arrow-down";
@@ -25,12 +25,11 @@ app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel,
       return NumberModel.getData(scope.widget).success(onSuccess);
     }
 
-    WidgetCtrl.init(update);
+    scope.init(update);
   };
 
   return {
-    require: "^widget",
-    templateUrl: "<%= asset_path('templates/widgets/number/show.html') %>",
+    template: $("#templates-widgets-number-show").html(),
     link: linkFn
   };
 }]);

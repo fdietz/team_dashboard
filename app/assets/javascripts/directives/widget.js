@@ -1,72 +1,11 @@
-app.directive("widget", ["$compile", "$timeout", "$rootScope", function($compile, $timeout, $rootScope) {
-
-  // all widgets depend on this controller function
-  var controllerFn = function($scope, $element, $attrs) {
-    var previousData = null;
-
-    function initFn(updateFn) {
-      var timer = null;
-
-      $rootScope.$on('$routeChangeSuccess', function(ngEvent, route) {
-        if (timer) $timeout.cancel(timer);
-      });
-
-      function onError(response) {
-        $scope.showError = true;
-        if (response.status === 0) {
-          $scope.widget.message = "Could not connect to rails app";
-        } else {
-          $scope.widget.message = response.data.message;
-        }
-      }
-
-      function onSuccess(response) {
-        $scope.showError = false;
-
-        if (response && response.data) memorizeData(response.data);
-      }
-
-      function updateTimer() {
-        $scope.widget.enableSpinner = false;
-
-        timer = $timeout(startTimer, $scope.widget.update_interval * 1000);
-      }
-
-      function startTimer() {
-        $scope.widget.enableSpinner = true;
-
-        var result = updateFn();
-        if (result && result.then) {
-          result.then(onSuccess, onError).then(updateTimer);
-        } else {
-          onSuccess(result);
-          updateTimer();
-        }
-      }
-
-      startTimer();
-    }
-
-    function memorizeData(data) {
-      previousData = data;
-    }
-
-    function getMemorizedData() {
-      return previousData;
-    }
-
-    return {
-      init: initFn,
-      getMemorizedData: getMemorizedData
-    };
-  };
+app.directive("widget", ["$compile", function($compile) {
 
   var linkFn = function(scope, element, attrs, gridsterController) {
     gridsterController.add(element, scope.widget);
 
     // TODO: check why we need to add this element dynamically
     var elm = element.find(".widget-content");
-    elm.append('<div ' + scope.widget.kind + ' />');
+    elm.append('<div ' + scope.widget.kind.replace("_", "-") + ' />');
     $compile(elm)(scope);
 
     element.bind("$destroy", function() {
@@ -80,7 +19,7 @@ app.directive("widget", ["$compile", "$timeout", "$rootScope", function($compile
 
   return {
     require: "^gridster",
-    controller: controllerFn,
+    controller: "WidgetCtrl",
     link: linkFn
   };
 }]);

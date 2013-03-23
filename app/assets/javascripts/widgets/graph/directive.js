@@ -2,7 +2,7 @@ app.directive("graph", ["FlotrGraphHelper", "GraphModel", function(FlotrGraphHel
 
   var currentColors = [];
 
-  var linkFn = function(scope, element, attrs, WidgetCtrl) {
+  var linkFn = function(scope, element, attrs) {
 
     function onSuccess(data) {
       element.height(265);
@@ -18,18 +18,17 @@ app.directive("graph", ["FlotrGraphHelper", "GraphModel", function(FlotrGraphHel
       return widthMapping[size_x];
     }
 
-    WidgetCtrl.init(update);
+    scope.init(update);
 
     // changing the widget config width should redraw flotr2 graph
     scope.$watch("config.size_x", function(newValue, oldValue) {
       element.width(calculateWidth(scope.widget.size_x));
-      WidgetCtrl.init(update);
+      scope.init(update);
     });
 
   };
 
   return {
-    require: "^widget",
     template: '<div class="graph-container"></div>',
     link: linkFn
   };

@@ -8,7 +8,7 @@ app.directive("tdAutocomplete", ["$http", function ($http) {
 
       function query(searchTerm, processCallback) {
         var url = scope.$eval(attrs.tdAutocomplete).replace("%QUERY", searchTerm);
-        $http.get(url).success(function(result){
+        $http.get(url).success(function(result) {
           processCallback(result);
         });
       }

@@ -1,6 +1,6 @@
 app.directive("exceptionTracker", ["ExceptionTrackerModel", function(ExceptionTrackerModel) {
 
-  var linkFn = function(scope, element, attrs, WidgetCtrl) {
+  var linkFn = function(scope, element, attrs) {
 
     function onSuccess(data) {
       scope.data = data;
@@ -13,12 +13,11 @@ app.directive("exceptionTracker", ["ExceptionTrackerModel", function(ExceptionTr
       return ExceptionTrackerModel.getData(scope.widget).success(onSuccess);
     }
 
-    WidgetCtrl.init(update);
+    scope.init(update);
   };
 
   return {
-    require: "^widget",
-    templateUrl: "<%= asset_path('templates/widgets/exception_tracker/show.html') %>",
+    template: $("#templates-widgets-exception-tracker-show").html(),
     link: linkFn
   };
 }]);

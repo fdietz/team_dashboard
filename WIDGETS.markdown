@@ -56,28 +56,27 @@ You should now see your new "Hello World" widget! Congratulations!
 
 ## Periodically Updating the Widget
 
-In order to periodically update the widget you to integrate it further by specifying a dependency to the `widget` Controller. This controller is defined in the `Widget` directive (the container for your widget) and exposes API methods for Widget implementations. Using a link function you register your widget:
+In order to periodically update the widget you need to integrate it further by registering your `widget` at the `WidgetCtrl`. This controller exposes Angular.js scope methods for widget implementations. Using a link function you register your widget:
 
     app.directive("example", function() {
 
-      function link(scope, element, attrs, WidgetCtrl) {
+      function link(scope, element, attrs) {
 
         function update() {
           scope.counter += 1;
         }
 
         scope.counter = 0;
-        WidgetCtrl.init(update);
+        scope.init(update);
       }
 
       return {
-        require: "^widget",
         template: "<p>Hello World {{counter}}</p>",
         link: link
       }
     });
 
-The link function injects `WidgetCtrl` as dependency and calls the `init` function to register itself. In the example above we increment a `counter` variable. The Widget controller periodically calls your `update` function. This is already sufficient to implement easy use cases as for example a stop watch or a count down clock.
+The link function calls the `init` function on the scope to register itself. In the example above we increment a `counter` variable. The Widget controller periodically calls your `update` function. This is already sufficient to implement easy use cases as for example a stop watch or a count down clock. Note, that the `WidgetCtrl` is provided by the "container" of your widget automatically.
 
 ## Using Previous Values
 
@@ -86,20 +85,20 @@ Let's have a look into another useful feature of the exposed via `WidgetCtrl`. T
     function update() {
       scope.counter += 1;
 
-      if (WidgetCtrl.getMemorizedData()) {
-        scope.previousValue = WidgetCtrl.getMemorizedData().counter;
+      if (scope.previousData) {
+        scope.previousValue = scope.previousData.counter;
       }
 
       return { data: { counter: scope.counter }};
     }
 
-In the above code we return the `scope.counter` value and we set the `scope.previousValue` via the `getMemorizedData()` function. This can be very helpful in case that you want to show not only the current state of your widget but also compare it to a previous state. In fact the number widget uses this functionality to show the changes as a percentage.
+In the above code we return the `scope.counter` value and we set the `scope.previousValue` via the `scope.previousData` value. This can be very helpful in case that you want to show not only the current state of your widget but also compare it to a previous state. In fact the number widget uses this functionality to show the changes as a percentage.
 
 ## Pulling in data via AJAX
 
 Let's look into an example with an AJAX request to pull in some data. We use the existing `number` data source.
 
-    function link(scope, element, attrs, WidgetCtrl) {
+    function link(scope, element, attrs) {
 
       function onSuccess(data) {
         scope.counter = data.value;
@@ -111,7 +110,7 @@ Let's look into an example with an AJAX request to pull in some data. We use the
       }
 
       scope.counter = 0;
-      WidgetCtrl.init(update);
+      scope.init(update);
     }
 
 Using the Angular.js [$http](http://docs.angularjs.org/api/ng.$http) service we do an AJAX request and return the `success` methods result in the `update` method. This is in fact a [$q](http://docs.angularjs.org/api/ng.$q) promise function. The `onSuccess` function uses the response data to update the scope.
@@ -121,29 +120,32 @@ Using the Angular.js [$http](http://docs.angularjs.org/api/ng.$http) service we 
 We can cleanup our code a bit by introducing the concept of an Angular service which handles our "model" and requesting new data. Lets add a `service.js` file alongside our existing directive.
 
     app.factory("ExampleModel", function($http) {
-      return $http.get("/api/data_sources/number", { params: { source: "demo" } });
+      return {
+        getData: function(config) {
+          return $http.get("/api/data_sources/number", { params: { source: "demo", widget_id: config.id } });
+        }
+      };
     });
 
 The service only focus is requesting new data. Now, let's use this service in our directive.
 
     app.directive("example", function($http, ExampleModel) {
 
-      function link(scope, element, attrs, WidgetCtrl) {
+      function link(scope, element, attrs) {
 
         function onSuccess(data) {
           scope.counter = data.value;
         }
 
         function update() {
-          return ExampleModel.success(onSuccess);
+          return ExampleModel.getData(scope.widget).success(onSuccess);
         }
 
         scope.counter = 0;
-        WidgetCtrl.init(update);
+        scope.init(update);
       }
 
       return {
-        require: "^widget",
         template: "<p>Hello World: {{counter}}",
         link: link
       };
@@ -174,22 +176,35 @@ This example is pretty contrived and you could achieve exactly the same by imple
 Have a look at built-in filters in `app/assets/javascripts/filters` you can reuse in our widget!
 
 ## Using a HTML Template
-Embedding the template as a string in your directive sucks when the template becomes more complicated. Let's move this template into its own file `show.html` in the `app/assets/templates/widgets/example` directory. In our directive we reference the template now using the `templateUrl` attribute.
+Embedding the template as a string in your directive sucks when the template becomes more complicated. Let's move this template into its own file `show.html` in the `app/assets/templates/widgets/example` directory. In our directive we reference the template using the `template` attribute and a jQuery selection by template id.
 
     app.directive("example", function($http, ExampleModel) {
 
-      function link(scope, element, attrs, WidgetCtrl) {
+      function link(scope, element, attrs) {
         // ..
       }
 
       return {
-        require: "^widget",
-        templateUrl: "<%= asset_path('templates/widgets/example/show.html') %>",
+        template: $("#templates-widgets-example-show").html(),
         link: link
       };
     });
 
-Note, that since we use the Rails assets pipeline the request URL for the template changes depending on the environment. Therefore we use the `asset_path` method in ERB tags to retrieve the correct URL. In order to get our template processed as ERB file we need to additionally change the filename of our directive to `directive.js.erb`.
+The rails app will create a `script` tag with your `show.html` template and assigning an ID to it. This is how it looks like:
+
+    <script type="text/ng-template" id="templates-widgets-example-show">
+      <div class="example">
+        <p class="red">Hello World: {{counter | dollar}}
+      </div>
+    </script>
+
+As an alternative approach we could use the Rails assets pipeline and the `templateUrl` attribute instead:
+
+    return {
+      templateUrl: "<%= asset_path('templates/widgets/boolean/show.html') %>"
+    }
+
+We use the `asset_path` method in ERB tags to retrieve the correct URL. In order to get our template processed as ERB file we need to additionally change the filename of our directive to `directive.js.erb`.
 
 ## Using a Stylesheet
 The only missing part is adding a stylesheet for our widget. Lets add a `style.css.scss` file to the `app/assets/stylesheets/widgets/example` directory.

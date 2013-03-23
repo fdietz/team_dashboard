@@ -1,6 +1,6 @@
 app.directive("example", ["$http", "ExampleModel", function($http, ExampleModel) {
 
-  function link(scope, element, attrs, WidgetCtrl) {
+  function link(scope, element, attrs) {
 
     function onSuccess(data) {
       scope.counter = data.value;
@@ -11,12 +11,11 @@ app.directive("example", ["$http", "ExampleModel", function($http, ExampleModel)
     }
 
     scope.counter = 0;
-    WidgetCtrl.init(update);
+    scope.init(update);
   }
 
   return {
-    require: "^widget",
-    templateUrl: "<%= asset_path('templates/widgets/example/show.html') %>",
+    template: $("#templates-widgets-example-show").html(),
     link: link
   };
 }]);
