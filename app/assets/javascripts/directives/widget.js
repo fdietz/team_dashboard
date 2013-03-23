@@ -21,6 +21,7 @@ app.directive("widget", ["$compile", function($compile) {
   return {
     require: "^gridster",
     controller: "WidgetCtrl",
+    template: $("#templates-widget-show").html(),
     link: linkFn
   };
 }]);
