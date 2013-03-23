@@ -13,6 +13,7 @@ app.directive("widget", ["$compile", function($compile) {
     });
 
     scope.$watch("widget.size_x", function(newValue, oldValue) {
+      if (newValue === oldValue) return;
       gridsterController.resize(element, newValue, scope.widget.size_y);
     }, true);
   };
