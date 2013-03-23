@@ -29,6 +29,8 @@
     </select>
   </div>
 
+  <div td-bind-html-unsafe="customFieldsTemplate"></div>
+
   <div td-field label="Targets">
     <div class="input-append" ng-show="supportsTargetBrowsing()">
       <input name="targets" ng-model="widget.targets" type="text" required/>

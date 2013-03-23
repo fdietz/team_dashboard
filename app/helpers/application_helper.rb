@@ -63,6 +63,8 @@ module ApplicationHelper
   # @source for example: number, ci, etc.
   # using ng-switch doesn't work, it breaks the form validation
   def control_groups(source)
+    # TODO: fix mapping
+    source = source == "graph" ? "datapoints" : source
     source = Sources.custom_fields(source)
     result = []
     source.each do |key, value|
