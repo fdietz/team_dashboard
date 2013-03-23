@@ -16,7 +16,6 @@ app.directive("contenteditable", function() {
         if (attrs.onChange) scope.$apply(attrs.onChange);
       });
 
-      read();
     }
   };
 });
