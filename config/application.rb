@@ -58,5 +58,6 @@ module TeamDashboard
     config.ganglia_host     = ENV['GANGLIA_HOST']
     config.pingdom_username = ENV['PINGDOM_USERNAME']
     config.pingdom_password = ENV['PINGDOM_PASSWORD']
+    config.sensu_events     = ENV['SENSU_EVENTS_URL']
   end
 end
