@@ -1,5 +1,4 @@
 describe("number widget directive", function() {
-
   var element, compile, rootScope, fixture, ctrl, httpBackend;
 
   beforeEach(inject(function($compile, $rootScope, $controller, $httpBackend) {

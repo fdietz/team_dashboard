@@ -3,6 +3,7 @@ app.factory("Sources", function() {
     // TODO: kind mismatch graph/datapoints
   function kindMapping(kind) {
     if (kind === "graph") kind = "datapoints";
+    if (kind === "meter") kind = "number";
     return kind;
   }
 

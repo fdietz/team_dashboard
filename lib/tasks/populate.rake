@@ -33,6 +33,10 @@ task :populate => :environment do
     :server_url => "http://ci.jenkins-ci.org/", :project => 'infra_plugin_changes_report' })
   d3.widgets.create!(:name => "Jenkins/Travis CI", :kind => 'ci', :source => 'travis', :settings => {
     :server_url => "http://travis-ci.org", :project => 'travis-ci/travis-ci' } )
+
+  d4 = Dashboard.create!(:name => "Example 4 (Meter, Alert)")
+  d4.widgets.create!(:name => "Meter Example", :kind => 'meter', :size_y => 2, :source => 'demo', :settings => { :label => "Current Visitors" })
+  d4.widgets.create!(:name => "Alert", :kind => 'alert', :source => 'demo', :size_x => 2)
 end
 
 desc "Migrate widgets"

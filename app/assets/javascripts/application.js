@@ -22,13 +22,13 @@
 //= require twitter/bootstrap/modal
 
 //= require bootbox
+//= require bigscreen.min
 
 //= require flotr2
 //= require moment.min
 //= require jquery.timeago
 //= require jquery.timeago.en-short
-
-//= require bigscreen.min
+//= require jquery.knob
 
 //= require angular
 //= require angular-resource

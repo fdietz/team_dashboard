@@ -1,0 +1,22 @@
+.meter {
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-top: 30px;
+
+  .label {
+    font-size: 22px;
+    line-height: 22px;
+
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+
+    background: 0;
+    color: #ccc;
+
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
