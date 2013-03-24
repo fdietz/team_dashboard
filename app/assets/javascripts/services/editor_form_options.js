@@ -34,8 +34,7 @@ app.factory("EditorFormOptions", function() {
 
   var graphTypes = [
     { value: "line",  label: "Line Graph" },
-    { value: "area",  label: "Area Graph" },
-    { value: "stack", label: "Stacked Graph" }
+    { value: "area",  label: "Area Graph" }
   ];
 
   var aggregate_functions = [
