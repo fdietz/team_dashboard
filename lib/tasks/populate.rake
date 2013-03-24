@@ -10,8 +10,8 @@ task :populate => :environment do
   target2 = "demo.example2"
 
   d1 = Dashboard.create!(:name => "Example 1 (Graph Widgets)")
-  d1.widgets.create!(:name => "Single Target Line Graph", :targets => target1, :size_x => 1, :size_y => 2, :source => 'demo')
-  d1.widgets.create!(:name => "Two Targets Line Graph", :targets => [target1, target2].join(';'), :size_x => 2, :size_y => 2, :source => 'demo')
+  d1.widgets.create!(:name => "Single Target Line Graph", :targets => target1, :size_x => 1, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'line' })
+  d1.widgets.create!(:name => "Two Targets Line Graph", :targets => [target1, target2].join(';'), :size_x => 2, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'line' })
   d1.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(';'), :size_x => 3, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'area' })
 
   d2 = Dashboard.create!(:name => "Example 2 (Numbers, Boolean and Graph Widgets)")
