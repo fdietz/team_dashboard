@@ -54,7 +54,7 @@ app.directive("gridster", ["Widget", function(Widget) {
       add: function(elm, options) {
         // ensure col and row are set for new widgets
         var pos = gridster.next_position(options.size_x, options.size_y);
-        options = _.extend(options, pos);
+        if (!options.col && !options.row) { options = _.extend(options, pos); }
         gridster.add_widget(elm, options.size_x, options.size_y, options.col, options.row);
       },
       remove: function(elm) {
