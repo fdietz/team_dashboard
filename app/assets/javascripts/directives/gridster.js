@@ -10,7 +10,7 @@ app.directive("gridster", ["Widget", function(Widget) {
     var options = {
       widget_margins: [8, 8],
       widget_base_dimensions: [320, 150],
-      extra_cols: 1,
+      min_cols: 4,
       avoid_overlapped_widgets: true,
       serialize_params: serializeParamsFn,
       draggable: draggable
@@ -52,6 +52,9 @@ app.directive("gridster", ["Widget", function(Widget) {
         gridster = ul.gridster(options).data("gridster");
       },
       add: function(elm, options) {
+        // ensure col and row are set for new widgets
+        var pos = gridster.next_position(options.size_x, options.size_y);
+        options = _.extend(options, pos);
         gridster.add_widget(elm, options.size_x, options.size_y, options.col, options.row);
       },
       remove: function(elm) {
