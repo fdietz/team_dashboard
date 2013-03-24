@@ -13,8 +13,8 @@
     <ul class="selectable-list">
       <li ng-repeat="target in targets">
         <div ng-class="selectedClass(target)" ng-click="selectTarget(target)">
-          <span  class="text" ng-model="target.content" title="Click to Edit">{{target.content}}</span>
-            <span ng-click="removeTarget(target)" class='actions remove icon-remove'></span>
+          <span  class="text" ng-model="target.content">{{target.content}}</span>
+          <span ng-click="removeTarget(target)" class='actions remove icon-remove'></span>
         </div>
       </li>
     </ul>
@@ -25,7 +25,6 @@
       <label>Edit Target</label>
       <textarea rows="3" ng-model="selectedTarget.content" />
     </form>
-
   </div>
 </div>
 

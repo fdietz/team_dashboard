@@ -17,6 +17,7 @@ app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", functi
 
   $scope.addTarget = function() {
     $scope.targets.push({ content: $scope.newTarget, editing: false });
+    $scope.selectedTarget = $scope.targets[$scope.targets.length-1];
     $scope.newTarget = "";
   };
 
@@ -24,13 +25,17 @@ app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", functi
     _.each($scope.targets, function(t, index) {
       if (t === target) {
         $scope.targets.splice(index, 1);
+        if ($scope.selectedTarget === t) {
+          $scope.selectedTarget = (index > $scope.targets.length-1) ? $scope.targets[$scope.targets.length-1] : $scope.targets[index];
+        }
         return;
       }
     });
+
   };
 
   $scope.selectedClass = function(target) {
-    return (target == $scope.selectedTarget) ? "selected" : "";
+    return (target === $scope.selectedTarget) ? "selected" : "";
   };
 
   function encodedParams(source) {

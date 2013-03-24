@@ -140,24 +140,28 @@ ul.selectable-list {
 
   li {
     color: @grayDark;
-    line-height: 3em;
+    line-height: 2.5em;
     border-bottom: 1px #bbb solid;
+    cursor: pointer;
+
+    &:last-child {
+      border: none;
+    }
 
     .selected {
+      .border-radius(@inputBorderRadius);
       background-color: #DDD;
     }
 
     .text {
       padding-left: 1em;
-      cursor: pointer;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .actions {
-      margin: 1em;
-      cursor: pointer;
+      margin: 0.6em;
       display:block;
       float: right;
     }
