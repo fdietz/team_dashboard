@@ -8,8 +8,8 @@ app.directive("meter", ["NumberModel", function(NumberModel) {
     function onSuccess(data) {
       scope.data       = data;
       scope.data.label = scope.data.label || scope.widget.label;
-      scope.data.min   = scope.data.min || 0;
-      scope.data.max   = scope.data.max || 100;
+      scope.data.min   = scope.data.min || scope.widget.min || 0;
+      scope.data.max   = scope.data.max || scope.widget.max || 100;
 
       var previousData = scope.previousData;
       if (previousData) {
