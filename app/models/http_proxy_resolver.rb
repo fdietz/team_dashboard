@@ -26,9 +26,20 @@ module HttpProxyResolver
     paths = value_path.split(".");
     current_element = document
     paths.each do |path|
+      if is_num?(path)
+        path = path.to_i
+      end
       current_element = current_element[path]
     end
     current_element
+  end
+  
+  def is_num?(str)
+    begin
+      !!Integer(str)
+    rescue ArgumentError, TypeError
+      false
+    end
   end
 
 end
