@@ -10,7 +10,6 @@ describe("number widget directive", function() {
     fixture = loadFixtures("widgets/number/show.html");
     rootScope.widget = { label: "Default Text", source: "demo" };
     ctrl = $controller("WidgetCtrl", { $scope: rootScope, $element: null });
-    ctrl.hello = "test";
   }));
 
   it("renders value", function() {

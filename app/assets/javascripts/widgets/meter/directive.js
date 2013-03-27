@@ -10,10 +10,6 @@ app.directive("meter", ["NumberModel", function(NumberModel) {
       scope.data.label = scope.data.label || scope.widget.label;
       scope.data.min   = scope.data.min || scope.widget.min || 0;
       scope.data.max   = scope.data.max || scope.widget.max || 100;
-
-      var previousData = scope.previousData;
-      if (previousData) {
-      }
     }
 
     function update() {

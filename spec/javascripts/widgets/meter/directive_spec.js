@@ -16,7 +16,6 @@ describe("meter widget directive", function() {
     mockData = { value: 10, label: "Hello World" };
     httpBackend.expectGET("/api/data_sources/number?source=demo").respond(mockData);
     compile(element)(rootScope);
-
     httpBackend.flush();
 
     expect(element.find("input")).toHaveValue(10);
