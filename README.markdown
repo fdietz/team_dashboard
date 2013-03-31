@@ -34,7 +34,7 @@ There is an initial "Demo" source and sample dashboards provided. Generate these
 
 Start the Rails server:
 
-    rails s
+    bundle exec unicorn -c config/unicorn.rb
 
 ### Running the build
 
