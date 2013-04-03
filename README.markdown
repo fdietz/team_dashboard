@@ -41,6 +41,10 @@ Start the Rails server:
 
     rails s
 
+or use unicon directly:
+
+    bundle exec unicorn -c config/unicorn.rb
+
 ### Running the build
 
 If you want to run the tests locally, you will need to install PhantomJS

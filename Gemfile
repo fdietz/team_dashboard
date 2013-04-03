@@ -13,7 +13,7 @@ gem 'angular-rails'
 
 gem "mysql2", "~> 0.3.11"
 
-gem "thin", "~> 1.4.1"
+gem "unicorn"
 gem "foreman"
 gem "faraday", "~> 0.8.4"
 gem "faraday_middleware", "~> 0.8.8"
@@ -23,8 +23,8 @@ gem "nokogiri", "~> 1.5.5"
 
 group :test, :development do
   gem "rspec-rails"
-  gem "factory_girl_rails"
   gem "jasmine"
+  gem "factory_girl_rails"
   gem "jasminerice"
   gem "guard-jasmine"
   gem "rb-fsevent", "~> 0.9.1"
