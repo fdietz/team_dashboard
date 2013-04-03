@@ -24,3 +24,4 @@
 
 # Ignore net beans project file
 /nbproject
+.project
