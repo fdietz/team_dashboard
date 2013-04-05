@@ -18,6 +18,7 @@ module HttpProxyResolver
     else
       response_body
     end
+
   end
 
   private
@@ -26,9 +27,29 @@ module HttpProxyResolver
     paths = value_path.split(".");
     current_element = document
     paths.each do |path|
-      current_element = current_element[path]
+      if is_array_element?(path)
+        #In array name puts the name of the array element
+        array_name = path.split('[')
+        array_name = array_name[0]
+
+        #Makes sure that the number between brackets will be taken as array element number
+        numbers_contained_in_array_name = path.scan(/\d+/)
+        array_element = numbers_contained_in_array_name.pop
+
+        #Updates 2 times in order to pass through the array and the specific element itself
+        current_element = current_element[array_name]
+        current_element = current_element[array_element.to_i]
+      else
+
+        #Proceeds the normal way if the element is not a path
+        current_element = current_element[path]
+      end
     end
     current_element
+  end
+
+  def is_array_element?(path)
+    path.count('[') == 1 && path.count(']') == 1
   end
 
 end
