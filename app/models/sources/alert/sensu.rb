@@ -20,7 +20,7 @@ module Sources
         widget                = Widget.find(options.fetch(:widget_id))
         sensu_client_filter   = widget.settings.fetch(:sensu_clients)
         sensu_ignored_checks  = widget.settings.fetch(:ignored_checks)
-        
+
         #defining some global variables that will be used to store filtered data
         sensu_filtered_events = []
         ignored_check_filtered_events = []
@@ -31,7 +31,7 @@ module Sources
 
         sensu_events_url = Rails.configuration.sensu_events.to_s + "/events"
         sensu_events_response = ::HttpService.request(sensu_events_url)
-        
+
         sensu_client_filter = sensu_client_filter.to_s
         sensu_ignored_checks = sensu_ignored_checks.to_s
 
@@ -47,7 +47,7 @@ module Sources
             client_name, check = clietnt_check.split(":")
             {:client_name => client_name, :check => check }
           end
-    
+
           #Here we do the filtering by client for every event
           sensu_events_response.each do |event|
             clients_array.each do |client|
@@ -97,7 +97,7 @@ module Sources
             raise SensuWrongConfigurationError.new("WARNING: The client filters that you entered doesnt exist in the sensu event list!")
             return
           end
-                    
+
           #If only a boring checks are filtered
         elsif (!sensu_ignored_checks.eql?(""))
 
@@ -107,7 +107,7 @@ module Sources
             client_name, check = clietnt_check.split(":")
             {:client_name => client_name, :check => check }
           end
-          
+
           if (sensu_events_response.empty?)
             raise SensuWrongConfigurationError.new("WARNING: The list of sensu events is empty please check your sensu configuration!")
             return
@@ -138,19 +138,24 @@ module Sources
           values_array.push(sensu_filtered_events[i]["status"])
           all_messages = all_messages + "CLIENT: #{sensu_filtered_events[i]["client"]}<br/>CHECK: #{sensu_filtered_events[i]["check"]}<br/>MESSAGE: #{sensu_filtered_events[i]["output"]}<br/>"
         end
-                
-        case !values_array.empty?
-        when values_array.include?(2)
-          value = 2
-        when values_array.include?(1)
-          value = 1
-        when values_array.include?(0)
-          value = 0
+
+        if !values_array.empty?
+          value = case
+          when values_array.include?(2)
+            2
+          when values_array.include?(1)
+            1
+          when values_array.include?(0)
+            0
+          else
+            Rails.logger.debug("**********************Sensu data source WARNING **********************")
+            Rails.logger.debug("In your checks you have only unknown status services, please check your sensu checks")
+          end
         else
-          Rails.logger.debug("**********************Sensu data source WARNING **********************")
-          Rails.logger.debug("In your checks you have only unknown status services, please check your sensu checks")
+          value = 0
+          all_messages = "SESNSU System status: OK"
         end
-                
+
         {:value => value , :label => all_messages }
       end
 
@@ -161,7 +166,7 @@ module Sources
       def the_check_that_you_try_to_ignore_exists?(event,ignored_check)
         (event["client"].eql?(ignored_check[:client_name]) && event["check"].eql?(ignored_check[:check]))
       end
-      
+
     end
   end
 end
