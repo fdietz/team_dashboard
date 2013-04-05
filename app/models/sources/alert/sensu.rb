@@ -79,7 +79,7 @@ module Sources
 
 
           #If only client_filter is filled
-        elsif (!sensu_client_filter.eql?(""))
+        elsif (!sensu_client_filter.empty?)
           #Here we will keep the clients for filtering if any
           clients_array = sensu_client_filter.split(',')
 
@@ -99,7 +99,7 @@ module Sources
           end
 
           #If only a boring checks are filtered
-        elsif (!sensu_ignored_checks.eql?(""))
+        elsif (!sensu_ignored_checks.empty?)
 
           #Here we will keep the ignored checks for filtering, if any...
           ignored_checks_array = sensu_ignored_checks.split(',').map do
