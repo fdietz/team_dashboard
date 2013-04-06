@@ -24,6 +24,10 @@
     </select>
   </div>
 
+  <div td-field label="Max Value">
+    <input name="max" ng-model="widget.max" type="number" />
+  </div>
+
   <div td-field label="Source">
     <select name="source" ng-model="widget.source" ng-options="i.value as i.label for i in sources" required>
     </select>
