@@ -29,9 +29,9 @@ task :populate => :environment do
 
 
   d3 = Dashboard.create!(:name => "Example 3 (Jenkins and Travis CI Builds)")
-  d3.widgets.create!(:name => "Jenkins/Travis CI", :kind => 'ci', :source => 'jenkins', :settings => {
-    :server_url => "http://ci.jenkins-ci.org/", :project => 'infra_plugin_changes_report' })
-  d3.widgets.create!(:name => "Jenkins/Travis CI", :kind => 'ci', :source => 'travis', :settings => {
+  d3.widgets.create!(:name => "Jenkins", :kind => 'ci', :source => 'jenkins', :settings => {
+    :server_url => "http://ci.jenkins-ci.org/", :project => 'infra_plugin-compat-tester' })
+  d3.widgets.create!(:name => "Travis CI", :kind => 'ci', :source => 'travis', :settings => {
     :server_url => "http://travis-ci.org", :project => 'travis-ci/travis-ci' } )
 
   d4 = Dashboard.create!(:name => "Example 4 (Meter, Alert)")
