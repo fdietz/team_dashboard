@@ -34,6 +34,11 @@ module Sources
     raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}: #{e}"
   end
 
+  def source_names(type)
+    path = Rails.root.join("app/models/sources/#{type}")
+    Dir["#{path}/*"].map { |f| File.basename(f, '.*') }.reject! { |name| name == "base" }
+  end
+
   protected
 
   def source_properties(type, name)
@@ -45,11 +50,6 @@ module Sources
       "supports_functions"       => plugin.supports_functions?,
       "fields"                   => plugin.fields
     }
-  end
-
-  def source_names(type)
-    path = Rails.root.join("app/models/sources/#{type}")
-    Dir["#{path}/*"].map { |f| File.basename(f, '.*') }.reject! { |name| name == "base" }
   end
 
 end

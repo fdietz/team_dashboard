@@ -1,7 +1,12 @@
-app.factory("NumberModel", ["$http", function($http) {
+app.factory("NumberModel", ["$http", "TimeSelector", function($http, TimeSelector) {
 
   function getParams(config) {
-    return { source: config.source, widget_id: config.id };
+    return {
+      from: TimeSelector.getFrom(config.range),
+      to: TimeSelector.getCurrent(config.range),
+      source: config.source,
+      widget_id: config.id
+    };
   }
 
   function getData(config) {

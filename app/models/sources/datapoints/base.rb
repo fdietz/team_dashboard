@@ -27,6 +27,10 @@ module Sources
 
       protected
 
+      def targetsArray(targets)
+        targets.split(";").map { |t| t.strip }
+      end
+
       @@cache = {}
 
       def cached_get(key)

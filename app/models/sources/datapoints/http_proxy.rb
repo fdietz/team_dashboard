@@ -12,7 +12,8 @@ module Sources
       def get(options = {})
         from    = (options[:from]).to_i
         to      = (options[:to] || Time.now).to_i
-        targets = options[:targets]
+        widget  = Widget.find(options.fetch(:widget_id))
+        targets = targetsArray(widget.targets)
 
         params = { :from => from, :to => to, :targets => targets }
 

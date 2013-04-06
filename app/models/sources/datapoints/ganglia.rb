@@ -32,7 +32,8 @@ module Sources
       def get(options = {})
         from    = (options[:from]).to_i
         to      = (options[:to] || Time.now).to_i
-        targets = options[:targets]
+        widget  = Widget.find(options.fetch(:widget_id))
+        targets = targetsArray(widget.targets)
         source  = options[:source]
 
         targets = targets.reject(&:blank?)
