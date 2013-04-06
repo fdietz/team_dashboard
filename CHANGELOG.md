@@ -10,5 +10,6 @@
 * The dashboard uses [gridster.js](http://gridster.net/) instead of [jQuery UI Sortable](http://jqueryui.com/sortable/) which finally makes it possible to have different widget sizes in both dimensions. This also means that all widgets support only a single data source - leading to much simpler configuration and API usage.
 * New data source plugins: [Pingdom](https://www.pingdom.com/), Shell script, [Hockey App](http://hockeyapp.net/), [Errbit](https://github.com/errbit/errbit) and [New Relic](http://newrelic.com/)
 * A more fine tuned look and feel for the widgets
+* Unicorn is the new default rack server. This makes deployment on a free Heroku plan a viable option.
 
 
