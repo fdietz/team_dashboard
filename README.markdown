@@ -13,7 +13,7 @@ Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!foru
 ## News
 
 ### Team Dashboard 2 RC1 is available
-Please checkout the release [announcement](http://fdietz.github.com/2013/03/16/team-dashboard-2-release-candidate.html) and read the [Migration Guide](VERSION2_MIGRATION.markdown).
+Please checkout the [Changelog](CHANGELOG.md) and read the [Migration Guide](VERSION2_MIGRATION.markdown).
 
 ## Getting Started
 
