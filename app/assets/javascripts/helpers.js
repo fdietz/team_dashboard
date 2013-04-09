@@ -207,19 +207,25 @@
 
   // as defined by http://en.wikipedia.org/wiki/Metric_prefix
   helpers.suffixFormatter = function(val, digits) {
-    val = parseFloat(val);
+    var val = parseFloat(val);
+    var neg = (val < 0);
+    val = Math.abs(val);
+
     if (val > 1000000000) {
-      return Math.round(val/1000000000) + "G";
+      val = Math.round(val/1000000000) + "G";
     } else if (val > 1000000) {
-      return Math.round(val/1000000) + "M";
+      val = Math.round(val/1000000) + "M";
     } else if (val > 1000) {
-      return Math.round(val/1000) + "k";
+      val = Math.round(val/1000) + "k";
     } else if (val < 1.0) {
-      return parseFloat(Math.round(val * 100) / 100).toFixed(2);
+      val = parseFloat(Math.round(val * 100) / 100).toFixed(2);
     } else {
       val = val % 1 === 0 ? val.toString() : val.toFixed(digits);
-      return val;
     }
+    if(neg) {
+      val = '-' + val;
+    }
+    return val;
   };
 
 })($, _, Backbone, bootbox, List, app.collections, app.helpers);
