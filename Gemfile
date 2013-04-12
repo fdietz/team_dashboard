@@ -18,6 +18,8 @@ gem "multi_xml", "~> 0.5.1"
 gem "libxml-ruby", "~> 2.3.3"
 gem "nokogiri", "~> 1.5.5"
 
+gem "newrelic_api", "~> 1.2"
+
 group :test, :development do
   gem "rspec-rails"
   gem "jasmine"

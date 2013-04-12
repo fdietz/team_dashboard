@@ -108,6 +108,7 @@ GEM
     multi_xml (0.5.1)
     multipart-post (1.1.5)
     mysql2 (0.3.11)
+    newrelic_api (1.2.4)
     nokogiri (1.5.5)
     polyglot (0.3.3)
     rack (1.4.5)
@@ -202,6 +203,7 @@ DEPENDENCIES
   mocha
   multi_xml (~> 0.5.1)
   mysql2 (~> 0.3.11)
+  newrelic_api (~> 1.2)
   nokogiri (~> 1.5.5)
   rails (~> 3.2.11)
   rb-fsevent (~> 0.9.1)
