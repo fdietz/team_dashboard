@@ -12,6 +12,11 @@ Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!foru
 
 ## News
 
+### Team Dashboard 2 RC2 is available
+Lots of new features and bugfixes. This is (hopefully) the last release candidate!
+
+Read the [Changelog](CHANGELOG.md)!
+
 ### Team Dashboard 2 RC1 is available
 Please checkout the [Changelog](CHANGELOG.md) and read the [Migration Guide](VERSION2_MIGRATION.markdown).
 
