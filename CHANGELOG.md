@@ -8,6 +8,7 @@
 * Graph widget supports max y-axis value. Useful if your data has lots of outliers which makes the automatic scaling work nicely again.
 * The graph widget has a max y axis value option which is useful if the autoscaling is confused by very large outliers
 * Unicorn is the new default rack server. This makes deployment on a free Heroku plan a viable option (#68 - thanks to deathowl)
+* Dashboards can be shown in fullscreen mode using [bigscreen.js](https://github.com/bdougherty/BigScreen) (Thanks to ngbroadbent)
 * Bugfix: Broken Number::NewRelic source #78
 * Bugfix: CI widget loses the light indicator #76
 * Bugfix: Sensu bugfixes #72 (thanks to DraganMileski)
