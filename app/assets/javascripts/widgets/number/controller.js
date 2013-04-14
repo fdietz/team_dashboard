@@ -5,7 +5,8 @@ app.controller("NumberCtrl", ["$scope", "Sources", "EditorFormOptions", "$dialog
     update_interval: 10,
     use_metric_suffix: true,
     range: "30-minutes",
-    graph_type: "area"
+    graph_type: "area",
+    aggregate_function: "average"
   };
 
   if (!$scope.widget.id) {
