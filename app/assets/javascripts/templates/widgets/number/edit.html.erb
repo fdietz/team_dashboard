@@ -21,36 +21,31 @@
 
   <div ng-show="widget.source == 'datapoints'">
     <div td-field label=" Datapoints Source">
-      <select name="datapoints_source" ng-model="widget.datapoints_source" ng-options="i.value as i.label for i in datapointsSources" required>
+      <select name="datapoints_source" ng-model="widget.datapoints_source" ng-options="i.value as i.label for i in datapointsSources" ng-required="widget.source == 'datapoints'">
       </select>
     </div>
 
     <div td-field label="Periods">
-      <select name="range" ng-model="widget.range" ng-options="i.value as i.label for i in periods" required>
-      </select>
-    </div>
-
-    <div td-field label="Size">
-      <select name="size_x" ng-model="widget.size_x" ng-options="i.value as i.label for i in sizes" required>
+      <select name="range" ng-model="widget.range" ng-options="i.value as i.label for i in periods" ng-required="widget.source == 'datapoints'">
       </select>
     </div>
 
     <div td-field label="Graph Type">
-      <select name="graph_type" ng-model="widget.graph_type" ng-options="i.value as i.label for i in graphTypes" required>
+      <select name="graph_type" ng-model="widget.graph_type" ng-options="i.value as i.label for i in graphTypes" ng-required="widget.source == 'datapoints'">
       </select>
     </div>
 
     <div td-field label="Targets">
       <div class="input-append" ng-show="supportsTargetBrowsing()">
-        <input name="targets" ng-model="widget.targets" type="text" required/>
+        <input name="targets" ng-model="widget.targets" type="text" ng-required="widget.source == 'datapoints'"/>
         <button ng-click="editTargets()" class="btn browse" type="button"><i class="icon-search icon-white"></i></button>
       </div>
 
-      <input name="targets" ng-hide="supportsTargetBrowsing()" ng-model="widget.targets" type="text" required/>
+      <input name="targets" ng-hide="supportsTargetBrowsing()" ng-model="widget.targets" type="text" ng-required="widget.source == 'datapoints'"/>
     </div>
 
     <div td-field label="Aggregate Function">
-      <select name="aggregate_function" ng-model="widget.aggregate_function" ng-options="i.value as i.label for i in aggregateFunction" required>
+      <select name="aggregate_function" ng-model="widget.aggregate_function" ng-options="i.value as i.label for i in aggregateFunction" ng-required="widget.source == 'datapoints'">
       </select>
     </div>
 
