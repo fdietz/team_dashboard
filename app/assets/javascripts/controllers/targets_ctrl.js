@@ -46,7 +46,7 @@ app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", functi
   }
 
   $scope.searchUrl = function() {
-    return "/api/datapoints_targets?"+encodedParams("demo");
+    return "/api/datapoints_targets?"+encodedParams(dialog.source);
   };
 
   $scope.selectTarget = function(target) {

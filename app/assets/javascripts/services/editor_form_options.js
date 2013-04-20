@@ -39,8 +39,7 @@ app.factory("EditorFormOptions", function() {
 
   var aggregate_functions = [
     { value: "sum",    label: "Sum" },
-    { value: "average",   label: "Average" },
-    { value: "delta",  label: "Delta" }
+    { value: "average",   label: "Average" }
   ];
 
   return {

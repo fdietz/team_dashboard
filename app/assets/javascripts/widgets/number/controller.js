@@ -1,5 +1,7 @@
 app.controller("NumberCtrl", ["$scope", "Sources", "EditorFormOptions", "$dialog", function($scope, Sources, EditorFormOptions, $dialog) {
 
+  var dialog = $dialog.dialog();
+
   var defaults = {
     size_x: 1, size_y: 1,
     update_interval: 10,
@@ -32,6 +34,7 @@ app.controller("NumberCtrl", ["$scope", "Sources", "EditorFormOptions", "$dialog
     var templateUrl    = "/assets/templates/targets/index.html";
 
     dialog.targets = $scope.widget.targets;
+    dialog.source = $scope.widget.datapoints_source;
     dialog.open(templateUrl, "TargetsCtrl").then(convertTargetsArrayToString);
   };
 

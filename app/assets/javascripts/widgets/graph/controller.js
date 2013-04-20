@@ -24,6 +24,7 @@ app.controller("GraphCtrl", ["$scope", "$dialog", "EditorFormOptions", "Sources"
     var templateUrl    = "/assets/templates/targets/index.html";
 
     dialog.targets = $scope.widget.targets;
+    dialog.source = $scope.widget.source;
     dialog.open(templateUrl, "TargetsCtrl").then(convertTargetsArrayToString);
   };
 
