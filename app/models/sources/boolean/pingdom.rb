@@ -39,15 +39,13 @@ module Sources
             if item["status"] == 'up'
               return { :value => true }
             else
-              Rails.logger.debug("\n********************** WARNING **********************")
-              Rails.logger.debug("SOMETHING IS WRONG WITH YOUR PINGDOM CHECK. PLEASE CHECK YOUR PINGDOM ACCOUNT!!!\n")
+              Rails.logger.warn("Pingdom: '#{check_name}' check is down!")
               return { :value => false }
             end
           end
         end
 
-        Rails.logger.debug("\n********************** ERROR **********************")
-        Rails.logger.debug("THE CHECK_NAME YOU ENTERED IS PROBABLY INCORRECT!!!\n")
+        Rails.logger.fatal("Could not find a Pingdom check with the name '#{check_name}'!")
         raise NotFoundError
       end
     end
