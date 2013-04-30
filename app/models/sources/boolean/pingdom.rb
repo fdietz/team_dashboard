@@ -12,6 +12,7 @@
 module Sources
   module Boolean
     class Pingdom < Sources::Boolean::Base
+      class NotFoundError < StandardError; end
 
       def available?
         Rails.configuration.pingdom_username.present? && Rails.configuration.pingdom_password.present?
@@ -29,31 +30,26 @@ module Sources
         widget           = Widget.find(options.fetch(:widget_id))
         check_name       = widget.settings.fetch(:check_name)
 
-        check_state = false #It will show false unless the conditions below are fulfilled and the blocks set "check_state" variable to TRUE
-
         url = "https://#{CGI.escape(pingdom_username)}:#{pingdom_password}@api.pingdom.com/api/2.0/checks"
 
         response = ::HttpService.request(url, :headers => { 'App-Key' => '9ucbwe7se1uf61l59h2s0zm6ogjzpd7v'} )
 
         response["checks"].each do |item|
-          if item["name"].eql? check_name
-            case item["status"]
-            when "up"
-              check_state = true
+          if item["name"] == check_name
+            if item["status"] == 'up'
+              return { :value => true }
             else
               Rails.logger.debug("\n********************** WARNING **********************")
               Rails.logger.debug("SOMETHING IS WRONG WITH YOUR PINGDOM CHECK. PLEASE CHECK YOUR PINGDOM ACCOUNT!!!\n")
-              raise Sources::Booleans::NotFoundError
+              return { :value => false }
             end
-          else
-            Rails.logger.debug("\n********************** ERROR **********************")
-            Rails.logger.debug("THE CHECK_NAME YOU ENTERED IS PROBABLY INCORRECT!!!\n")
-            raise Sources::Booleans::NotFoundError
           end
         end
-        { :value => check_state }
-      end
 
+        Rails.logger.debug("\n********************** ERROR **********************")
+        Rails.logger.debug("THE CHECK_NAME YOU ENTERED IS PROBABLY INCORRECT!!!\n")
+        raise NotFoundError
+      end
     end
   end
 end
