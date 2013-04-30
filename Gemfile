@@ -21,6 +21,7 @@ gem "nokogiri", "~> 1.5.5"
 gem "newrelic_api", "~> 1.2"
 
 group :test, :development do
+  gem 'debugger'
   gem "rspec-rails"
   gem "jasmine"
   gem "factory_girl_rails"
