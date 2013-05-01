@@ -9,7 +9,7 @@ module HttpProxyResolver
 
   def get(options = {})
     widget        = Widget.find(options.fetch(:widget_id))
-    response_body = ::HttpService.request(widget.settings.fetch(:proxy_url))
+    response_body = ::HttpService.request(widget.settings.fetch(:proxy_url), :headers => { :accept =>  'application/json' })
     value_path    = widget.settings.fetch(:proxy_value_path);
 
     if value_path.present?
