@@ -92,7 +92,7 @@ It currently supports [Graphite](http://graphite.wikidot.com/) and [Ganglia](htt
 ### Number Widget
 Shows the current integer value provided by the data source, the percentage of change compared to the previous value and an optional label. Use it to show for the example the number of errors on specific systems or the number of users.
 
-It currently supports a [New Relic](http://newrelic.com/), [Hockey App](http://hockeyapp.net/), http proxy data source and Issue counter for ([Jira Filters](JIRA_COUNTER.markdown)).
+It currently supports a [New Relic](http://newrelic.com/), [Hockey App](http://hockeyapp.net/), http proxy data source and Issue counter for [Jira Filters](JIRA_COUNTER.markdown).
 
 ### Boolean Widget
 Shows the current boolean value provided by the data source and an optional label. Use it to show for example the success of a Jenkins build or the health status of a system.
