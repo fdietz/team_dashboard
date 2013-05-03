@@ -8,4 +8,7 @@ Add Jira URL, User and Passwort to config/application.js or set JIRA_URL, JIRA_U
 
 Create a Search Filter in your Jira installation and remember the Filter ID (requestId in URL when viewing the filter). Paste this ID to the numner widget. That's it.
 
+## Credits & Contributors
+
+Thanks to [thilko](https://github.com/thilko) for initial help and idea
 
