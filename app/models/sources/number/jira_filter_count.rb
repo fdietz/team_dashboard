@@ -1,7 +1,3 @@
-# -*- encoding : utf-8 -*-
-require "net/http"
-require "json"
-
 module Sources
   module Number
     class JiraFilterCount < Sources::Number::Base
