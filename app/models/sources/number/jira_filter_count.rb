@@ -7,17 +7,14 @@ module Sources
       end
 
       def count_by_filter_id(filter_id)
-        uri = URI(Rails.configuration.jira_url)
-        params = { :maxResults => "1000", :jql => "filter = #{filter_id}"}
-        uri.query = URI.encode_www_form(params)
+        jira_uri          = URI.parse(Rails.configuration.jira_url)
+        jira_uri.user     = Rails.configuration.jira_user if Rails.configuration.jira_user
+        jira_uri.password = Rails.configuration.jira_password if Rails.configuration.jira_password
+        jira_uri.query    = URI.encode_www_form(:maxResults => "1000", :jql => "filter = #{filter_id}")
 
-        req = Net::HTTP::Get.new(uri.request_uri)
-        req.basic_auth Rails.configuration.jira_user, Rails.configuration.jira_password
-
-        res = Net::HTTP.start(uri.hostname, uri.port) {|http|
-          http.request(req)
-        }
-        JSON.parse(res.body)["total"]
+        Rails.logger.debug("Requesting from #{jira_uri.to_s} ...")
+        res = ::HttpService.request(jira_uri.to_s)
+        res["total"]
       end
 
       def fields
