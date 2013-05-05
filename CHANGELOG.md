@@ -1,5 +1,12 @@
 # Changelog
 
+## Team Dashboard 2.0.0
+* Bugfix: target selection dialog for datapoints sources (graphite, etc.)
+* Bugfix: "can't convert nil into Array" bug, support target browsing for number widget
+* Bugfix: Pingdom source, logic was a bit wrong
+* Bugfix: set accept header to application/json for http proxy #81
+* update jquery.gridster.js plugin to v0.1.0 - 2013-04-09
+
 ## Team Dashboard 2 Release Candidate 2
 * Number widget optionally displays a metric suffix.
 * Number widget supports datapoints data source (number widget now completely replaced the counter widget which was already removed in RC1) as for example graphite (choose `datapoints` as source to view all options)
