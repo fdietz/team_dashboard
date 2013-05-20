@@ -20,8 +20,6 @@ module HttpProxyResolver
     end
   end
 
-  private
-
   def resolve_value(document, value_path)
     paths = value_path.split(".");
     current_element = document
