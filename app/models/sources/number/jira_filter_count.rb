@@ -1,3 +1,15 @@
+# Configuration:
+#  Add Jira URL, User and Passwort to config/application.js or set JIRA_URL,
+#  JIRA_USER and JIRA_PASSWORD for your environment.
+#
+# Usage:
+#  Create a Search Filter in your Jira installation and remember the
+#  Filter ID (requestId in URL when viewing the filter). Paste this ID to
+#  the number widget. That's it.
+#
+# Author:
+#  tubit (Thanks to thilko)
+
 module Sources
   module Number
     class JiraFilterCount < Sources::Number::Base
