@@ -8,9 +8,14 @@ class Widget < ActiveRecord::Base
 
   after_initialize :set_defaults
 
-  attr_accessible :name, :kind, :size, :source, :targets, :range, :update_interval, :dashboard_id, :dashboard, :settings
+  attr_accessible :name, :kind, :size, :source, :targets, :range, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings
 
   class << self
+
+    def list_available
+      path = Rails.root.join("app/assets/javascripts/widgets")
+      Dir["#{path}/*"].map { |f| File.basename(f, '.*') }
+    end
 
     def for_dashboard(id)
       where(:dashboard_id => id)

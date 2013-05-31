@@ -1,29 +1,20 @@
-(function($, _, Backbone){
-  "use strict";
+var app = angular.module("TeamDashboard", ["ngResource", "ngSanitize", "ui", "ui.bootstrap.modal", "ui.bootstrap.dialog", "ui.bootstrap.transition"]);
 
-  window.app = {};
-  var app = window.app;
+app.config(function($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode(true);
+  $routeProvider
+    .when("/dashboards", { template: $('#templates-dashboards-index').html(), controller: "DashboardIndexCtrl" })
+    .when("/dashboards/:id", { template: $('#templates-dashboards-show').html(), controller: "DashboardShowCtrl" })
+    .when("/about", { template: $('#templates-abouts-show').html(), controller: "AboutCtrl" })
+    .otherwise({ redirectTo: "/dashboards" });
+});
 
-  app.collections = {};
-  app.models = {};
-  app.views = {};
-  app.views.widgets = {};
-  app.views.WidgetEditors = {};
-  app.views.schemas = {};
-  app.mixins = {};
-  app.helpers = {};
 
-  app.init = function() {
-    app.collections.dashboards = new app.collections.Dashboard({});
-    app.helpers.datapointsTargetsPool = new app.helpers.DatapointsTargetsPool();
+app.config(function($httpProvider) {
+  $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+});
 
-    app.router = new window.app.Router();
-    try {
-      Backbone.history.start({ pushState: true });
-    }
-    catch(x) {
-      console.log(x);
-    }
-  };
-
-})($, _, Backbone);
+// use angular/mustache style {{variable}} interpolation
+_.templateSettings = {
+  interpolate : /\{\{(.+?)\}\}/g
+};

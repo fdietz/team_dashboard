@@ -6,8 +6,14 @@ module Sources
         true
       end
 
-      def get(targets, from, to, options = {})
-        to = to || Time.now.to_i
+      def get(options = {})
+        from    = (options[:from]).to_i
+        to      = (options[:to] || Time.now).to_i
+
+        widget  = Widget.find(options.fetch(:widget_id))
+        targets = targetsArray(widget.targets)
+        source  = options[:source]
+
         datapoints = []
         targets.each do |target|
           datapoints << { :target => "demo.example1", :datapoints => ::DemoHelper.generate_datapoints(from, to) }

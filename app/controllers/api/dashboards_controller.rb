@@ -15,7 +15,7 @@ module Api
       input = JSON.parse(request.body.read.to_s)
       dashboard = Dashboard.new(input.slice(*Dashboard.accessible_attributes))
       if dashboard.save
-        render :json => dashboard, :status => :created, :location => dashboards_url(dashboard)
+        render :json => dashboard, :status => :created, :location => api_dashboards_url(dashboard)
       else
         render :json => dashboard.errors, :status => :unprocessable_entity
       end

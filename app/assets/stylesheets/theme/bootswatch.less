@@ -1,20 +1,10 @@
-// Bootswatch.less
-// Swatch: Cyborg
-// Version: 2.1.0
+// Cyborg 2.3.0
+// Bootswatch
 // -----------------------------------------------------
+
 
 // TYPOGRAPHY
 // -----------------------------------------------------
-
-h2 {
-  font-size: 20px;
-  line-height: 30px;
-}
-
-h3 {
-  font-size: 16px;
-  line-height: 30px;
-}
 
 label, input, button, select, textarea,
 .navbar .search-query:-moz-placeholder,
@@ -28,10 +18,10 @@ code, pre {
 }
 
 blockquote {
-  border-left: 5px solid @blue;
+  border-left: 5px solid @grayDark;
 
   &.pull-right {
-    border-right: 5px solid @blue;
+    border-right: 5px solid @grayDark;
   }
 }
 
@@ -48,7 +38,11 @@ body {
 }
 
 .page-header {
-  border-bottom: 2px solid @blue
+  border-bottom: 1px solid @grayDark
+}
+
+hr {
+  border-bottom: none;
 }
 
 // NAVBAR
@@ -56,91 +50,61 @@ body {
 
 .navbar {
 
-  font-size: 16px;
-
   .navbar-inner {
     .border-radius(0);
     .box-shadow(none);
-    border-bottom: 2px solid @blue
+    border-bottom: 1px solid @grayDark;
   }
 
   .brand {
-    padding: 12px 20px 11px;
+    padding: 15px 20px 15px;
     color: @grayLighter;
     font-weight: normal;
     text-shadow: none;
   }
 
-  li {
-    line-height: 19px;
-  }
-
   .nav > li > a {
-    padding: 13px 10px 8px;
-    border-bottom: 3px solid transparent;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-
-    &:hover {
-      border-bottom: 3px solid @blue
-    }
+    padding: 15px 15px 14px;
+    border-bottom: 1px solid transparent;
   }
 
-  .nav > .active > a {
-    border-bottom: 3px solid @blue;
+  .nav > li > a:hover,
+  .nav > .active > a,
+  .nav > .active > a:hover {
+    border-bottom: 1px solid @blue;
   }
 
-  .nav .active > a,
-  .nav .active > a:hover,
-  .nav .active > a:focus {
+  .nav > .active > a,
+  .nav > .active > a:hover,
+  .nav > .active > a:focus {
     .box-shadow(none);
   }
 
-  .nav > li > .dropdown-menu::before,
-  .nav > li > .dropdown-menu::after {
-    display: none;
-  }
-
-  .dropdown-menu li > a:hover,
-  .dropdown-menu li > a:focus,
-  .dropdown-submenu:hover > a {
-    background-image: none;
-  }
-
   .navbar-text {
-    margin-left: 15px;
-    margin-right: 15px;
-    line-height: 43px;
+    margin-bottom: 1px;
+    padding: 15px 15px 14px;
+    line-height: inherit;
+  }
+
+  .divider-vertical {
+    margin: 0;
+    border-left: 1px solid @grayDark;
+    border-right-width: 0;
   }
 
   .search-query,
   .search-query:focus,
   .search-query.focused {
+    .border-radius(1px);
+    background-color: @grayDark;
+    line-height: normal;
     color: @grayLight;
     text-shadow: none;
-    background-color: #222;
-    .border-radius(1px);
     .placeholder(@gray);
   }
 
   &-inverse {
 
-    .navbar-inner {
-      border: none;
-      border-bottom: 3px solid @black;
-    }
-
-    .brand:hover {
-      border-bottom: none;
-      background-color: @black;
-    }
-
-    .nav li > a:hover {
-      border-bottom-color: transparent;
-    }
-
-    .nav .active > a {
-      border-bottom-color: transparent;
-    }
   }
 }
 
@@ -199,54 +163,43 @@ body {
 }
 
 div.subnav {
-  position: static;
+
+  margin: 0 1px;
   background-color: @grayDarker;
   background-image: none;
-  border: 0;
-
-
-  &.subnav-fixed {
-    position: relative;
-    left: -1px;
-    top: auto;
-  }
+  border: none;
+  border-bottom: 1px solid @grayDark;
 
   .nav > li > a,
-  .nav .active a {
+  .nav > li:first-child > a,
+  .nav > li:first-child > a:hover {
+    padding: 11px 12px;
+    border: none;
     background-color: @grayDarker;
-    border-left: 1px solid #222;
-    border-right: 0;
-    color: @grayLighter;
+    color: @grayLight;
+  }
+
+  .nav > li > a:hover,
+  .nav > li.active > a,
+  .nav > li.active > a:hover,
+  .nav > li:first-child > a:hover {
+    padding: 11px 12px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid @blue;
+    color: @white;
   }
 
   .nav li.nav-header {
     text-shadow: none;
   }
 
-  .nav > li > a:hover,
-  .nav > li.active > a:hover,
-  .nav > li:first-child > a:hover {
-    background: transparent;
-    border-bottom: 2px solid @blue;
-    border-left: 1px solid #222;
-    color: @white;
-  }
 
-  .nav .open .dropdown-toggle {
-    border: 0;
-    border-left: 1px solid #222;
-      border-bottom: 2px solid @blue;
-    background-color: #060606;
-  }
 
-  .nav .open .dropdown-menu {
-    background-color: @grayDarker;
-    border-left: solid 1px rgba(255, 255, 255, 0.1);
 
-    li > a:hover {
-      border-bottom: 0;
-      background: @blue;
-    }
+  &-fixed {
+    top: @navbarHeight;
+    margin: 0;
   }
 }
 
@@ -255,23 +208,19 @@ div.subnav {
 
 .nav-tabs {
 
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid @grayDark;
 
   li > a:hover,
   li.active > a,
   li.active > a:hover {
-    border: 1px solid #222;
+    border-color: transparent;
     background-color: @blue;
     color: @white;
   }
 
   .open .dropdown-toggle {
-    background-color: #060606 !important;
-    border: 1px solid #222;
-  }
-
-  .dropdown-menu li > a:hover {
-    border: none;
+    background-color: #060606;
+    border-color: transparent;
   }
 }
 
@@ -308,14 +257,14 @@ div.subnav {
 
   .divider {
     background-color: transparent;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid @grayDark;
   }
 }
 
 .nav-stacked {
 
   li > a {
-    border: 1px solid #222 !important;
+    border: 1px solid @grayDark !important;
   }
 
   li > a:hover,
@@ -328,52 +277,52 @@ div.subnav {
 .tabbable  {
   .nav-tabs,
   .nav-tabs li.active > a {
-    border-color: #222;
+    border-color: @grayDark;
   }
 }
 
 .breadcrumb {
+
   background-color: transparent;
   background-image: none;
   border-width: 0;
   .box-shadow(none);
   font-size: 14px;
 
-  li > a {
-    color: @blue;
+  li {
     text-shadow: none;
   }
 
-  li.active {
+  li > a {
+    color: @blue;
     text-shadow: none;
   }
 }
 
 .pagination {
+
   ul {
     .box-shadow(none);
   }
 
-  a {
-    border: 0;
-    font-size: 14px;
+  ul > li > a:hover,
+  ul > .active > a,
+  ul > .active > span {
+    // color: @white;
   }
 
-  a:hover, .active a {
-    background-color: @blue;
-    color: @white;
-  }
-
-  .disabled span,
-  .disabled a,
-  .disabled a:hover {
+  ul > .disabled > a,
+  ul > .disabled > a:hover,
+  ul > .disabled > span,
+  ul > .disabled > span:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
 }
 
 .pager {
 
-  a {
+  li > a,
+  li > span {
     background-color: @bodyBackground;
     border: none;
 
@@ -449,17 +398,16 @@ input, textarea, select {
   .border-radius(1px);
 }
 
-legend, label {
-  color: @textColor;
-  border-bottom: 0px solid #222;
-}
-
-input, textarea, select, .uneditable-input {
+select, textarea,
+input[type="text"], input[type="password"], input[type="datetime"],
+input[type="datetime-local"], input[type="date"], input[type="month"],
+input[type="time"], input[type="week"], input[type="number"],
+input[type="email"], input[type="url"], input[type="search"],
+input[type="tel"], input[type="color"], .uneditable-input {
   color: @grayDark;
 }
 
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .uneditable-input {
-  background-color: #555;
   border-color: #444;
 }
 
@@ -478,6 +426,11 @@ input[type="checkbox"]:focus,
 select:focus {
   .box-shadow(none); // override for file inputs
   .tab-focus();
+}
+
+legend, label {
+  color: @textColor;
+  border-bottom: 0px solid #222;
 }
 
 .form-actions {
@@ -511,12 +464,7 @@ select:focus {
 // -----------------------------------------------------
 
 .dropdown-menu {
-  background-color: #191A1A;
   .box-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
-}
-
-.dropdown-menu li > a:hover {
-  background-color: @blue;
 }
 
 // ALERTS, LABELS, BADGES
@@ -576,7 +524,7 @@ select:focus {
 }
 
 .thumbnail {
-  border-color: #222;
+  border-color: @grayDark;
 }
 
 .progress {
@@ -592,18 +540,18 @@ select:focus {
 }
 
 .modal-header {
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid @grayDark;
 }
 
 .modal-footer {
   background-color: @grayDark;
-  border-top: 1px solid #222;
+  border-top: 1px solid @grayDark;
   .border-radius(0 0 6px 6px);
   .box-shadow(none);
 }
 
 .footer {
-  border-top: 1px solid #222;
+  border-top: 1px solid @grayDark;
 }
 
 // MEDIA QUERIES
@@ -612,8 +560,8 @@ select:focus {
 @media (max-width: 768px) {
   div.subnav .nav > li + li > a,
   div.subnav .nav > li:first-child > a {
-    border-top: 1px solid #222;
-    border-left: 1px solid #222;
+    border-top: 1px solid @grayDark;
+    border-left: 1px solid @grayDark;
   }
 
   .subnav .nav > li + li > a:hover,

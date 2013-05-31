@@ -1,0 +1,27 @@
+<div class="btn-toolbar">
+  <div class="btn-group">
+      <h2 style="display:inline">Dashboards</h2>
+  </div>
+  <div class="btn-group pull-right">
+    <button ng-click="createDashboard()" href="#" class="btn btn-success dashboard-create">Create Dashboard</button>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Last Modified</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody ng-repeat="dashboard in dashboards">
+    <tr>
+      <td>
+        <a href="/dashboards/{{dashboard.id}}">{{dashboard.name}}</a>
+      </td>
+      <td>{{dashboard.updated_at | date:'medium' }}</td>
+      <td>{{dashboard.created_at | date:'medium' }}</td>
+    </tr>
+  </tbody>
+</table>

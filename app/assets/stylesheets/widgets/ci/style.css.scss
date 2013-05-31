@@ -1,0 +1,35 @@
+.ci {
+
+  .ci-value {
+    float: left;
+    margin-right: 10px;
+    margin-top: 10px;
+
+    width: 70px;
+    height: 60px;
+
+    &.building {
+      background-repeat: no-repeat;
+      background-position: 20px 14px;
+      &.red { background-image: image-url("spinner-red-bg.gif"); }
+      &.green { background-image: image-url("spinner-green-bg.gif"); }
+      &.gray { background-image: image-url("spinner-gray-bg.gif"); }
+    }
+  }
+
+  .red {
+    background: #D26771;
+    border: 2px solid darken(#D26771, 8%);
+  }
+
+  .green {
+    background: #8ec15c;
+    border: 2px solid darken(#8ec15a, 10%);
+  }
+
+  .gray {
+    background: #ccc;
+    border: 2px solid darken(#ccc, 10%);
+  }
+
+}

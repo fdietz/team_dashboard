@@ -1,0 +1,63 @@
+.graph-container {
+  height: 265px;
+}
+
+.graph {
+  display: inline-block;
+}
+
+/************************* flotr2 graph */
+
+.flotr-grid-label {
+  font-size: 12px;
+  color: #666;
+}
+
+/************************* rickshaw graph */
+
+.y-axis {
+  float: left;
+  width: 40px;
+  /*width: 40px;*/
+}
+
+/* plot width */
+.graph svg path {
+  stroke-width: 2;
+}
+
+/* move x-axis title below graph */
+.rickshaw_graph .x_tick {
+  margin-bottom: -25px;
+}
+
+/* text color of x-axis label */
+.rickshaw_graph .x_tick .title {
+  color: #FFF;
+}
+
+/* hover details */
+.rickshaw_graph .detail .x_label { display: none }
+.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+.detail_swatch { float: right; width: 10px; height: 10px; margin: 2px 4px 0 4px}
+.rickshaw_graph .detail .date { color: #a0a0a0; }
+
+.rickshaw_graph text {
+  fill: #FFF;
+}
+
+/* hide y-axis matrix */
+.rickshaw_graph .x_tick {
+  stroke: 0;
+  border: 0;
+}
+
+/* hide y-axis big line */
+.rickshaw_graph .y_ticks path {
+  fill: none;
+  stroke: none;
+}
+
+.rickshaw_graph .y_grid {
+  display:none;
+}

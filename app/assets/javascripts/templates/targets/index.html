@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h3>Targets Editor</h3>
+</div>
+<div class="modal-body">
+  <div>
+    <form class="form-inline" name="targets-form">
+      <input td-autocomplete="searchUrl()" autocomplete="off" class="input-xlarge" name="new-target" ng-model="newTarget" placeholder="Search Target..." type="text" autofocus>
+      <button ng-click="addTarget()" ng-disabled="newTarget.length == 0" class="btn btn-success">Add</button>
+    </form>
+  </div>
+
+  <div>
+    <ul class="selectable-list">
+      <li ng-repeat="target in targets">
+        <div ng-class="selectedClass(target)" ng-click="selectTarget(target)">
+          <span  class="text" ng-model="target.content">{{target.content}}</span>
+          <span ng-click="removeTarget(target)" class='actions remove icon-remove'></span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="target-editor">
+    <form>
+      <label>Edit Target</label>
+      <textarea rows="3" ng-model="selectedTarget.content" />
+    </form>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <a href="#" class="btn" ng-click="cancel()">Cancel</a>
+  <a href="#" class="btn btn-primary" ng-click="save()">Save</a>
+</div>
+

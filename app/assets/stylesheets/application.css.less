@@ -11,19 +11,58 @@
 
  *= require twitter/bootstrap
  *= require theme/index
- *= require backbone-forms-bootstrap
- *= require select2
- *= require rickshaw.min
- *= jquery-ui-1.8.20.custom
 
- *= require graph
+ *= require jquery.gridster
+
+ *= require_tree ./widgets
+
  *= require_self
+
 */
 
+h2 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+h3 {
+  font-size: 16px;
+  line-height: 30px;
+}
+
+:-webkit-full-screen{
+  width: 100%;
+  height: 100%;
+}
+
+.navbar {
+  margin-bottom: 10px;
+}
+
+.alert {
+  position: absolute;
+
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+
+  text-align: center;
+
+  opacity: 0;
+
+  -webkit-transition: opacity 0.5s ease-in-out;
+     -moz-transition: opacity 1s ease-in-out;
+          transition: opacity 0.5s ease-in-out;
+}
+
+.alert-show {
+  opacity: 0.9;
+}
 
 
 /****************** modal dialog ****************/
 
+@import "twitter/bootstrap/variables";
 @import "theme/variables";
 @import "twitter/bootstrap/mixins";
 
@@ -47,6 +86,21 @@ input[type="color"],
   color: @grayDark;
 }
 
+.modal-header {
+  border-bottom: 1px solid darken(@gray, 50%);
+}
+
+.modal-footer {
+  // background-color: @grayDark;
+  border-top: 1px solid darken(@gray, 50%);
+  .border-radius(0 0 6px 6px);
+  .box-shadow(none);
+}
+
+textarea {
+  .border-radius(5px);
+}
+
 .modal .modal-body {
   // using height: 500px; would make them all the same size
   max-height: 500px;
@@ -54,78 +108,64 @@ input[type="color"],
   overflow-y: auto;
 }
 
-// in form selectable-list has same fixed width as select control
-form .selectable-list {
-  width: 220px;
+// Show plain text centered on overlay
+.text-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1050;
+  overflow: auto;
+  width: 560px;
+  margin: -60px 0 0 -250px;
 }
 
-.selectable-list {
-  .border-radius(@inputBorderRadius);
 
-  background-color: #ccc;
-  padding: 1px;
-  margin: 5px 0 0 0;
-  list-style: none;
-}
+/***************************** target editor *****************************/
 
-.selectable-list > li {
-  color: @grayDark;
-  padding: 3px;
-  padding-left: 4px;
-  margin: 2px;
-  background-color: #CCC;
-  border: 1px #bbb solid;
+.target-editor {
+  margin-top: 1em;
 
-  &:hover {
-    background-color: #DDD;
-  }
-
-  .text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display:block;
-    width: 80%;
-  }
-
-  .actions {
-    margin-top: -18px;
-    cursor: pointer;
-    display:block;
-    float: right;
-  }
-
-}
-
-#filtered-list-container ul {
-  // width: 528px;
-  height: 300px;
-  overflow: -moz-scrollbars-vertical;
-  overflow-y: scroll;
-  cursor: pointer;
-
-  li:hover {
-    background-color: #DDD;
-  }
-
-  li.selected {
-    background-color: #EEE;
-  }
-
-  li > .text {
+  textarea {
+    padding: 0;
     width: 100%;
   }
 }
 
-.input-xxlarge {
-  width: 350px;
-}
+ul.selectable-list {
+  .border-radius(@inputBorderRadius);
+  background-color: #ccc;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
-#function-help {
-  overflow: hidden;
-  word-wrap:break-word;
+  li {
+    color: @grayDark;
+    line-height: 2.5em;
+    border-bottom: 1px #bbb solid;
+    cursor: pointer;
 
-  margin-top: 4em;
+    &:last-child {
+      border: none;
+    }
+
+    .selected {
+      .border-radius(@inputBorderRadius);
+      background-color: #DDD;
+    }
+
+    .text {
+      padding-left: 1em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .actions {
+      margin: 0.6em;
+      display:block;
+      float: right;
+    }
+  }
 }
 
 /******************* dashboard *****************/
@@ -154,91 +194,94 @@ form .selectable-list {
   outline: none;
 }
 
-.portlet {
-  height: 325px;
-  margin: 0px 10px 10px 0px;
-  float: left;
+[contenteditable]:focus {
+  outline: none;
 }
 
-.portlet:first-child { margin-left: 0px !important; }
+/******************** widget ************************/
 
-/* TODO: check why jquery sortable depends on id instead of class here */
-#widget-span-1 { width: 320px; }
-#widget-span-2 { width: 670px; }
-#widget-span-3 { width: 1020px; }
+// trick to move all widgets to the left
+.gridster ul {
+  margin: 0;
+}
 
-.portlet-minimized { height: auto !important; }
+.gridster li {
+  list-style: none;
+}
 
-.portlet-header {
-  border-bottom: 1px solid #33B5E5;
-  margin-bottom: 0.2em;
-  padding-bottom: 0.4em;
+.widget {
+  .border-radius(1px);
+
+  border-top: solid 1px lighten(@heroUnitBackground, 5%);
+  box-shadow: 0 2px 4px rgba(0,0,0,.8);
+
+  background-color: @heroUnitBackground;
+}
+
+.widget-header {
+  border-bottom: solid 1px rgba(0,0,0,.8);
+  box-shadow: 0 1px lighten(@heroUnitBackground, 5%);
+
+  height: 28px;
+  line-height: 28px;
 
   cursor: move;
-
   text-transform:uppercase;
+
+  .title {
+    margin-left: 10px;
+  }
+
+  .action {
+    float: right;
+    cursor: pointer;
+
+    border-left: solid 1px lighten(@heroUnitBackground, 5%);
+    box-shadow: -1px 0 rgba(0,0,0,.8);
+
+    .ui-icon {
+      width: 18px;
+      height: 18px;
+
+      padding: 3px 8px 3px 8px;
+    }
+  }
 }
 
-.portlet-header .ui-icon {
-  float: right;
-  cursor: pointer;
-  margin-left: 8px;
+.widget-content {
+  margin: 10px;
 }
 
-.portlet-content {
-  padding: 0.4em;
-  margin-top: 1em;
+.error-details {
+  margin: 10px;
 }
-
-.portlet-minimized .portlet-content { display: none !important; }
-
-.ui-sortable-placeholder {
-  border: 2px dashed #FFF;
-  visibility: visible !important;
-  height: 325px !important;
-}
-
-.ui-sortable-placeholder * {
-  visibility: hidden;
-}
-
 /******************* widget content ****************/
 
-/*** triple row ***/
+.single-row {
+  margin-left: 20px;
+  margin-top: 20px;
 
-.triple-row {
-  height: 60px;
-  margin: 20px 0 0px 0;
-  padding-left: 20px;
-  padding-bottom: 10px;
-  overflow: hidden;
+  color: #eee;
 
-  .boolean-value {
-    float: left;
-    width: 60px;
-    height: 40px;
-    margin-top: 10px;
-    margin-right: 20px;
-  }
+  // TODO: is this need here?
+  // overflow: hidden;
 
-  .ci-value {
-    float: left;
-    width: 60px;
-    height: 40px;
-    margin-top: 10px;
-    margin-right: 20px;
-  }
-
-  .number-value {
+  .default-value {
     float: left;
     margin-right: 10px;
+
     font-weight: bold;
-    -webkit-text-stroke: 1px #330;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+  }
+
+  .value-size-large {
+    font-size: 80px;
+    line-height: 80px;
   }
 
   .value-size-medium {
     font-size: 60px;
-    line-height: 60px;
+    line-height: 80px;
   }
 
   .value-size-small {
@@ -246,25 +289,32 @@ form .selectable-list {
     line-height: 40px;
   }
 
-  .label-container {
+  .label-container-one-row {
     margin-top: 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 
-  .label-container-two-rows {
-    margin-top: 15px;
-    margin-right: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .label {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 22px;
+    line-height: 22px;
+
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+
     background: 0;
+    color: #ccc;
+  }
+
+  .label-container-two-rows {
+    margin-top: 15px;
+    margin-right: 15px;
+    padding-top: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .secondary-label {
@@ -275,92 +325,12 @@ form .selectable-list {
     background: 0;
   }
 
-}
-
-/*** double row ***/
-
-.double-row {
-  margin-left: 10px;
-  margin-top: 30px;
-  padding-bottom: 15px;
-  width: 300px;
-  height: 100px;
-  display:block;
-
-  .value {
-    font-weight: bold;
-    color: #eee;
-    -webkit-text-stroke: 1px #330;
+  .color-up {
+    color: #8ec15c;
   }
 
-  .value-size-large {
-    font-size: 100px;
-  }
-  .value-size-medium {
-    font-size: 80px;
-  }
-  .value-size-small {
-    font-size: 60px;
+  .color-down {
+    color: #D26771;
   }
 
-  .secondary-value {
-    margin-left: 10px;
-    font-size: 40px;
-    font-weight: bold;
-  }
-
-  .secondary-value-container {
-    margin-top: 50px;
-    margin-left: 18px;
-
-    .percentage {
-      font-size: 20px;
-      font-weight: bold;
-    }
-  }
-}
-
-/*** misc ***/
-
-.arrow-up, .arrow-down {
-  display: inline-block;
-  margin-bottom: 5px;
-}
-
-.arrow-up {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #8ec15c;
-}
-
-.arrow-down {
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #D26771;
-}
-
-.red {
-  background: #D26771;
-  border: 2px solid darken(#D26771, 8%);
-}
-
-.green {
-  background: #8ec15c;
-  border: 2px solid darken(#8ec15a, 10%);
-}
-
-.gray {
-  background: #ccc;
-  border: 2px solid darken(#ccc, 10%);
-}
-
-.color-up {
-  color: #8ec15c;
-}
-
-.color-down {
-  color: #D26771;
 }

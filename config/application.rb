@@ -50,8 +50,18 @@ module TeamDashboard
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    # change minification options to fix Angular.js dependency injection
+    config.assets.js_compressor = Sprockets::LazyCompressor.new { Uglifier.new(:mangle => false) }
+
     config.graphite_url     = ENV['GRAPHITE_URL']
     config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']
     config.ganglia_host     = ENV['GANGLIA_HOST']
+    config.pingdom_username = ENV['PINGDOM_USERNAME']
+    config.pingdom_password = ENV['PINGDOM_PASSWORD']
+    config.sensu_events     = ENV['SENSU_EVENTS_URL']
+
+    config.jira_url         = ENV['JIRA_URL']           # e.g. "http://your-jira-installation/rest/api/latest/search"
+    config.jira_user        = ENV['JIRA_USER']
+    config.jira_password    = ENV['JIRA_PASSWORD']
   end
 end

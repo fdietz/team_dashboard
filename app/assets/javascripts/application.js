@@ -11,38 +11,32 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
+//= require underscore
+
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui-1.8.20.custom.min.js
-//= require underscore
-//= require backbone
-//= require handlebars
-//= require twitter/bootstrap
-//= require backbone-forms
-//= require backbone-forms-list
-//= require backbone-forms-bootstrap
-//= require backbone-forms-bootstrap-modal
-//= require bootbox
+//= require jquery.gridster
 
-//= require d3.v2.min
-//= require rickshaw
+//= require twitter/bootstrap/dropdown
+//= require twitter/bootstrap/typeahead
+//= require twitter/bootstrap/modal
+
+//= require bootbox
+//= require bigscreen.min
+
 //= require flotr2
 //= require moment.min
-//= require select2
-//= require list.min
+//= require jquery.timeago
+//= require jquery.timeago.en-short
+//= require jquery.knob
 
-//= require backbone_extensions
-//= require app
-//= require router
-//= require helpers
-//= require graphite_functions
-//= require graphite
-//= require handlebars_helpers
-//= require jquery_plugins
-//= require behaviours
-//= require ajax_error_handler
+//= require angular
+//= require angular-resource
+//= require angular-sanitize
+//= require angular-ui/module
+//= require angular-ui/jq
+//= require angular-ui/bootstrap/modal
+//= require angular-ui/bootstrap/dialog
+//= require angular-ui/bootstrap/transitions
 
-//= require_tree ./models
-//= require_tree ./collections
-//= require_tree ./views
-//= require_tree ./templates
+//= require_tree .

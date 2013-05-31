@@ -1,0 +1,47 @@
+<div ng-controller="GraphCtrl">
+
+  <div td-field label="Name">
+    <input name="name" ng-model="widget.name" type="text" autofocus required/>
+  </div>
+
+  <div td-field label="Update Interval">
+    <select name="update_interval" ng-model="widget.update_interval" ng-options="i.value as i.label for i in updateIntervals" required>
+    </select>
+  </div>
+
+  <div td-field label="Periods">
+    <select name="range" ng-model="widget.range" ng-options="i.value as i.label for i in periods" required>
+    </select>
+  </div>
+
+  <div td-field label="Size">
+    <select name="size_x" ng-model="widget.size_x" ng-options="i.value as i.label for i in sizes" required>
+    </select>
+  </div>
+
+  <div td-field label="Graph Type">
+    <select name="graph_type" ng-model="widget.graph_type" ng-options="i.value as i.label for i in graphTypes" required>
+    </select>
+  </div>
+
+  <div td-field label="Max Value">
+    <input name="max" ng-model="widget.max" type="number" />
+  </div>
+
+  <div td-field label="Source">
+    <select name="source" ng-model="widget.source" ng-options="i.value as i.label for i in sources" required>
+    </select>
+  </div>
+
+  <div td-bind-html-unsafe="customFieldsTemplate"></div>
+
+  <div td-field label="Targets">
+    <div class="input-append" ng-show="supportsTargetBrowsing()">
+      <input name="targets" ng-model="widget.targets" type="text" required/>
+      <button ng-click="editTargets()" class="btn browse" type="button"><i class="icon-search icon-white"></i></button>
+    </div>
+
+    <input name="targets" ng-hide="supportsTargetBrowsing()" ng-model="widget.targets" type="text" required/>
+  </div>
+
+</div>

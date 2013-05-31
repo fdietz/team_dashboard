@@ -1,0 +1,10 @@
+<div class="number single-row">
+  <div class="default-value value-size-large">{{data.stringValue}}</div>
+
+  <div class="label-container-two-rows">
+    <span class="label" title="{{data.label}}">{{data.label}}</span>
+    <div class="secondary-value-container">
+      <span ng-class="data.arrow"></span><span class="secondary-value" ng-class="data.color">{{data.secondaryValue | percentage}}</span>
+    </div>
+  </div>
+</div>

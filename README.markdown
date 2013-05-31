@@ -4,13 +4,21 @@ Team Dashboard lets you visualize your team's metrics all in one place (see [Scr
 
 [Heroku hosted Demo](http://team-dashboard.herokuapp.com/)
 
-It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), etc. and makes it really easy to add more input sources.
+It has built-in support for [Graphite](http://graphite.wikidot.com/), [Ganglia](http://ganglia.sourceforge.net/), [Jenkins](http://jenkins-ci.org/), [Travis CI](http://travis-ci.org/), [Errbit](https://github.com/errbit/errbit), [New Relic](http://newrelic.com/), [Pingdom](https://www.pingdom.com/), [Sensu](https://github.com/sensu) and more and makes it really easy to add more data sources.
 
-The Team Dashboard Data Source [Plugin Repository](https://github.com/fdietz/team_dashboard_plugins) contains contributed plugins and documentation on how to implement your own plugins.
-
-It is implemented as a Rails app and uses MySQL to store your custom dashboards configuration.
+It is implemented as a Rails app and uses ActiveRecord to store your custom dashboards configuration.
 
 Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!forum/team_dashboard)
+
+## News
+
+### Team Dashboard 2 RC2 is available
+Lots of new features and bugfixes. This is (hopefully) the last release candidate!
+
+Read the [Changelog](CHANGELOG.md)!
+
+### Team Dashboard 2 RC1 is available
+Please checkout the [Changelog](CHANGELOG.md) and read the [Migration Guide](VERSION2_MIGRATION.markdown).
 
 ## Getting Started
 
@@ -22,7 +30,7 @@ Run bundler:
 
     bundle install
 
-Create a database.yml from the example config:
+Create a database.yml from the example config (using MySQL):
 
     cp config/database.example.yml config/database.yml
 
@@ -38,6 +46,10 @@ Start the Rails server:
 
     rails s
 
+or use unicon directly:
+
+    bundle exec unicorn -c config/unicorn.rb
+
 ### Running the build
 
 If you want to run the tests locally, you will need to install PhantomJS
@@ -50,17 +62,17 @@ Run the unit tests (ruby & js)
 
 ## Configuration
 
-You have to configure the MySQL database in config/database.yml.
+System-wide configuration settings are done in either `application.rb` or with an environment variable.
 
-Graphite is the first input source Team Dashboard supports. Use the environment variable GRAPHITE_URL or change the rails configuration (see application.rb and environment specific files) directly.
+For example when configuring `graphite` you can see the configuration settings in application.rb:
 
-For example:
+    config.graphite_url = ENV['GRAPHITE_URL']
+
+You can either change the configuration there or set the environment variable when starting the rails app:
 
     GRAPHITE_URL=http://localhost:8080 rails s
 
-Ganglia is now supported too, it uses the same configuration mechanism
-
-    GANGLIA_WEB_URL=http://localhost:8080 GANGLIA_HOST=localhost rails s
+All data sources reside in `app/models/sources` and provide source code documentation with further details.
 
 # Dashboard Widgets
 
@@ -68,318 +80,37 @@ A dashboard in Team Dashboard consists of multiple Widgets, which request data f
 
 All widgets have a name, time interval in which to update themselves and a data source as a common configuration.
 
+You can easily add your own data source plugins ([Data Source Plugins Developer Guide](SOURCE_PLUGINS.markdown)) and implement custom widgets ([Widget Developer Guide](WIDGETS.markdown)).
+
 ## Available Widgets
 
 ### Graph Widget
-The graph widget shows a time series line graph (using rickshaw.js internally). Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
+The graph widget shows a time series line or area graph. Use it to show number of visits on your web page or number of currently online users and follow-up on trends.
 
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
-
-#### Configuration
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Size</td>
-    <td>Number of Columns (Possible Values: 1, 2 or 3)</td>
-  </tr>
-  <tr>
-    <td>Graph Type</td>
-    <td>Either a line or stacked graph.</td>
-  </tr>
-  <tr>
-    <td>Data Source</td>
-    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
-  </tr>
-  <tr>
-    <td>Targets</td>
-    <td>
-      <p>
-        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
-      </p>
-      <p>
-        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
-        </br><code>hostname@cluster(metric-name)</code>
-      </p>
-    </td>
-  </tr>
-</table>
-
-### Counter Widget
-Shows the current value and the percentage of change of the last period. It is based on time series data and uses the same data sources as the graph widget. The widgets supports showing two values. Use it to for example show the current number of online users.
-
-It currently supports a Demo data source, [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
-
-#### Configuration
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Size</td>
-    <td>Number of Columns (Possible Values: 1, 2 or 3)</td>
-  </tr>
-  <tr>
-    <td>Data Source</td>
-    <td>Available are demo, graphite, ganglia, http_proxy currently supported.</td>
-  </tr>
-  <tr>
-    <td>Targets</td>
-    <td>
-      <p>
-        In case of Graphite you can pass a semicolon-separated list of targets (example: <code>visits.server1, visits.server2</code>). It also supports wildcards (example: <code>visits.server.*</code>).
-      </p>
-      <p>
-        In case of Ganglia you need to know the cluster name, hostname and metric name. Usually its easy to obtain these from the graph url directly.
-        </br><code>hostname@cluster(metric-name)</code>
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <td>Aggregate Function</td>
-    <td>The values of the selected period are aggregated using selected function. Supports <code>sum</code>, <code>average</code> and <code>delta</code>.</td>
-  </tr>
-</table>
+It currently supports [Graphite](http://graphite.wikidot.com/) and [Ganglia](http://ganglia.sourceforge.net/).
 
 ### Number Widget
-Shows the current integer value provided by the data source and a label. The widget supports up to three values. Use it to show for the example the number of errors on specific system.
+Shows the current integer value provided by the data source, the percentage of change compared to the previous value and an optional label. Use it to show for the example the number of errors on specific systems or the number of users.
 
-It currently supports a demo data source and a http proxy data source.
-
-#### Configuration
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Label</td>
-    <td>Label for this value</td>
-  </tr>
-  <tr>
-    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
-    <td>HTTP URL should return a JSON structure as described below</td>
-  </tr>
-  <tr>
-    <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
-  </tr>
-  <tr>
-</table>
+It currently supports a [New Relic](http://newrelic.com/), [Hockey App](http://hockeyapp.net/), http proxy data source and Issue counter for [Jira Filters](JIRA_COUNTER.markdown).
 
 ### Boolean Widget
-Shows the current boolean value provided by the data source and an label. The widget supports up to three values. Use it to show for example the success of a Jenkins build.
+Shows the current boolean value provided by the data source and an optional label. Use it to show for example the success of a Jenkins build or the health status of a system.
 
-It currently supports a demo data source and a http proxy data source.
+It currently supports [Pingdom](https://www.pingdom.com/), arbitrary shell commands and a http proxy data source.
 
-#### Configuration
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Date Range/Period</td>
-    <td>Select a date range of for example "Last 3 hours"</td>
-  </tr>
-  <tr>
-    <td>Label</td>
-    <td>Label for this value</td>
-  </tr>
-  <tr>
-    <td>HTTP Proxy URL (only available for HTTP Proxy Data Source)</td>
-    <td>HTTP URL should return a JSON structure as described below</td>
-  </tr>
-  <tr>
-    <td>Value Path (only available for HTTP Proxy Data Source)</td>
-    <td>dot notation to select nested value from JSON structure (Example: <code>parent.child.nestedChild.value</code>)</td>
-  </tr>
-  <tr>
-</table>
+### Alert Widget
+It is similar to the Boolean Widget. It is designed to show the alerts of your system. The idea behind was introducing a possibility for linking the dashboard with the Sensu monitoring framework and displaying the alerts and the respective messages.
+
+It currently supports [Sensu](https://github.com/sensu).
 
 ### CI (Continous Integration Server) Widget
-Shows the current build status for a given project. It currently supports a demo source, Jenkins and Travis CI.
+Shows the current build status for a given project.
 
-#### Configuration
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
-    <td>Server URL</td>
-    <td>For Travis CI this would be for example <code>http://travis-ci.org</code> for Jenkins for example <code>http://ci.jenkins-ci.org</code></td>
-  </tr>
-  <tr>
-    <td>Project</td>
-    <td>Name of Jenkins Job (example: <code>infra_plugin_changes_report</code>) or Travis CI Slug (example: <code>travis-ci/travis-ci</code>)</td>
-  </tr>
-</table>
+It currently supports [Jenkins](http://jenkins-ci.org/) and [Travis CI](https://travis-ci.org/).
 
-
-## HTTP Proxy Source
-As described in the data source plugin repository [documentation](https://github.com/fdietz/team_dashboard_plugins) you can easily add your own data source implementions.
-
-On the other hand you might prefer to offer a service on your server instead. The HTTP proxy source requests data on the server side, the Rails app being the "proxy" of the web app. The JSON format for the specific sources is described below.
-
-#### HTTP Proxy URL
-Since we want to support generic JSON documents as data source for various kinds of widgets we use a simple path notation to support selection of a single value. This path selection is currently supported in the Number and Boolean data source.
-
-    {
-      "parent" : {
-        "child" : {
-          "child2" : "myValue"
-        }
-      }
-    }
-
-A value path of "parent.child.child2" would resolve "myValue".
-
-### Datapoints
-The datapoints source supports data for rendering graphs and aggregated values
-
-    [
-      {
-        "target" : "demo.example",
-        "datapoints" : [
-          [1,123456], [7,23466]
-        ]
-      },
-      {
-        "target" : "demo.example2",
-        "datapoints" : [
-          [-6,123456], [8,23466]
-        ]
-      }
-    ]
-
-### Number
-The number data source supports a single integer value and an optional label.
-
-    {
-      "value" : 8,
-      "label" : "This is an example label"
-    }
-
-### Boolean
-The boolean data source supports a single boolean value and an optional label.
-
-    {
-      "value" : true,
-      "label" : "This is an example label"
-    }
-
-## Team Dashboard's own REST API
-Of course there's a REST API for accessing the dashboard and widget configuration.
-
-### Dashboard
-
-#### GET /api/dashboards
-Retrieve list of all dashboards
-
-Example:
-
-    curl -H "Accept: application/json" http://localhost:3000/api/dashboards
-
-#### GET /api/dashboards/id
-Retrieve details of specific dashboard
-
-Example URL:
-
-    curl -H "Accept: application/json" http://localhost:3000/api/dashboards/1
-
-Example Response:
-
-    {
-      created_at: 2012-09-05T08:38:09Z
-      id: 2
-      layout: [
-        4
-        5
-        6
-        7
-      ]
-      name: Example 2 (Counters, Numbers, Boolean and Graph Widgets)
-      updated_at: 2012-09-05T08:38:10Z
-    }
-
-#### POST /api/dashboards
-Creates a new dashboard.
-
-Example:
-
-  curl -v -H "Content-type: application/json" -X POST -d '{ "name": "test" }' http://localhost:3000/api/dashboards
-
-#### DELETE /api/dashboards/id
-Deletes a specific dashboard
-
-Example:
-
-  curl -X DELETE http://localhost:3000/api/dashboards/1
-
-### Widget
-
-
-#### GET /api/dashboards/id/widgets
-Retrieve list of all widgets for specific dashboards
-
-Example:
-
-    curl -H "Accept: application/json" http://localhost:3000/api/dashboards/1/widgets
-
-#### GET /api/dashboards/id/widgets/id
-Retrieve details of specific widgets for specific dashboards
-
-Example:
-
-    curl -H "Accept: application/json" http://localhost:3000/api/dashboards/1/widgets/1
-
-Example Response:
-
-    {
-      created_at: 2012-09-05T11:44:34Z
-      dashboard_id: 1
-      id: 9
-      kind: graph
-      name: Undefined name
-      range: 30-minutes
-      size: 1
-      source: demo
-      targets: demo.example1
-      update_interval: 10
-      updated_at: 2012-09-05T11:44:34Z
-      graph_type: line
-    }
-
-#### POST /api/dashboards/id/widgets
-Creates widget for specific dashboard
-
-Example:
-
-    curl -v -H "Content-type: application/json" -X POST -d '{ "name": "test", "source": "demo" }' http://localhost:3000/api/dashboards/1/widgets
-
-
-#### DELETE /api/dashboards/id/widgets/id
-Deletes specific widget
-
-Example:
-
-    curl -X DELETE http://localhost:3000/api/dashboards/1/widgets/1
+### Exception Tracker Widget
+Shows the number of unresolved errors in your exception tracker, and when the last error occurred. It currently supports [Errbit](https://github.com/errbit/errbit).
 
 ## Credits & Contributors
 
@@ -389,6 +120,11 @@ Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the f
 * [frankmt](https://github.com/frankmt) (Francisco Trindade)
 * [leejones](https://github.com/leejones) (Lee Jones)
 * [rngtng](https://github.com/rngtng) (Tobias Bielohlawek)
+* [ndbroadbent](https://github.com/ndbroadbent) (Nathan Broadbent)
+* [DraganMileski](https://github.com/DraganMileski) (Dragan Mileski)
+* [averell23](https://github.com/averell23) (Daniel Hahn)
+* [martintsch](https://github.com/martintsch) (Martin Tschischauskas)
+* Marno Krahmer
 
 ## The MIT License
 

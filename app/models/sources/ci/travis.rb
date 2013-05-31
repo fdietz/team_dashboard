@@ -13,8 +13,10 @@ module Sources
 
       # Returns ruby hash:
       def get(options = {})
-        fields = options.fetch(:fields)
-        result = request_build_status(fields.fetch(:server_url), fields.fetch(:project))
+        widget     = Widget.find(options.fetch(:widget_id))
+        project    = widget.settings.fetch(:project)
+        server_url = widget.settings.fetch(:server_url)
+        result     = request_build_status(server_url, project)
         {
           :label             => result["slug"],
           :last_build_time   => result["last_build_finished_at"],

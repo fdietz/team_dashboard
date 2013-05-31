@@ -1,5 +1,21 @@
 require "net/http"
 
+#
+# Configure the Graphite URL in application.rb:
+#   config.graphite_url = ENV['GRAPHITE_URL']
+#
+# or use and environment variable:
+#   GRAPHITE_URL=http://localhost:8080 rails s
+#
+# Target Selection:
+#   You can pass a semicolon-separated list of targets:
+#
+#   example: visits.server1; visits.server2).
+#
+#   It also supports wildcards:
+#
+#   example: visits.server.*).
+#
 module Sources
   module Datapoints
     class Graphite < Sources::Datapoints::Base
@@ -20,7 +36,14 @@ module Sources
         true
       end
 
-      def get(targets, from, to, options = {})
+      def get(options = {})
+        from    = (options[:from]).to_i
+        to      = (options[:to] || Time.now).to_i
+
+        widget  = Widget.find(options.fetch(:widget_id))
+        targets = targetsArray(widget.targets)
+        source  = options[:source]
+
         result = request_datapoints(targets, from, to)
         raise Sources::Datapoints::NotFoundError if result.empty?
         result
@@ -35,6 +58,9 @@ module Sources
         end
 
         result = pattern.present? ? cached_result.reject { |target| target !~ /#{pattern}/ }  : cached_result
+        # remove "." prefix in target name when used with graphite 0.9.10
+        result.each { |target| target.gsub!(/^\./, '') }
+
         result.slice(0, limit)
       end
 

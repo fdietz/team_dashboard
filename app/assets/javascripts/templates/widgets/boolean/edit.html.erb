@@ -1,0 +1,23 @@
+<div ng-controller="BooleanCtrl">
+
+  <div td-field label="Name">
+    <input name="name" ng-model="widget.name" type="text" autofocus required/>
+  </div>
+
+  <div td-field label="Update Interval">
+    <select name="update_interval" ng-model="widget.update_interval" ng-options="i.value as i.label for i in updateIntervals" required>
+    </select>
+  </div>
+
+  <div td-field label="Source">
+    <select name="source" ng-model="widget.source" ng-options="i.value as i.label for i in sources" required>
+    </select>
+  </div>
+
+  <div td-bind-html-unsafe="customFieldsTemplate"></div>
+
+  <div td-field label="Label">
+    <input name="label" ng-model="widget.label" type="text" />
+  </div>
+
+</div>

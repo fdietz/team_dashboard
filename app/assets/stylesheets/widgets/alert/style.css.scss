@@ -1,0 +1,52 @@
+.alert-widget {
+
+  .alert-value {
+    float: left;
+    width: 70px;
+    height: 60px;
+    margin-top: 10px;
+    margin-right: 20px;
+  }
+
+  .label {
+  
+    margin-top: 10px;
+    float: left;
+    width: 500px;
+    height: 62px;
+
+    font-size: 19px;
+    line-height: 15px;
+
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+
+    background: 0;
+    color: #ccc;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .red {
+    background: #D26771;
+    border: 2px solid darken(#D26771, 8%);
+  }
+
+  .green {
+    background: #8ec15c;
+    border: 2px solid darken(#8ec15a, 10%);
+  }
+
+  .blue {
+    background: #447ab2;
+    border: 2px solid darken(#2f547b, 10%);
+  }
+
+  .orange {
+    background: #f89406;
+    border: 2px solid darken(#c67605, 10%);
+  }
+
+}

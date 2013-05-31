@@ -1,0 +1,96 @@
+app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", function($scope, $rootScope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget) {
+
+  $rootScope.resolved = false;
+
+  $scope.dashboard = Dashboard.get({ id: $routeParams.id });
+  $scope.widgets   = Widget.query({ dashboard_id: $routeParams.id }, function() {
+    $rootScope.resolved = true;
+  });
+
+  // defined in application.html.erb
+  $scope.available_widgets = $.available_widgets;
+
+  function saveDashboardChanges() {
+    $scope.dashboard.$update(function(data) {
+      console.log(data);
+    }, function(data) {
+      console.log("save error", data);
+    });
+  }
+
+  function destroyDashboard() {
+    $scope.dashboard.$destroy(function() {
+      $location.url("/dashboards");
+    });
+  }
+
+  function destroyWidget(widget) {
+    widget.$destroy(function() {
+      _.each($scope.widgets, function(w, index) {
+        if (w.id === widget.id) {
+          $scope.widgets.splice(index, 1);
+          return;
+        }
+      });
+    });
+  }
+
+  function replaceWidget(id, widget) {
+    _.each($scope.widgets, function(w, index) {
+      if (w.id === id) {
+        _.extend(w, widget);
+        return;
+      }
+    });
+  }
+
+  $scope.addWidget = function(kind) {
+    var dialog      = $dialog.dialog(),
+        templateUrl = "<%= asset_path('templates/widget/edit.html') %>";
+
+    dialog.kind      = kind;
+    dialog.dashboard = $scope.dashboard;
+    dialog.editTemplate = $("#templates-widgets-" + kind + "-edit").html();
+    dialog.customFieldsTemplate = $("#templates-custom_fields-" + kind).html();
+
+    dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
+      if (result) $scope.widgets.push(dialog.$scope.widget);
+    });
+  };
+
+  $scope.editWidget = function(widget) {
+    var dialog      = $dialog.dialog(),
+        templateUrl = "<%= asset_path('templates/widget/edit.html') %>";
+
+    dialog.kind      = widget.kind;
+    dialog.widget    = widget;
+    dialog.dashboard = $scope.dashboard;
+    dialog.editTemplate = $("#templates-widgets-" + widget.kind + "-edit").html();
+    dialog.customFieldsTemplate = $("#templates-custom_fields-" + widget.kind).html();
+
+    dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
+      if (result) replaceWidget(widget.id, dialog.$scope.widget);
+    });
+  };
+
+  $scope.removeWidget = function(widget) {
+    var text = "Want to delete widget?";
+    $window.bootbox.animate(false);
+    $window.bootbox.confirm(text, "Cancel", "Delete", function(result) {
+      if (result) destroyWidget(widget);
+    });
+  };
+
+  $scope.deleteDashboard = function() {
+    var text = "Want to delete Dashboard?";
+    $window.bootbox.animate(false);
+    $window.bootbox.confirm(text, "Cancel", "Delete", function(result) {
+      if (result) destroyDashboard();
+    });
+  };
+
+  $scope.save = function() {
+    saveDashboardChanges();
+  };
+
+}]);

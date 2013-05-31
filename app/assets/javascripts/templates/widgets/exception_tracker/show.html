@@ -1,0 +1,10 @@
+<div class="exception-tracker single-row">
+  <div class="default-value value-size-large" ng-class="data.color">{{data.unresolved_errors}}</div>
+
+  <div class="label-container-two-rows">
+    <div class="label" title="{{data.label}}">{{data.label}}</div>
+    <div class="secondary-label" ng-show="data.last_error_time">
+      last error occurred <span class="timeago" title="{{data.last_error_time | date:'medium'}}">{{data.last_error_time | date:'medium'}}</span>
+    </div>
+  </div>
+</div>

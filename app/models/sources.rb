@@ -3,7 +3,7 @@ module Sources
 
   class UnknownPluginError < StandardError; end
 
-  TYPES = %w(boolean datapoints number ci)
+  TYPES = %w(alert boolean datapoints number ci exception_tracker)
 
   TYPES.each do |type|
     define_method("#{type}_plugin") do |name|
@@ -23,6 +23,22 @@ module Sources
     result
   end
 
+  def custom_fields(type)
+    sources[type] || []
+  end
+
+  def plugin_clazz(type, name)
+    raise ArgumentError, "source name param missing" if name.blank?
+    "Sources::#{type.camelize}::#{name.camelize}".constantize
+  rescue NameError => e
+    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}: #{e}"
+  end
+
+  def source_names(type)
+    path = Rails.root.join("app/models/sources/#{type}")
+    Dir["#{path}/*"].map { |f| File.basename(f, '.*') }.reject! { |name| name == "base" }
+  end
+
   protected
 
   def source_properties(type, name)
@@ -34,18 +50,6 @@ module Sources
       "supports_functions"       => plugin.supports_functions?,
       "fields"                   => plugin.fields
     }
-  end
-
-  def source_names(type)
-    path = Rails.root.join("app/models/sources/#{type}")
-    Dir["#{path}/*"].map { |f| File.basename(f, '.*') }.reject! { |name| name == "base" }
-  end
-
-  def plugin_clazz(type, name)
-    raise ArgumentError, "source name param missing" if name.blank?
-    "Sources::#{type.camelize}::#{name.camelize}".constantize
-  rescue NameError => e
-    raise UnknownPluginError, "Unknown Plugin: #{type} - #{name}: #{e}"
   end
 
 end

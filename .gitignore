@@ -21,3 +21,7 @@
 .jhw-cache
 .rake_tasks
 /config/database.yml
+
+# Ignore net beans project file
+/nbproject
+.project
