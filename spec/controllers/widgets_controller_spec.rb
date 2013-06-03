@@ -6,7 +6,7 @@ describe Api::WidgetsController do
       @dashboard = FactoryGirl.create(:dashboard)
     end
     it "should respond with json content" do
-      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :name => "name", :dashboard => @dashboard).to_json
+      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :name => "name", :dashboard => @dashboard, :targets => "a").to_json
       post :create, :dashboard_id => @dashboard.id, :format => :json
       assert_response :created
       result = JSON.parse(@response.body)
@@ -15,19 +15,34 @@ describe Api::WidgetsController do
       assert result['id']
     end
 
-    it "should create widget" do
-      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :dashboard => @dashboard).to_json
+    it "should create widget of kind graph" do
+      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :dashboard => @dashboard, :targets => "a").to_json
+      post :create, :dashboard_id => @dashboard.id, :format => :json
+      assert_response :created
+      Widget.count.should == 1
+    end
+
+    it "should create widget of kind ci" do
+      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :dashboard => @dashboard, :kind => "ci").to_json
       post :create, :dashboard_id => @dashboard.id, :format => :json
       assert_response :created
       Widget.count.should == 1
     end
 
     it "should respond with json content on failure" do
-      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :name => nil, :dashboard => @dashboard).to_json
+      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :name => nil, :dashboard => @dashboard, :targets => "a").to_json
       post :create, :dashboard_id => @dashboard.id, :format => :json
       assert_response :unprocessable_entity
       result = JSON.parse(@response.body)
       assert_equal ["can't be blank"], result['name']
+    end
+
+    it "should respond with json error message if widget is kind of graph but no targets defined" do
+      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :name =>"name", :dashboard => @dashboard).to_json
+      post :create, :dashboard_id => @dashboard.id, :format => :json
+      assert_response :unprocessable_entity
+      result = JSON.parse(@response.body)
+      assert_equal ["can't be blank"], result['targets']
     end
 
     it "should respond with json error message if dashboard not found" do
@@ -40,7 +55,7 @@ describe Api::WidgetsController do
     end
 
     it "handles settings attributes as single attribute with nested attributes on its own" do
-      @request.env['RAW_POST_DATA'] = { :name => "name", :dashboard_id => @dashboard.id, :source1 => "a", :source2 => "b" }.to_json
+      @request.env['RAW_POST_DATA'] = { :name => "name", :dashboard_id => @dashboard.id, :source1 => "a", :source2 => "b", :targets => "a" }.to_json
       post :create, :dashboard_id => @dashboard.id, :format => :json
       assert_response :created
       result = JSON.parse(@response.body)
@@ -51,7 +66,7 @@ describe Api::WidgetsController do
 
   describe "#show" do
     before do
-      @widget = FactoryGirl.create(:widget, :name => 'name')
+      @widget = FactoryGirl.create(:widget, :name => 'name', :targets => "a")
     end
     it "should respond with json content" do
       get :show, :dashboard_id => @widget.dashboard.id, :id => @widget.id, :format => :json
@@ -66,8 +81,8 @@ describe Api::WidgetsController do
   describe "#index" do
     before do
       @dashboard = FactoryGirl.create(:dashboard)
-      @widget1 = FactoryGirl.create(:widget, :dashboard => @dashboard)
-      @widget2 = FactoryGirl.create(:widget, :dashboard => @dashboard)
+      @widget1 = FactoryGirl.create(:widget, :dashboard => @dashboard, :targets => "a")
+      @widget2 = FactoryGirl.create(:widget, :dashboard => @dashboard, :targets => "a")
     end
     it "should respond with json content" do
       get :index, :dashboard_id => @dashboard.id, :format => :json
@@ -82,7 +97,7 @@ describe Api::WidgetsController do
   describe "#update" do
     before do
       @dashboard = FactoryGirl.create(:dashboard)
-      @widget = FactoryGirl.create(:widget, :dashboard => @dashboard)
+      @widget = FactoryGirl.create(:widget, :dashboard => @dashboard, :targets => "a")
     end
     it "should respond with status 204 on success" do
       @request.env['RAW_POST_DATA'] = @widget.to_json
@@ -119,7 +134,7 @@ describe Api::WidgetsController do
   describe "#destroy" do
     before do
       @dashboard = FactoryGirl.create(:dashboard)
-      @widget = FactoryGirl.create(:widget, :dashboard => @dashboard)
+      @widget = FactoryGirl.create(:widget, :dashboard => @dashboard, :targets => "a")
     end
     it "should respond with status 204 on success" do
       delete :destroy, :dashboard_id => @dashboard.id, :id => @widget.id, :format => :json
