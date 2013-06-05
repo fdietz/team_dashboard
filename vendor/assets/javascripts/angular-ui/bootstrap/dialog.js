@@ -16,19 +16,21 @@ dialogModule.provider("$dialog", function(){
   // The default options for all dialogs.
   var defaults = {
     backdrop: true,
-    modalClass: 'modal',
+    dialogClass: 'modal',
     backdropClass: 'modal-backdrop',
     transitionClass: 'fade',
     triggerClass: 'in',
     resolve:{},
     backdropFade: false,
-    modalFade:false,
+    dialogFade:false,
     keyboard: true, // close with esc key
     backdropClick: true // only in conjunction with backdrop=true
     /* other options: template, templateUrl, controller */
   };
 
   var globalOptions = {};
+
+  var activeBackdrops = {value : 0};
 
   // The `options({})` allows global configuration of all dialogs in the application.
   //
@@ -63,6 +65,7 @@ dialogModule.provider("$dialog", function(){
     function Dialog(opts) {
 
       var self = this, options = this.options = angular.extend({}, defaults, globalOptions, opts);
+      this._open = false;
 
       this.backdropEl = createElement(options.backdropClass);
       if(options.backdropFade){
@@ -70,8 +73,8 @@ dialogModule.provider("$dialog", function(){
         this.backdropEl.removeClass(options.triggerClass);
       }
 
-      this.modalEl = createElement(options.modalClass);
-      if(options.modalFade){
+      this.modalEl = createElement(options.dialogClass);
+      if(options.dialogFade){
         this.modalEl.addClass(options.transitionClass);
         this.modalEl.removeClass(options.triggerClass);
       }
@@ -88,6 +91,10 @@ dialogModule.provider("$dialog", function(){
         self.close();
         e.preventDefault();
         self.$scope.$apply();
+      };
+
+      this.handleLocationChange = function() {
+        self.close();
       };
     }
 
@@ -113,21 +120,21 @@ dialogModule.provider("$dialog", function(){
       }
 
       this._loadResolves().then(function(locals) {
-        var $scope = locals.$scope = self.$scope = $rootScope.$new();
+        var $scope = locals.$scope = self.$scope = locals.$scope ? locals.$scope : $rootScope.$new();
 
         self.modalEl.html(locals.$template);
 
         if (self.options.controller) {
           var ctrl = $controller(self.options.controller, locals);
-          self.modalEl.contents().data('ngControllerController', ctrl);
+          self.modalEl.children().data('ngControllerController', ctrl);
         }
 
-        $compile(self.modalEl.contents())($scope);
+        $compile(self.modalEl)($scope);
         self._addElementsToDom();
 
         // trigger tranisitions
         setTimeout(function(){
-          if(self.options.modalFade){ self.modalEl.addClass(self.options.triggerClass); }
+          if(self.options.dialogFade){ self.modalEl.addClass(self.options.triggerClass); }
           if(self.options.backdropFade){ self.backdropEl.addClass(self.options.triggerClass); }
         });
 
@@ -165,7 +172,7 @@ dialogModule.provider("$dialog", function(){
 
     Dialog.prototype._getFadingElements = function(){
       var elements = [];
-      if(this.options.modalFade){
+      if(this.options.dialogFade){
         elements.push(this.modalEl);
       }
       if(this.options.backdropFade){
@@ -178,6 +185,8 @@ dialogModule.provider("$dialog", function(){
     Dialog.prototype._bindEvents = function() {
       if(this.options.keyboard){ body.bind('keydown', this.handledEscapeKey); }
       if(this.options.backdrop && this.options.backdropClick){ this.backdropEl.bind('click', this.handleBackDropClick); }
+
+      this.$scope.$on('$locationChangeSuccess', this.handleLocationChange);
     };
 
     Dialog.prototype._unbindEvents = function() {
@@ -194,13 +203,26 @@ dialogModule.provider("$dialog", function(){
 
     Dialog.prototype._addElementsToDom = function(){
       body.append(this.modalEl);
-      if(this.options.backdrop) { body.append(this.backdropEl); }
+
+      if(this.options.backdrop) {
+        if (activeBackdrops.value === 0) {
+          body.append(this.backdropEl);
+        }
+        activeBackdrops.value++;
+      }
+
       this._open = true;
     };
 
     Dialog.prototype._removeElementsFromDom = function(){
       this.modalEl.remove();
-      if(this.options.backdrop) { this.backdropEl.remove(); }
+
+      if(this.options.backdrop) {
+        activeBackdrops.value--;
+        if (activeBackdrops.value === 0) {
+          this.backdropEl.remove();
+        }
+      }
       this._open = false;
     };
 
