@@ -85,7 +85,7 @@ Creates widget for specific dashboard
 
 Example:
 
-    curl -v -H "Content-type: application/json" -X POST -d '{ "name": "test", "source": "demo" }' http://localhost:3000/api/dashboards/1/widgets
+    curl -v -H "Content-type: application/json" -X POST -d '{ "name": "test", "source": "demo", "targets": "demo.example1;demo.example2" }' http://localhost:3000/api/dashboards/1/widgets
 
 
 ### DELETE /api/dashboards/id/widgets/id

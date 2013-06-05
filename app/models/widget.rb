@@ -5,6 +5,7 @@ class Widget < ActiveRecord::Base
 
   validates :name, :presence => true
   validates :dashboard_id, :presence => true
+  validates :targets, :presence => true, :on => :create, :if => :is_graph?
 
   after_initialize :set_defaults
 
@@ -45,4 +46,7 @@ class Widget < ActiveRecord::Base
     self.update_interval = 10 unless self.update_interval
   end
 
+  def is_graph?
+    self.kind == 'graph'
+  end
 end
