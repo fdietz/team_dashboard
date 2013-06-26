@@ -1,4 +1,4 @@
-app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", function($scope, $rootScope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget) {
+app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", "Sources", function($scope, $rootScope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget, Sources) {
 
   $rootScope.resolved = false;
 
@@ -51,7 +51,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
     dialog.kind      = kind;
     dialog.dashboard = $scope.dashboard;
     dialog.editTemplate = $("#templates-widgets-" + kind + "-edit").html();
-    dialog.customFieldsTemplate = $("#templates-custom_fields-" + kind).html();
+    dialog.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(kind)).html();
 
     dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
       if (result) $scope.widgets.push(dialog.$scope.widget);
@@ -66,7 +66,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
     dialog.widget    = widget;
     dialog.dashboard = $scope.dashboard;
     dialog.editTemplate = $("#templates-widgets-" + widget.kind + "-edit").html();
-    dialog.customFieldsTemplate = $("#templates-custom_fields-" + widget.kind).html();
+    dialog.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(widget.kind)).html();
 
     dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
       if (result) replaceWidget(widget.id, dialog.$scope.widget);
