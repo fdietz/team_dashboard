@@ -37,6 +37,7 @@ app.factory("Sources", function() {
   }
 
   return {
+    kindMapping: kindMapping,
     availableSources: availableSources,
     supportsTargetBrowsing: supportsTargetBrowsing
   };
