@@ -59,6 +59,7 @@ module TeamDashboard
     config.pingdom_username = ENV['PINGDOM_USERNAME']
     config.pingdom_password = ENV['PINGDOM_PASSWORD']
     config.sensu_events     = ENV['SENSU_EVENTS_URL']
+    config.uptime_url       = ENV['UPTIME_URL']
 
     config.jira_url         = ENV['JIRA_URL']           # e.g. "http://your-jira-installation/rest/api/latest/search"
     config.jira_user        = ENV['JIRA_USER']
