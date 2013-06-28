@@ -16,6 +16,14 @@ app.directive("meter", ["NumberModel", function(NumberModel) {
       return NumberModel.getData(scope.widget).success(onSuccess);
     }
 
+    function setStep() {
+      if(scope.data) {
+        step = Math.abs((parseFloat(scope.data.max) - parseFloat(scope.data.min)) / 100);
+        knob.trigger("configure", { step: step });
+        knob.val(scope.data.value).trigger("change"); // Re-set the value with the new stepping
+      }
+    }
+
     scope.init(update);
 
     scope.$watch("data.value", function(newValue, oldValue) {
@@ -24,10 +32,12 @@ app.directive("meter", ["NumberModel", function(NumberModel) {
 
     scope.$watch("data.min", function(newValue, oldValue) {
       knob.trigger("configure", { min: newValue });
+      setStep();
     });
 
     scope.$watch("data.max", function(newValue, oldValue) {
       knob.trigger("configure", { max: newValue });
+      setStep();
     });
 
   };
