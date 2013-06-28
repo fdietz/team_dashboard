@@ -15,7 +15,7 @@ module Sources
       class NotFoundError < StandardError; end
 
       def available?
-        Rails.configuration.pingdom_username.present? && Rails.configuration.pingdom_password.present?
+        true
       end
 
       def fields
