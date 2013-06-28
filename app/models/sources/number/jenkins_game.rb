@@ -3,8 +3,9 @@ require 'open-uri'
 module Sources
   module Number
 
-    # Gives you the score for a user in the Jenkins CI game. All mushed into one file so that it
-    # makes a standalone plugin for the dashboard.
+    # Gives you the score for a user in the Jenkins CI game.
+    # See https://wiki.jenkins-ci.org/display/JENKINS/The+Continuous+Integration+Game+plugin
+    # for the Jenkins plugin
     #
     # The following parameters must be provided:
     # * url - URL of the game's leaderboard
@@ -31,8 +32,9 @@ module Sources
       end
 
       def get(options = {})
-        url = options.fetch(:fields).fetch(:url)
-        user_name = options.fetch(:fields).fetch(:user_name)
+        widget     = Widget.find(options.fetch(:widget_id))
+        url = widget.settings.fetch(:url)
+        user_name = widget.settings.fetch(:user_name)
 
         doc = Nokogiri::HTML(open(url))
         value = doc.at_css("td a[href='/user/#{user_name}']").parent.parent.children.last.text.to_i
