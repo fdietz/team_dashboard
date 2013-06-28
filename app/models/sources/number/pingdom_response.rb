@@ -14,18 +14,11 @@ module Sources
         false
       end
 
-      def fields
-        [
-          { :name => "user", :title => "User name", :mandatory => true },
-          { :name => "password", :title => "Password", :mandatory => true },
-          { :name => "key", :title => "Key", :mandatory => true},
-          { :name => "check", :title => "Check Name", :mandatory => true}
-        ]
-      end
 
       def get(options = {})
-        fields = options.fetch(:fields)
-        connection = SimplePingdomInterface.new(fields.fetch(:user), fields.fetch(:password), fields.fetch(:key), fields.fetch(:check))
+        widget = Widget.find(options.fetch(:widget_id))
+        settings = widget.settings
+        connection = SimplePingdomInterface.new(settings.fetch(:user), settings.fetch(:password), settings.fetch(:key), settings.fetch(:check))
         { :value => connection.response_time }
       end
 
