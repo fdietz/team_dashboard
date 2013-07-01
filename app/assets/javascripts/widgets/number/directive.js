@@ -10,7 +10,7 @@ app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel,
     function onSuccess(data) {
       scope.data = data;
       scope.data.label = scope.data.label || scope.widget.label;
-      scope.data.value = Math.round(scope.data.value);
+      if(scope.data.value > 10) { scope.data.value = Math.round(scope.data.value); } // We want to see fractions for small numbers
       scope.data.stringValue = scope.widget.use_metric_suffix ? SuffixFormatter.format(scope.data.value, 1) : scope.data.value.toString();
 
       var previousData = scope.previousData;
