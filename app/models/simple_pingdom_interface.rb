@@ -12,7 +12,7 @@ class SimplePingdomInterface
   end
 
   def response
-    ::HttpService.request(pingdom_url, :headers => { 'App-Key' => '9ucbwe7se1uf61l59h2s0zm6ogjzpd7v'} )
+    ::HttpService.request(pingdom_url, :headers => { 'App-Key' => @app_key } )
   end
 
   def check_response
