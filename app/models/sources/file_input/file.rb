@@ -29,8 +29,6 @@ module Sources
           values_array.push(parsed_json[i]["status"])
           all_messages << {:label => "#{parsed_json[i]["Label"]}", :value => "#{parsed_json[i]["Value"]}"}
         end
-        Rails.logger.debug("all_messages = #{all_messages}")
-        Rails.logger.debug("all_messages = #{all_messages.to_s}")
 
         if !values_array.empty?
           overall_value = case
