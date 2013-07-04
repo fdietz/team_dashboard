@@ -4,7 +4,11 @@ app.directive("fileInput", ["$window", "FileInputModel",  function($window, File
 
     scope.showFileMessage = function() {
       var messages = scope.data.label;
-      var bootboxMessages = messages.replace(/\n/g, '<br />');
+	  var xyz = [];
+	  for( var i=0, l=messages.length; i<l; i++ ) {
+		xyz.push(messages[i].label, messages[i].value, '<br />');
+	  }
+	  var bootboxMessages = xyz.join(" ");
       $window.bootbox.animate(false);
       $window.bootbox.alert("<h2>"+bootboxMessages+"</h2>");
     };

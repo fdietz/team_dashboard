@@ -1,21 +1,17 @@
 <div class="file_input-widget single-row" position="relative">
         <div class="file_input-value value-size-small" ng-class="{ green:data.overall_value == 0, orange:data.overall_value == 1, red:data.overall_value == 2, blue:data.overall_value>2 }"></div>
 
-        <div class="label_container_two_rows">
+        <!--<div class="label_container_two_rows">-->
                 <!--<a class="action" ng-click="showFileMessage()" href="#"><span class="label" ng-bind-html-unsafe='data.label'/></a>-->
-                        <table class="file_label"> 
+                        <table class="table-striped file_label">
                                 <thead>
-                                        <tr>
-                                                <th>FI</th>
-                                                <th>Date</th>
-                                        </tr>
                                 </thead>
-                                <tbody>
-                                        <tr ng-click="showFileMessage()" ng-repeat="label in data.label">
+                                <tbody ng-click="showFileMessage()">
+                                        <tr ng-repeat="label in data.label">
                                                 <td>{{ label.label }}</td>
                                                 <td>{{ label.value }}</td>
                                         </tr>
                                 </tbody>
                         </table>
-                </div>
+               <!--</div>-->
         </div>
