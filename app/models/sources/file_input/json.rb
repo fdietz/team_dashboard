@@ -1,6 +1,6 @@
 module Sources
   module FileInput
-    class File < Sources::FileInput::Base
+    class Json < Sources::FileInput::Base
 
       def available?
         true 
