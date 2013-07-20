@@ -1,4 +1,4 @@
-app.controller("FileInputCtrl", ["$scope", function($scope) {
+app.controller("StatusTableCtrl", ["$scope", function($scope) {
 
     var defaults = {
         size_x: 2,

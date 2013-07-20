@@ -1,15 +1,21 @@
 module Sources
-  module FileInput
-    class Demo < Sources::FileInput::Base
+  module StatusTable
+    class JsonFile < Sources::StatusTable::Base
 
       def available?
         true 
       end
 
+      def fields
+        [
+          { :name => "input_file", :title => "File to read", :mandatory => true },
+        ]
+      end
+
       def get(options = {})
 
         widget     = Widget.find(options.fetch(:widget_id))
-        input_file = Rails.root.join('vendor', 'demo_file_input.json')
+        input_file = widget.settings.fetch(:input_file)
 
         file = open(input_file)
         json = file.read
@@ -21,7 +27,7 @@ module Sources
         all_messages = Array.new
         for i in 0..max-1
           values_array.push(parsed_json[i]["status"])
-          all_messages << {:label => "#{parsed_json[i]["Label"]}", :value => "#{parsed_json[i]["Value"]}"}
+          all_messages << {:label => "#{parsed_json[i]["label"]}", :value => "#{parsed_json[i]["value"]}"}
         end
 
         if !values_array.empty?

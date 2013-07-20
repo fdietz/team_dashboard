@@ -1,5 +1,5 @@
 module Sources
-  module FileInput
+  module StatusTable
     class Base
 
       def available?

@@ -1,4 +1,4 @@
-app.directive("fileInput", ["$window", "FileInputModel",  function($window, FileInputModel){
+app.directive("statusTable", ["$window", "StatusTableModel",  function($window, StatusTableModel){
 
   var linkFn = function(scope, element, attrs, WidgetCtrl) {
 
@@ -19,14 +19,14 @@ app.directive("fileInput", ["$window", "FileInputModel",  function($window, File
     }
 
     function update() {
-      return FileInputModel.getData(scope.widget).success(onSuccess);
+      return StatusTableModel.getData(scope.widget).success(onSuccess);
     }
 
     scope.init(update);
   };
 
   return {
-    template: $("#templates-widgets-file_input-show").html(),
+    template: $("#templates-widgets-status_table-show").html(),
     link: linkFn
   };
 }]);
