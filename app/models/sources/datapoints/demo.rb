@@ -11,7 +11,7 @@ module Sources
         to      = (options[:to] || Time.now).to_i
 
         widget  = Widget.find(options.fetch(:widget_id))
-        targets = targetsArray(widget.targets)
+        targets = targetsArray(widget.settings.fetch(:targets))
         source  = options[:source]
 
         datapoints = []

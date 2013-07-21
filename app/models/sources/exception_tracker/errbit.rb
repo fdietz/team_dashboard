@@ -8,7 +8,7 @@ module Sources
   module ExceptionTracker
     class Errbit < Sources::ExceptionTracker::Base
 
-      def fields
+      def custom_fields
         [
           { :name => "server_url", :title => "Errbit Server Url", :mandatory => true },
           { :name => "api_key", :title => "API Key", :mandatory => true }

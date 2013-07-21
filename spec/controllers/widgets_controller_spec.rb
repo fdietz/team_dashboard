@@ -40,7 +40,7 @@ describe Api::WidgetsController do
     end
 
     it "handles settings attributes as single attribute with nested attributes on its own" do
-      @request.env['RAW_POST_DATA'] = { :name => "name", :dashboard_id => @dashboard.id, :source1 => "a", :source2 => "b" }.to_json
+      @request.env['RAW_POST_DATA'] = FactoryGirl.attributes_for(:widget, :dashboard => @dashboard, :source1 => "a", :source2 => "b").to_json
       post :create, :dashboard_id => @dashboard.id, :format => :json
       assert_response :created
       result = JSON.parse(@response.body)

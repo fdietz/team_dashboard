@@ -4,7 +4,7 @@ module Sources
   module Ci
     class Travis < Sources::Ci::Base
 
-      def fields
+      def custom_fields
         [
           { :name => "server_url", :title => "Server Url", :mandatory => true },
           { :name => "project", :title => "Project", :mandatory => true },

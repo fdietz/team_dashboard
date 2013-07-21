@@ -44,7 +44,7 @@ module Sources
 
       end
 
-      def fields
+      def custom_fields
         [
           { :name => "api_key", :title => "Api Key", :mandatory => true },
           { :name => "value_name", :title => "Value Name", :mandatory => true },

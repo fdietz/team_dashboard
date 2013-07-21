@@ -3,7 +3,7 @@ require "spec_helper"
 describe Sources::Datapoints::Graphite do
 
   let(:source) { Sources::Datapoints::Graphite.new }
-  let(:widget) { FactoryGirl.create(:widget, :kind => "datapoints", :source => "graphite", :targets => "test1;test2", :settings => {}) }
+  let(:widget) { FactoryGirl.create(:widget, :kind => "datapoints", :source => "graphite", :settings => { :targets => "test1;test2" }) }
   let(:targets) { ['test1', 'test2'] }
 
   before do
@@ -13,6 +13,7 @@ describe Sources::Datapoints::Graphite do
 
   describe "#get" do
     it "calls request_datapoints" do
+      p widget
       input = [{ 'target' => 'test1', 'datapoints' => [[1, 123]] }]
       source.expects(:request_datapoints).with(targets, @from, @to).returns(input)
       result = source.get(:from => @from, :to => @to, :widget_id => widget.id)

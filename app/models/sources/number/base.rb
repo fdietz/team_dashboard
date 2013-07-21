@@ -13,8 +13,12 @@ module Sources
       def supports_functions?
         false
       end
-      
-      def fields
+
+      def custom_fields
+        []
+      end
+
+      def default_fields
         []
       end
 

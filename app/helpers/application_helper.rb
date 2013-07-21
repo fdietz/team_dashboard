@@ -41,12 +41,32 @@ module ApplicationHelper
     end.join("\n").html_safe
   end
 
+  private
+
   def normalized_filename(file)
     file.to_s.gsub(".html", "").gsub(".erb", "")
   end
 
   def normalize_template_name(name)
     normalized_filename(name.to_s).gsub("/", "-")
+  end
+
+  # @source for example: number, ci, etc.
+  # using ng-switch doesn't work, it breaks the form validation
+  def control_groups(source)
+    source = Sources.widget_type_to_source_type(source)
+
+    source = Sources[source]
+    result = []
+    source.each do |key, value|
+      result << "<div ng-show=\"'#{key}' == widget.source\">"
+      value[:custom_fields].each do |field|
+        result << control_group(key, field).html_safe
+      end
+      result << "</div>"
+    end
+
+    result.join.html_safe
   end
 
   def control_group(key, field)
@@ -60,21 +80,4 @@ module ApplicationHelper
     EOF
   end
 
-  # @source for example: number, ci, etc.
-  # using ng-switch doesn't work, it breaks the form validation
-  def control_groups(source)
-    # TODO: fix mapping
-    source = source == "graph" ? "datapoints" : source
-    source = Sources.custom_fields(source)
-    result = []
-    source.each do |key, value|
-      result << "<div ng-show=\"'#{key}' == widget.source\">"
-      value["fields"].each do |field|
-        result << control_group(key, field).html_safe
-      end
-      result << "</div>"
-    end
-
-    result.join.html_safe
-  end
 end

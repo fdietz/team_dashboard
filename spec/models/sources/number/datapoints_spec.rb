@@ -4,8 +4,8 @@ describe Sources::Number::Datapoints do
 
   let(:source) { Sources::Number::Datapoints.new }
   let(:widget) {
-    FactoryGirl.create(:widget, :kind => "number", :source => "datapoints", :targets => "test1;test2",
-      :settings => { :datapoints_source => "demo", :aggregate_function => "average" })
+    FactoryGirl.create(:widget, :kind => "number", :source => "datapoints",
+      :settings => { :targets => "test1;test2", :datapoints_source => "demo", :aggregate_function => "average" })
   }
   let(:targets) { ['test1', 'test2'] }
 

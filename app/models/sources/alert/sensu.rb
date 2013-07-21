@@ -9,7 +9,7 @@ module Sources
         Rails.configuration.sensu_events.present?
       end
 
-      def fields
+      def custom_fields
         [
           { :name => "sensu_clients", :title => "Filter by clients", :mandatory => false },
           { :name => "ignored_checks", :title => "Ignore checks", :mandatory => false }

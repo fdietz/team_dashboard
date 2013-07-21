@@ -3,7 +3,7 @@ module Sources
 
     class Pingdom < Sources::Boolean::Base
 
-      def fields
+      def custom_fields
         [
           { :name => "user", :title => "User name", :mandatory => true },
           { :name => "password", :title => "Password", :mandatory => true },

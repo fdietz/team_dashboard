@@ -29,7 +29,7 @@ module Sources
         res["total"]
       end
 
-      def fields
+      def custom_fields
         [
           { :name => "filter_id", :title => "Jira Filter ID", :mandatory => true }
         ]

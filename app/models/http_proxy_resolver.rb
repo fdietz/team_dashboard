@@ -1,6 +1,6 @@
 module HttpProxyResolver
 
-  def fields
+  def custom_fields
     [
       { :name => "proxy_url", :title => "Proxy Url", :mandatory => true },
       { :name => "proxy_value_path", :title => "Value Path" }

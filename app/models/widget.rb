@@ -3,12 +3,13 @@ class Widget < ActiveRecord::Base
 
   serialize :settings
 
-  validates :name, :presence => true
-  validates :dashboard_id, :presence => true
+  validates :name, :kind, :source, :update_interval, :dashboard_id, :presence => true
+
+  attr_accessible :name, :kind, :source, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings
+
+  validate :validate_source_attributes
 
   after_initialize :set_defaults
-
-  attr_accessible :name, :kind, :size, :source, :targets, :range, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings
 
   class << self
 
@@ -38,11 +39,19 @@ class Widget < ActiveRecord::Base
 
   protected
 
+  def validate_source_attributes
+    source_plugins = Sources[Sources.widget_type_to_source_type(kind)]
+    source_attrs   = source_plugins.fetch(source)
+    attrs          = source_attrs.fetch(:custom_fields) + source_attrs.fetch(:default_fields)
+    attrs.each do |field|
+      if field[:mandatory]
+        errors.add(field[:name], "#{field[:name]} is a required field") unless settings[field[:name].to_sym].present?
+      end
+    end
+  end
+
   def set_defaults
-    self.size = 1 unless self.size
-    self.range = '30-minutes' unless self.range
-    self.kind = 'graph' unless self.kind
-    self.update_interval = 10 unless self.update_interval
+    self.update_interval ||= 10
   end
 
 end

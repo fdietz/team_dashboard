@@ -97,7 +97,7 @@ For example the official [Jenkins source plugin](https://github.com/fdietz/team_
 
     class Jenkins < Sources::Ci::Base
 
-      def fields
+      def custom_fields
         [
           { :name => "server_url", :title => "Server Url", :mandatory => true },
           { :name => "project", :title => "Project", :mandatory => true },

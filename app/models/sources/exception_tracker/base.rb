@@ -14,10 +14,13 @@ module Sources
         false
       end
 
-      def fields
+      def custom_fields
         []
       end
 
+      def default_fields
+        []
+      end
       # Returns ruby hash:
       # * label                 name of application
       # * last_error_time       time of last error

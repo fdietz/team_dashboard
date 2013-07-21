@@ -18,7 +18,7 @@ module Sources
         Rails.configuration.uptime_url.present?
       end
 
-      def fields
+      def custom_fields
         [
           { :name => "check_name", :title => "Check name", :mandatory => true }
         ]

@@ -2,7 +2,7 @@ module Sources
   module Boolean
     class Shell < Sources::Boolean::Base
 
-      def fields
+      def custom_fields
         [ { :name => "command", :title => "Shell Command", :mandatory => true } ]
       end
 
