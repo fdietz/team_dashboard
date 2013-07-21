@@ -1,9 +1,44 @@
 .status_table-widget {
   
-  .status_table-value {
+  .status_table-overall_value {
     float: left;
     width: 70px;
     height: 60px;
+    margin-top: 10px;
+    margin-right: 20px;
+
+    font-size: 22px;
+    line-height: 60px;
+
+    font-weight: bolder;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status_table-overall_label {
+    float: left;
+    height: 60px;
+    margin-top: 10px;
+    margin-right: 20px;
+
+    font-size: 22px;
+    line-height: 60px;
+
+    font-weight: bolder;
+    text-shadow: 1px 1px 1px #330, -1px -1px 1px #330;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .status_table-value {
+    float: left;
+    width: 20px;
+    height: 20px;
     margin-top: 10px;
     margin-right: 20px;
   }
@@ -13,7 +48,7 @@
     position: relative;
     margin-top: 10px;
     float: left;
-    width: 75%;
+    width: 95%;
     height: 75%;
 
     font-size: 16px;
