@@ -3,7 +3,7 @@ module Sources
 
   class UnknownPluginError < StandardError; end
 
-  TYPES = %w(alert boolean datapoints number ci exception_tracker)
+  TYPES = %w(alert boolean datapoints number ci exception_tracker status_table)
 
   TYPES.each do |type|
     define_method("#{type}_plugin") do |name|

@@ -112,6 +112,11 @@ It currently supports [Jenkins](http://jenkins-ci.org/) and [Travis CI](https://
 ### Exception Tracker Widget
 Shows the number of unresolved errors in your exception tracker, and when the last error occurred. It currently supports [Errbit](https://github.com/errbit/errbit).
 
+### Status Table Widget
+Shows data in a table format with an overall status (like the alert widget) and individual row status with a label and a value.
+
+It currently supports using a json file as input.
+
 ## Credits & Contributors
 
 Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the first iteration which was build as part of a [XING](http://www.xing.com) Hackathon Project.
@@ -125,6 +130,7 @@ Thanks go to Martin Tschischauskas and Marno Krahmer who worked with me on the f
 * [averell23](https://github.com/averell23) (Daniel Hahn)
 * [martintsch](https://github.com/martintsch) (Martin Tschischauskas)
 * Marno Krahmer
+* [paulhamby](https://github.com/paulhamby) (Paul Hamby)
 
 ## The MIT License
 
