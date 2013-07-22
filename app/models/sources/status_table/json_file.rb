@@ -27,7 +27,12 @@ module Sources
         all_messages = Array.new
         for i in 0..max-1
           values_array.push(parsed_json[i]["status"])
-          all_messages << {:label => "#{parsed_json[i]["label"]}", :value => "#{parsed_json[i]["value"]}"}
+          all_messages << {
+            :status => "#{parsed_json[i]["status"]}",
+            :label => "#{parsed_json[i]["label"]}",
+            :value => "#{parsed_json[i]["value"]}"
+          }
+
         end
 
         if !values_array.empty?
