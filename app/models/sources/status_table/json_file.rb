@@ -45,7 +45,7 @@ module Sources
           overall_value = 0
         end
 
-        { :overall_value => overall_value , :label => all_messages }
+        { :overall_value => overall_value :label => all_messages }
 
       end
 

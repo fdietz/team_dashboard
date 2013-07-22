@@ -42,7 +42,18 @@ module Sources
           overall_value = 0
         end
 
-        { :overall_value => overall_value , :label => all_messages }
+        #if overall_value = 2, choose a random item with a status of 2 to be first_value, and so on
+        #if overall_value == 2
+        #  first_value = Hash[*all_messages.sample(1)]
+          #first_value = all_messages.select{ |status| status == 2 }.sample(1)
+          #overall_value_2 = all_messages.select{ |status| status == 2 }
+          #first_value = Hash[*overall_value_2.to_a.sample(1)]
+        #else
+        #  Rails.logger.debug("Error getting first_value")
+        #end
+
+        #{ :overall_value => overall_value, :first_value => first_value, :label => all_messages }
+        { :overall_value => overall_value, :label => all_messages }
 
       end
 
