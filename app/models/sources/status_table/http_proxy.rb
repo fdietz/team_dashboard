@@ -14,6 +14,11 @@ module Sources
     class HttpProxy < Sources::StatusTable::Base
       include HttpProxyResolver
 
+      def get(options = {})
+        parsed_json = super(options)
+
+        build_json_response(parsed_json)
+      end
     end
   end
 end
