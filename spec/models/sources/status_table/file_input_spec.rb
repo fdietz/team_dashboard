@@ -8,7 +8,7 @@ describe Sources::StatusTable::JsonFile do
   describe "#get" do
     it "returns overall_value" do
       result = status_table.get(:widget_id => widget.id)
-      result.should == {:overall_value=>0, :label=>[{:label=>"Curabitur condimentum leo", :value=>"2013/03/11"}]}
+      result.should == {:overall_value=>0, :first_value=>{"status"=>"0", "label"=>"Curabitur condimentum leo", "value"=>"2013/03/11"}, :label=>[{"status"=>"0", "label"=>"Curabitur condimentum leo", "value"=>"2013/03/11"}]}
     end
   end
 end
