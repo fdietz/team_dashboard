@@ -28,9 +28,9 @@ module Sources
         for i in 0..max-1
           values_array.push(parsed_json[i]["status"])
           all_messages << {
-            :status => "#{parsed_json[i]["status"]}",
-            :label => "#{parsed_json[i]["label"]}",
-            :value => "#{parsed_json[i]["value"]}"
+            "status" => "#{parsed_json[i]["status"]}",
+            "label" => "#{parsed_json[i]["label"]}",
+            "value" => "#{parsed_json[i]["value"]}"
           }
 
         end
@@ -50,7 +50,18 @@ module Sources
           overall_value = 0
         end
 
-        { :overall_value => overall_value, :label => all_messages }
+        if overall_value == 2
+          first_value = all_messages.find {|s| s["status"] == "2"}
+        elsif overall_value == 1
+          first_value = all_messages.find {|s| s["status"] == "1"}
+        elsif overall_value == 0
+          first_value = all_messages.find {|s| s["status"] == "0"}
+        else
+          Rails.logger.debug("Error getting first_value")
+          first_value = ""
+        end
+
+        { :overall_value => overall_value, :first_value => first_value, :label => all_messages }
 
       end
 
