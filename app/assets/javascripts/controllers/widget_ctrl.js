@@ -28,7 +28,7 @@ app.controller("WidgetCtrl", ["$scope", "$element", "$timeout", "$rootScope", fu
   function updateTimer() {
     $scope.widget.enableSpinner = false;
 
-    if (!abortTimer) timer = $timeout(startTimer, $scope.widget.update_interval * 200);
+    if (!abortTimer) timer = $timeout(startTimer, $scope.widget.update_interval * 2000);
   }
 
   function startTimer() {
