@@ -30,11 +30,6 @@
       </select>
     </div>
 
-    <div td-field label="Graph Type">
-      <select name="graph_type" ng-model="widget.graph_type" ng-options="i.value as i.label for i in graphTypes" ng-required="widget.source == 'datapoints'">
-      </select>
-    </div>
-
     <div td-field label="Targets">
       <div class="input-append" ng-show="supportsTargetBrowsing()">
         <input name="targets" ng-model="widget.targets" type="text" ng-required="widget.source == 'datapoints'"/>
