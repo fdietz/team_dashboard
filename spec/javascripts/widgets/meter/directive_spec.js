@@ -7,7 +7,6 @@ describe("meter widget directive", function() {
     httpBackend = $httpBackend;
 
     element = angular.element('<div meter></div>');
-    fixture = loadFixtures("widgets/meter/show.html");
     rootScope.widget = { label: "Default Text", source: "demo" };
     ctrl = $controller("WidgetCtrl", { $scope: rootScope, $element: null });
   }));

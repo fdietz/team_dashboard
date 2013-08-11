@@ -8,7 +8,6 @@ describe("boolean widget directive", function() {
     httpBackend = $httpBackend;
 
     element = angular.element('<div boolean>Hello World</div>');
-    fixture = loadFixtures("widgets/boolean/show.html");
     rootScope.widget = { label: "Default Text", source: "demo" };
     ctrl = $controller("WidgetCtrl", { $scope: rootScope, $element: null });
   }));

@@ -8,7 +8,6 @@ describe("exception_tracker widget directive", function() {
     httpBackend = $httpBackend;
 
     element = angular.element('<div exception_tracker>hello</div>');
-    fixture = loadFixtures("widgets/exception_tracker/show.html");
 
     rootScope.widget = { label: "Default Text", source: "demo" };
     ctrl = $controller("WidgetCtrl", { $scope: rootScope, $element: null });

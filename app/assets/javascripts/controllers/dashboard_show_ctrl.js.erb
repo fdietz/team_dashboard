@@ -45,30 +45,29 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   }
 
   $scope.addWidget = function(kind) {
-    var dialog      = $dialog.dialog(),
-        templateUrl = "<%= asset_path('templates/widget/edit.html') %>";
+    var dialog      = $dialog.dialog({ template: JST['templates/widget/edit'], controller: "WidgetEditCtrl" });
 
     dialog.kind      = kind;
     dialog.dashboard = $scope.dashboard;
-    dialog.editTemplate = $("#templates-widgets-" + kind + "-edit").html();
+    dialog.editTemplate = JST["templates/widgets/" + kind + "/edit"];
     dialog.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(kind)).html();
 
-    dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
+    dialog.open().then(function(result) {
       if (result) $scope.widgets.push(dialog.$scope.widget);
     });
   };
 
   $scope.editWidget = function(widget) {
-    var dialog      = $dialog.dialog(),
-        templateUrl = "<%= asset_path('templates/widget/edit.html') %>";
+    var dialog      = $dialog.dialog({ template: JST['templates/widget/edit'], controller: "WidgetEditCtrl" });
 
     dialog.kind      = widget.kind;
     dialog.widget    = widget;
     dialog.dashboard = $scope.dashboard;
-    dialog.editTemplate = $("#templates-widgets-" + widget.kind + "-edit").html();
+    dialog.editTemplate = JST["templates/widgets/" + widget.kind + "/edit"];
+
     dialog.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(widget.kind)).html();
 
-    dialog.open(templateUrl, "WidgetEditCtrl").then(function(result) {
+    dialog.open().then(function(result) {
       if (result) replaceWidget(widget.id, dialog.$scope.widget);
     });
   };

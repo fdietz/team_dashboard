@@ -8,7 +8,6 @@ describe("ci widget directive", function() {
     httpBackend = $httpBackend;
 
     element = angular.element('<div ci>Hello World</div>');
-    fixture = loadFixtures("widgets/ci/show.html");
     rootScope.widget = { label: "Default Text", source: "demo" };
     ctrl = $controller("WidgetCtrl", { $scope: rootScope, $element: null });
   }));
@@ -64,7 +63,7 @@ describe("ci widget directive", function() {
     compile(element)(rootScope);
     httpBackend.flush();
 
-    expect(element.find(".secondary-label")).toHaveText("Sleeping...");
+    expect(element.find(".secondary-label").html().trim()).toEqual("Sleeping...");
   });
 
 });

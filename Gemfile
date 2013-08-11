@@ -20,6 +20,8 @@ gem "nokogiri", "~> 1.5.5"
 
 gem "newrelic_api", "~> 1.2"
 
+gem 'ejs'
+
 group :test, :development do
   gem 'debugger'
   gem "rspec-rails"

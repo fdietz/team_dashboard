@@ -22,7 +22,7 @@ app.directive("alert", ["$window", "AlertModel",  function($window, AlertModel){
   };
 
   return {
-    template: $("#templates-widgets-alert-show").html(),
+    template: JST["templates/widgets/alert/show"],
     link: linkFn
   };
 }]);
