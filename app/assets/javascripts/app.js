@@ -14,6 +14,8 @@ app.config(function($httpProvider) {
   $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
 });
 
+app.constant("DASHBOARD_COLUMN_COUNT", 4);
+
 // use angular/mustache style {{variable}} interpolation
 _.templateSettings = {
   interpolate : /\{\{(.+?)\}\}/g

@@ -1,4 +1,4 @@
-app.directive("gridster", ["Widget", function(Widget) {
+app.directive("gridster", ["Widget", "DASHBOARD_COLUMN_COUNT", function(Widget, DASHBOARD_COLUMN_COUNT) {
 
   function controllerFn($scope, $element, $attrs) {
     var gridster = null;
@@ -10,7 +10,7 @@ app.directive("gridster", ["Widget", function(Widget) {
     var options = {
       widget_margins: [8, 8],
       widget_base_dimensions: [320, 150],
-      min_cols: 4,
+      min_cols: DASHBOARD_COLUMN_COUNT || 4,
       avoid_overlapped_widgets: true,
       serialize_params: serializeParamsFn,
       draggable: draggable
