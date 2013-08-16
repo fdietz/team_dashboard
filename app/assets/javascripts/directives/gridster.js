@@ -10,7 +10,7 @@ app.directive("gridster", ["Widget", function(Widget) {
     var options = {
       widget_margins: [8, 8],
       widget_base_dimensions: [320, 150],
-      min_cols: 4,
+      min_cols: 10,
       avoid_overlapped_widgets: true,
       serialize_params: serializeParamsFn,
       draggable: draggable
