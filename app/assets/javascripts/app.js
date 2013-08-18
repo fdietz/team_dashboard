@@ -1,18 +1,20 @@
-var app = angular.module("TeamDashboard", ["ngResource", "ngSanitize", "ui.bootstrap"]);
+var app = angular.module("TeamDashboard", ["ngResource", "ngSanitize", "ngRoute", "ui.bootstrap"]);
 
-app.config(function($routeProvider, $locationProvider) {
+app.config(["$routeProvider", "$locationProvider", function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
   $routeProvider
     .when("/dashboards", { template: JST['templates/dashboards/index'], controller: "DashboardIndexCtrl" })
     .when("/dashboards/:id", { template: JST['templates/dashboards/show'], controller: "DashboardShowCtrl" })
     .when("/about", { template: JST['templates/abouts/show'], controller: "AboutCtrl" })
     .otherwise({ redirectTo: "/dashboards" });
-});
+}]);
 
 
-app.config(function($httpProvider) {
+app.config(["$httpProvider", function($httpProvider) {
   $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
-});
+
+  $httpProvider.defaults.headers.common['Accept'] = "application/json" 
+}]);
 
 app.constant("DASHBOARD_COLUMN_COUNT", 4);
 

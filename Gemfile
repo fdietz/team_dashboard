@@ -6,8 +6,6 @@ gem "jquery-rails", "~> 2.2.1"
 gem "less-rails", "~> 2.2.6"
 gem "less-rails-bootstrap", "~> 2.3.0"
 
-gem 'angular-rails'
-
 gem "mysql2", "~> 0.3.11"
 
 gem "unicorn"

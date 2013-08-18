@@ -47,15 +47,29 @@ app.directive("gridster", ["Widget", "DASHBOARD_COLUMN_COUNT", function(Widget, 
     }
 
     return {
-      init: function() {
+      init: function(element) {
         var ul = $element.find("ul");
+        // console.log($element, ul)
+
         gridster = ul.gridster(options).data("gridster");
+        // gridster = $element.find("ul").gridster(options).data("gridster");
       },
       add: function(elm, options) {
+        // gridster = $element.find("ul").gridster(options).data("gridster");
+
+        // gridster = gridster();
+
+        console.log("add");
+        console.log("gridster", gridster)
         // ensure col and row are set for new widgets
         var pos = gridster.next_position(options.size_x, options.size_y);
         if (!options.col && !options.row) { options = _.extend(options, pos); }
-        gridster.add_widget(elm, options.size_x, options.size_y, options.col, options.row);
+        console.log(options)
+        
+        $scope.$apply(function() {
+          gridster.add_widget(elm, options.size_x, options.size_y, options.col, options.row);  
+        });
+        
       },
       remove: function(elm) {
         gridster.remove_widget(elm);
@@ -73,6 +87,7 @@ app.directive("gridster", ["Widget", "DASHBOARD_COLUMN_COUNT", function(Widget, 
     template: '<div class="gridster"><div ng-transclude/></div>',
     controller: controllerFn,
     link: function(scope, element, attrs, controller) {
+      console.log("init");
       controller.init(element);
     }
   };

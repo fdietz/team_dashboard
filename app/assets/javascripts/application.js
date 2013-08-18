@@ -31,8 +31,10 @@
 //= require jquery.knob
 
 //= require angular
+//= require angular-route
 //= require angular-resource
 //= require angular-sanitize
+
 //= require ui-bootstrap-custom-0.5.0
 
 //= require_tree .
