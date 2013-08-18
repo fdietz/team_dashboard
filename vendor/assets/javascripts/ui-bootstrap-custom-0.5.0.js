@@ -1,3 +1,87 @@
+angular.module("ui.bootstrap", ["ui.bootstrap.transition","ui.bootstrap.dialog","ui.bootstrap.modal"]);
+angular.module('ui.bootstrap.transition', [])
+
+/**
+ * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
+ * @param  {DOMElement} element  The DOMElement that will be animated.
+ * @param  {string|object|function} trigger  The thing that will cause the transition to start:
+ *   - As a string, it represents the css class to be added to the element.
+ *   - As an object, it represents a hash of style attributes to be applied to the element.
+ *   - As a function, it represents a function to be called that will cause the transition to occur.
+ * @return {Promise}  A promise that is resolved when the transition finishes.
+ */
+.factory('$transition', ['$q', '$timeout', '$rootScope', function($q, $timeout, $rootScope) {
+
+  var $transition = function(element, trigger, options) {
+    options = options || {};
+    var deferred = $q.defer();
+    var endEventName = $transition[options.animation ? "animationEndEventName" : "transitionEndEventName"];
+
+    var transitionEndHandler = function(event) {
+      $rootScope.$apply(function() {
+        element.unbind(endEventName, transitionEndHandler);
+        deferred.resolve(element);
+      });
+    };
+
+    if (endEventName) {
+      element.bind(endEventName, transitionEndHandler);
+    }
+
+    // Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
+    $timeout(function() {
+      if ( angular.isString(trigger) ) {
+        element.addClass(trigger);
+      } else if ( angular.isFunction(trigger) ) {
+        trigger(element);
+      } else if ( angular.isObject(trigger) ) {
+        element.css(trigger);
+      }
+      //If browser does not support transitions, instantly resolve
+      if ( !endEventName ) {
+        deferred.resolve(element);
+      }
+    });
+
+    // Add our custom cancel function to the promise that is returned
+    // We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
+    // i.e. it will therefore never raise a transitionEnd event for that transition
+    deferred.promise.cancel = function() {
+      if ( endEventName ) {
+        element.unbind(endEventName, transitionEndHandler);
+      }
+      deferred.reject('Transition cancelled');
+    };
+
+    return deferred.promise;
+  };
+
+  // Work out the name of the transitionEnd event
+  var transElement = document.createElement('trans');
+  var transitionEndEventNames = {
+    'WebkitTransition': 'webkitTransitionEnd',
+    'MozTransition': 'transitionend',
+    'OTransition': 'oTransitionEnd',
+    'transition': 'transitionend'
+  };
+  var animationEndEventNames = {
+    'WebkitTransition': 'webkitAnimationEnd',
+    'MozTransition': 'animationend',
+    'OTransition': 'oAnimationEnd',
+    'transition': 'animationend'
+  };
+  function findEndEventName(endEventNames) {
+    for (var name in endEventNames){
+      if (transElement.style[name] !== undefined) {
+        return endEventNames[name];
+      }
+    }
+  }
+  $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
+  $transition.animationEndEventName = findEndEventName(animationEndEventNames);
+  return $transition;
+}]);
+
 // The `$dialogProvider` can be used to configure global defaults for your
 // `$dialog` service.
 var dialogModule = angular.module('ui.bootstrap.dialog', ['ui.bootstrap.transition']);
@@ -26,9 +110,9 @@ dialogModule.provider("$dialog", function(){
     keyboard: true, // close with esc key
     backdropClick: true // only in conjunction with backdrop=true
     /* other options: template, templateUrl, controller */
-  };
+	};
 
-  var globalOptions = {};
+	var globalOptions = {};
 
   var activeBackdrops = {value : 0};
 
@@ -38,21 +122,21 @@ dialogModule.provider("$dialog", function(){
   //        // don't close dialog when backdrop is clicked by default
   //        $dialogProvider.options({backdropClick: false});
   //      });
-  this.options = function(value){
-    globalOptions = value;
-  };
+	this.options = function(value){
+		globalOptions = value;
+	};
 
   // Returns the actual `$dialog` service that is injected in controllers
-  this.$get = ["$http", "$document", "$compile", "$rootScope", "$controller", "$templateCache", "$q", "$transition", "$injector",
+	this.$get = ["$http", "$document", "$compile", "$rootScope", "$controller", "$templateCache", "$q", "$transition", "$injector",
   function ($http, $document, $compile, $rootScope, $controller, $templateCache, $q, $transition, $injector) {
 
-    var body = $document.find('body');
+		var body = $document.find('body');
 
-    function createElement(clazz) {
-      var el = angular.element("<div>");
-      el.addClass(clazz);
-      return el;
-    }
+		function createElement(clazz) {
+			var el = angular.element("<div>");
+			el.addClass(clazz);
+			return el;
+		}
 
     // The `Dialog` class represents a modal dialog. The dialog class can be invoked by providing an options object
     // containing at lest template or templateUrl and controller:
@@ -62,7 +146,7 @@ dialogModule.provider("$dialog", function(){
     // Dialogs can also be created using templateUrl and controller as distinct arguments:
     //
     //     var d = new Dialog('path/to/dialog.html', MyDialogController);
-    function Dialog(opts) {
+		function Dialog(opts) {
 
       var self = this, options = this.options = angular.extend({}, defaults, globalOptions, opts);
       this._open = false;
@@ -91,10 +175,6 @@ dialogModule.provider("$dialog", function(){
         self.close();
         e.preventDefault();
         self.$scope.$apply();
-      };
-
-      this.handleLocationChange = function() {
-        self.close();
       };
     }
 
@@ -185,8 +265,6 @@ dialogModule.provider("$dialog", function(){
     Dialog.prototype._bindEvents = function() {
       if(this.options.keyboard){ body.bind('keydown', this.handledEscapeKey); }
       if(this.options.backdrop && this.options.backdropClick){ this.backdropEl.bind('click', this.handleBackDropClick); }
-
-      this.$scope.$on('$locationChangeSuccess', this.handleLocationChange);
     };
 
     Dialog.prototype._unbindEvents = function() {
@@ -204,9 +282,9 @@ dialogModule.provider("$dialog", function(){
     Dialog.prototype._addElementsToDom = function(){
       body.append(this.modalEl);
 
-      if(this.options.backdrop) {
+      if(this.options.backdrop) { 
         if (activeBackdrops.value === 0) {
-          body.append(this.backdropEl);
+          body.append(this.backdropEl); 
         }
         activeBackdrops.value++;
       }
@@ -217,10 +295,10 @@ dialogModule.provider("$dialog", function(){
     Dialog.prototype._removeElementsFromDom = function(){
       this.modalEl.remove();
 
-      if(this.options.backdrop) {
+      if(this.options.backdrop) { 
         activeBackdrops.value--;
         if (activeBackdrops.value === 0) {
-          this.backdropEl.remove();
+          this.backdropEl.remove(); 
         }
       }
       this._open = false;
@@ -284,3 +362,51 @@ dialogModule.provider("$dialog", function(){
     };
   }];
 });
+
+angular.module('ui.bootstrap.modal', ['ui.bootstrap.dialog'])
+.directive('modal', ['$parse', '$dialog', function($parse, $dialog) {
+  return {
+    restrict: 'EA',
+    terminal: true,
+    link: function(scope, elm, attrs) {
+      var opts = angular.extend({}, scope.$eval(attrs.uiOptions || attrs.bsOptions || attrs.options));
+      var shownExpr = attrs.modal || attrs.show;
+      var setClosed;
+
+      // Create a dialog with the template as the contents of the directive
+      // Add the current scope as the resolve in order to make the directive scope as a dialog controller scope
+      opts = angular.extend(opts, {
+        template: elm.html(), 
+        resolve: { $scope: function() { return scope; } }
+      });
+      var dialog = $dialog.dialog(opts);
+
+      elm.remove();
+
+      if (attrs.close) {
+        setClosed = function() {
+          $parse(attrs.close)(scope);
+        };
+      } else {
+        setClosed = function() {         
+          if (angular.isFunction($parse(shownExpr).assign)) {
+            $parse(shownExpr).assign(scope, false); 
+          }
+        };
+      }
+
+      scope.$watch(shownExpr, function(isShown, oldShown) {
+        if (isShown) {
+          dialog.open().then(function(){
+            setClosed();
+          });
+        } else {
+          //Make sure it is not opened
+          if (dialog.isOpen()){
+            dialog.close();
+          }
+        }
+      });
+    }
+  };
+}]);
