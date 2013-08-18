@@ -1,6 +1,6 @@
 app.controller("GraphCtrl", ["$scope", "$dialog", "EditorFormOptions", "Sources", function($scope, $dialog, EditorFormOptions, Sources) {
 
-  var dialog = $dialog.dialog();
+  var dialog = $dialog.dialog({ template: JST["templates/targets/index"], controller: "TargetsCtrl" });
 
   var defaults = {
     size_x: 2, size_y: 2,
@@ -21,11 +21,9 @@ app.controller("GraphCtrl", ["$scope", "$dialog", "EditorFormOptions", "Sources"
   };
 
   $scope.editTargets = function() {
-    var templateUrl    = "/assets/templates/targets/index.html";
-
     dialog.targets = $scope.widget.targets;
     dialog.source = $scope.widget.source;
-    dialog.open(templateUrl, "TargetsCtrl").then(convertTargetsArrayToString);
+    dialog.open().then(convertTargetsArrayToString);
   };
 
   function convertTargetsArrayToString(result) {
