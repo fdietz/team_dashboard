@@ -1,26 +1,10 @@
-app.controller("WidgetEditCtrl", ["$scope", "$compile", "dialog", "$dialog", "Widget", "EditorFormOptions", "Sources", function($scope, $compile, dialog, $dialog, Widget, EditorFormOptions, Sources) {
+app.controller("WidgetEditCtrl", ["$scope", "$compile", "dialog", "$dialog", "widget", "Widget", "EditorFormOptions", "Sources", function($scope, $compile, dialog, $dialog, widget, Widget, EditorFormOptions, Sources) {
 
-  function initWidget() {
-    var defaults = {
-      row: null, col: null,
-      kind: dialog.kind,
-      dashboard_id: dialog.dashboard.id
-    };
+  $scope.template = JST["templates/widgets/" + widget.kind + "/edit"];
+  $scope.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(widget.kind)).html();
 
-    var widget = null;
-    if (dialog.widget) {
-      widget = angular.copy(dialog.widget);
-    } else {
-      widget = new Widget(defaults);
-    }
+  $scope.widget               = widget;
 
-    $scope.template = dialog.editTemplate;
-    $scope.customFieldsTemplate = dialog.customFieldsTemplate;
-
-    return widget;
-  }
-
-  $scope.widget               = initWidget();
   $scope.updateIntervals      = EditorFormOptions.updateIntervals;
   $scope.periods              = EditorFormOptions.periods;
   $scope.sizes                = EditorFormOptions.sizes;
@@ -32,8 +16,6 @@ app.controller("WidgetEditCtrl", ["$scope", "$compile", "dialog", "$dialog", "Wi
   }
 
   function handleValidationErrors(response) {
-    console.log("create error", response);
-
     _.each(response.data, function(errors, key) {
       _.each(errors, function(e) {
         setValidity(key, e);

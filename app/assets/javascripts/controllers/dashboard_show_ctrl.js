@@ -11,11 +11,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   $scope.available_widgets = $.available_widgets;
 
   function saveDashboardChanges() {
-    $scope.dashboard.$update(function(data) {
-      console.log(data);
-    }, function(data) {
-      console.log("save error", data);
-    });
+    $scope.dashboard.$update();
   }
 
   function destroyDashboard() {
@@ -26,31 +22,23 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
 
   function destroyWidget(widget) {
     widget.$destroy(function() {
-      _.each($scope.widgets, function(w, index) {
-        if (w.id === widget.id) {
-          $scope.widgets.splice(index, 1);
-          return;
-        }
-      });
+      $scope.widgets.splice(_.indexOf($scope.widgets, widget), 1);
     });
   }
 
-  function replaceWidget(id, widget) {
-    _.each($scope.widgets, function(w, index) {
-      if (w.id === id) {
-        _.extend(w, widget);
-        return;
-      }
-    });
+  function replaceWidget(id, widget) {    
+    var w = _.findWhere($scope.widgets, { id: widget.id })
+    _.extend(w, widget);
   }
 
   $scope.addWidget = function(kind) {
-    var dialog      = $dialog.dialog({ template: JST['templates/widget/edit'], controller: "WidgetEditCtrl" });
+    var widget = new Widget({ kind: kind, dashboard_id: $scope.dashboard.id, row: null, col: null });
+    var dialogOptions = { 
+      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl", 
+      resolve: { widget: function() { return widget; } } 
+    };
 
-    dialog.kind      = kind;
-    dialog.dashboard = $scope.dashboard;
-    dialog.editTemplate = JST["templates/widgets/" + kind + "/edit"];
-    dialog.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(kind)).html();
+    var dialog = $dialog.dialog(dialogOptions);
 
     dialog.open().then(function(result) {
       if (result) $scope.widgets.push(dialog.$scope.widget);
@@ -58,14 +46,12 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   };
 
   $scope.editWidget = function(widget) {
-    var dialog      = $dialog.dialog({ template: JST['templates/widget/edit'], controller: "WidgetEditCtrl" });
+    var dialogOptions = { 
+      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl", 
+      resolve: { widget: function() { return angular.copy(widget); } } 
+    };
 
-    dialog.kind      = widget.kind;
-    dialog.widget    = widget;
-    dialog.dashboard = $scope.dashboard;
-    dialog.editTemplate = JST["templates/widgets/" + widget.kind + "/edit"];
-
-    dialog.customFieldsTemplate = $("#templates-custom_fields-" + Sources.kindMapping(widget.kind)).html();
+    var dialog = $dialog.dialog(dialogOptions);
 
     dialog.open().then(function(result) {
       if (result) replaceWidget(widget.id, dialog.$scope.widget);
