@@ -3,9 +3,9 @@ app.directive("widget", ["$compile", function($compile) {
   var linkFn = function(scope, element, attrs, gridsterController) {
     gridsterController.add(element, scope.widget);
 
-    // TODO: cleanup, an attribute can't be created in the template with expression
     var elm = element.find(".widget-content");
-    elm.append('<div ' + scope.widget.kind.replace("_", "-") + ' />');
+    elm.attr(scope.widget.kind.replace("_", "-"), "");
+
     $compile(elm)(scope);
 
     element.bind("$destroy", function() {
@@ -21,7 +21,7 @@ app.directive("widget", ["$compile", function($compile) {
   return {
     require: "^gridster",
     controller: "WidgetCtrl",
-    template: JST["templates/widget/show"],
+    // template: JST["templates/widget/show"],
     link: linkFn
   };
 }]);

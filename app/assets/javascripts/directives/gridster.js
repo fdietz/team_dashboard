@@ -66,9 +66,9 @@ app.directive("gridster", ["Widget", "DASHBOARD_COLUMN_COUNT", function(Widget, 
         if (!options.col && !options.row) { options = _.extend(options, pos); }
         console.log(options)
         
-        $scope.$apply(function() {
-          gridster.add_widget(elm, options.size_x, options.size_y, options.col, options.row);  
-        });
+        // $scope.$apply(function() {
+        gridster.add_widget(elm, options.size_x, options.size_y, options.col, options.row);  
+        // });
         
       },
       remove: function(elm) {
