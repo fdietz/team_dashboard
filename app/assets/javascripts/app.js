@@ -13,7 +13,8 @@ app.config(["$routeProvider", "$locationProvider", function($routeProvider, $loc
 app.config(["$httpProvider", function($httpProvider) {
   $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
 
-  $httpProvider.defaults.headers.common['Accept'] = "application/json" 
+  $httpProvider.defaults.headers.common['Accept'] = "application/json" ;
+  $httpProvider.defaults.headers['common']['X-Requested-With'] = 'XMLHttpRequest';
 }]);
 
 app.constant("DASHBOARD_COLUMN_COUNT", 4);
