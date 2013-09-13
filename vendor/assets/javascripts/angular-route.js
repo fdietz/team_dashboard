@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.0rc1
+ * @license AngularJS v1.2.0-rc.2
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -26,7 +26,12 @@ function inherit(parent, extra) {
  * @name ngRoute
  * @description
  *
- * Module that provides routing and deeplinking services and directives for angular apps.
+ * # ngRoute
+ *
+ * The `ngRoute` module provides routing and deeplinking services and directives for angular apps.
+ *
+ * {@installModule route}
+ *
  */
 
 var ngRouteModule = angular.module('ngRoute', ['ng']).
@@ -40,6 +45,8 @@ var ngRouteModule = angular.module('ngRoute', ['ng']).
  * @description
  *
  * Used for configuring routes. See {@link ngRoute.$route $route} for an example.
+ *
+ * Requires the {@link ngRoute `ngRoute`} module to be installed.
  */
 function $RouteProvider(){
   var routes = {};
@@ -57,8 +64,8 @@ function $RouteProvider(){
    *      * `path` can contain named groups starting with a colon (`:name`). All characters up
    *        to the next slash are matched and stored in `$routeParams` under the given `name`
    *        when the route matches.
-   *      * `path` can contain named groups starting with a colon and ending with a star (`:name*`). 
-   *        All characters are eagerly stored in `$routeParams` under the given `name` 
+   *      * `path` can contain named groups starting with a colon and ending with a star (`:name*`).
+   *        All characters are eagerly stored in `$routeParams` under the given `name`
    *        when the route matches.
    *      * `path` can contain optional named groups with a question mark (`:name?`).
    *
@@ -149,8 +156,8 @@ function $RouteProvider(){
     // create redirection for trailing slashes
     if (path) {
       var redirectPath = (path[path.length-1] == '/')
-          ? path.substr(0, path.length-1)
-          : path +'/';
+            ? path.substr(0, path.length-1)
+            : path +'/';
 
       routes[redirectPath] = extend(
         {redirectTo: path},
@@ -241,13 +248,15 @@ function $RouteProvider(){
      * @property {Array.<Object>} routes Array of all configured routes.
      *
      * @description
-     * Is used for deep-linking URLs to controllers and views (HTML partials).
+     * `$route` is used for deep-linking URLs to controllers and views (HTML partials).
      * It watches `$location.url()` and tries to map the path to an existing route definition.
+     *
+     * Requires the {@link ngRoute `ngRoute`} module to be installed.
      *
      * You can define routes through {@link ngRoute.$routeProvider $routeProvider}'s API.
      *
-     * The `$route` service is typically used in conjunction with {@link ngRoute.directive:ngView ngView}
-     * directive and the {@link ngRoute.$routeParams $routeParams} service.
+     * The `$route` service is typically used in conjunction with the {@link ngRoute.directive:ngView `ngView`}
+     * directive and the {@link ngRoute.$routeParams `$routeParams`} service.
      *
      * @example
        This example shows how changing the URL hash causes the `$route` to match a route against the
@@ -449,13 +458,12 @@ function $RouteProvider(){
       var m = route.regexp.exec(on);
       if (!m) return null;
 
-      var N = 0;
       for (var i = 1, len = m.length; i < len; ++i) {
         var key = keys[i - 1];
 
         var val = 'string' == typeof m[i]
-          ? decodeURIComponent(m[i])
-          : m[i];
+              ? decodeURIComponent(m[i])
+              : m[i];
 
         if (key && val) {
           params[key.name] = val;
@@ -562,7 +570,7 @@ function $RouteProvider(){
     function interpolate(string, params) {
       var result = [];
       forEach((string||'').split(':'), function(segment, i) {
-        if (i == 0) {
+        if (i === 0) {
           result.push(segment);
         } else {
           var segmentMatch = segment.match(/(\w+)(.*)/);
@@ -586,9 +594,13 @@ ngRouteModule.provider('$routeParams', $RouteParamsProvider);
  * @requires $route
  *
  * @description
- * Current set of route parameters. The route parameters are a combination of the
- * {@link ng.$location $location} `search()`, and `path()`. The `path` parameters
- * are extracted when the {@link ngRoute.$route $route} path is matched.
+ * The `$routeParams` service allows you to retrieve the current set of route parameters.
+ *
+ * Requires the {@link ngRoute `ngRoute`} module to be installed.
+ *
+ * The route parameters are a combination of {@link ng.$location `$location`}'s
+ * {@link ng.$location#search `search()`} and {@link ng.$location#path `path()`}.
+ * The `path` parameters are extracted when the {@link ngRoute.$route `$route`} path is matched.
  *
  * In case of parameter name collision, `path` params take precedence over `search` params.
  *
@@ -613,6 +625,8 @@ function $RouteParamsProvider() {
   this.$get = function() { return {}; };
 }
 
+ngRouteModule.directive('ngView', ngViewFactory);
+
 /**
  * @ngdoc directive
  * @name ngRoute.directive:ngView
@@ -624,6 +638,8 @@ function $RouteParamsProvider() {
  * including the rendered template of the current route into the main layout (`index.html`) file.
  * Every time the current route changes, the included view changes with it according to the
  * configuration of the `$route` service.
+ *
+ * Requires the {@link ngRoute `ngRoute`} module to be installed.
  *
  * @animations
  * enter - animation is used to bring new content into the browser.
@@ -780,22 +796,18 @@ function $RouteParamsProvider() {
  * @description
  * Emitted every time the ngView content is reloaded.
  */
-var NG_VIEW_PRIORITY = 500;
-var ngViewDirective = ['$route', '$anchorScroll', '$compile', '$controller', '$animate', 
-               function($route,   $anchorScroll,   $compile,   $controller,   $animate) {
+ngViewFactory.$inject = ['$route', '$anchorScroll', '$compile', '$controller', '$animate'];
+function ngViewFactory(   $route,   $anchorScroll,   $compile,   $controller,   $animate) {
   return {
     restrict: 'ECA',
     terminal: true,
-    priority: NG_VIEW_PRIORITY,
-    compile: function(element, attr) {
-      var onloadExp = attr.onload || '';
-
-      element.html('');
-      var anchor = jqLite(document.createComment(' ngView '));
-      element.replaceWith(anchor);
-
-      return function(scope) {
-        var currentScope, currentElement;
+    priority: 1000,
+    transclude: 'element',
+    compile: function(element, attr, linker) {
+      return function(scope, $element, attr) {
+        var currentScope,
+            currentElement,
+            onloadExp = attr.onload || '';
 
         scope.$on('$routeChangeSuccess', update);
         update();
@@ -816,35 +828,36 @@ var ngViewDirective = ['$route', '$anchorScroll', '$compile', '$controller', '$a
               template = locals && locals.$template;
 
           if (template) {
-            cleanupLastView();
+            var newScope = scope.$new();
+            linker(newScope, function(clone) {
+              cleanupLastView();
 
-            currentScope = scope.$new();
-            currentElement = element.clone();
-            currentElement.html(template);
-            $animate.enter(currentElement, null, anchor);
+              clone.html(template);
+              $animate.enter(clone, null, $element);
 
-            var link = $compile(currentElement, false, NG_VIEW_PRIORITY - 1),
-                current = $route.current;
+              var link = $compile(clone.contents()),
+                  current = $route.current;
 
-            if (current.controller) {
-              locals.$scope = currentScope;
-              var controller = $controller(current.controller, locals);
-              if (current.controllerAs) {
-                currentScope[current.controllerAs] = controller;
+              currentScope = current.scope = newScope;
+              currentElement = clone;
+
+              if (current.controller) {
+                locals.$scope = currentScope;
+                var controller = $controller(current.controller, locals);
+                if (current.controllerAs) {
+                  currentScope[current.controllerAs] = controller;
+                }
+                clone.data('$ngControllerController', controller);
+                clone.contents().data('$ngControllerController', controller);
               }
-              currentElement.data('$ngControllerController', controller);
-              currentElement.children().data('$ngControllerController', controller);
-            }
 
-            current.scope = currentScope;
+              link(currentScope);
+              currentScope.$emit('$viewContentLoaded');
+              currentScope.$eval(onloadExp);
 
-            link(currentScope);
-
-            currentScope.$emit('$viewContentLoaded');
-            currentScope.$eval(onloadExp);
-
-            // $anchorScroll might listen on event...
-            $anchorScroll();
+              // $anchorScroll might listen on event...
+              $anchorScroll();
+            });
           } else {
             cleanupLastView();
           }
@@ -852,9 +865,7 @@ var ngViewDirective = ['$route', '$anchorScroll', '$compile', '$controller', '$a
       }
     }
   };
-}];
-
-ngRouteModule.directive('ngView', ngViewDirective);
+}
 
 
 })(window, window.angular);
