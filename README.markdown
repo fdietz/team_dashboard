@@ -30,7 +30,8 @@ Run bundler:
 
     bundle install
 
-Create a database.yml from the example config (using MySQL):
+Create a database.yml from the example config. Note, that this will overwrite your existing
+configuration using MySQL:
 
     cp config/database.example.yml config/database.yml
 
