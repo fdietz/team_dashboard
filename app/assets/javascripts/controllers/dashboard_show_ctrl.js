@@ -21,21 +21,25 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   }
 
   function destroyWidget(widget) {
-    widget.$destroy(function() {
-      $scope.widgets.splice(_.indexOf($scope.widgets, widget), 1);
+    // temporary fix until there's a final angular.js 1.2 release
+    $scope.$apply(function() {
+      Widget.destroy({ dashboard_id: widget.dashboard_id, id: widget.id }, function() {
+        $scope.widgets.splice(_.indexOf($scope.widgets, widget), 1);
+      });
     });
+
   }
 
-  function replaceWidget(id, widget) {    
-    var w = _.findWhere($scope.widgets, { id: widget.id })
+  function replaceWidget(id, widget) {
+    var w = _.findWhere($scope.widgets, { id: widget.id });
     _.extend(w, widget);
   }
 
   $scope.addWidget = function(kind) {
     var widget = new Widget({ kind: kind, dashboard_id: $scope.dashboard.id, row: null, col: null });
-    var dialogOptions = { 
-      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl", 
-      resolve: { widget: function() { return widget; } } 
+    var dialogOptions = {
+      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl",
+      resolve: { widget: function() { return widget; } }
     };
 
     var dialog = $dialog.dialog(dialogOptions);
@@ -46,9 +50,9 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   };
 
   $scope.editWidget = function(widget) {
-    var dialogOptions = { 
-      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl", 
-      resolve: { widget: function() { return angular.copy(widget); } } 
+    var dialogOptions = {
+      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl",
+      resolve: { widget: function() { return angular.copy(widget); } }
     };
 
     var dialog = $dialog.dialog(dialogOptions);
