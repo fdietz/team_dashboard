@@ -25,3 +25,5 @@
 # Ignore net beans project file
 /nbproject
 .project
+
+.node_modules
