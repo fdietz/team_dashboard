@@ -1,6 +1,9 @@
 app.factory("EditorFormOptions", function() {
 
   var updateIntervals = [
+    { value: 1,    label: "1 sec" },
+    { value: 2,    label: "2 sec" },
+    { value: 5,    label: "5 sec" },
     { value: 10,    label: "10 sec" },
     { value: 600,   label: "1 min" },
     { value: 6000,  label: "10 min" },
