@@ -2,6 +2,8 @@ describe("SuffixFormatter", function() {
 
   var suffixFormatter = null;
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+
   beforeEach(inject(function(SuffixFormatter) {
     suffixFormatter = SuffixFormatter;
   }));

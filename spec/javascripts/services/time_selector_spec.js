@@ -1,6 +1,9 @@
 describe("TimeSelector", function() {
 
   var timeSelector = null;
+
+  beforeEach(angular.mock.module('TeamDashboard'));
+
   beforeEach(inject(function(TimeSelector) {
     timeSelector = TimeSelector;
   }));

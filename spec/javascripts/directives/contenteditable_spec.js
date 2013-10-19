@@ -2,6 +2,8 @@ describe("contenteditable", function() {
 
   var compile, rootScope, element;
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+
   beforeEach(inject(function($compile, $rootScope) {
     compile = $compile;
     rootScope = $rootScope;

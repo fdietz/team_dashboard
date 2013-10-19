@@ -13,7 +13,6 @@ describe Sources::Datapoints::Graphite do
 
   describe "#get" do
     it "calls request_datapoints" do
-      p widget
       input = [{ 'target' => 'test1', 'datapoints' => [[1, 123]] }]
       source.expects(:request_datapoints).with(targets, @from, @to).returns(input)
       result = source.get(:from => @from, :to => @to, :widget_id => widget.id)

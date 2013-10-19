@@ -30,7 +30,7 @@ app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel,
   };
 
   return {
-    template: JST["templates/widgets/number/show"],
+    templateUrl: "templates/widgets/number/show.html",
     link: linkFn
   };
 }]);

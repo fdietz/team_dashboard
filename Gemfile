@@ -2,7 +2,6 @@ source "https://rubygems.org"
 
 gem "rails", "~> 3.2.13"
 
-gem "jquery-rails", "~> 2.2.1"
 gem "less-rails", "~> 2.2.6"
 gem "less-rails-bootstrap", "~> 2.3.0"
 
@@ -18,16 +17,14 @@ gem "nokogiri", "~> 1.5.5"
 
 gem "newrelic_api", "~> 1.2"
 
-gem 'ejs'
-
 group :test, :development do
   gem 'debugger'
   gem "rspec-rails"
-  gem "jasmine"
+  # gem "jasmine"
   gem "factory_girl_rails"
-  gem "jasminerice"
-  gem "guard-jasmine"
-  gem "rb-fsevent", "~> 0.9.1"
+  # gem "jasminerice"
+  # gem "guard-jasmine"
+  # gem "rb-fsevent", "~> 0.9.1"
   gem "mocha", :require => false
 end
 

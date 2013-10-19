@@ -3,9 +3,9 @@ var app = angular.module("TeamDashboard", ["ngResource", "ngSanitize", "ngRoute"
 app.config(["$routeProvider", "$locationProvider", function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
   $routeProvider
-    .when("/dashboards", { template: JST['templates/dashboards/index'], controller: "DashboardIndexCtrl" })
-    .when("/dashboards/:id", { template: JST['templates/dashboards/show'], controller: "DashboardShowCtrl" })
-    .when("/about", { template: JST['templates/abouts/show'], controller: "AboutCtrl" })
+    .when("/dashboards", { templateUrl: 'templates/dashboards/index.html', controller: "DashboardIndexCtrl" })
+    .when("/dashboards/:id", { templateUrl: 'templates/dashboards/show.html.erb', controller: "DashboardShowCtrl" })
+    .when("/about", { templateUrl: 'templates/abouts/show.html', controller: "AboutCtrl" })
     .otherwise({ redirectTo: "/dashboards" });
 }]);
 

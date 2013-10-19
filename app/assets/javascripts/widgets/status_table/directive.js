@@ -26,7 +26,7 @@ app.directive("statusTable", ["$window", "StatusTableModel",  function($window, 
   };
 
   return {
-    template: JST["templates/widgets/status_table/show"],
+    templateUrl: "templates/widgets/status_table/show.html",
     link: linkFn
   };
 }]);

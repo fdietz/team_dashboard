@@ -1,5 +1,7 @@
 describe("ExceptionTracker Model", function() {
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+
   var model, httpBackend = null;
   beforeEach(inject(function(ExceptionTrackerModel, $httpBackend) {
     httpBackend = $httpBackend;

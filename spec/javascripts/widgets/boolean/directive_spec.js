@@ -2,6 +2,9 @@ describe("boolean widget directive", function() {
 
   var element, compile, rootScope, fixture, ctrl, httpBackend;
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+  beforeEach(module('templates/widgets/boolean/show.html'));
+
   beforeEach(inject(function($compile, $rootScope, $controller, $httpBackend) {
     compile = $compile;
     rootScope = $rootScope;

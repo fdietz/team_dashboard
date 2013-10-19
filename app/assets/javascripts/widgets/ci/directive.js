@@ -42,7 +42,7 @@ app.directive("ci", ["CiModel", function(CiModel) {
   };
 
   return {
-    template: JST["templates/widgets/ci/show"],
+    templateUrl: "templates/widgets/ci/show.html",
     link: linkFn
   };
 }]);

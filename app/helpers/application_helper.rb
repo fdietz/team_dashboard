@@ -17,11 +17,14 @@ module ApplicationHelper
   private
 
   def normalized_filename(file)
-    file.to_s.gsub(".html", "").gsub(".erb", "")
+    # file.to_s.gsub(".html", "").gsub(".erb", "")
+    # file.to_s.gsub(".html", "").gsub(".erb", "")
+    file.to_s
   end
 
   def normalize_template_name(name)
-    normalized_filename(name.to_s).gsub("/", "-")
+    # normalized_filename(name.to_s).gsub("/", "-")
+    normalized_filename(name.to_s)#.gsub("/", "-")
   end
 
   # @source for example: number, ci, etc.
@@ -53,4 +56,24 @@ module ApplicationHelper
     EOF
   end
 
+  # Performance optimization, since we can't precompile Angular.js templates
+  # but don't want to use inline templates, we create <script> tags instead
+  #
+  # When "fetching" templates based on the URL Angular.js will first check if
+  # a script tag with an ID matching a template URL exists before doing the
+  # HTTP request.
+  #
+  def script_tag_for_all_templates
+    templates_dir = Rails.root.join("app/assets/javascripts/templates")
+    files = Dir[templates_dir + "**/*.html"].reject {|fn| File.directory?(fn) }
+    files += Dir[templates_dir + "**/*.html.erb"].reject {|fn| File.directory?(fn) }
+      files.map do |file|
+      id = "templates/#{normalize_template_name(Pathname(file).relative_path_from(templates_dir))}"
+      <<-EOF
+      <script type="text/ng-template" id="#{id}">
+        #{render :file => normalized_filename(file), :formats => [:html], :handlers => :erb}
+      </script>
+      EOF
+    end.join("\n").html_safe
+  end
 end

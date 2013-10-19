@@ -63,6 +63,8 @@
 
     <%= javascript_include_tag "application" %>
 
+    <%= script_tag_for_all_templates %>
+
     <script>
       (function($) {
         $.Sources = JSON.parse('<%= raw Sources.sources.to_json %>');

@@ -2,6 +2,8 @@ describe("ColorFactory", function() {
 
   var colorFactory = null;
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+
   beforeEach(inject(function(ColorFactory) {
     colorFactory = ColorFactory;
   }));

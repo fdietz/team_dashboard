@@ -1,7 +1,5 @@
 TeamDashboard::Application.routes.draw do
 
-  mount Jasminerice::Engine => '/jasmine' if Rails.env.test?
-
   namespace :api do
     resources :dashboards do
       resources :widgets
