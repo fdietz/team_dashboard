@@ -1,6 +1,6 @@
 app.controller("GraphCtrl", ["$scope", "$dialog", "EditorFormOptions", "Sources", function($scope, $dialog, EditorFormOptions, Sources) {
 
-  var dialog = $dialog.dialog({ template: JST["templates/targets/index"], controller: "TargetsCtrl" });
+  var dialog = $dialog.dialog({ templateUrl: "templates/targets/index.html", controller: "TargetsCtrl" });
 
   var defaults = {
     size_x: 2, size_y: 2,

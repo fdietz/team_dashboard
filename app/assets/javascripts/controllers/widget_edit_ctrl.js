@@ -1,6 +1,6 @@
 app.controller("WidgetEditCtrl", ["$scope", "$compile", "dialog", "$dialog", "widget", "Widget", "EditorFormOptions", "Sources", function($scope, $compile, dialog, $dialog, widget, Widget, EditorFormOptions, Sources) {
 
-  $scope.template = JST["templates/widgets/" + widget.kind + "/edit"];
+  $scope.templateUrl = "templates/widgets/" + widget.kind + "/edit.html";
   $scope.customFieldsTemplate = $("#templates-custom_fields-" + widget.kind).html();
 
   $scope.widget               = widget;

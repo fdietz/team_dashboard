@@ -38,7 +38,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   $scope.addWidget = function(kind) {
     var widget = new Widget({ kind: kind, dashboard_id: $scope.dashboard.id, row: null, col: null });
     var dialogOptions = {
-      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl",
+      templateUrl: 'templates/widget/edit.html', controller: "WidgetEditCtrl",
       resolve: { widget: function() { return widget; } }
     };
 
@@ -51,7 +51,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
 
   $scope.editWidget = function(widget) {
     var dialogOptions = {
-      template: JST['templates/widget/edit'], controller: "WidgetEditCtrl",
+      templateUrl: 'templates/widget/edit.html', controller: "WidgetEditCtrl",
       resolve: { widget: function() { return angular.copy(widget); } }
     };
 
