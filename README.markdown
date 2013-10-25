@@ -24,7 +24,7 @@ Please checkout the [Changelog](CHANGELOG.md) and read the [Migration Guide](VER
 
 ### Debian Stable Prerequisites
 
-Install bundler and the required libraries for gem compilation
+Install bundler and the required libraries for gem compilation:
 
     apt-get install bundler libxml2-dev libz-dev libmysqlclient-dev libxslt-dev
 
