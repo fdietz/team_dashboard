@@ -16,7 +16,7 @@ class SimplePingdomInterface
   end
 
   def check_response
-    response["checks"].find { |r| r["name"] == check } || raise(Sources::Booleans::NotFoundError("no response found for this check"))
+    response["checks"].find { |r| r["name"] == check } || raise("SimplePingdomInterface - no response found for this check")
   end
 
   def response_time
