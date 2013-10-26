@@ -22,6 +22,14 @@ Please checkout the [Changelog](CHANGELOG.md) and read the [Migration Guide](VER
 
 ## Getting Started
 
+### Debian Stable Prerequisites
+
+Install bundler and the required libraries for gem compilation:
+
+    apt-get install bundler libxml2-dev libz-dev libmysqlclient-dev libxslt-dev
+
+### Download, install, and start
+
 Clone the repository:
 
     git clone git://github.com/fdietz/team_dashboard.git
