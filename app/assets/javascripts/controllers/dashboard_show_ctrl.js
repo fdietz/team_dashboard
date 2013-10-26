@@ -1,4 +1,4 @@
-app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$q", "$dialog", "$window", "Dashboard", "Widget", "Sources", function($scope, $rootScope, $routeParams, $location, $q, $dialog, $window, Dashboard, Widget, Sources) {
+app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$q", "$dialog", "$window", "Dashboard", "Widget", "Sources", "System", function($scope, $rootScope, $routeParams, $location, $q, $dialog, $window, Dashboard, Widget, Sources, System) {
 
   var resources = [
     Dashboard.get({ id: $routeParams.id }),
@@ -14,8 +14,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   $rootScope.resolved = false;
   $q.all(resources).then(handleResults);
 
-  // defined in application.html.erb
-  $scope.available_widgets = $.available_widgets;
+  $scope.available_widgets = System.widgets;
 
   function saveDashboardChanges() {
     $scope.dashboard.$update();

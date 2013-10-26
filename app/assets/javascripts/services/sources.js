@@ -1,4 +1,4 @@
-app.factory("Sources", function() {
+app.factory("Sources", ["System", function(System) {
 
     // TODO: kind mismatch graph/datapoints
   function kindMapping(kind) {
@@ -8,7 +8,7 @@ app.factory("Sources", function() {
   }
 
   function sourceConfig(widget) {
-    return $.Sources[kindMapping(widget.kind)][widget.source];
+    return System.sources[kindMapping(widget.kind)][widget.source];
   }
 
   function sourceMapping(source) {
@@ -24,7 +24,7 @@ app.factory("Sources", function() {
   // TODO: handle disabled sources
   // disabled attribute not available in current Angular select ng-options directive
   function availableSources(kind) {
-    var sources = $.Sources[kindMapping(kind)];
+    var sources = System.sources[kindMapping(kind)];
 
     return _.compact(_.map(sources, function(source) {
       if (source.available) return sourceMapping(source);
@@ -41,4 +41,5 @@ app.factory("Sources", function() {
     availableSources: availableSources,
     supportsTargetBrowsing: supportsTargetBrowsing
   };
-});
+
+}]);

@@ -5,6 +5,8 @@ TeamDashboard::Application.routes.draw do
       resources :widgets
     end
 
+    resource :system
+
     resources :datapoints_targets, :only => :index
     match "data_sources/:kind" => "data_sources#index"
   end

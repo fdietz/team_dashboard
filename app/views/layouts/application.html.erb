@@ -65,13 +65,6 @@
 
     <%= script_tag_for_all_templates %>
 
-    <script>
-      (function($) {
-        $.Sources = JSON.parse('<%= raw Sources.sources.to_json %>');
-        $.available_widgets = JSON.parse('<%= raw Widget.list_available %>');
-      })($);
-    </script>
-
   </body>
 
 </html>
