@@ -1,11 +1,18 @@
-app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$timeout", "$dialog", "$window", "Dashboard", "Widget", "Sources", function($scope, $rootScope, $routeParams, $location, $timeout, $dialog, $window, Dashboard, Widget, Sources) {
+app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$q", "$dialog", "$window", "Dashboard", "Widget", "Sources", function($scope, $rootScope, $routeParams, $location, $q, $dialog, $window, Dashboard, Widget, Sources) {
+
+  var resources = [
+    Dashboard.get({ id: $routeParams.id }),
+    Widget.query({ dashboard_id: $routeParams.id })
+  ];
+
+  function handleResults(results) {
+    $scope.dashboard = results[0];
+    $scope.widgets = results[1];
+    $rootScope.resolved = true;
+  }
 
   $rootScope.resolved = false;
-
-  $scope.dashboard = Dashboard.get({ id: $routeParams.id });
-  $scope.widgets   = Widget.query({ dashboard_id: $routeParams.id }, function() {
-    $rootScope.resolved = true;
-  });
+  $q.all(resources).then(handleResults);
 
   // defined in application.html.erb
   $scope.available_widgets = $.available_widgets;
