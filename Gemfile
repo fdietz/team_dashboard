@@ -9,7 +9,7 @@ gem "sass-rails", "~> 4.0.0"
 gem "bootstrap-sass", "~> 2.3.2"
 gem "bootswatch-rails"
 
-gem "mysql2", "~> 0.3.13"
+gem "mysql2"
 
 # on windows replace with thin gem
 gem "unicorn"
@@ -26,8 +26,8 @@ gem "nokogiri"
 gem "newrelic_api"
 
 # assets
-gem "therubyracer", "~> 0.10.2"
-gem "uglifier", ">= 1.3.0"
+gem "therubyracer"
+gem "uglifier"
 
 group :test, :development do
   gem "debugger"
