@@ -11,6 +11,8 @@ app.controller("WidgetEditCtrl", ["$scope", "$compile", "dialog", "$dialog", "wi
   $scope.sources              = Sources.availableSources($scope.widget.kind);
 
   function setValidity(field, error) {
+    console.log($scope.form[field])
+    console.log($scope.form)
     $scope.form[field].$dirty = true;
     $scope.form[field].$setValidity(error, false);
   }

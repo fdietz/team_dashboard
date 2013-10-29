@@ -14,7 +14,7 @@ app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$l
   $rootScope.resolved = false;
   $q.all(resources).then(handleResults);
 
-  $scope.available_widgets = System.widgets;
+  $scope.availableWidgets = System.widgets;
 
   function saveDashboardChanges() {
     $scope.dashboard.$update();

@@ -65,6 +65,9 @@
 
     <%= script_tag_for_all_templates %>
 
+    <script>
+      window.system = JSON.parse('<%= raw System.new.to_json %>');
+    </script>
   </body>
 
 </html>

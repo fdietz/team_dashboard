@@ -19,10 +19,6 @@ app.config(["$httpProvider", function($httpProvider) {
 
 app.constant("DASHBOARD_COLUMN_COUNT", 4);
 
-app.run(["System", function(System) {
-  System.load();
-}]);
-
 // use angular/mustache style {{variable}} interpolation
 _.templateSettings = {
   interpolate : /\{\{(.+?)\}\}/g

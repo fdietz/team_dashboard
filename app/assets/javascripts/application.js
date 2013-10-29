@@ -17,9 +17,9 @@
 //= require jquery_ujs
 //= require jquery.gridster
 
-//= require twitter/bootstrap/dropdown
-//= require twitter/bootstrap/typeahead
-//= require twitter/bootstrap/modal
+//= require bootstrap-dropdown
+//= require bootstrap-typeahead
+//= require bootstrap-modal
 
 //= require bootbox
 //= require bigscreen.min

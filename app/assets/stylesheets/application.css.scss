@@ -9,16 +9,16 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
 
- *= require twitter/bootstrap
- *= require theme/index
-
  *= require jquery.gridster
-
  *= require_tree ./widgets
-
  *= require_self
 
 */
+
+@import "./custom_variables";
+@import "bootswatch/cyborg/variables";
+@import "bootstrap";
+@import "bootswatch/cyborg/bootswatch";
 
 h2 {
   font-size: 20px;
@@ -62,9 +62,9 @@ h3 {
 
 /****************** modal dialog ****************/
 
-@import "twitter/bootstrap/variables";
-@import "theme/variables";
-@import "twitter/bootstrap/mixins";
+// @import "twitter/bootstrap/variables";
+// @import "theme/variables";
+// @import "twitter/bootstrap/mixins";
 
 select,
 textarea,
@@ -83,22 +83,22 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 .uneditable-input {
-  color: @grayDark;
+  color: $grayDark;
 }
 
 .modal-header {
-  border-bottom: 1px solid darken(@gray, 50%);
+  border-bottom: 1px solid darken($gray, 50%);
 }
 
 .modal-footer {
-  // background-color: @grayDark;
-  border-top: 1px solid darken(@gray, 50%);
-  .border-radius(0 0 6px 6px);
-  .box-shadow(none);
+  border-top: 1px solid darken($gray, 50%);
+  // @include border-radius(0 0 6px 6px);
+  border-radius: 0 0 6px 6px;
+  @include box-shadow(none);
 }
 
 textarea {
-  .border-radius(5px);
+  @include border-radius(5px);
 }
 
 .modal .modal-body {
@@ -132,14 +132,14 @@ textarea {
 }
 
 ul.selectable-list {
-  .border-radius(@inputBorderRadius);
+  @include border-radius($inputBorderRadius);
   background-color: #ccc;
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
-    color: @grayDark;
+    color: $grayDark;
     line-height: 2.5em;
     border-bottom: 1px #bbb solid;
     cursor: pointer;
@@ -149,7 +149,7 @@ ul.selectable-list {
     }
 
     .selected {
-      .border-radius(@inputBorderRadius);
+      @include border-radius($inputBorderRadius);
       background-color: #DDD;
     }
 
@@ -210,18 +210,18 @@ ul.selectable-list {
 }
 
 .widget {
-  .border-radius(1px);
+  @include border-radius(1);
 
-  border-top: solid 1px lighten(@heroUnitBackground, 5%);
+  border-top: solid 1px lighten($heroUnitBackground, 5%);
   box-shadow: 0 2px 4px rgba(0,0,0,.8);
 
-  background-color: @heroUnitBackground;
+  background-color: $heroUnitBackground;
   overflow: hidden;
 }
 
 .widget-header {
   border-bottom: solid 1px rgba(0,0,0,.8);
-  box-shadow: 0 1px lighten(@heroUnitBackground, 5%);
+  box-shadow: 0 1px lighten($heroUnitBackground, 5%);
 
   height: 28px;
   line-height: 28px;
@@ -237,7 +237,7 @@ ul.selectable-list {
     float: right;
     cursor: pointer;
 
-    border-left: solid 1px lighten(@heroUnitBackground, 5%);
+    border-left: solid 1px lighten($heroUnitBackground, 5%);
     box-shadow: -1px 0 rgba(0,0,0,.8);
 
     .ui-icon {
@@ -330,7 +330,7 @@ ul.selectable-list {
     padding-left: 5px;
     font-size: 15px;
     line-height: 16px;
-    foreground-color: #ccc;
+    color: #ccc;
     background: 0;
   }
 
@@ -342,4 +342,8 @@ ul.selectable-list {
     color: #D26771;
   }
 
+}
+
+.dropdown-menu > li > a {
+  font-size: 13px;
 }

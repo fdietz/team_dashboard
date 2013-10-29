@@ -5,8 +5,6 @@ class Widget < ActiveRecord::Base
 
   validates :name, :kind, :source, :update_interval, :dashboard_id, :presence => true
 
-  attr_accessible :name, :kind, :source, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings
-
   validate :validate_source_attributes
 
   after_initialize :set_defaults
@@ -25,7 +23,7 @@ class Widget < ActiveRecord::Base
     # settings specific attributes handling
     def slice_attributes(input)
       input.symbolize_keys!
-      default_set = accessible_attributes.to_a.map(&:to_sym)
+      default_set = [:name, :kind, :source, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings].to_a.map(&:to_sym)
       input.slice(*default_set).merge(:settings => input.except(*default_set))
     end
   end

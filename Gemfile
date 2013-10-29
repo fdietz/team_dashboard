@@ -1,43 +1,43 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 3.2.13"
+gem "rails", "~> 4.0.0"
 
-gem "less-rails", "~> 2.2.6"
-gem "less-rails-bootstrap", "~> 2.3.0"
+# required by newrelic_api gem
+gem "activeresource", "~> 4.0.0"
 
-gem "mysql2", "~> 0.3.11"
+gem "sass-rails", "~> 4.0.0"
+gem "bootstrap-sass", "~> 2.3.2"
+gem "bootswatch-rails"
 
+gem "mysql2", "~> 0.3.13"
+
+# on windows replace with thin gem
 gem "unicorn"
-gem "foreman"
-gem "faraday", "~> 0.8.4"
-gem "faraday_middleware", "~> 0.8.8"
-gem "multi_xml", "~> 0.5.1"
-gem "libxml-ruby", "~> 2.3.3"
-gem "nokogiri", "~> 1.5.5"
 
-gem "newrelic_api", "~> 1.2"
+gem "faraday"
+gem "faraday_middleware"
+gem "multi_xml"
+gem "libxml-ruby"
+
+# see app/model/sources/number/jenkins_game.rb
+gem "nokogiri"
+
+# see app/model/sources/number/new_relic.rb
+gem "newrelic_api"
+
+# assets
+gem "therubyracer", "~> 0.10.2"
+gem "uglifier", ">= 1.3.0"
 
 group :test, :development do
-  gem 'debugger'
+  gem "debugger"
   gem "rspec-rails"
-  # gem "jasmine"
   gem "factory_girl_rails"
-  # gem "jasminerice"
-  # gem "guard-jasmine"
-  # gem "rb-fsevent", "~> 0.9.1"
   gem "mocha", :require => false
 end
 
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-end
-
-group :assets do
-  gem "sass-rails", "~> 3.2.5"
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem "therubyracer", "~> 0.10.2"
-
-  gem "uglifier", ">= 1.0.3"
+  gem "foreman"
 end
