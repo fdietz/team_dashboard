@@ -8,6 +8,18 @@ System wide configuration can be found in `RAILS_ROOT/config/application.rb` and
 
 The widget specific configuration is done when creating widgets in the Rails app.
 
+All widgets have the same set of required parameters in common:
+
+* name
+* kind (Widget type, for example: "number", "boolean", "graph", etc.)
+* source (Source Plugin, for example: "demo", "sensu")
+* update_interval
+* dashboard_id
+
+Additionally, all source plugins can specify additional parameters which are listed below for each source plugin grouped by widget.
+
+The source plugins reside in [RAILS_ROOT/app/models/sources](https://github.com/fdietz/team_dashboard/tree/master/app/models/sources), grouped by widget.
+
 ## Alert Widget
 
 ### Sensu
