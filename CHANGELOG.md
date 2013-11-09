@@ -1,5 +1,36 @@
 # Changelog
 
+## Team Dashboard 2.2.0
+The complete [issue list](https://github.com/fdietz/team_dashboard/issues?milestone=5&state=open) can be found on Github.
+
+* New source plugins:
+  * Jira Filter-Count Number Source Plugin (tubit)
+  * NodeJS Uptime Boolean Source Plugin #94 (shukydvir)
+  * Jenkins Game CI Source Plugin #99 (averell23)
+  * Pingdom Response Time Number Plugin #96 (averell23)
+* New widgets:
+  * Graphite Graph Widget using SVG as exported by graphite web API (#80)
+  * Status Table Widget (paulhamby), table with alerts status
+* Update to [Rails 4.0 ](http://weblog.rubyonrails.org/2013/6/25/Rails-4-0-final/)
+* Update javascript unit tests to use [Karma](http://karma-runner.github.io/), simplified test setup
+* Updated all gems to latest versions (including making it work on OS X Mavericks)
+* Update to Ruby v1.9.3-p429 (okonomi)
+* Updated to AngularJS 1.2
+* Document all source plugins including http_proxy options (#114)
+* Make Dashboard Column Count for Widgets globally configurable\
+* Add better_errors gem
+* Improve documentation:
+  * Debian prerequisites (#109 kylegordon)
+  * hint for database setup (#105)
+* Bugfixes:
+  * Close Modal Dialog on Navigation
+  * round any floating number (c0m4)
+  * Fix custom data fields for meter plugin #95 (averell23)
+  * Meter Widget, Numeric values w/ fractions for numbers < 5. Meters will adjust the stepping so that they always have 100 steps for their range. #100 (averell23)
+  * fix Widget timer internal to wait 2 seconds, instead of 200 msec
+  * fix graph target browsing
+  * upgrade jquery.gridster
+
 ## Team Dashboard 2.0.0
 * Bugfix: target selection dialog for datapoints sources (graphite, etc.)
 * Bugfix: "can't convert nil into Array" bug, support target browsing for number widget
