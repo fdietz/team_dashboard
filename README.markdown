@@ -12,12 +12,16 @@ Support via [Team Dashboard Google Group](https://groups.google.com/forum/#!foru
 
 ## News
 
-### Team Dashboard 2 RC2 is available
+### Team Dashboard 2.0.0 is available (March 5, 2013)
+
+The final release is now available. More details in the [Changelog](CHANGELOG.md)!
+
+### Team Dashboard 2 RC2 is available (April 14, 2013)
 Lots of new features and bugfixes. This is (hopefully) the last release candidate!
 
 Read the [Changelog](CHANGELOG.md)!
 
-### Team Dashboard 2 RC1 is available
+### Team Dashboard 2 RC1 is available (March 16, 2013)
 Please checkout the [Changelog](CHANGELOG.md) and read the [Migration Guide](VERSION2_MIGRATION.markdown).
 
 ## Getting Started
@@ -37,6 +41,8 @@ Clone the repository:
 Run bundler:
 
     bundle install
+
+On Windows the `unicorn` gem is not supported (the installation of the kgio gem will fail). But you can use `thin` instead (see [Stack Overflow Issue](http://stackoverflow.com/questions/11199620/rails-on-windows-without-kgio)).
 
 Create a database.yml from the example config. Note, that this will overwrite your existing
 configuration using MySQL:
@@ -61,13 +67,15 @@ or use unicon directly:
 
 ### Running the build
 
-If you want to run the tests locally, you will need to install PhantomJS
-
-    brew update && brew install phantomjs
-
-Run the unit tests (ruby & js)
+Run the Rails unit/functional tests:
 
     rake
+
+Run the javascript unit tests (using karma):
+
+    karma start
+
+Note, that it requires NodeJS to be installed. There's a `package.json` provided to install the dependencies using `npm install` command.
 
 ## Configuration
 
