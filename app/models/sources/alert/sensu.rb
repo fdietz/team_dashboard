@@ -18,8 +18,8 @@ module Sources
 
       def get(options = {})
         widget                = Widget.find(options.fetch(:widget_id))
-        sensu_client_filter   = widget.settings.fetch(:sensu_clients)
-        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks)
+        sensu_client_filter   = widget.settings.fetch(:sensu_clients, '')
+        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks, '')
 
         #defining some global variables that will be used to store filtered data
         sensu_filtered_events = []
