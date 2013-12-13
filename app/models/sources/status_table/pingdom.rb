@@ -18,7 +18,7 @@ module Sources
         widget = Widget.find(options.fetch(:widget_id))
         settings = widget.settings
 
-        connection = SimplePingdomInterface.new(settings.fetch(:user), settings.fetch(:password), settings.fetch(:key), '').make_request
+        connection = SimplePingdomInterface.new(settings.fetch(:user), settings.fetch(:password), settings.fetch(:key)).make_request
 
         build_json_response(connection.status_table)
       end

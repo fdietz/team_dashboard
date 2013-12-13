@@ -1,13 +1,12 @@
 class SimplePingdomInterface
 
-  attr_reader :user, :pass, :check, :app_key, :response
 
+  class UnknownLabelError < StandardError ; end
 
-  def initialize(check)
+  def initialize
     BackendSettings.pingdom.enabled? or raise 'Please enable pingdom in the settings'
     @user = BackendSettings.pingdom.user
     @pass = BackendSettings.pingdom.password
-    @check = check
     @app_key = BackendSettings.pingdom.api_key
   end
 
@@ -20,16 +19,16 @@ class SimplePingdomInterface
     self
   end
 
-  def check_response
-    response["checks"].find { |r| r["name"] == check } || raise("SimplePingdomInterface - no response found for this check")
+  def find_by_label(label)
+    status_table.find { |entry| entry['label'] == label } || raise(UnknownLabelError, label)
   end
 
-  def response_time
-    check_response["lastresponsetime"].to_i
+  def value(label)
+    find_by_label(label)['value']
   end
 
-  def status
-    check_response["status"] == "up"
+  def status_ok?(label)
+    find_by_label(label)['status'] == 0
   end
 
   def status_table

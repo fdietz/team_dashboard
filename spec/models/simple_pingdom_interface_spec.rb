@@ -5,7 +5,7 @@ describe SimplePingdomInterface do
   context '#pingdom_url' do
 
     it 'generates a connection URL from the params' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'check')
+      interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
       interface.pingdom_url.should eq 'https://user:pass@api.pingdom.com/api/2.0/checks'
     end
 
@@ -14,13 +14,13 @@ describe SimplePingdomInterface do
   context '#make_request' do
 
     it 'makes a correct HTTP request' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'check')
+      interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
       ::HttpService.expects(:request).with(interface.pingdom_url, headers: { 'App-Key' => 'the_key' }).returns(:response)
       interface.make_request.should eq interface
     end
 
     it 'has the response on the object after the request' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'check')
+      interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
       ::HttpService.stubs(:request).returns('response')
       interface.make_request
       interface.response.should eq 'response'
@@ -28,33 +28,41 @@ describe SimplePingdomInterface do
 
   end
 
-  context 'response results' do
+  context 'working with the status table' do
 
-    let(:test_check) { { 'name' => 'helloworld', 'lastresponsetime' => '111', 'status' => 'up' } }
-    let(:test_response) { { 'checks' => [ test_check ] } }
+    let(:test_status_table) { [ test_status ] }
+    let(:test_status) { { 'label' => 'helloworld', 'value' => 'some val', 'status' => 0  } }
 
-    it 'gets the check response' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'helloworld')
-      interface.stubs(:response).returns(test_response)
-      interface.check_response.should eq test_check
+    context '#find_by_label' do
+
+      it 'finds the value' do
+        interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
+        interface.stubs(:status_table).returns(test_status_table)
+        interface.find_by_label('helloworld').should eq test_status
+      end
+
+      it 'explodes if no correct label is given' do
+        interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
+        interface.stubs(:status_table).returns(test_status_table)
+        expect { interface.find_by_label('otherworld') }.to raise_error(SimplePingdomInterface::UnknownLabelError)
+      end
+
     end
 
-    it 'explodes if no correct check is given' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'hellosomething')
-      interface.stubs(:response).returns(test_response)
-      expect { interface.check_response }.to raise_error
-    end
+    context 'return values from the status' do
 
-    it 'can return the response time' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'hellosomething')
-      interface.stubs(:check_response).returns(test_check)
-      interface.response_time.should eq 111
-    end
+      it 'returns the value' do
+        interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
+        interface.stubs(:status_table).returns(test_status_table)
+        interface.value('helloworld').should eq 'some val'
+      end
 
-    it 'can return the response status' do
-      interface = SimplePingdomInterface.new('user', 'pass', 'the_key', 'hellosomething')
-      interface.stubs(:check_response).returns(test_check)
-      interface.status.should be_true
+      it 'returns the status as a bool' do
+        interface = SimplePingdomInterface.new('user', 'pass', 'the_key')
+        interface.stubs(:status_table).returns(test_status_table)
+        interface.status_ok?('helloworld').should be_true
+      end
+
     end
 
   end

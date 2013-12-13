@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20130720154824) do
     t.string   "name"
     t.string   "time"
     t.string   "layout"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.boolean  "locked",     default: false
   end
 
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20130720154824) do
     t.string   "source"
     t.text     "settings"
     t.integer  "dashboard_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "update_interval"
     t.integer  "col"
     t.integer  "row"
