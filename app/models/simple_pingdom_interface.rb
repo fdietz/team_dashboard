@@ -1,6 +1,6 @@
 class SimplePingdomInterface
 
-  attr_reader :user, :pass, :check, :app_key
+  attr_reader :user, :pass, :check, :app_key, :response
 
 
   def initialize(check)
@@ -15,8 +15,9 @@ class SimplePingdomInterface
     @pingdom_url ||= "https://#{CGI.escape(user)}:#{pass}@api.pingdom.com/api/2.0/checks"
   end
 
-  def response
-    ::HttpService.request(pingdom_url, :headers => { 'App-Key' => @app_key } )
+  def make_request
+    @response = ::HttpService.request(pingdom_url, :headers => { 'App-Key' => @app_key } )
+    self
   end
 
   def check_response
@@ -29,6 +30,16 @@ class SimplePingdomInterface
 
   def status
     check_response["status"] == "up"
+  end
+
+  def status_table
+    response['checks'].map do |check|
+      {
+        'label' => check['name'],
+        'value' => check['lastresponsetime'],
+        'status' => (check['status'] == 'up') ? 0 : 2
+      }
+    end
   end
 
 end
