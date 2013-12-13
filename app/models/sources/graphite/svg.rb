@@ -21,11 +21,11 @@ module Sources
     class Svg < Sources::Graphite::Base
 
       def initialize
-        @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
+        @url_builder = GraphiteUrlBuilder.new(BackendSettings.graphite.url)
       end
 
       def available?
-        Rails.configuration.graphite_url.present?
+        BackendSettings.graphite.enabled?
       end
 
       def supports_target_browsing?

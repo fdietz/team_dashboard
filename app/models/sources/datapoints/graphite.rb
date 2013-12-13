@@ -21,11 +21,11 @@ module Sources
     class Graphite < Sources::Datapoints::Base
 
       def initialize
-        @url_builder = GraphiteUrlBuilder.new(Rails.configuration.graphite_url)
+        @url_builder = GraphiteUrlBuilder.new(BackendSettings.graphite.url)
       end
 
       def available?
-        Rails.configuration.graphite_url.present?
+        BackendSettings.graphite.enabled?
       end
 
       def supports_target_browsing?
@@ -42,7 +42,6 @@ module Sources
 
         widget  = Widget.find(options.fetch(:widget_id))
         targets = targetsArray(widget.settings.fetch(:targets))
-        source  = options[:source]
 
         result = request_datapoints(targets, from, to)
         raise Sources::Datapoints::NotFoundError if result.empty?
