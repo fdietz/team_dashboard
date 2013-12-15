@@ -6,7 +6,7 @@ module Sources
       class SensuWrongConfigurationError < Exception; end
 
       def available?
-        Rails.configuration.sensu_events.present?
+        BackendSettings.sensu.enabled?
       end
 
       def custom_fields
@@ -26,10 +26,9 @@ module Sources
         ignored_check_filtered_events = []
 
         #Initial values for the alert system
-        message = "Unknown Subsystem Status!"
         value = 500
 
-        sensu_events_url = Rails.configuration.sensu_events.to_s + "/events"
+        sensu_events_url = BackendSettings.sensu.url + "/events"
         sensu_events_response = ::HttpService.request(sensu_events_url)
 
         sensu_client_filter = sensu_client_filter.to_s

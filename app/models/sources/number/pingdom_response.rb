@@ -3,7 +3,7 @@ module Sources
     class PingdomResponse < Sources::Number::Base
 
       def available?
-        true
+        BackendSettings.pingdom.enabled?
       end
 
       def supports_target_browsing?
@@ -14,11 +14,16 @@ module Sources
         false
       end
 
+      def custom_fields
+        [
+          { :name => "check", :title => "Check Name", :mandatory => true}
+        ]
+      end
 
       def get(options = {})
         widget = Widget.find(options.fetch(:widget_id))
         settings = widget.settings
-        connection = SimplePingdomInterface.new(settings.fetch(:user), settings.fetch(:password), settings.fetch(:key), settings.fetch(:check))
+        connection = SimplePingdomInterface.new(settings.fetch(:check))
         { :value => connection.response_time }
       end
 

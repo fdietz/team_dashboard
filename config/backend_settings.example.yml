@@ -1,0 +1,38 @@
+graphite:
+  enabled?: false
+  url: 'http://someserver.url/'
+
+ganglia:
+  enabled: false
+  url: 'http://ganglia.url'
+  host: ganglia_host
+
+pingdom:
+  enabled?: false
+  user: username
+  password: pass
+  api_key: some_api_key
+
+sensu:
+  enabled?: false
+  url: 'http://sensu_url'
+
+uptime:
+  enabled?: false
+  url: 'http://uptime.url'
+
+jira:
+  enabled?: false
+  url: 'http://jira.url'
+  user: username
+  password: pass
+
+pingdom:
+  enabled?: false
+  user: pingdom_user
+  password: pass
+  api_key: some_key
+
+new_relic:
+  enabled?: false
+  api_key: some_key

@@ -29,6 +29,10 @@ module Sources
           @instances[api_key]
         end
 
+        def available?
+          BackendSettings.new_relic.enabled?
+        end
+
         def account
           NewRelicApi.api_key = api_key
           @account ||= NewRelicApi::Account.find(:first)
@@ -46,17 +50,15 @@ module Sources
 
       def custom_fields
         [
-          { :name => "api_key", :title => "Api Key", :mandatory => true },
           { :name => "value_name", :title => "Value Name", :mandatory => true },
         ]
       end
 
       def get(options = {})
         widget     = Widget.find(options.fetch(:widget_id))
-        api_key    = widget.settings.fetch(:api_key)
         value_name = widget.settings.fetch(:value_name)
 
-        { :value => NewRelicConnection.instance(api_key).threshold_value(value_name).metric_value }
+        { :value => NewRelicConnection.instance(BackendSettings.new_relic.api_key).threshold_value(value_name).metric_value }
       end
 
     end
