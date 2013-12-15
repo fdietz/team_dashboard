@@ -2,13 +2,22 @@ class SimplePingdomInterface
 
   class UnknownLabelError < StandardError ; end
 
-  attr_reader :user, :pass, :app_key, :response
+  attr_reader :response
 
   def initialize
     BackendSettings.pingdom.enabled? or raise 'Please enable pingdom in the settings'
-    @user = BackendSettings.pingdom.user
-    @pass = BackendSettings.pingdom.password
-    @app_key = BackendSettings.pingdom.api_key
+  end
+
+  def user
+    BackendSettings.pingdom.user
+  end
+
+  def pass
+    BackendSettings.pingdom.password
+  end
+
+  def app_key
+    BackendSettings.pingdom.api_key
   end
 
   def pingdom_url
@@ -16,7 +25,7 @@ class SimplePingdomInterface
   end
 
   def make_request
-    @response = ::HttpService.request(pingdom_url, :headers => { 'App-Key' => @app_key } )
+    @response = ::HttpService.request(pingdom_url, :headers => { 'App-Key' => app_key } )
     self
   end
 
