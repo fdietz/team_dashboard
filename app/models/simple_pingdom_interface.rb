@@ -1,7 +1,8 @@
 class SimplePingdomInterface
 
-
   class UnknownLabelError < StandardError ; end
+
+  attr_reader :user, :pass, :app_key, :response
 
   def initialize
     BackendSettings.pingdom.enabled? or raise 'Please enable pingdom in the settings'
