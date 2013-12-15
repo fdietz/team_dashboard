@@ -3,8 +3,12 @@ class SimplePingdomInterface
   attr_reader :user, :pass, :check, :app_key
 
 
-  def initialize(user, pass, app_key, check)
-    @user, @pass, @check, @app_key = user, pass, check, app_key
+  def initialize(check)
+    BackendSettings.pingdom.enabled? or raise 'Please enable pingdom in the settings'
+    @user = BackendSettings.pingdom.user
+    @pass = BackendSettings.pingdom.password
+    @check = check
+    @app_key = BackendSettings.pingdom.api_key
   end
 
   def pingdom_url

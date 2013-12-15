@@ -26,3 +26,13 @@ jira:
   url: 'http://jira.url'
   user: username
   password: pass
+
+pingdom:
+  enabled?: false
+  user: pingdom_user
+  password: pass
+  api_key: some_key
+
+new_relic:
+  enabled?: false
+  api_key: some_key
