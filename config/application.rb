@@ -48,7 +48,7 @@ module TeamDashboard
 
     # change minification options to fix Angular.js dependency injection
     config.assets.js_compressor = Uglifier.new(:mangle => false)
-    config.assets.precompile = %w(select2.png, spinner-gray-bg.gif spinner-green-bg.gif spinner-red-bg.gif spinner.gif spinner2.gif)
+    config.assets.precompile += %w(select2.png, spinner-gray-bg.gif spinner-green-bg.gif spinner-red-bg.gif spinner.gif spinner2.gif app.js)
 
     config.graphite_url     = ENV['GRAPHITE_URL']
     config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']
