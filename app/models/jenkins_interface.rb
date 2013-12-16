@@ -13,7 +13,8 @@ class JenkinsInterface
   end
 
   def parsed_build_status
-    XML::Parser.string(request_build_status).parse
+    status = request_build_status
+    XML::Parser.string(status).parse rescue status
   end
 
   def project_to_status(data)
@@ -32,9 +33,9 @@ class JenkinsInterface
   def status_table
     project_table.map do |status|
       {
-        status: status[:last_build_status] == 0 ? 0 : 2,
-        label: status[:label],
-        value: status[:last_build_time].strftime('%H:%M:%S')
+        'status' => status[:last_build_status] == 0 ? 0 : 2,
+        'label' => status[:label],
+        'value' => status[:last_build_time].strftime('%H:%M:%S')
       }
     end
   end
