@@ -15,7 +15,7 @@ app.directive("example", ["$http", "ExampleModel", function($http, ExampleModel)
   }
 
   return {
-    template: $("#templates-widgets-example-show").html(),
+    templateUrl: "templates/widgets/example/show.html",
     link: link
   };
 }]);

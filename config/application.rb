@@ -2,15 +2,11 @@ require File.expand_path('../boot', __FILE__)
 
 require "action_controller/railtie"
 require "action_mailer/railtie"
-require "active_resource/railtie"
 require "active_record/railtie"
 require "sprockets/railtie"
 
 if defined?(Bundler)
-  # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
-  # If you want your assets lazily compiled in production, use this line
-  # Bundler.require(:default, :assets, Rails.env)
 end
 
 module TeamDashboard
@@ -51,7 +47,8 @@ module TeamDashboard
     config.assets.version = '1.0'
 
     # change minification options to fix Angular.js dependency injection
-    config.assets.js_compressor = Sprockets::LazyCompressor.new { Uglifier.new(:mangle => false) }
+    config.assets.js_compressor = Uglifier.new(:mangle => false)
+    config.assets.precompile = %w(select2.png, spinner-gray-bg.gif spinner-green-bg.gif spinner-red-bg.gif spinner.gif spinner2.gif)
 
     config.graphite_url     = ENV['GRAPHITE_URL']
     config.ganglia_web_url  = ENV['GANGLIA_WEB_URL']

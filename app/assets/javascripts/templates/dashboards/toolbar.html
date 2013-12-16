@@ -13,17 +13,17 @@
     </div>
 
     <div class="btn-group">
-      <!-- <div ng-class='{open: toggle.open}'> -->
-        <a ng-click='open=!toggle.open' class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
-          Add Widget...
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li ng-repeat="w in available_widgets">
-            <a href="#" ng-click="addWidget(w)">{{w}}</a>
-          </li>
-        </ul>
-      <!-- </div> -->
+      <div class="dropdown">
+        <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+        Add Widget...
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="w in availableWidgets">
+          <a href="#" ng-click="addWidget(w)">{{w}}</a>
+        </li>
+      </ul>
+      </div>
     </div>
 
     <div class="btn-group">

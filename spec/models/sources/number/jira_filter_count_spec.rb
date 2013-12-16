@@ -9,9 +9,13 @@ describe Sources::Number::JiraFilterCount do
   }
 
   before do
-    Rails.configuration.jira_url = "http://localhost"
-    Rails.configuration.jira_user = "user"
-    Rails.configuration.jira_password = "password"
+    BackendSettings.stubs(:jira).returns(
+      OpenStruct.new(
+        url: "http://localhost",
+        user: "user",
+        password: "password"
+      )
+    )
   end
 
   describe "#get" do

@@ -17,9 +17,9 @@
 //= require jquery_ujs
 //= require jquery.gridster
 
-//= require twitter/bootstrap/dropdown
-//= require twitter/bootstrap/typeahead
-//= require twitter/bootstrap/modal
+//= require bootstrap-dropdown
+//= require bootstrap-typeahead
+//= require bootstrap-modal
 
 //= require bootbox
 //= require bigscreen.min
@@ -31,12 +31,10 @@
 //= require jquery.knob
 
 //= require angular
+//= require angular-route
 //= require angular-resource
 //= require angular-sanitize
-//= require angular-ui/module
-//= require angular-ui/jq
-//= require angular-ui/bootstrap/modal
-//= require angular-ui/bootstrap/dialog
-//= require angular-ui/bootstrap/transitions
+
+//= require ui-bootstrap-custom-0.5.0
 
 //= require_tree .

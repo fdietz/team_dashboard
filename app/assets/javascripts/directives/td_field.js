@@ -27,7 +27,7 @@ app.directive("tdField", ["$compile", function($compile) {
       };
 
       scope.hasError = function() {
-        return form[name()].$invalid && form[name()].$dirty;
+        return form[name()] && form[name()].$invalid && form[name()].$dirty;
       };
 
       var availableErrors = ["required", "minlength", "maxlength", "pattern"];
@@ -43,6 +43,8 @@ app.directive("tdField", ["$compile", function($compile) {
         if (scope.help) {
           return scope.help;
         } else {
+          if (!form[name()]) return;
+          
           var error = form[name()].$error;
           var result = [];
 

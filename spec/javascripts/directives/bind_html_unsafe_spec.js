@@ -2,6 +2,8 @@ describe("BindHtmlUnsafe", function() {
 
   var compile, rootScope, fixture, element;
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+
   beforeEach(inject(function($compile, $rootScope) {
     compile = $compile;
     rootScope = $rootScope;

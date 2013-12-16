@@ -1,13 +1,11 @@
 app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", function($scope, $timeout, dialog, $dialog) {
 
   function prefillTargets() {
-    if (dialog.targets) {
-      return _.map(dialog.targets.split(";"), function(t) {
-        return { content: t, editing: false };
-      });
-    }
+    if (_.isEmpty(dialog.targets)) return [];
 
-    return [];
+    return _.map(dialog.targets.split(";"), function(t) {
+      return { content: t, editing: false };
+    });
   }
 
   $scope.targets = prefillTargets();
@@ -22,16 +20,12 @@ app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", functi
   };
 
   $scope.removeTarget = function(target) {
-    _.each($scope.targets, function(t, index) {
-      if (t === target) {
-        $scope.targets.splice(index, 1);
-        if ($scope.selectedTarget === t) {
-          $scope.selectedTarget = (index > $scope.targets.length-1) ? $scope.targets[$scope.targets.length-1] : $scope.targets[index];
-        }
-        return;
-      }
-    });
+    var index = _.indexOf($scope.targets, target);
+    $scope.targets.splice(index, 1);
 
+    if ($scope.selectedTarget === target) {
+      $scope.selectedTarget = (index > $scope.targets.length-1) ? $scope.targets[$scope.targets.length-1] : $scope.targets[index];
+    }
   };
 
   $scope.selectedClass = function(target) {

@@ -10,9 +10,9 @@ task :populate => :environment do
   target2 = "demo.example2"
 
   d1 = Dashboard.create!(:name => "Example 1 (Graph Widgets)")
-  d1.widgets.create!(:name => "Single Target Line Graph", :targets => target1, :size_x => 1, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'line' })
-  d1.widgets.create!(:name => "Two Targets Line Graph", :targets => [target1, target2].join(';'), :size_x => 2, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'line' })
-  d1.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(';'), :size_x => 3, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'area' })
+  d1.widgets.create!(:name => "Single Target Line Graph", :kind => 'graph', :size_x => 1, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'line', :targets => target1, :range => "30-minutes" })
+  d1.widgets.create!(:name => "Two Targets Line Graph", :kind => 'graph', :size_x => 2, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'line', :targets => [target1, target2].join(';'), :range => "30-minutes" })
+  d1.widgets.create!(:name => "Two Targets Area Graph", :kind => 'graph', :size_x => 3, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'area', :targets => [target1, target2].join(';'), :range => "30-minutes" })
 
   d2 = Dashboard.create!(:name => "Example 2 (Numbers, Boolean and Graph Widgets)")
   d2.widgets.create!(:name => "Number", :kind => 'number', :size_x => 2, :source => 'http_proxy', :settings => { :label => "Build duration (sec)",:proxy_url => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", :proxy_value_path => "duration" })
@@ -22,7 +22,7 @@ task :populate => :environment do
   d2.widgets.create!(:name => "Boolean", :kind => 'boolean', :source => 'http_proxy', :settings => {
     :label => "Jenkins Status", :proxy_url => "http://ci.jenkins-ci.org/job/infra_plugin_changes_report/lastBuild/api/json", :proxy_value_path => "building" })
 
-  d2.widgets.create!(:name => "Two Targets Stacked Graph", :targets => [target1, target2].join(';'), :size_x => 2, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'area' })
+  d2.widgets.create!(:name => "Two Targets Area Graph", :kind => 'graph', :size_x => 2, :size_y => 2, :source => 'demo', :settings => { :graph_type => 'area', :targets => [target1, target2].join(';'), :range => "30-minutes" })
 
   d2.widgets.create!(:name => "Boolean", :kind => 'boolean', :source => 'demo', :settings => { :label => "DB Health" })
   d2.widgets.create!(:name => "Boolean", :kind => 'boolean', :source => 'demo', :settings => { :label => "App Status" })

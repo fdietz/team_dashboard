@@ -3,7 +3,7 @@ module Sources
     class HttpProxy < Sources::Datapoints::Base
       include HttpProxyResolver
 
-      def fields
+      def custom_fields
         [
           { :name => "proxy_url", :title => "Proxy Url", :mandatory => true }
         ]
@@ -13,7 +13,7 @@ module Sources
         from    = (options[:from]).to_i
         to      = (options[:to] || Time.now).to_i
         widget  = Widget.find(options.fetch(:widget_id))
-        targets = targetsArray(widget.targets)
+        targets = targetsArray(widget.settings.fetch(:targets))
 
         params = { :from => from, :to => to, :targets => targets }
 

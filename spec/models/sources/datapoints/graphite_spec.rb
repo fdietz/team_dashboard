@@ -3,7 +3,7 @@ require "spec_helper"
 describe Sources::Datapoints::Graphite do
 
   let(:source) { Sources::Datapoints::Graphite.new }
-  let(:widget) { FactoryGirl.create(:widget, :kind => "datapoints", :source => "graphite", :targets => "test1;test2", :settings => {}) }
+  let(:widget) { FactoryGirl.create(:widget, :kind => "datapoints", :source => "graphite", :settings => { :targets => "test1;test2" }) }
   let(:targets) { ['test1', 'test2'] }
 
   before do

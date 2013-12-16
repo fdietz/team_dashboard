@@ -3,17 +3,31 @@ module Sources
 
   class UnknownPluginError < StandardError; end
 
-  TYPES = %w(alert boolean datapoints number ci exception_tracker)
+  def available_source_types
+    @available_source_types ||= begin
+      path = Rails.root.join("app/models/sources")
+      Dir["#{path}/*"].map { |directory| Pathname.new(directory).basename }.map(&:to_s)
+    end
+  end
 
-  TYPES.each do |type|
+  available_source_types.each do |type|
     define_method("#{type}_plugin") do |name|
       plugin_clazz(type, name).new
     end
   end
 
+  def widget_type_to_source_type(type)
+    case type
+    when "graph" then "datapoints"
+    when "meter" then "number"
+    else
+      type
+    end
+  end
+
   def sources
     result = {}
-    TYPES.each do |type|
+    available_source_types.each do |type|
       type_result = {}
       source_names(type).each do |name|
         type_result[name] = source_properties(type, name)
@@ -23,7 +37,7 @@ module Sources
     result
   end
 
-  def custom_fields(type)
+  def [](type)
     sources[type] || []
   end
 
@@ -44,11 +58,12 @@ module Sources
   def source_properties(type, name)
     plugin = plugin_clazz(type, name).new
     {
-      "name"                     => name,
-      "available"                => plugin.available?,
-      "supports_target_browsing" => plugin.supports_target_browsing?,
-      "supports_functions"       => plugin.supports_functions?,
-      "fields"                   => plugin.fields
+      name:                     name,
+      available:                plugin.available?,
+      supports_target_browsing: plugin.supports_target_browsing?,
+      supports_functions:       plugin.supports_functions?,
+      custom_fields:            plugin.custom_fields,
+      default_fields:           plugin.default_fields
     }
   end
 

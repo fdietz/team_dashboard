@@ -14,7 +14,11 @@ module Sources
         false
       end
 
-      def fields
+      def custom_fields
+        []
+      end
+
+      def default_fields
         []
       end
 

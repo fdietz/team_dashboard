@@ -1,0 +1,18 @@
+<div class="status_table-widget single-row" position="relative">
+  <div class="status_table-overall_value value-size-small" ng-class="{ green:data.overall_value == 0, orange:data.overall_value == 1, red:data.overall_value == 2, blue:data.overall_value>2 }"></div>
+
+  <div class="status_table-overall_label"><p>{{ data.first_value.label }} {{ data.first_value.value }} </p></div>
+  <!-- <div class="status_table-overall_label">{{widget.name}}</div>-->
+  <table class="table-striped file_label">
+    <thead>
+    </thead>
+    <tbody ng-click="showFileMessage()">
+      <tr ng-repeat="label in data.label">
+        <td><div class="status_table-value value-size-smaller" ng-class="{ green:label.status == 0, orange:label.status == 1, red:label.status == 2, blue:label.status>2 }"></div></td>
+        <td>{{ label.label }}</td>
+        <td>{{ label.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

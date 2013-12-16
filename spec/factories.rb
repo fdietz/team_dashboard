@@ -5,6 +5,9 @@ FactoryGirl.define do
 
   factory :widget do
     name 'Example Widget'
+    kind 'number'
+    source 'demo'
+
     association :dashboard
   end
 end

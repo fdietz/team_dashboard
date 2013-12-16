@@ -2,9 +2,12 @@
   <div class="btn-group">
       <h2 style="display:inline">Dashboards</h2>
   </div>
+
   <div class="btn-group pull-right">
     <button ng-click="createDashboard()" href="#" class="btn btn-success dashboard-create">Create Dashboard</button>
   </div>
+
+  <input type="text" ng-model="nameFilter" data-blank-on-escape="nameFilter" placeholder="Search" class="search-box pull-right">
 </div>
 
 <table class="table table-striped">
@@ -15,7 +18,7 @@
       <th>Created At</th>
     </tr>
   </thead>
-  <tbody ng-repeat="dashboard in dashboards">
+  <tbody ng-repeat="dashboard in dashboards | filter: nameFilter">
     <tr>
       <td>
         <a href="/dashboards/{{dashboard.id}}">{{dashboard.name}}</a>

@@ -1,0 +1,66 @@
+<div ng-controller="NumberCtrl">
+
+  <div td-field label="Name">
+    <input name="name" ng-model="widget.name" type="text" autofocus required/>
+  </div>
+
+  <div td-field label="Update Interval">
+    <select name="update_interval" ng-model="widget.update_interval" ng-options="i.value as i.label for i in updateIntervals" required>
+    </select>
+  </div>
+
+  <div td-field label="Size">
+    <select name="size_x" ng-model="widget.size_x" ng-options="i.value as i.label for i in sizes" required>
+    </select>
+  </div>
+
+  <div td-field label="Source">
+    <select name="source" ng-model="widget.source" ng-options="i.value as i.label for i in sources" required ng-maxlength="10">
+    </select>
+  </div>
+
+  <div ng-show="widget.source == 'datapoints'">
+    <div td-field label=" Datapoints Source">
+      <select name="datapoints_source" ng-model="widget.datapoints_source" ng-options="i.value as i.label for i in datapointsSources" ng-required="widget.source == 'datapoints'">
+      </select>
+    </div>
+
+    <div td-field label="Periods">
+      <select name="range" ng-model="widget.range" ng-options="i.value as i.label for i in periods" ng-required="widget.source == 'datapoints'">
+      </select>
+    </div>
+
+    <div td-field label="Targets">
+      <div class="input-append" ng-show="supportsTargetBrowsing()">
+        <input name="targets" ng-model="widget.targets" type="text" ng-required="widget.source == 'datapoints'"/>
+        <button ng-click="editTargets()" class="btn browse" type="button"><i class="icon-search icon-white"></i></button>
+      </div>
+
+      <input name="targets" ng-hide="supportsTargetBrowsing()" ng-model="widget.targets" type="text" ng-required="widget.source == 'datapoints'"/>
+    </div>
+
+    <div td-field label="Aggregate Function">
+      <select name="aggregate_function" ng-model="widget.aggregate_function" ng-options="i.value as i.label for i in aggregateFunction" ng-required="widget.source == 'datapoints'">
+      </select>
+    </div>
+
+    <div td-field label="Max Value">
+      <input name="max" ng-model="widget.max" type="number" />
+    </div>
+  </div>
+
+  <div td-bind-html-unsafe="customFieldsTemplate"></div>
+
+  <div td-field label="Label">
+    <input name="label" ng-model="widget.label" type="text" />
+  </div>
+
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox" title="1k instead of 1000">
+        <input name="use_metric_suffix" ng-model="widget.use_metric_suffix" type="checkbox">Use Metric Suffix</input>
+      </label>
+    </div>
+  </div>
+
+</div>

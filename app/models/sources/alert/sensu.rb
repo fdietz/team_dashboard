@@ -6,10 +6,10 @@ module Sources
       class SensuWrongConfigurationError < Exception; end
 
       def available?
-        Rails.configuration.sensu_events.present?
+        BackendSettings.sensu.enabled?
       end
 
-      def fields
+      def custom_fields
         [
           { :name => "sensu_clients", :title => "Filter by clients", :mandatory => false },
           { :name => "ignored_checks", :title => "Ignore checks", :mandatory => false }
@@ -18,18 +18,17 @@ module Sources
 
       def get(options = {})
         widget                = Widget.find(options.fetch(:widget_id))
-        sensu_client_filter   = widget.settings.fetch(:sensu_clients)
-        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks)
+        sensu_client_filter   = widget.settings.fetch(:sensu_clients, '')
+        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks, '')
 
         #defining some global variables that will be used to store filtered data
         sensu_filtered_events = []
         ignored_check_filtered_events = []
 
         #Initial values for the alert system
-        message = "Unknown Subsystem Status!"
         value = 500
 
-        sensu_events_url = Rails.configuration.sensu_events.to_s + "/events"
+        sensu_events_url = BackendSettings.sensu.url + "/events"
         sensu_events_response = ::HttpService.request(sensu_events_url)
 
         sensu_client_filter = sensu_client_filter.to_s

@@ -70,21 +70,21 @@ The boolean data source supports a single boolean value and an optional label.
 ### Global configuration for your data source
 It some cases it makes sense to have a global configuration in the Rails app instead of a separate option as part of the widget configuration.
 
-Let's have a look at how its done for for the Graphite data source. There's an entry in application.rb.
+There is a global `config/backend_settings.yml` that takes care of that. Just add entries for your own plugin if that makes sense.
 
-    module TeamDashboard
-      class Application < Rails::Application
-        config.graphite_url = ENV['GRAPHITE_URL']
-      end
-    end
+Let's have a look at how its done for for the Graphite data source. There's an entry in `config/backend_settings.yml`.
 
-Note that it is set to the environment variable GRAPHITE_URL, which makes it easy to set without changing the rails app directly. Additionally, this configuration can be set in the environment specific config files.
+    graphite:
+      enabled?: true
+      url: "http://some.url"
+
+This is automatically assigned to the `BackendSettings` constant throughout your application.
 
 The graphite data source now can easily access the configuration. In order to determine if the data source is configured correctly you have to implement the <code>available?</code> method:
 
     class Graphite < Sources::Datapoints::Base
       def available?
-        Rails.configuration.graphite_url.present?
+        BackendSettings.graphite.enabled?
       end
     end
 
@@ -97,7 +97,7 @@ For example the official [Jenkins source plugin](https://github.com/fdietz/team_
 
     class Jenkins < Sources::Ci::Base
 
-      def fields
+      def custom_fields
         [
           { :name => "server_url", :title => "Server Url", :mandatory => true },
           { :name => "project", :title => "Project", :mandatory => true },

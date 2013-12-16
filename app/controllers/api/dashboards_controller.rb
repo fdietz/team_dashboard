@@ -7,13 +7,15 @@ module Api
     end
 
     def index
-      dashboards = Dashboard.order("NAME ASC").all
+      dashboards = Dashboard.order("NAME ASC")
       respond_with dashboards
     end
 
     def create
-      input = JSON.parse(request.body.read.to_s)
-      dashboard = Dashboard.new(input.slice(*Dashboard.accessible_attributes))
+      # fixed on rails master (remove after 4.0.1 release)
+      request.body.rewind
+      input = JSON.parse(request.body.read)
+      dashboard = Dashboard.new(dashboard_params(input))
       if dashboard.save
         render :json => dashboard, :status => :created, :location => api_dashboards_url(dashboard)
       else
@@ -23,8 +25,10 @@ module Api
 
     def update
       dashboard = Dashboard.find(params[:id])
-      input = JSON.parse(request.body.read.to_s)
-      if dashboard.update_attributes(input.slice(*Dashboard.accessible_attributes))
+      # fixed on rails master (remove after 4.0.1 release)
+      request.body.rewind
+      input = JSON.parse(request.body.read)
+      if dashboard.update_attributes(dashboard_params(input))
         render :json => dashboard
       else
         render :json => dashboard.errors, :status => :unprocessable_entity
@@ -36,5 +40,10 @@ module Api
       head :no_content
     end
 
+    protected
+
+    def dashboard_params(input)
+      input.slice(*%w(name time layout locked))
+    end
   end
 end

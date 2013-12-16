@@ -3,12 +3,11 @@ class Widget < ActiveRecord::Base
 
   serialize :settings
 
-  validates :name, :presence => true
-  validates :dashboard_id, :presence => true
+  validates :name, :kind, :source, :update_interval, :dashboard_id, :presence => true
+
+  validate :validate_source_attributes
 
   after_initialize :set_defaults
-
-  attr_accessible :name, :kind, :size, :source, :targets, :range, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings
 
   class << self
 
@@ -24,7 +23,7 @@ class Widget < ActiveRecord::Base
     # settings specific attributes handling
     def slice_attributes(input)
       input.symbolize_keys!
-      default_set = accessible_attributes.to_a.map(&:to_sym)
+      default_set = [:name, :kind, :source, :update_interval, :dashboard_id, :dashboard, :col, :row, :size_x, :size_y, :settings].to_a.map(&:to_sym)
       input.slice(*default_set).merge(:settings => input.except(*default_set))
     end
   end
@@ -38,11 +37,19 @@ class Widget < ActiveRecord::Base
 
   protected
 
+  def validate_source_attributes
+    source_plugins = Sources[Sources.widget_type_to_source_type(kind)]
+    source_attrs   = source_plugins.fetch(source)
+    attrs          = source_attrs.fetch(:custom_fields) + source_attrs.fetch(:default_fields)
+    attrs.each do |field|
+      if field[:mandatory]
+        errors.add(field[:name], "#{field[:name]} is a required field") unless settings[field[:name].to_sym].present?
+      end
+    end
+  end
+
   def set_defaults
-    self.size = 1 unless self.size
-    self.range = '30-minutes' unless self.range
-    self.kind = 'graph' unless self.kind
-    self.update_interval = 10 unless self.update_interval
+    self.update_interval ||= 10
   end
 
 end

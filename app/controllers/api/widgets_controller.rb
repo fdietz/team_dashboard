@@ -8,13 +8,15 @@ module Api
     end
 
     def index
-      widgets = Widget.for_dashboard(params[:dashboard_id]).all
+      widgets = Widget.for_dashboard(params[:dashboard_id])
       respond_with(widgets)
     end
 
     def create
       dashboard = Dashboard.find(params[:dashboard_id])
-      input = JSON.parse(request.body.read.to_s)
+      # fixed on rails master (remove after 4.0.1 release)
+      request.body.rewind
+      input = JSON.parse(request.body.read)
       widget = dashboard.widgets.build(Widget.slice_attributes(input))
       if widget.save
         render :json => widget, :status => :created, :location => api_dashboard_widget_url(:dashboard_id => dashboard.id, :id => widget.id)
@@ -26,7 +28,9 @@ module Api
     def update
       dashboard = Dashboard.find(params[:dashboard_id])
       widget = dashboard.widgets.find(params[:id])
-      input = JSON.parse(request.body.read.to_s)
+      # fixed on rails master (remove after 4.0.1 release)
+      request.body.rewind
+      input = JSON.parse(request.body.read)
       if widget.update_attributes(Widget.slice_attributes(input))
         head :no_content
       else

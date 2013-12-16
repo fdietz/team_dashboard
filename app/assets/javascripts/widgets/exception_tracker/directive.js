@@ -17,7 +17,7 @@ app.directive("exceptionTracker", ["ExceptionTrackerModel", function(ExceptionTr
   };
 
   return {
-    template: $("#templates-widgets-exception_tracker-show").html(),
+    templateUrl: "templates/widgets/exception_tracker/show.html",
     link: linkFn
   };
 }]);

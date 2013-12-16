@@ -2,13 +2,15 @@ describe("exception_tracker widget directive", function() {
 
   var element, compile, rootScope, fixture, ctrl, httpBackend;
 
+  beforeEach(angular.mock.module('TeamDashboard'));
+  beforeEach(module('templates/widgets/exception_tracker/show.html'));
+
   beforeEach(inject(function($compile, $rootScope, $controller, $httpBackend) {
     compile = $compile;
     rootScope = $rootScope;
     httpBackend = $httpBackend;
 
     element = angular.element('<div exception_tracker>hello</div>');
-    fixture = loadFixtures("widgets/exception_tracker/show.html");
 
     rootScope.widget = { label: "Default Text", source: "demo" };
     ctrl = $controller("WidgetCtrl", { $scope: rootScope, $element: null });

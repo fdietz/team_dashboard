@@ -43,7 +43,7 @@ app.directive("meter", ["NumberModel", function(NumberModel) {
   };
 
   return {
-    template: $("#templates-widgets-meter-show").html(),
+    templateUrl: "templates/widgets/meter/show.html",
     link: linkFn
   };
 }]);

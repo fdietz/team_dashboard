@@ -13,11 +13,14 @@ module Sources
       def supports_functions?
         false
       end
-      
-      def fields
+
+      def custom_fields
         []
       end
 
+      def default_fields
+        []
+      end
       # Returns ruby hash:
       # * label                 optional label
       # * last_build_time       time of last build

@@ -1,6 +1,7 @@
 app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel, SuffixFormatter) {
 
   var linkFn = function(scope, element, attrs) {
+    // console.log(element.html(), attrs)
 
     function calculatePercentage(value, previousValue) {
       console.log("previous", previousValue, "value", value);
@@ -29,7 +30,7 @@ app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel,
   };
 
   return {
-    template: $("#templates-widgets-number-show").html(),
+    templateUrl: "templates/widgets/number/show.html",
     link: linkFn
   };
 }]);

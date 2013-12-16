@@ -50,7 +50,7 @@
       </div>
       <div class="row-fluid">
         <div id="main" class="span12">
-          <ng-view ng-show="resolved" ng-cloak></ng-view>
+          <div ng-view ng-show="resolved" ng-cloak></div>
         </div>
       </div>
     </div>
@@ -59,18 +59,15 @@
       <h1>Press ESC to exit fullscreen.</h1>
     </div>
 
-    <%= script_tag_for_all_templates %>
     <%= script_tag_for_all_custom_fields %>
 
     <%= javascript_include_tag "application" %>
 
-    <script>
-      (function($) {
-        $.Sources = JSON.parse('<%= raw Sources.sources.to_json %>');
-        $.available_widgets = JSON.parse('<%= raw Widget.list_available %>');
-      })($);
-    </script>
+    <%= script_tag_for_all_templates %>
 
+    <script>
+      window.system = JSON.parse('<%= raw System.new.to_json %>');
+    </script>
   </body>
 
 </html>

@@ -24,7 +24,7 @@ module Sources
         false
       end
 
-      def fields
+      def custom_fields
         [
           { :name => "url", :title => "URL", :mandatory => true },
           { :name => "user_name", :title => "User name", :mandatory => true }

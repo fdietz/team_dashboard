@@ -15,7 +15,7 @@ app.directive("boolean", ["BooleanModel", function(BooleanModel) {
   };
 
   return {
-    template: $("#templates-widgets-boolean-show").html(),
+    templateUrl: "templates/widgets/boolean/show.html",
     link: linkFn
   };
 }]);

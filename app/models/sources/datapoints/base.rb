@@ -18,8 +18,14 @@ module Sources
         false
       end
 
-      def fields
+      def custom_fields
         []
+      end
+
+      def default_fields
+        [
+          { name: "targets", title: "Targets", mandatory: true }
+        ]
       end
 
       def get(options = {})

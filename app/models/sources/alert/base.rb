@@ -14,7 +14,11 @@ module Sources
         false
       end
 
-      def fields
+      def custom_fields
+        []
+      end
+
+      def default_fields
         []
       end
 
@@ -23,7 +27,7 @@ module Sources
       #  * label (alert string) mandatory
       def get(options = {})
       end
-      
+
     end
   end
 end
