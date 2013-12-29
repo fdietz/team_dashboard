@@ -13,7 +13,7 @@ module BackendSettings
         env_secrets = YAML.load(ERB.new(IO.read(yaml)).result)[Rails.env]
         secrets.merge!(env_secrets.symbolize_keys) if env_secrets
       else
-        raise('Please copy over the example config/secrets.yml and modify it to your needs.')
+        raise('Please copy over the example config/secrets.yml and modify it to your needs.') unless Rails.env.test?
       end
 
       secrets
