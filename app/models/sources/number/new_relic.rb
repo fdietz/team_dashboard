@@ -30,7 +30,7 @@ module Sources
         end
 
         def available?
-          BackendSettings.new_relic.enabled?
+          BackendSettings.secrets.new_relic[:api_key].present?
         end
 
         def account
@@ -58,7 +58,7 @@ module Sources
         widget     = Widget.find(options.fetch(:widget_id))
         value_name = widget.settings.fetch(:value_name)
 
-        { :value => NewRelicConnection.instance(BackendSettings.new_relic.api_key).threshold_value(value_name).metric_value }
+        { :value => NewRelicConnection.instance(BackendSettings.secrets.new_relic[:api_key]).threshold_value(value_name).metric_value }
       end
 
     end

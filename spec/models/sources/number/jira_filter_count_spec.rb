@@ -9,7 +9,7 @@ describe Sources::Number::JiraFilterCount do
   }
 
   before do
-    BackendSettings.stubs(:jira).returns(
+    BackendSettings.secrets.stubs(:jira).returns(
       OpenStruct.new(
         url: "http://localhost",
         user: "user",

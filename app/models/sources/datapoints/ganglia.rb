@@ -22,11 +22,11 @@ module Sources
       PORT = 8649
 
       def initialize
-        @url_builder = GangliaUrlBuilder.new(BackendSettings.ganglia.url)
+        @url_builder = GangliaUrlBuilder.new(BackendSettings.secrets.ganglia[:url])
       end
 
       def available?
-        BackendSettings.ganglia.enabled?
+        BackendSettings.secrets.ganglia[:url].present?
       end
 
       def get(options = {})
@@ -79,8 +79,8 @@ module Sources
       end
 
       def request_available_targets
-        Rails.logger.debug("Requesting available targets from #{BackendSettings.ganglia.host}:#{PORT} ...")
-        client = TCPSocket.open(BackendSettings.ganglia.host, PORT)
+        Rails.logger.debug("Requesting available targets from #{BackendSettings.secrets.ganglia[:host]}:#{PORT} ...")
+        client = TCPSocket.open(BackendSettings.secrets.ganglia[:host], PORT)
         result = ""
         while line = client.gets
           result << line.chop

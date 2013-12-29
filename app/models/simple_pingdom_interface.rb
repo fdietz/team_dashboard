@@ -4,11 +4,10 @@ class SimplePingdomInterface
 
 
   def initialize(check)
-    BackendSettings.pingdom.enabled? or raise 'Please enable pingdom in the settings'
-    @user = BackendSettings.pingdom.user
-    @pass = BackendSettings.pingdom.password
+    @user = BackendSettings.secrets.pingdom[:user]
+    @pass = BackendSettings.secrets.pingdom[:password]
     @check = check
-    @app_key = BackendSettings.pingdom.api_key
+    @app_key = BackendSettings.secrets.pingdom[:api_key]
   end
 
   def pingdom_url
