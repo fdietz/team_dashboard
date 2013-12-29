@@ -11,6 +11,7 @@ The complete [issue list](https://github.com/fdietz/team_dashboard/issues?milest
 * New widgets:
   * Graphite Graph Widget using SVG as exported by graphite web API (#80)
   * Status Table Widget (paulhamby), table with alerts status
+* New global configuration config/secrets.yml for accounts, passwords, etc. (#121)
 * Update to [Rails 4.0 ](http://weblog.rubyonrails.org/2013/6/25/Rails-4-0-final/)
 * Update javascript unit tests to use [Karma](http://karma-runner.github.io/), simplified test setup
 * Updated all gems to latest versions (including making it work on OS X Mavericks)
