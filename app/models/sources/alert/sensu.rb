@@ -6,7 +6,7 @@ module Sources
       class SensuWrongConfigurationError < Exception; end
 
       def available?
-        BackendSettings.secrets.sensu[:url].present?
+        BackendSettings.secrets.sensu && BackendSettings.secrets.sensu[:url].present?
       end
 
       def custom_fields

@@ -15,7 +15,7 @@ module Sources
     class JiraFilterCount < Sources::Number::Base
 
       def available?
-        BackendSettings.secrets.jira[:url].present? && BackendSettings.secrets.jira[:user].present? && BackendSettings.secrets.jira[:password].present?
+        BackendSettings.secrets.jira && BackendSettings.secrets.jira[:url].present? && BackendSettings.secrets.jira[:user].present? && BackendSettings.secrets.jira[:password].present?
       end
 
       def count_by_filter_id(filter_id)

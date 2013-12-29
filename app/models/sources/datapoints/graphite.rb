@@ -21,11 +21,10 @@ module Sources
     class Graphite < Sources::Datapoints::Base
 
       def initialize
-        @url_builder = GraphiteUrlBuilder.new(BackendSettings.secrets.graphite[:url])
       end
 
       def available?
-        BackendSettings.secrets.graphite[:url].present?
+        BackendSettings.secrets.graphite && BackendSettings.secrets.graphite[:url].present?
       end
 
       def supports_target_browsing?
@@ -65,8 +64,12 @@ module Sources
 
       private
 
+      def url_builder
+        @url_builder ||= GraphiteUrlBuilder.new(BackendSettings.secrets.graphite[:url])
+      end
+
       def request_datapoints(targets, from, to)
-        hash = @url_builder.datapoints_url(targets, from, to)
+        hash = url_builder.datapoints_url(targets, from, to)
         Rails.logger.debug("Requesting datapoints from #{hash[:url]} with params #{hash[:params]} ...")
 
         #
@@ -113,7 +116,7 @@ module Sources
       end
 
       def request_available_targets
-        url = @url_builder.metrics_url
+        url = url_builder.metrics_url
         Rails.logger.debug("Requesting available targets from #{url} ...")
         ::HttpService.request(url)
       end

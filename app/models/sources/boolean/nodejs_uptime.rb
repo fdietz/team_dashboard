@@ -15,7 +15,7 @@ module Sources
       class NotFoundError < StandardError; end
 
       def available?
-        BackendSettings.secrets.uptime[:url].present?
+        BackendSettings.secrets.uptime && BackendSettings.secrets.uptime[:url].present?
       end
 
       def custom_fields

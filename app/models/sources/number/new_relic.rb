@@ -30,7 +30,7 @@ module Sources
         end
 
         def available?
-          BackendSettings.secrets.new_relic[:api_key].present?
+          BackendSettings.secrets.new_relic && BackendSettings.secrets.new_relic[:api_key].present?
         end
 
         def account

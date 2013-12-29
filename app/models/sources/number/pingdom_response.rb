@@ -3,7 +3,7 @@ module Sources
     class PingdomResponse < Sources::Number::Base
 
       def available?
-        BackendSettings.secrets.pingdom[:user].present? && BackendSettings.secrets.pingdom[:password].present? && BackendSettings.secrets.pingdom[:api_key].present?
+        BackendSettings.secrets.pingdom && BackendSettings.secrets.pingdom[:user].present? && BackendSettings.secrets.pingdom[:password].present? && BackendSettings.secrets.pingdom[:api_key].present?
       end
 
       def supports_target_browsing?

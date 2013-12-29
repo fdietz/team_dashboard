@@ -22,11 +22,10 @@ module Sources
       PORT = 8649
 
       def initialize
-        @url_builder = GangliaUrlBuilder.new(BackendSettings.secrets.ganglia[:url])
       end
 
       def available?
-        BackendSettings.secrets.ganglia[:url].present?
+        BackendSettings.secrets.ganglia && BackendSettings.secrets.ganglia[:url].present?
       end
 
       def get(options = {})
@@ -64,6 +63,10 @@ module Sources
 
       private
 
+      def url_builder
+        @url_builder ||= GangliaUrlBuilder.new(BackendSettings.secrets.ganglia[:url])
+      end
+
       def parse_targets(xml)
         targets = []
         source = XML::Parser.string(xml)
@@ -92,7 +95,7 @@ module Sources
       def request_datapoints(targets, from, to)
         result = []
         targets.each do |target|
-          hash = @url_builder.datapoints_url(target, from, to)
+          hash = url_builder.datapoints_url(target, from, to)
           Rails.logger.debug("Requesting datapoints from #{hash[:url]} with params #{hash[:params]} ...")
           response = ::HttpService.request(hash[:url], :params => hash[:params])
           if response == "null"
