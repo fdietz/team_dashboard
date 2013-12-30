@@ -1,4 +1,4 @@
-app.controller("MainCtrl", ["$scope", "$rootScope", "$timeout", "$location", "Fullscreen", function($scope, $rootScope, $timeout, $location, Fullscreen) {
+app.controller("MainCtrl", ["$scope", "$rootScope", "Fullscreen", function($scope, $rootScope, Fullscreen) {
 
   $rootScope.fullscreen = false;
 

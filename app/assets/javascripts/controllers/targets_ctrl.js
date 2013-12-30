@@ -1,4 +1,4 @@
-app.controller("TargetsCtrl", ["$scope", "$timeout", "dialog", "$dialog", function($scope, $timeout, dialog, $dialog) {
+app.controller("TargetsCtrl", ["$scope", "dialog", function($scope, dialog) {
 
   function prefillTargets() {
     if (_.isEmpty(dialog.targets)) return [];
