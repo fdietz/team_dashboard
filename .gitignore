@@ -21,7 +21,6 @@
 .jhw-cache
 
 /config/database.yml
-/config/secrets.yml
 
 # Ignore net beans project file
 /nbproject
