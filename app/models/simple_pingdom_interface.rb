@@ -4,10 +4,10 @@ class SimplePingdomInterface
 
 
   def initialize(check)
-    @user = BackendSettings.secrets.pingdom[:user]
-    @pass = BackendSettings.secrets.pingdom[:password]
+    @user = BackendSettings.secrets.pingdom_user
+    @pass = BackendSettings.secrets.pingdom_password
     @check = check
-    @app_key = BackendSettings.secrets.pingdom[:api_key]
+    @app_key = BackendSettings.secrets.pingdom_api_key
   end
 
   def pingdom_url

@@ -24,7 +24,7 @@ module Sources
       end
 
       def available?
-        BackendSettings.secrets.graphite && BackendSettings.secrets.graphite[:url].present?
+        BackendSettings.secrets.graphite_url.present?
       end
 
       def supports_target_browsing?
@@ -64,7 +64,7 @@ module Sources
       private
 
       def url_builder
-        @url_builder ||= GraphiteUrlBuilder.new(BackendSettings.secrets.graphite[:url])
+        @url_builder ||= GraphiteUrlBuilder.new(BackendSettings.secrets.graphite_url)
       end
 
       def request_datapoints(targets, from, to, options = {})

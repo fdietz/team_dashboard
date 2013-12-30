@@ -83,7 +83,7 @@ The graphite data source now can easily access the configuration. In order to de
 
     class Graphite < Sources::Datapoints::Base
       def available?
-        BackendSettings.secrets.graphite[:url].present?
+        BackendSettings.secrets.graphite_url.present?
       end
     end
 

@@ -25,7 +25,7 @@ module Sources
       end
 
       def available?
-        BackendSettings.secrets.ganglia && BackendSettings.secrets.ganglia[:url].present?
+        BackendSettings.secrets.ganglia_url.present?
       end
 
       def get(options = {})
@@ -64,7 +64,7 @@ module Sources
       private
 
       def url_builder
-        @url_builder ||= GangliaUrlBuilder.new(BackendSettings.secrets.ganglia[:url])
+        @url_builder ||= GangliaUrlBuilder.new(BackendSettings.secrets.ganglia_url)
       end
 
       def parse_targets(xml)
@@ -82,8 +82,8 @@ module Sources
       end
 
       def request_available_targets
-        Rails.logger.debug("Requesting available targets from #{BackendSettings.secrets.ganglia[:host]}:#{PORT} ...")
-        client = TCPSocket.open(BackendSettings.secrets.ganglia[:host], PORT)
+        Rails.logger.debug("Requesting available targets from #{BackendSettings.secrets.ganglia_host}:#{PORT} ...")
+        client = TCPSocket.open(BackendSettings.secrets.ganglia_host, PORT)
         result = ""
         while line = client.gets
           result << line.chop

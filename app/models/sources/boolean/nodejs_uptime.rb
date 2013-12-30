@@ -15,7 +15,7 @@ module Sources
       class NotFoundError < StandardError; end
 
       def available?
-        BackendSettings.secrets.uptime && BackendSettings.secrets.uptime[:url].present?
+        BackendSettings.secrets.uptime_url.present?
       end
 
       def custom_fields
@@ -28,7 +28,7 @@ module Sources
         widget           = Widget.find(options.fetch(:widget_id))
         check_name       = widget.settings.fetch(:check_name)
 
-        url = BackendSettings.secrets.uptime[:url]
+        url = BackendSettings.secrets.uptime_url
 
         response = ::HttpService.request(url)
         Rails.logger.info response
