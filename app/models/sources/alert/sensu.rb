@@ -152,7 +152,7 @@ module Sources
           end
         else
           value = 0
-          all_messages = "SESNSU System status: OK"
+          all_messages = "SENSU System status: OK"
         end
 
         {:value => value , :label => all_messages }
