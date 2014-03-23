@@ -27,3 +27,13 @@
 .project
 
 /node_modules
+
+# Ignore IDEA files
+.idea
+*.iml
+
+# Ignore SQLite DBs
+team_dashboard_development
+team_dashboard_test
+team_dashboard_production
+

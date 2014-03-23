@@ -10,6 +10,7 @@ gem "bootstrap-sass", "~> 2.3.2"
 gem "bootswatch-rails"
 
 gem "mysql2"
+gem "sqlite3"
 
 # on windows replace with thin gem
 gem "unicorn"
@@ -46,4 +47,4 @@ group :production do
   gem 'rails_12factor' # remove if not deploying on heroku
 end
 
-ruby "2.0.0"
+ruby "2.1.0"
