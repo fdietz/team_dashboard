@@ -1,12 +1,20 @@
-app.controller("MainCtrl", ["$scope", "$rootScope", "Fullscreen", function($scope, $rootScope, Fullscreen) {
+app.controller("MainCtrl", ["$scope", "$rootScope", "$location", "Fullscreen", function($scope, $rootScope, $location, Fullscreen) {
 
-  $rootScope.fullscreen = false;
+    $rootScope.minimalui = $location.search().minimalui || false;
 
-  $scope.toggleFullscreen = function() {
-    if (!BigScreen.enabled) return;
+    BigScreen.onenter = function() {
+        $rootScope.minimalui = true;
+        $rootScope.$apply();
+    }
 
-    $rootScope.fullscreen = !$rootScope.fullscreen;
-    BigScreen.toggle();
-  };
+    BigScreen.onexit = function() {
+        $rootScope.minimalui = $location.search().minimalui || false;
+        $rootScope.$apply();
+    }
+
+    $scope.toggleFullscreen = function() {
+      if (!BigScreen.enabled) return;
+      BigScreen.toggle();
+    };
 
 }]);
