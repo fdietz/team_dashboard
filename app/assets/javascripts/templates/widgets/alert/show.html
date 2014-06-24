@@ -1,6 +1,6 @@
 <div class="alert-widget single-row" position="relative">
     <div class="alert-value value-size-large" ng-class="{ green:data.value == 0, orange:data.value == 1, red:data.value == 2, blue:data.value>2 }"></div>
     <div class="label_container_two_rows">
-        <a class="action" ng-click="showAlertMessage()" href="#"><span class="label" ng-bind-html-unsafe='data.label'/></a>
+        <a class="action" ng-click="showAlertMessage()" href="#"><span class="label" ng-bind-html='data.label'/></a>
     </div>
 </div>
