@@ -7,11 +7,11 @@
 
         <span class="title">{{widget.name}} <img ng-show="widget.enableSpinner" class="ajax-spinner" width="12" height="12" src="<%= asset_path('spinner2.gif') %>"></img></span>
 
-        <span class="action" ng-click="removeWidget(widget)" ng-hide="fullscreen">
+        <span class="action" ng-click="removeWidget(widget)" ng-hide="minimalui">
           <span class="ui-icon"><i class="icon icon-remove icon-white"></i></span>
         </span>
 
-        <span class="action" ng-click="editWidget(widget)" ng-hide="fullscreen">
+        <span class="action" ng-click="editWidget(widget)" ng-hide="minimalui">
           <span class="ui-icon"><i class="icon-cog icon-white"></i></span>
         </span>
 
