@@ -16,126 +16,79 @@ module Sources
         ]
       end
 
-      def get(options = {})
-        widget                = Widget.find(options.fetch(:widget_id))
-        sensu_client_filter   = widget.settings.fetch(:sensu_clients, '')
-        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks, '')
+      def get_events(clients = [])
+        sensu_events_url = BackendSettings.secrets.sensu_url + "/events"
+        sensu_events = []
+        if clients.empty?
+          # no clients listed, use the global event endpoint
+          response = ::HttpService.request(sensu_events_url)
+          Rails.logger.debug("Loaded #{response.length} global sensu events")
+          response.each do |event|
+            sensu_events.push(event)
+          end
+        else
+          # if clients are listed, use the dedicated per-client event endpoint
+          clients.each do |client|
+            response = ::HttpService.request(sensu_events_url + "/" + client)
+            Rails.logger.debug("Loaded #{response.length} sensu events from #{client}")
+            response.each do |event|
+              Rails.logger.debug("Added sensu event from")
+              sensu_events.push(event)
+            end
+          end
+        end
+        sensu_events
+      end
 
-        #defining some global variables that will be used to store filtered data
-        sensu_filtered_events = []
-        ignored_check_filtered_events = []
+      def filter_events(events, ignored_checks)
+        if ignored_checks.empty?
+          events
+        else
+          result = []
+          events.each do |event|
+            ignore = false
+            ignored_checks.each do |ignored_check|
+              if (the_check_that_you_try_to_ignore_exists?(event,ignored_check))
+                Rails.logger.debug("Sensu: Check: #{ignored_check[:check]} from Client: #{ignored_check[:client_name]} ignorred\n")
+                ignore = true
+                break
+              end
+            end
+            if not ignore
+              result.push(event)
+            end
+          end
+          Rails.logger.debug("RETURNING #{result.length} EVENTS")
+          result
+        end
+      end
+
+      def get(options = {})
+        widget = Widget.find(options.fetch(:widget_id))
+
+        sensu_client_filter = widget.settings.fetch(:sensu_clients, '')
+        unfiltered_events = get_events(sensu_client_filter.to_s.split(','))
+
+        sensu_ignored_checks  = widget.settings.fetch(:ignored_checks, '')
+        ignored_checks_array = sensu_ignored_checks.to_s.split(',').map do
+          |client_check|
+          client_name, check = client_check.split(":")
+          {:client_name => client_name, :check => check }
+        end
+
+        filtered_events = filter_events(unfiltered_events, ignored_checks_array)
+        Rails.logger.debug("Filtered to #{filtered_events.length} Sensu events")
 
         #Initial values for the alert system
         value = 500
 
-        sensu_events_url = BackendSettings.secrets.sensu_url + "/events"
-        sensu_events_response = ::HttpService.request(sensu_events_url)
-
-        sensu_client_filter = sensu_client_filter.to_s
-        sensu_ignored_checks = sensu_ignored_checks.to_s
-
-        #If both fields have data
-        if (sensu_client_and_check_filters_filled?(sensu_client_filter,sensu_ignored_checks))
-
-          #Here we will keep the clients for filtering, if any...
-          clients_array = sensu_client_filter.split(',')
-
-          #Here we will keep the ignored checks for filtering, if any...
-          ignored_checks_array = sensu_ignored_checks.split(',').map do
-            |clietnt_check|
-            client_name, check = clietnt_check.split(":")
-            {:client_name => client_name, :check => check }
-          end
-
-          #Here we do the filtering by client for every event
-          sensu_events_response.each do |event|
-            clients_array.each do |client|
-              if (event["client"].eql?(client))
-                sensu_filtered_events.push(event)
-                break
-              end
-            end
-          end
-
-          if (sensu_filtered_events.empty?)
-            raise SensuWrongConfigurationError.new("WARNING: The client filters that you entered doesn't exist in the sensu event list!")
-            return
-          else
-            sensu_filtered_events.each do |event|
-              ignored_checks_array.each do |ignored_check|
-                if (the_check_that_you_try_to_ignore_exists?(event,ignored_check))
-                  Rails.logger.debug("Sensu: Check: #{ignored_check[:check]} from Client: #{ignored_check[:client_name]} ignorred\n")
-                else
-                  ignored_check_filtered_events.push(event)
-                end
-              end
-            end
-            if (sensu_filtered_events.size == ignored_check_filtered_events.size)
-              raise SensuWrongConfigurationError.new("WARNING: Your check ignorance didnt give any result. Please check your spelling! The format should be: client_name1:check_name1, ...")
-            end
-            sensu_filtered_events = ignored_check_filtered_events
-          end
-
-
-          #If only client_filter is filled
-        elsif (!sensu_client_filter.empty?)
-          #Here we will keep the clients for filtering if any
-          clients_array = sensu_client_filter.split(',')
-
-          #Here we do the filtering by client for every event
-          sensu_events_response.each do |event|
-            clients_array.each do |client|
-              if (event["client"].eql?(client))
-                sensu_filtered_events.push(event)
-                break
-              end
-            end
-          end
-
-          if (sensu_filtered_events.empty?)
-            raise SensuWrongConfigurationError.new("WARNING: The client filters that you entered doesnt exist in the sensu event list!")
-            return
-          end
-
-          #If only a boring checks are filtered
-        elsif (!sensu_ignored_checks.empty?)
-
-          #Here we will keep the ignored checks for filtering, if any...
-          ignored_checks_array = sensu_ignored_checks.split(',').map do
-            |clietnt_check|
-            client_name, check = clietnt_check.split(":")
-            {:client_name => client_name, :check => check }
-          end
-
-          if (sensu_events_response.empty?)
-            raise SensuWrongConfigurationError.new("WARNING: The list of sensu events is empty please check your sensu configuration!")
-            return
-          else
-            sensu_events_response.each do |event|
-              ignored_checks_array.each do |ignored_check|
-                if (the_check_that_you_try_to_ignore_exists?(event,ignored_check))
-                  Rails.logger.debug("Sensu: Check: #{ignored_check[:check]} from Client: #{ignored_check[:client_name]} ignorred\n")
-                else
-                  ignored_check_filtered_events.push(event)
-                end
-              end
-            end
-            if (sensu_events_response.size == ignored_check_filtered_events.size)
-              raise SensuWrongConfigurationError.new("WARNING: Your check ignorance didnt give any result. Please check your spelling! The format should be: client_name1:check_name1, ...")
-            end
-            sensu_filtered_events = ignored_check_filtered_events
-          end
-        else
-          sensu_filtered_events = sensu_events_response
-        end
-
         #Keep all output values in the arrays bellow
         values_array = []
-        max = sensu_filtered_events.size
+        max = filtered_events.size
         all_messages = ""
         for i in 0..max-1
-          values_array.push(sensu_filtered_events[i]["status"])
-          all_messages = all_messages + "CLIENT: #{sensu_filtered_events[i]["client"]}<br/>CHECK: #{sensu_filtered_events[i]["check"]}<br/>MESSAGE: #{sensu_filtered_events[i]["output"]}<br/>"
+          values_array.push(filtered_events[i]["status"])
+          all_messages = all_messages + "CLIENT: #{filtered_events[i]["client"]}<br/>CHECK: #{filtered_events[i]["check"]}<br/>MESSAGE: #{filtered_events[i]["output"]}<br/>"
         end
 
         if !values_array.empty?
