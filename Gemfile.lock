@@ -171,6 +171,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   foreman
+  json
   libxml-ruby
   mocha
   multi_xml
