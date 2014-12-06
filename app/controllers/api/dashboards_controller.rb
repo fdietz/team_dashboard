@@ -43,7 +43,9 @@ module Api
     protected
 
     def dashboard_params(input)
-      input.slice(*%w(name time layout locked))
+      result = input.slice(*%w(name time layout locked))
+      result['name'] and result['name'].strip!
+      result
     end
   end
 end
