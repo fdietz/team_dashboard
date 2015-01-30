@@ -1,4 +1,5 @@
-app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$q", "$dialog", "$window", "Dashboard", "Widget", "Sources", "System", function($scope, $rootScope, $routeParams, $location, $q, $dialog, $window, Dashboard, Widget, Sources, System) {
+app.controller("DashboardShowCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "$q", "$dialog", "$window", "Dashboard", "Widget", "System",
+  function($scope, $rootScope, $routeParams, $location, $q, $dialog, $window, Dashboard, Widget, System) {
 
   var resources = [
     Dashboard.get({ id: $routeParams.id }),

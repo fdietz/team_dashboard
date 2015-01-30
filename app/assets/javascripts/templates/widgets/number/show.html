@@ -3,7 +3,7 @@
 
   <div class="label-container-two-rows">
     <span class="label" title="{{data.label}}">{{data.label}}</span>
-    <div class="secondary-value-container">
+    <div class="secondary-value-container" ng-hide="data.secondaryValue == 0">
       <span ng-class="data.arrow"></span><span class="secondary-value" ng-class="data.color">{{data.secondaryValue | percentage}}</span>
     </div>
   </div>

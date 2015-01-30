@@ -1,4 +1,4 @@
-app.controller("WidgetCtrl", ["$scope", "$element", "$timeout", "$rootScope", function($scope, $element, $timeout, $rootScope) {
+app.controller("WidgetCtrl", ["$scope", "$timeout", "$rootScope", function($scope, $timeout, $rootScope) {
 
   var previousData = null;
   var timer = null;

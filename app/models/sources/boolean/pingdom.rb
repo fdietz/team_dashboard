@@ -4,7 +4,7 @@ module Sources
     class Pingdom < Sources::Boolean::Base
 
       def available?
-        BackendSettings.pingdom.enabled?
+        BackendSettings.secrets.pingdom_user.present? && BackendSettings.secrets.pingdom_password.present? && BackendSettings.secrets.pingdom_api_key.present?
       end
 
       def custom_fields

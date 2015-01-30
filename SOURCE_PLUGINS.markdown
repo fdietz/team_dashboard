@@ -75,7 +75,6 @@ There is a global `config/backend_settings.yml` that takes care of that. Just ad
 Let's have a look at how its done for for the Graphite data source. There's an entry in `config/backend_settings.yml`.
 
     graphite:
-      enabled?: true
       url: "http://some.url"
 
 This is automatically assigned to the `BackendSettings` constant throughout your application.
@@ -84,7 +83,7 @@ The graphite data source now can easily access the configuration. In order to de
 
     class Graphite < Sources::Datapoints::Base
       def available?
-        BackendSettings.graphite.enabled?
+        BackendSettings.secrets.graphite_url.present?
       end
     end
 

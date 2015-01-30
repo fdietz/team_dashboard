@@ -5,9 +5,9 @@ app.factory("EditorFormOptions", function() {
     { value: 2,    label: "2 sec" },
     { value: 5,    label: "5 sec" },
     { value: 10,    label: "10 sec" },
-    { value: 600,   label: "1 min" },
-    { value: 6000,  label: "10 min" },
-    { value: 36000, label: "1 hour" }
+    { value: 60,   label: "1 min" },
+    { value: 600,  label: "10 min" },
+    { value: 3600, label: "1 hour" }
   ];
 
   var periods = [
