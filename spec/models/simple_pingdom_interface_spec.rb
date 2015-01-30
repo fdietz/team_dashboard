@@ -3,8 +3,8 @@ require "spec_helper"
 describe SimplePingdomInterface do
 
   before(:each) do
-    BackendSettings.stubs(:secrets).returns(
-      OpenStruct.new(pingdom_user: 'user', pingdom_password: 'pass', pingdom_api_key: 'the_key')
+    allow(cc(:plugins)).to receive(:pingdom).and_return(
+      OpenStruct.new(user: 'user', password: 'pass', enabled?: true, api_key: 'the_key')
     )
   end
 

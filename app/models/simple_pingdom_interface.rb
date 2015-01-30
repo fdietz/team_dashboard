@@ -5,18 +5,19 @@ class SimplePingdomInterface
   attr_reader :response
 
   def initialize
+    cc(:plugins).pingdom? or raise 'Please enable pingdom in the settings'
   end
 
   def user
-    BackendSettings.secrets.pingdom_user
+    cc(:plugins).pingdom.user
   end
 
   def pass
-    BackendSettings.secrets.pingdom_password
+    cc(:plugins).pingdom.password
   end
 
   def app_key
-    BackendSettings.secrets.pingdom_api_key
+    cc(:plugins).pingdom.api_key
   end
 
   def pingdom_url

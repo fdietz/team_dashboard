@@ -5,9 +5,10 @@
 # Implemented by Shuky Dvir
 # e-mail: shuky.dvir@gmail.com
 
-# Find the configuration variables in your application.rb:
+# Find the configuration variables in your plugins.yml:
 #
-#   config.uptime_url = ENV['UPTIME_URL']
+#   uptime:
+#     url: <%= ENV['UPTIME_URL'] %>
 #
 module Sources
   module Boolean
@@ -15,7 +16,7 @@ module Sources
       class NotFoundError < StandardError; end
 
       def available?
-        BackendSettings.secrets.uptime_url.present?
+        cc(:plugins).uptime?
       end
 
       def custom_fields
@@ -28,9 +29,7 @@ module Sources
         widget           = Widget.find(options.fetch(:widget_id))
         check_name       = widget.settings.fetch(:check_name)
 
-        url = BackendSettings.secrets.uptime_url
-
-        response = ::HttpService.request(url)
+        response = ::HttpService.request(cc(:plugins).uptime.url)
         Rails.logger.info response
         response.each do |item|
           if item["name"] == check_name

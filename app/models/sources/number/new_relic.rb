@@ -33,7 +33,7 @@ module Sources
 
       def connection_instance(app_name)
         NewRelicConnection.instance(
-          BackendSettings.secrets.new_relic_api_key,
+          cc(:plugins).new_relic.api_key,
           app_name
         )
       end

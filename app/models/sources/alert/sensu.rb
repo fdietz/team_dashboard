@@ -6,7 +6,7 @@ module Sources
       class SensuWrongConfigurationError < Exception; end
 
       def available?
-        BackendSettings.secrets.sensu_url.present?
+        cc(:plugins).sensu?
       end
 
       def custom_fields
@@ -28,7 +28,7 @@ module Sources
         #Initial values for the alert system
         value = 500
 
-        sensu_events_url = BackendSettings.secrets.sensu_url + "/events"
+        sensu_events_url = cc(:plugins).sensu.url + "/events"
         sensu_events_response = ::HttpService.request(sensu_events_url)
 
         sensu_client_filter = sensu_client_filter.to_s

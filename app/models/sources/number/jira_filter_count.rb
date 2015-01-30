@@ -15,13 +15,13 @@ module Sources
     class JiraFilterCount < Sources::Number::Base
 
       def available?
-        BackendSettings.secrets.jira_url.present? && BackendSettings.secrets.jira_user.present? && BackendSettings.secrets.jira_password.present?
+        cc(:plugins).jira?
       end
 
       def count_by_filter_id(filter_id)
-        jira_uri          = URI.parse(BackendSettings.secrets.jira_url)
-        jira_uri.user     = BackendSettings.secrets.jira_user if BackendSettings.secrets.jira_user
-        jira_uri.password = BackendSettings.secrets.jira_password if BackendSettings.secrets.jira_password
+        jira_uri          = cc(:plugins).jira.url
+        jira_uri.user     = cc(:plugins).jira.user if cc(:plugins).jira.user
+        jira_uri.password = cc(:plugins).jira.password if cc(:plugins).jira.password
         jira_uri.query    = URI.encode_www_form(:maxResults => "1000", :jql => "filter = #{filter_id}")
 
         Rails.logger.debug("Requesting from #{jira_uri.to_s} ...")

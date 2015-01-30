@@ -3,7 +3,7 @@ module Sources
     class Pingdom < Sources::StatusTable::Base
 
       def available?
-        BackendSettings.secrets.pingdom_user.present?
+        cc(:plugins).pingdom?
       end
 
       def get(options = {})

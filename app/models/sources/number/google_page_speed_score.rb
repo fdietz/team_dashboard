@@ -38,7 +38,7 @@ module Sources
 
         page_speed = GooglePageSpeed.new(
           target_url: target_url,
-          api_key: BackendSettings.secrets.google_api_key,
+          api_key: cc(:plugins).google.api_key,
           strategy: strategy
         )
 
@@ -53,7 +53,7 @@ module Sources
       end
 
       def available?
-        BackendSettings.secrets.google_api_key.present?
+        cc(:plugins).google?
       end
     end
   end
