@@ -10,6 +10,7 @@ gem "bootstrap-sass", "~> 2.3.2"
 gem "bootswatch-rails"
 
 gem "mysql2"
+gem "json"
 
 # on windows replace with thin gem
 gem "unicorn"
