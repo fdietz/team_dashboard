@@ -41,8 +41,14 @@ GEM
     bootswatch-rails (0.5.0)
       railties (>= 3.1)
     builder (3.1.4)
+    byebug (3.5.1)
+      columnize (~> 0.8)
+      debugger-linecache (~> 1.2)
+      slop (~> 3.6)
     coderay (1.1.0)
+    columnize (0.9.0)
     debug_inspector (0.0.2)
+    debugger-linecache (1.2.0)
     diff-lcs (1.2.4)
     dotenv (0.9.0)
     erubis (2.7.0)
@@ -122,6 +128,7 @@ GEM
       railties (>= 4.0.0, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
+    slop (3.6.0)
     sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -159,6 +166,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-sass (~> 2.3.2)
   bootswatch-rails
+  byebug
   factory_girl_rails
   faraday
   faraday_middleware
