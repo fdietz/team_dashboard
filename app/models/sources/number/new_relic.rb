@@ -14,51 +14,28 @@ module Sources
   module Number
     class NewRelic < Sources::Number::Base
 
-      # Internal class for the connection
-      class NewRelicConnection
-
-        attr_reader :api_key
-
-        def initialize(api_key)
-          @api_key = api_key
-        end
-
-        def self.instance(api_key)
-          @instances ||= {}
-          @instances[api_key] ||= self.new(api_key)
-          @instances[api_key]
-        end
-
-        def available?
-          BackendSettings.secrets.new_relic_api_key.present?
-        end
-
-        def account
-          NewRelicApi.api_key = api_key
-          @account ||= NewRelicApi::Account.find(:first)
-        end
-
-        def application
-          @application ||= account.applications.first
-        end
-
-        def threshold_value(name)
-          application.threshold_values.find { |tv| tv.name == name }
-        end
-
-      end
-
       def custom_fields
         [
           { :name => "value_name", :title => "Value Name", :mandatory => true },
+          { :name => "app_name", :title => "Application Name", :mandatory => false },
         ]
       end
 
       def get(options = {})
         widget     = Widget.find(options.fetch(:widget_id))
         value_name = widget.settings.fetch(:value_name)
+        app_name   = widget.settings.fetch(:app_name)
 
-        { :value => NewRelicConnection.instance(BackendSettings.secrets.new_relic_api_key).threshold_value(value_name).metric_value }
+        { :value => connection_instance(app_name).threshold_value(value_name).metric_value }
+      end
+
+      private
+
+      def connection_instance(app_name)
+        NewRelicConnection.instance(
+          BackendSettings.secrets.new_relic_api_key,
+          app_name
+        )
       end
 
     end
