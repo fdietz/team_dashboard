@@ -26,11 +26,11 @@ gem "nokogiri"
 gem "newrelic_api"
 
 # assets
-gem "therubyracer"
+gem "therubyracer", '0.12.1'
 gem "uglifier"
 
 group :test, :development do
-  gem "debugger"
+  gem 'byebug'
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "mocha", :require => false
@@ -45,5 +45,3 @@ end
 group :production do
   gem 'rails_12factor' # remove if not deploying on heroku
 end
-
-ruby "2.0.0"
