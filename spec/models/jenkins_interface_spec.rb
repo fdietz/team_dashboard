@@ -90,9 +90,9 @@ describe JenkinsInterface do
                                                  last_build_time: build_time
       }])
       interface.status_table.should eq([{
-        status: 0,
-        label: 'some_label',
-        value: '12:02:54',
+        "status" => 0,
+        "label" => 'some_label',
+        "value" => '12:02:54',
       }])
     end
 

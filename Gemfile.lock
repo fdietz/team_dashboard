@@ -70,7 +70,7 @@ GEM
     i18n (0.6.5)
     json (1.8.1)
     kgio (2.8.0)
-    libv8 (3.16.14.3)
+    libv8 (3.16.14.7)
     libxml-ruby (2.7.0)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -138,7 +138,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    therubyracer (0.12.0)
+    therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
       ref
     thor (0.18.1)
