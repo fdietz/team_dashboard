@@ -79,15 +79,21 @@ Note, that it requires NodeJS to be installed. There's a `package.json` provided
 
 ## Configuration
 
-System-wide configuration settings are done in either `application.rb` or with an environment variable.
+System-wide configuration settings reside in `config/secrets.yml`.
 
-For example when configuring `graphite` you can see the configuration settings in application.rb:
+For example when configuring `graphite` you can see the configuration settings in `secrets.yml`:
 
-    config.graphite_url = ENV['GRAPHITE_URL']
+    graphite_url: <%= ENV['GRAPHITE_URL'] %>
 
 You can either change the configuration there or set the environment variable when starting the rails app:
 
     GRAPHITE_URL=http://localhost:8080 rails s
+
+Use environment variables in production instead of storing your secret information directly in `secrets.yml`. When deploying on [Heroku](http://www.heroku.com) you can set these as described in [Configuration and Config Vars](https://devcenter.heroku.com/articles/config-vars).
+
+Alternatively, you can decide to remove `secrets.yml` from source control and instead link to a yml file existing on the production environment only. This is most commonly used when deploying with capistrano.
+
+The configuration was changed to resemble the Rails 4.1 secrets.yml feature in order to support an easy upgrade path.
 
 All data sources reside in `app/models/sources` and provide source code documentation with further details.
 

@@ -21,11 +21,10 @@ module Sources
     class Svg < Sources::Graphite::Base
 
       def initialize
-        @url_builder = GraphiteUrlBuilder.new(BackendSettings.graphite.url)
       end
 
       def available?
-        BackendSettings.graphite.enabled?
+        BackendSettings.secrets.graphite_url.present?
       end
 
       def supports_target_browsing?
@@ -64,8 +63,12 @@ module Sources
 
       private
 
+      def url_builder
+        @url_builder ||= GraphiteUrlBuilder.new(BackendSettings.secrets.graphite_url)
+      end
+
       def request_datapoints(targets, from, to, options = {})
-        url = @url_builder.datapoints_svg_url(targets, from, to, options)
+        url = url_builder.datapoints_svg_url(targets, from, to, options)
 
         #
         # temporary using net/http directly until array param encoding is handled correctly
@@ -104,7 +107,7 @@ module Sources
       end
 
       def request_available_targets
-        url = @url_builder.metrics_url
+        url = url_builder.metrics_url
         Rails.logger.debug("Requesting available targets from #{url} ...")
         ::HttpService.request(url)
       end

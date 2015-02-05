@@ -41,3 +41,9 @@ group :development do
   gem "binding_of_caller"
   gem "foreman"
 end
+
+group :production do
+  gem 'rails_12factor' # remove if not deploying on heroku
+end
+
+ruby "2.0.0"

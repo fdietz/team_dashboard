@@ -5,7 +5,10 @@ app.directive("number", ["NumberModel", "SuffixFormatter", function(NumberModel,
 
     function calculatePercentage(value, previousValue) {
       console.log("previous", previousValue, "value", value);
-      return ((value - previousValue) / value) * 100;
+      if(previousValue == 0) {
+        return 0;
+      }
+      return ((value - previousValue) / previousValue) * 100;
     }
 
     function onSuccess(data) {
