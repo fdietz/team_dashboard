@@ -20,7 +20,7 @@ class JenkinsInterface
   def project_to_status(data)
     {
       :label             => data["name"],
-      :last_build_time   => Time.parse(data["lastBuildTime"]),
+      :last_build_time   => Time.zone.parse(data["lastBuildTime"]),
       :last_build_status => result_status(data["lastBuildStatus"]),
       :current_status    => build_status(data["activity"])
     }
