@@ -48,7 +48,7 @@ describe JenkinsInterface do
 
   context 'parsing projects' do
 
-    let(:build_time) { Time.parse('2013-12-15 12:02:54 +0100') }
+    let(:build_time) { Time.zone.parse('2013-12-15 12:02:54 +0100') }
 
     let(:test_result) { {
       'name' => 'some_build',
@@ -92,7 +92,7 @@ describe JenkinsInterface do
       interface.status_table.should eq([{
         "status" => 0,
         "label" => 'some_label',
-        "value" => '12:02:54',
+        "value" => '11:02:54',
       }])
     end
 
