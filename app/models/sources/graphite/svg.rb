@@ -1,11 +1,9 @@
 require "net/http"
 
 #
-# Configure the Graphite URL in application.rb:
-#   config.graphite_url = ENV['GRAPHITE_URL']
-#
-# or use and environment variable:
-#   GRAPHITE_URL=http://localhost:8080 rails s
+# Configure the Graphite URL in plugins.yml:
+#   graphite:
+#     url: <%= ENV['GRAPHITE_URL'] %>
 #
 # Target Selection:
 #   You can pass a semicolon-separated list of targets:
@@ -24,7 +22,7 @@ module Sources
       end
 
       def available?
-        BackendSettings.secrets.graphite_url.present?
+        cc(:plugins).graphite?
       end
 
       def supports_target_browsing?
@@ -64,7 +62,7 @@ module Sources
       private
 
       def url_builder
-        @url_builder ||= GraphiteUrlBuilder.new(BackendSettings.secrets.graphite_url)
+        @url_builder ||= GraphiteUrlBuilder.new(cc(:plugins).graphite.url)
       end
 
       def request_datapoints(targets, from, to, options = {})

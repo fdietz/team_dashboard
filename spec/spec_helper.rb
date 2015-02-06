@@ -1,3 +1,5 @@
+require 'fileutils'
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
@@ -8,8 +10,12 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+unless File.exists?('config/plugins.yml')
+  FileUtils.cp('config/plugins.example.yml', 'config/plugins.yml')
+end
+
 RSpec.configure do |config|
-  config.mock_with :mocha
+  config.mock_with :rspec
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

@@ -1,0 +1,72 @@
+# Configure plugins for the dashboard.
+#
+# To disable a plugin type, remove the respective section _completely_
+#
+# Environments are specified in the same way as for database.yml etc.,
+# and you may also use erb-tags in the same way.`
+development:
+  graphite:
+    url: 'http://someserver.url/'
+
+  ganglia:
+    url: 'http://ganglia_url'
+    host: ganglia_host
+
+  pingdom:
+    user: username
+    password: pass
+    api_key: some_api_key
+
+  sensu:
+    url: 'http://sensu_url'
+
+  uptime:
+    url: 'http://uptime.url'
+
+  jira:
+    url: 'http://jira.url'
+    user: username
+    password: pass
+
+  pingdom:
+    user: user
+    password: password
+    api_key: some_key
+
+  new_relic:
+    api_key: some_key
+
+test:
+  foo: bar
+
+production:
+  graphite:
+    url: <%= ENV['TEAM_DASHBOARD_GRAPHITE_URL'] %>
+
+  ganglia:
+    url: <%= ENV['TEAM_DASHBOARD_GANGLIA_URL'] %>
+    host: <%= ENV['TEAM_DASHBOARD_GANGLIA_HOST'] %>
+
+  pingdom:
+    user: <%= ENV['TEAM_DASHBOARD_PINGDOM_USER'] %>
+    password: <%= ENV['TEAM_DASHBOARD_PINGDOM_PASS'] %>
+    api_key: <%= ENV['TEAM_DASHBOARD_PINGDOM_KEY'] %>
+
+  sensu:
+    url: <%= ENV['TEAM_DASHBOARD_SENSU_URL'] %>
+
+  uptime:
+    url: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+
+  jira:
+    url: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+    user: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+    password: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+
+  pingdom:
+    user:<%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+    password: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+    api_key: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>
+
+  new_relic:
+    api_key: <%= ENV['TEAM_DASHBOARD_UPTIME_URL'] %>

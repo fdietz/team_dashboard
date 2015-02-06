@@ -30,6 +30,7 @@ module Sources
         values_array = []
         max = parsed_json.size
         all_messages = Array.new
+
         for i in 0..max-1
           values_array.push(parsed_json[i]["status"])
           all_messages << {
