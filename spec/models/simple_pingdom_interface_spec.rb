@@ -66,7 +66,7 @@ describe SimplePingdomInterface do
       it 'returns the status as a bool' do
         interface = SimplePingdomInterface.new
         interface.stubs(:status_table).returns(test_status_table)
-        interface.status_ok?('helloworld').should be_true
+        interface.status_ok?('helloworld').should be_truthy
       end
 
     end
