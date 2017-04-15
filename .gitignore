@@ -15,7 +15,7 @@
 /tmp
 
 /public/assets
-
+/nbproject
 .DS_Store
 
 .jhw-cache
