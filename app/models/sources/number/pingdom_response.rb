@@ -23,8 +23,8 @@ module Sources
       def get(options = {})
         widget = Widget.find(options.fetch(:widget_id))
         settings = widget.settings
-        connection = SimplePingdomInterface.new(settings.fetch(:check))
-        { :value => connection.response_time }
+        connection = SimplePingdomInterface.new.make_request
+        { :value => connection.value(settings.fetch(:check)).to_i }
       end
 
     end
